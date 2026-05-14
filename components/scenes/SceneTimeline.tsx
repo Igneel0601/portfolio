@@ -11,6 +11,7 @@ export function SceneTimeline() {
   const logsRef = useRef<HTMLDivElement | null>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const lastIdxRef = useRef(0);
+  const maxProgressRef = useRef(0);
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -79,45 +80,41 @@ export function SceneTimeline() {
           trigger: root,
           pin: true,
           start: "top top",
-          end: "+=550%",
+          end: "+=200%",
           scrub: 0.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: () => fitTrack(),
           onUpdate: (self) => {
-            const eff = Math.min(1, self.progress / 0.8);
+            // forward-only progress: track the max we've seen so reverse-scroll doesn't undo
+            const p = Math.max(self.progress, maxProgressRef.current);
+            maxProgressRef.current = p;
             const idx = Math.min(
               stops.length - 1,
-              Math.max(0, Math.floor(eff * (stops.length - 1) + 0.0001)),
+              Math.max(0, Math.floor(p * (stops.length - 1) + 0.0001)),
             );
-            track.style.transform = `scaleY(${eff})`;
+            track.style.transform = `scaleY(${p})`;
             stops.forEach((stop, i) => {
               const dot = dots[i];
               const detail = stop.querySelector<HTMLElement>("[data-stop-detail]");
-              if (i < idx) {
+              if (i <= idx) {
                 stop.setAttribute("data-active", "true");
-                if (dot) {
-                  dot.setAttribute("data-passed", "true");
-                  dot.removeAttribute("data-current");
-                }
-                if (detail) gsap.to(detail, { autoAlpha: 1, x: 0, duration: 0.3, overwrite: "auto" });
-              } else if (i === idx) {
-                stop.setAttribute("data-active", "true");
-                if (dot) {
-                  dot.setAttribute("data-passed", "true");
-                  dot.setAttribute("data-current", "true");
-                }
-                if (detail) gsap.to(detail, { autoAlpha: 1, x: 0, duration: 0.35, ease: "power3.out", overwrite: "auto" });
-              } else {
-                stop.removeAttribute("data-active");
-                if (dot) {
-                  dot.removeAttribute("data-passed");
-                  dot.removeAttribute("data-current");
-                }
-                if (detail) gsap.to(detail, { autoAlpha: 0, x: -8, duration: 0.2, overwrite: "auto" });
+                if (dot) dot.setAttribute("data-passed", "true");
+                if (detail)
+                  gsap.to(detail, {
+                    autoAlpha: 1,
+                    x: 0,
+                    duration: i === idx ? 0.35 : 0.3,
+                    ease: i === idx ? "power3.out" : "none",
+                    overwrite: "auto",
+                  });
+              }
+              if (dot) {
+                if (i === idx) dot.setAttribute("data-current", "true");
+                else dot.removeAttribute("data-current");
               }
             });
-            if (idx !== lastIdxRef.current) {
+            if (idx > lastIdxRef.current) {
               lastIdxRef.current = idx;
               setActiveIdx(idx);
             }

@@ -133,7 +133,7 @@ export function ScenePinnedWork() {
                         data-ls-row
                         data-active={isActive ? "true" : undefined}
                         onClick={() => setActiveIdx(i)}
-                        className="ls-row w-full text-left grid items-center gap-3 px-2 py-1 rounded"
+                        className="ls-row no-pop w-full text-left grid items-center gap-3 px-2 py-1 rounded"
                         style={{
                           gridTemplateColumns: "90px 130px 70px 1fr 14px",
                         }}
@@ -163,23 +163,13 @@ export function ScenePinnedWork() {
               </ul>
               <div data-ls-foot className="mute text-[11px] mt-2"># click a folder ↑</div>
 
-              <a
+              <div
                 data-ls-foot
-                href="/work"
-                className="ls-see-all inline-block mt-6"
+                className="mt-6"
                 style={{ color: "var(--accent)" }}
               >
-                ${" "}
-                <span
-                  className="underline underline-offset-4"
-                  style={{
-                    textDecorationColor: "color-mix(in oklab, var(--accent) 50%, transparent)",
-                    textDecorationThickness: "1px",
-                  }}
-                >
-                  cd /work
-                </span>
-              </a>
+                $ cd <a href="/work">~/work</a>
+              </div>
               <div data-ls-foot className="mute text-[11px] mt-1"># click to see all projects</div>
             </div>
 

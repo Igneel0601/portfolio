@@ -4,6 +4,7 @@ import "./globals.css";
 import { MotionProvider } from "@/components/MotionProvider";
 import { TerminalBar } from "@/components/scenes/TerminalBar";
 import { Nav } from "@/components/Nav";
+import CustomCursor from "@/components/CustomCursor";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -50,6 +51,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <MotionProvider>
+          <CustomCursor />
           <TerminalBar />
           <Nav />
           {children}

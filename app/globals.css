@@ -8,6 +8,26 @@
   --accent: #6ee7a7;
   --accent-2: #5eead4;
   --highlight: rgba(110, 231, 167, 0.22);
+  --scrollbar-thumb: var(--accent);
+  --scrollbar-track: color-mix(in oklab, var(--accent) 14%, transparent);
+  --scrollbar-size: 10px;
+}
+
+/* accent-tinted scrollbar */
+html {
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar { width: var(--scrollbar-size); height: var(--scrollbar-size); }
+*::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 999px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 999px;
 }
 
 @theme inline {
@@ -94,6 +114,88 @@ body {
   text-transform: uppercase;
   transform: rotate(-3deg);
 }
+
+/* apple-ish custom cursor (ported from mr-main) */
+* { cursor: none !important; }
+@media (hover: none), (pointer: coarse) {
+  * { cursor: auto !important; }
+}
+
+#custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    width 0.18s ease,
+    height 0.18s ease,
+    border-radius 0.18s ease,
+    background-color 0.18s ease;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity, width, height, border-radius;
+}
+
+#custom-cursor.text {
+  width: 6px;
+  height: 30px;
+  border-radius: 6px;
+  background-color: var(--accent);
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+#custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.25);
+  opacity: 0.6 !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  #custom-cursor { display: none !important; }
+}
+
+a, button {
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* every link pops + recolors + grows underline on hover.
+   exclude .btn, .logo-link, .no-pop, and anything obviously structural */
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex),
+button:not(.btn):not(.no-pop):not(.grid):not(.flex) {
+  display: inline-block;
+  position: relative;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex)::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered {
+  transform: scale(1.08) !important;
+  color: var(--accent) !important;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover::after,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
+  width: 100%;
+}
+
 
 /* identity cursor blink — only CSS animation allowed by motion spec */
 [data-cursor] {

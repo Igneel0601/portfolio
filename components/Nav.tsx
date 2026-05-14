@@ -219,7 +219,7 @@ export function Nav() {
                     data-nav-kind="scroll"
                     href={l.href}
                     onClick={(e) => handleScrollLink(e, l.href)}
-                    className="nav-link"
+                    className="nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
                   >
                     {l.label}
                   </a>
@@ -228,7 +228,7 @@ export function Nav() {
                     data-nav-link
                     data-nav-kind={l.kind}
                     href={l.href}
-                    className="nav-link"
+                    className="nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
                   >
                     {l.label}
                   </Link>
@@ -240,7 +240,7 @@ export function Nav() {
             data-nav-link
             data-nav-kind="mailto"
             href={NAV_LINKS[NAV_LINKS.length - 1].href}
-            className="nav-link ml-auto font-semibold"
+            className="nav-link ml-auto font-semibold relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
           >
             {NAV_LINKS[NAV_LINKS.length - 1].label}
           </a>
