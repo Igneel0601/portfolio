@@ -1,23 +1,12 @@
-import Image from "next/image";
 import type { Project } from "@/lib/content";
+import { ProjectImage } from "./ProjectImage";
 
-export function ProjectCardLarge({ project }: { project: Project }) {
+export function ProjectCardLarge({ project, priority = false }: { project: Project; priority?: boolean }) {
   return (
-    <article
-      className="box-wob p-4"
-      style={{ background: "var(--paper-2)", boxShadow: "5px 5px 0 var(--ink)" }}
-    >
-      <div className="relative w-full overflow-hidden box" style={{ aspectRatio: "16 / 9" }}>
-        <Image
-          src={project.image}
-          alt={project.name}
-          fill
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover"
-        />
-      </div>
+    <article className="box-wob p-4" style={{ background: "var(--paper-2)", boxShadow: "5px 5px 0 var(--ink)" }}>
+      <ProjectImage src={project.image} alt={project.name} priority={priority} />
       <div className="mono mt-3 text-[11px] tracking-[0.14em]" style={{ color: "var(--accent)" }}>
-        NOW SHOWING · {project.index} / 03 · {project.kind}
+        NOW SHOWING · {project.index}/03
       </div>
       <h3 className="serif text-3xl font-extrabold mt-1">{project.name}</h3>
       <p className="mute text-[15px] mt-1.5">{project.blurb}</p>
@@ -26,38 +15,26 @@ export function ProjectCardLarge({ project }: { project: Project }) {
           <span key={t} className="pill text-[11px] px-2 py-0.5">{t}</span>
         ))}
       </div>
-      <div className="mono text-[11px] mt-3 tracking-[0.12em]">
-        {project.url && (
-          <>
-            <span style={{ color: "var(--accent)" }}>›</span>{" "}
-            <a href={`https://${project.url}`} target="_blank" rel="noreferrer" className="underline">
-              {project.url}
-            </a>{" "}
-            ·{" "}
-          </>
-        )}
-        <span className="mute">{project.meta}</span>
-      </div>
+      <a
+        href={`/work/${project.id}`}
+        className="mono text-[11px] mt-3 inline-block tracking-[0.14em]"
+        style={{ color: "var(--accent-2)" }}
+      >
+        READ THE CASE STUDY → /work/{project.id}
+      </a>
     </article>
   );
 }
 
-export function ProjectCardSide({ project, dim = false }: { project: Project; dim?: boolean }) {
+export function ProjectCardSide({ project, sideIndex }: { project: Project; sideIndex: number }) {
   return (
     <article
+      data-side={sideIndex}
       className="box p-3"
-      style={{ background: "var(--paper-2)", opacity: dim ? 0.78 : 0.95 }}
+      style={{ background: "var(--paper-2)" }}
     >
-      <div className="grid gap-3" style={{ gridTemplateColumns: "100px 1fr" }}>
-        <div className="relative w-full box overflow-hidden" style={{ aspectRatio: "16 / 10" }}>
-          <Image
-            src={project.image}
-            alt={project.name}
-            fill
-            sizes="120px"
-            className="object-cover"
-          />
-        </div>
+      <div className="grid gap-3 items-center" style={{ gridTemplateColumns: "120px 1fr" }}>
+        <ProjectImage src={project.image} alt={project.name} sizes="120px" />
         <div>
           <div className="mono mute text-[10px] tracking-[0.12em]">
             {project.index} · {project.kind}

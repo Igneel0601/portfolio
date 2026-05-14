@@ -1,65 +1,143 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { BOOT_LINES } from "@/lib/content";
-import { registerGsap, gsap, SplitText } from "@/lib/gsap";
+import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
+import { gsap, SplitText } from "@/lib/gsap";
+import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
+import { D, E } from "@/lib/motion-tokens";
+
+const HEADLINE_LINES = [
+  ["I'm", { hilite: "Vaibhav." }],
+  ["I", "build", "software"],
+  ["that", { em: "teaches" }, { em: "itself" }],
+  ["to", "write", "more", "software."],
+] as const;
+
+type Token = string | { hilite: string } | { em: string };
+
+function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
+  return (
+    <span className="block overflow-hidden">
+      {tokens.map((t, i) => {
+        if (typeof t === "string") {
+          return (
+            <span key={i} data-headline-word className="inline-block will-change-transform">
+              {t}
+              {i < tokens.length - 1 ? " " : ""}
+            </span>
+          );
+        }
+        if ("hilite" in t) {
+          return (
+            <span key={i} data-headline-word className="inline-block will-change-transform">
+              <span className="hilite">{t.hilite}</span>
+              {i < tokens.length - 1 ? " " : ""}
+            </span>
+          );
+        }
+        return (
+          <span key={i} data-headline-word className="inline-block will-change-transform">
+            <em className="italic" style={{ color: "var(--accent)" }}>{t.em}</em>
+            {i < tokens.length - 1 ? " " : ""}
+          </span>
+        );
+      })}
+    </span>
+  );
+}
 
 export function SceneBoot() {
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    registerGsap();
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced || !rootRef.current) return;
+    if (!rootRef.current) return;
+    const root = rootRef.current;
+    const mm = motionMM();
 
-    const ctx = gsap.context(() => {
-      const bootLines = gsap.utils.toArray<HTMLElement>("[data-boot-line]");
-      const headline = rootRef.current!.querySelector<HTMLElement>("[data-headline]");
-      const sub = rootRef.current!.querySelector<HTMLElement>("[data-sub]");
-      const ctas = rootRef.current!.querySelector<HTMLElement>("[data-ctas]");
+    mm.add(MOTION_BREAKPOINTS, (ctx) => {
+      const { isReduce } = ctx.conditions as { isReduce: boolean };
+      const prompt = root.querySelector<HTMLElement>("[data-boot-prompt]");
+      const lines = gsap.utils.toArray<HTMLElement>("[data-boot-line]", root);
+      const words = gsap.utils.toArray<HTMLElement>("[data-headline-word]", root);
+      const sub = root.querySelector<HTMLElement>("[data-subhead]");
+      const ctas = gsap.utils.toArray<HTMLElement>("[data-cta]", root);
+      const cursor = root.querySelector<HTMLElement>("[data-cursor]");
 
-      const tl = gsap.timeline();
-
-      bootLines.forEach((el) => {
-        const full = el.dataset.text || "";
-        el.textContent = "";
-        tl.to(el, { duration: 0.45, text: { value: full }, ease: "none" }, "+=0.05");
-      });
-
-      if (headline) {
-        const split = new SplitText(headline, { type: "words,chars" });
-        gsap.set(headline, { autoAlpha: 1 });
-        tl.from(split.words, {
-          yPercent: 60,
-          autoAlpha: 0,
-          stagger: 0.04,
-          duration: 0.55,
-          ease: "power3.out",
-        }, "+=0.1");
+      if (isReduce) {
+        if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
+        gsap.set([...lines, sub, ...ctas, cursor], { autoAlpha: 1, x: 0, y: 0 });
+        gsap.set(words, { yPercent: 0, autoAlpha: 1 });
+        return;
       }
 
-      if (sub) tl.from(sub, { y: 12, autoAlpha: 0, duration: 0.5, ease: "power2.out" }, "-=0.2");
-      if (ctas) tl.from(ctas.children, {
-        y: 16,
-        autoAlpha: 0,
-        stagger: 0.08,
-        duration: 0.45,
-        ease: "power2.out",
-      }, "-=0.15");
-    }, rootRef);
+      gsap.set(lines, { autoAlpha: 0, x: -8 });
+      gsap.set(words, { yPercent: 100, autoAlpha: 0 });
+      gsap.set(sub, { autoAlpha: 0, y: 12 });
+      gsap.set(ctas, { autoAlpha: 0, y: 14 });
+      gsap.set(cursor, { autoAlpha: 0 });
+      if (prompt) prompt.textContent = "";
 
-    return () => ctx.revert();
+      const tl = gsap.timeline();
+      if (prompt) {
+        tl.to(prompt, {
+          duration: 0.4,
+          text: { value: BOOT_PROMPT_FULL, delimiter: "" },
+          ease: "steps(14)",
+        });
+      }
+      tl.to(lines, {
+        autoAlpha: 1,
+        x: 0,
+        duration: D.sm,
+        ease: E.precise,
+        stagger: 0.18,
+      }, "+=0.10")
+        .to(words, {
+          yPercent: 0,
+          autoAlpha: 1,
+          duration: 0.65,
+          ease: E.weighty,
+          stagger: { each: 0.06, from: "start" },
+        }, "-=0.20")
+        .to(sub, {
+          autoAlpha: 1,
+          y: 0,
+          duration: D.md,
+          ease: E.precise,
+        }, "-=0.30")
+        .to(ctas, {
+          autoAlpha: 1,
+          y: 0,
+          duration: 0.45,
+          ease: E.precise,
+          stagger: 0.08,
+        }, "-=0.15")
+        .to(cursor, {
+          autoAlpha: 1,
+          duration: 0.25,
+          ease: E.precise,
+        }, "+=0.05");
+    });
+
+    return () => mm.revert();
   }, []);
 
   return (
-    <section ref={rootRef} className="relative px-6 md:px-10 pt-10 pb-6">
+    <section
+      ref={rootRef}
+      data-scene="boot"
+      id="hero"
+      className="relative px-6 md:px-10 pt-8 pb-12 min-h-screen overflow-hidden"
+    >
       <div className="mono text-[13px] leading-7 space-y-0.5">
-        {BOOT_LINES.map((l, i) => (
-          <div key={i}>
-            {l.prompt && <span style={{ color: "var(--accent)" }}>{l.prompt} </span>}
-            <span data-boot-line data-text={l.text} className={l.prompt ? "" : "pl-4 mute"}>
-              {l.text}
-            </span>
+        <div>
+          <span style={{ color: "var(--accent)" }} data-boot-prompt>
+            {BOOT_PROMPT_FULL}
+          </span>
+        </div>
+        {BOOT_LINES.slice(1).map((l, i) => (
+          <div key={i} data-boot-line className="pl-4 mute">
+            {l.text}
           </div>
         ))}
       </div>
@@ -67,24 +145,28 @@ export function SceneBoot() {
       <h1
         data-headline
         className="serif font-extrabold tracking-tight mt-6 mb-2"
-        style={{ fontSize: "clamp(40px, 7.5vw, 84px)", lineHeight: 0.95, opacity: 1 }}
+        style={{ fontSize: "clamp(40px, 6vw, 68px)", lineHeight: 1.02 }}
       >
-        I&apos;m <span className="hilite">Vaibhav.</span><br />
-        I build software<br />
-        that <em className="italic" style={{ color: "var(--accent)" }}>teaches itself</em><br />
-        to write more software.
+        {HEADLINE_LINES.map((line, i) => (
+          <HeadlineLine key={i} tokens={line} />
+        ))}
       </h1>
 
-      <p data-sub className="mute text-base md:text-lg max-w-xl mt-4" style={{ fontFamily: "var(--font-mono)" }}>
-        B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance · I ship
-        AI-powered web apps and the tooling around them.
+      <p
+        data-subhead
+        className="mute text-base md:text-lg max-w-xl mt-4"
+        style={{ fontFamily: "var(--font-mono)" }}
+      >
+        B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance.
       </p>
 
-      <div data-ctas className="flex flex-wrap gap-3 mt-7">
-        <a href="#work" className="btn solid">$ cat work →</a>
-        <a href="/resume.pdf" className="btn">$ download résumé.pdf</a>
-        <a href="#contact" className="btn">$ contact</a>
+      <div className="flex flex-wrap gap-3 mt-7">
+        <a data-cta href="#work" className="btn solid">↓ scroll the story</a>
+        <a data-cta href="/resume.pdf" className="btn">$ download résumé.pdf</a>
+        <a data-cta href="mailto:hi@igneel.dev" className="btn">hi@igneel.dev</a>
       </div>
+
+      <span data-cursor aria-hidden className="mt-3" />
     </section>
   );
 }

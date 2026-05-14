@@ -3,12 +3,8 @@
 const W = 980, H = 1700;
 
 const ARTBOARDS = [
-  { id: "hybrid",     label: "F · Terminal × Scrollytelling  ← recommended", Comp: window.WFHybrid },
-  { id: "scroll",     label: "A · Scroll narrative",            Comp: window.WFScroll },
-  { id: "terminal",   label: "B · Engineer’s terminal",         Comp: window.WFTerminal },
-  { id: "editorial",  label: "C · Editorial / magazine",        Comp: window.WFEditorial },
-  { id: "journey",    label: "D · Journey timeline",            Comp: window.WFJourney },
-  { id: "horizontal", label: "E · Horizontal chapters",         Comp: window.WFHorizontal },
+  { id: "hybridplus", label: "★ F+ · CHOSEN — homepage (merged)",  Comp: window.WFHybridPlus },
+  { id: "workindex",  label: "/work · all projects (subpage)",      Comp: window.WFWorkIndex },
 ];
 
 const PAPERS_LIGHT  = { warm:["#f5f0e6","#ede6d6"], cool:["#eef1f4","#e2e7ec"], grey:["#f1f1ee","#e6e6e2"], cream:["#faf5e8","#f1ead7"] };
@@ -54,10 +50,10 @@ function App(){
         <DCSection
           id="wireframes"
           title="Vaibhav · Portfolio Wireframes"
-          subtitle="Six low-fi directions. F is my recommended starting point — a hybrid of A + B, designed around heavy GSAP scrollytelling."
+          subtitle="F+ is the homepage you’re building — it merges F’s terminal opening, C’s editorial work cards, D’s timeline, and B’s build log. /work is its subpage for the full project index."
         >
           {ARTBOARDS.map(a => {
-            const heights = { journey: 1980, hybrid: 2000, scroll: 1700, terminal: 1500, editorial: 1500, horizontal: 1380 };
+            const heights = { hybridplus: 2640, workindex: 1280 };
             return (
               <DCArtboard key={a.id} id={a.id} label={a.label} width={W} height={heights[a.id] || H}>
                 <a.Comp />

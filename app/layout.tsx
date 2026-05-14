@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import { LenisProvider } from "@/lib/lenis";
+import { MotionProvider } from "@/components/MotionProvider";
+import { TerminalBar } from "@/components/scenes/TerminalBar";
+import { Nav } from "@/components/Nav";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -47,7 +49,11 @@ export default function RootLayout({
       className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LenisProvider>{children}</LenisProvider>
+        <MotionProvider>
+          <TerminalBar />
+          <Nav />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );

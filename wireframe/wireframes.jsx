@@ -758,40 +758,77 @@ function WFHybridPlus(){
 
       <div className="wavy" style={{margin:"6px 36px"}}></div>
 
-      {/* SCENE 02 — Selected Work, EDITORIAL CARDS (lifted from C) */}
-      <section id="work" style={{padding:"24px 36px",position:"relative"}}>
+      {/* SCENE 02 — Pinned project canvas (matches motion-spec §02) */}
+      <section id="work" data-scene="work" style={{padding:"24px 36px",position:"relative"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between"}}>
           <div>
-            <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>SCENE 02 — SELECTED WORK</div>
-            <h2 className="serif" style={{fontSize:36,fontWeight:800,margin:"4px 0 0"}}>Three things I shipped.</h2>
+            <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}} data-section-label>SCENE 02 — SELECTED WORK</div>
+            <h2 className="serif" style={{fontSize:36,fontWeight:800,margin:"4px 0 0"}} data-section-title>Three things I shipped.</h2>
           </div>
-          <span className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>03 PIECES · INDEX →</span>
+          <span className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>PINNED · 3× SCROLL</span>
         </div>
 
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:26,marginTop:18}}>
-          {[
-            ["I.","CodeFlow","An AI-powered website builder, in 61 commits.","engineering / ai","next.js · trpc · inngest · e2b","codeflow split-pane"],
-            ["II.","TaskForge","Watching teams move in real time.","collab / liveblocks","next.js · liveblocks · mongo","kanban board"],
-            ["III.","Traveloop","A weekend hackathon, and what it taught me.","group / odoo · 2026","react · firebase","trip planner"],
-            ["IV.","Coming next…","Whatever I’m building right now lives here.","wip","tbd","placeholder"],
-          ].map(([n,t,d,k,stack,ph],i)=>(
-            <article key={i} style={{borderTop:"1.5px solid var(--ink)",paddingTop:14}}>
-              <div className="mono" style={{fontSize:11,letterSpacing:".2em",color:"var(--accent)"}}>{k.toUpperCase()}</div>
-              <div className="serif" style={{fontSize:14,fontWeight:600,marginTop:4}}>{n}</div>
-              <div className="serif" style={{fontSize:30,fontWeight:800,lineHeight:1.05,margin:"4px 0 6px"}}>{t}</div>
-              <div className="mute" style={{fontSize:16,fontFamily:"Fraunces",fontStyle:"italic"}}>{d}</div>
-              <div className="img-ph" style={{height:130,marginTop:12}}>{ph}</div>
-              <div className="mono mute" style={{fontSize:11,marginTop:8,letterSpacing:".12em"}}>{stack}</div>
-              <div className="mono" style={{fontSize:11,marginTop:6,letterSpacing:".14em",color:"var(--accent-2)"}}>READ THE CASE STUDY → /work/{t.toLowerCase().replace(/[^a-z]/g,"")}</div>
-            </article>
-          ))}
+        <div style={{display:"grid",gridTemplateColumns:"1.1fr 0.9fr",gap:18,marginTop:14,alignItems:"start"}}>
+          {/* LEFT — pinned hero card (3 slides stacked, only active shown in wireframe) */}
+          <div className="box-wob" style={{padding:14,background:"var(--paper-2)",boxShadow:"5px 5px 0 var(--ink)",position:"relative"}}>
+            <div className="img-ph" style={{aspectRatio:"16 / 10"}} data-slide="0" data-slide-state="active">codeflow — split-pane preview (16:10)</div>
+            <div className="mono" style={{fontSize:11,marginTop:10,letterSpacing:".14em",color:"var(--accent)"}}>NOW SHOWING · <span data-counter>01</span>/03</div>
+            <div className="serif" style={{fontSize:30,fontWeight:800,marginTop:4}}>CodeFlow</div>
+            <div className="mute" style={{fontSize:15,marginTop:2}}>AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.</div>
+            <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:10}}>
+              {["next.js","trpc","prisma","inngest","e2b","openai"].map(t=>(
+                <span key={t} className="pill mono" style={{fontSize:11,padding:"3px 8px"}}>{t}</span>
+              ))}
+            </div>
+            <div className="mono" style={{fontSize:11,marginTop:12,letterSpacing:".12em",color:"var(--accent-2)"}}>READ THE CASE STUDY → /work/codeflow</div>
+
+            {/* dim hint that two more slides live in this same cell */}
+            <div className="mono mute" style={{position:"absolute",top:14,right:18,fontSize:10,letterSpacing:".14em",opacity:.5}}>[data-slide=1, 2 stacked here]</div>
+          </div>
+
+          {/* RIGHT — up-next rail */}
+          <div style={{display:"flex",flexDirection:"column",gap:10}}>
+            <div className="mute mono" style={{fontSize:11,letterSpacing:".14em"}}>UP NEXT — KEEPS SCROLLING</div>
+
+            <div className="box" style={{padding:10,background:"var(--paper-2)"}} data-side="1">
+              <div style={{display:"grid",gridTemplateColumns:"110px 1fr",gap:10}}>
+                <div className="img-ph" style={{aspectRatio:"16 / 10"}}>taskforge ui</div>
+                <div>
+                  <div className="mono mute" style={{fontSize:10,letterSpacing:".12em"}}>02 · COLLABORATION</div>
+                  <div className="serif" style={{fontSize:18,fontWeight:700}}>TaskForge</div>
+                  <div className="mute" style={{fontSize:13,lineHeight:1.3}}>Real-time Kanban + AI task elaboration · Liveblocks + Mongo</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="box" style={{padding:10,background:"var(--paper-2)",opacity:.75}} data-side="2">
+              <div style={{display:"grid",gridTemplateColumns:"110px 1fr",gap:10}}>
+                <div className="img-ph" style={{aspectRatio:"16 / 10"}}>traveloop</div>
+                <div>
+                  <div className="mono mute" style={{fontSize:10,letterSpacing:".12em"}}>03 · HACKATHON</div>
+                  <div className="serif" style={{fontSize:18,fontWeight:700}}>Traveloop</div>
+                  <div className="mute" style={{fontSize:13,lineHeight:1.3}}>Odoo Hackathon · The Knights · trip planner with collaborative edits</div>
+                </div>
+              </div>
+            </div>
+
+            {/* progress dots */}
+            <div style={{display:"flex",gap:6,marginTop:4}} data-progress>
+              {[0,1,2].map(i => (
+                <span key={i} style={{height:6,flex:1,background:i===0?"var(--accent)":"transparent",border:"1.4px solid var(--ink)",borderRadius:3}}></span>
+              ))}
+            </div>
+
+            <div className="annot" style={{position:"relative",left:6,top:6,transform:"rotate(2deg)"}}>↑ scrub-swap (motion-spec §02 B2–B8)</div>
+          </div>
         </div>
 
+        {/* see-all-projects affordance */}
         <div style={{marginTop:18,display:"flex",alignItems:"center",gap:14,padding:"12px 16px",border:"1.6px dashed var(--ink)",borderRadius:8,background:"var(--paper-2)"}}>
-          <span className="mono mute" style={{fontSize:12}}>// want the full list? wall-engine, arch-install, more —</span>
+          <span className="mono mute" style={{fontSize:12}}>// want the full list? wall-engine, arch-install, dotfiles, more —</span>
           <span style={{marginLeft:"auto"}} className="btn">see all projects → /work</span>
         </div>
-        <div className="annot b" style={{right:36,top:-4}}>↑ each card routes to /work/[slug]</div>
+        <div className="annot b" style={{right:36,top:-4}}>↑ pins for 3× viewport, then releases</div>
       </section>
 
       <div className="wavy" style={{margin:"6px 36px"}}></div>

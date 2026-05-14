@@ -95,14 +95,25 @@ body {
   transform: rotate(-3deg);
 }
 
-.cursor-blink::after {
-  content: "▍";
+/* identity cursor blink — only CSS animation allowed by motion spec */
+[data-cursor] {
   display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--accent);
+  vertical-align: -0.18em;
   margin-left: 2px;
-  animation: blink 1s steps(1) infinite;
-  color: var(--accent);
+  animation: blink 1.06s steps(2) infinite;
 }
 @keyframes blink { 50% { opacity: 0; } }
+
+/* nav link styling */
+[data-nav]                         { background: transparent; border-bottom: 1px solid transparent; }
+[data-nav][data-stuck]             { background: color-mix(in oklab, var(--paper-2) 80%, transparent); backdrop-filter: blur(12px); border-bottom-color: color-mix(in oklab, var(--ink) 15%, transparent); }
+[data-nav-link]                    { color: var(--ink); transition: color 0.18s ease; }
+[data-nav-link][data-active]       { color: var(--accent); }
+[data-nav-link][data-nav-kind="route"]:hover  { color: var(--accent-2); }
+[data-nav-link][data-nav-kind="scroll"]:hover { color: var(--accent); }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
