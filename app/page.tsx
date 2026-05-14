@@ -1,7 +1,6 @@
 import { SceneBoot } from "@/components/scenes/SceneBoot";
 import { ScenePinnedWork } from "@/components/scenes/ScenePinnedWork";
 import { SceneTimeline } from "@/components/scenes/SceneTimeline";
-import { SceneFuture } from "@/components/scenes/SceneFuture";
 import { SceneCTA } from "@/components/scenes/SceneCTA";
 
 export default function Home() {
@@ -12,8 +11,6 @@ export default function Home() {
       <ScenePinnedWork />
       <Divider />
       <SceneTimeline />
-      <Divider />
-      <SceneFuture />
       <SceneCTA />
     </main>
   );
