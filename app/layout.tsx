@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import { MotionProvider } from "@/components/MotionProvider";
-import { TerminalBar } from "@/components/scenes/TerminalBar";
 import { Nav } from "@/components/Nav";
 import CustomCursor from "@/components/CustomCursor";
+import { Background } from "@/components/Background";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -51,8 +51,8 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <MotionProvider>
+          <Background />
           <CustomCursor />
-          <TerminalBar />
           <Nav />
           {children}
         </MotionProvider>

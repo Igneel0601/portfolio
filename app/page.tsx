@@ -7,7 +7,6 @@ export default function Home() {
   return (
     <main className="flex-1">
       <SceneBoot />
-      <Divider />
       <ScenePinnedWork />
       <Divider />
       <SceneTimeline />

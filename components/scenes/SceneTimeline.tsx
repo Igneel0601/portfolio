@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { TIMELINE, LOGS } from "@/lib/content";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useLenis } from "@/lib/lenis";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
@@ -12,10 +13,34 @@ export function SceneTimeline() {
   const [activeIdx, setActiveIdx] = useState(0);
   const lastIdxRef = useRef(0);
   const maxProgressRef = useRef(0);
+  const stRef = useRef<ScrollTrigger | null>(null);
+  const lenis = useLenis();
 
   useEffect(() => {
     if (!rootRef.current) return;
     const root = rootRef.current;
+
+    // once timeline complete: both up + down scrolls accelerate 5× inside pin,
+    // tapering to natural speed within 100vh of either pin edge for smooth handoff
+    const onWheel = (e: WheelEvent) => {
+      if (!lenis) return;
+      if (maxProgressRef.current < 0.999) return;
+      const st = stRef.current;
+      if (!st) return;
+      const cur = lenis.scroll;
+      if (cur < st.start || cur > st.end) return;
+      const vh = window.innerHeight;
+      if (e.deltaY < 0) {
+        if (cur - st.start <= vh) return;
+      } else {
+        if (st.end - cur <= vh) return;
+      }
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      lenis.scrollTo(cur + e.deltaY * 8, { duration: 0.3, lock: true, force: true });
+    };
+    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
@@ -80,14 +105,16 @@ export function SceneTimeline() {
           trigger: root,
           pin: true,
           start: "top top",
-          end: "+=200%",
+          end: "+=600%",
           scrub: 0.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: () => fitTrack(),
           onUpdate: (self) => {
-            // forward-only progress: track the max we've seen so reverse-scroll doesn't undo
-            const p = Math.max(self.progress, maxProgressRef.current);
+            // timeline scrubs across first half of pin; second half = static buffer
+            const raw = self.progress;
+            const mapped = Math.min(raw / 0.5, 1);
+            const p = Math.max(mapped, maxProgressRef.current);
             maxProgressRef.current = p;
             const idx = Math.min(
               stops.length - 1,
@@ -122,13 +149,19 @@ export function SceneTimeline() {
         },
       });
 
+      stRef.current = tl.scrollTrigger ?? null;
+
       return () => {
         tl.kill();
+        stRef.current = null;
       };
     });
 
-    return () => mm.revert();
-  }, []);
+    return () => {
+      window.removeEventListener("wheel", onWheel, { capture: true } as EventListenerOptions);
+      mm.revert();
+    };
+  }, [lenis]);
 
   const logTlRef = useRef<gsap.core.Timeline | null>(null);
   const firstRunRef = useRef(true);

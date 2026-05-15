@@ -42,13 +42,15 @@ html {
   --font-mono: var(--font-plex-mono);
 }
 
-html,
-body {
+html {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-serif), ui-serif, Georgia, serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+}
+body {
+  background: transparent;
 }
 
 .serif { font-family: var(--font-serif), ui-serif, Georgia, serif; }
@@ -113,6 +115,27 @@ body {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   transform: rotate(-3deg);
+}
+
+/* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
+.parallax-bg {
+  position: fixed;
+  inset: -64px 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--ink) 7%, transparent) 1px,
+    transparent 2px
+  );
+  background-size: 32px 32px;
+  background-repeat: repeat;
+  transform: translate3d(0, var(--bg-y, 0), 0);
+  filter: blur(var(--bg-blur, 0));
+  will-change: transform, filter;
+}
+@media (max-width: 767.98px) {
+  .parallax-bg { transform: none; }
 }
 
 /* apple-ish custom cursor (ported from mr-main) */

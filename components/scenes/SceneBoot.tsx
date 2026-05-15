@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
-import { gsap, SplitText } from "@/lib/gsap";
+import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
@@ -117,6 +117,21 @@ export function SceneBoot() {
           duration: 0.25,
           ease: E.precise,
         }, "+=0.05");
+
+      const stickyEl = root.querySelector<HTMLElement>("[data-boot-sticky]");
+      if (stickyEl) {
+        gsap.to(stickyEl, {
+          autoAlpha: 0,
+          y: -40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
     });
 
     return () => mm.revert();
@@ -127,8 +142,9 @@ export function SceneBoot() {
       ref={rootRef}
       data-scene="boot"
       id="hero"
-      className="relative px-6 md:px-10 pt-8 pb-12 min-h-screen overflow-hidden"
+      className="relative min-h-screen"
     >
+      <div data-boot-sticky className="sticky top-0 px-6 md:px-10 pt-8 pb-12">
       <div className="mono text-[13px] leading-7 space-y-0.5">
         <div>
           <span style={{ color: "var(--accent)" }} data-boot-prompt>
@@ -167,6 +183,7 @@ export function SceneBoot() {
       </div>
 
       <span data-cursor aria-hidden className="mt-3" />
+      </div>
     </section>
   );
 }
