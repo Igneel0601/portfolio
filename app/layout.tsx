@@ -5,6 +5,7 @@ import { MotionProvider } from "@/components/MotionProvider";
 import { Nav } from "@/components/Nav";
 import CustomCursor from "@/components/CustomCursor";
 import { Background } from "@/components/Background";
+import { Analytics } from "@vercel/analytics/next";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -56,6 +57,7 @@ export default function RootLayout({
           <Nav />
           {children}
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
