@@ -38,7 +38,7 @@ export function ScenePinnedWork() {
         return;
       }
 
-      gsap.set([label, eyebrow], { autoAlpha: 0, y: -8 });
+      gsap.set([label, eyebrow].filter(Boolean), { autoAlpha: 0, y: -8 });
       gsap.set(title, { autoAlpha: 0, y: 16 });
       gsap.set(card, { autoAlpha: 0, y: 16 });
       gsap.set(lsBox, { autoAlpha: 0, y: 16 });
@@ -49,7 +49,7 @@ export function ScenePinnedWork() {
         scrollTrigger: { trigger: root, start: "top 75%", once: true },
         defaults: { ease: E.precise },
       })
-        .to([label, eyebrow], { autoAlpha: 1, y: 0, duration: 0.4 })
+        .to([label, eyebrow].filter(Boolean), { autoAlpha: 1, y: 0, duration: 0.4 })
         .to(title, { autoAlpha: 1, y: 0, duration: D.md }, "-=0.20")
         .to([card, lsBox], { autoAlpha: 1, y: 0, duration: D.md, stagger: 0.05 }, "-=0.30")
         .to(rows, { autoAlpha: 1, x: 0, duration: D.sm, stagger: 0.05 }, "-=0.20")
@@ -93,15 +93,12 @@ export function ScenePinnedWork() {
       ref={rootRef}
       data-scene="work"
       id="work"
-      className="relative px-6 md:px-10 py-12 min-h-screen"
+      className="relative px-6 md:px-10 py-12 min-h-screen flex items-center"
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto w-full">
         <div className="flex items-start justify-between mb-6">
           <div>
-            <div className="mono mute text-[11px] tracking-[0.18em]" data-section-label>
-              SCENE 02 — SELECTED WORK
-            </div>
-            <h2 className="serif text-3xl md:text-4xl font-extrabold mt-1" data-section-title>
+            <h2 className="serif text-3xl md:text-4xl font-extrabold" data-section-title>
               Three things I shipped.
             </h2>
           </div>

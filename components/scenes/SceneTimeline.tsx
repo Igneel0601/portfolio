@@ -268,8 +268,7 @@ export function SceneTimeline() {
       <div className="max-w-6xl mx-auto">
         <div className="flex items-baseline justify-between">
           <div>
-            <div className="mono mute text-[11px] tracking-[0.18em]">SCENE 03 — ABOUT, BY WAY OF</div>
-            <h2 data-section-title className="serif text-3xl md:text-4xl font-extrabold mt-1">
+            <h2 data-section-title className="serif text-3xl md:text-4xl font-extrabold">
               The long way around.
             </h2>
           </div>

@@ -8,13 +8,8 @@ export default function Home() {
     <main className="flex-1">
       <SceneBoot />
       <ScenePinnedWork />
-      <Divider />
       <SceneTimeline />
       <SceneCTA />
     </main>
   );
-}
-
-function Divider() {
-  return <div className="wavy mx-6 md:mx-10 my-2" aria-hidden />;
 }

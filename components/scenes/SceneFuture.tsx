@@ -48,8 +48,7 @@ export function SceneFuture() {
       data-scene="future"
       className="relative px-6 md:px-10 py-16 min-h-screen overflow-hidden"
     >
-      <div data-section-label className="mono mute text-[11px] tracking-[0.18em]">SCENE 04 — ALSO ON THIS SITE</div>
-      <div className="grid gap-4 mt-4 md:grid-cols-4">
+      <div className="grid gap-4 md:grid-cols-4">
         {FUTURE.map(({ label, blurb, route }) => (
           <Link
             key={route}
