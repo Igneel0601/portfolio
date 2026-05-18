@@ -201,7 +201,7 @@ export function Nav() {
         data-nav
         className="sticky top-0 z-50 px-6 md:px-10 transition-colors duration-200"
       >
-        <div className="hidden md:flex items-center gap-5 py-3 mono text-[13px]">
+        <div className="hidden md:flex items-center gap-5 py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"
@@ -246,7 +246,7 @@ export function Nav() {
           </a>
         </div>
 
-        <div className="md:hidden flex items-center justify-between py-3 mono text-[13px]">
+        <div className="md:hidden flex items-center justify-between py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"
@@ -289,7 +289,7 @@ export function Nav() {
                 data-nav-kind="scroll"
                 href={l.href}
                 onClick={(e) => handleScrollLink(e, l.href)}
-                className="serif text-3xl font-bold"
+                className="t-h2"
               >
                 {l.label}
               </a>
@@ -300,7 +300,7 @@ export function Nav() {
                 data-nav-kind={l.kind}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="serif text-3xl font-bold"
+                className="t-h2"
               >
                 {l.label}
               </Link>

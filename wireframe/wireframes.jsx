@@ -699,12 +699,12 @@ function WFHybridPlus(){
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
-        <div className="mono" style={{marginLeft:8,fontSize:12}}>vaibhav@noida:~/igneel.dev$</div>
-        <div className="mono mute" style={{marginLeft:"auto",fontSize:12}}>scroll = run the story</div>
+        <div className="c-sm" style={{marginLeft:8}}>vaibhav@noida:~/igneel.dev$</div>
+        <div className="c-sm mute" style={{marginLeft:"auto"}}>scroll = run the story</div>
       </div>
 
       {/* HYBRID NAV — annotated with scroll vs route behavior */}
-      <nav style={{display:"flex",alignItems:"center",gap:18,padding:"14px 28px",borderBottom:"1.5px dashed var(--ink)",position:"relative",fontFamily:"IBM Plex Mono",fontSize:13}}>
+      <nav className="c-md" style={{display:"flex",alignItems:"center",gap:18,padding:"14px 28px",borderBottom:"1.5px dashed var(--ink)",position:"relative"}}>
         <span style={{fontWeight:700}}>igneel.dev</span>
         <div style={{display:"flex",gap:18,marginLeft:24}}>
           {[
@@ -717,34 +717,34 @@ function WFHybridPlus(){
           ].map(([label,kind,href])=>(
             <span key={label} style={{position:"relative",display:"inline-flex",flexDirection:"column",alignItems:"center"}}>
               <span>{label}</span>
-              <span className="mono mute" style={{fontSize:9,letterSpacing:".1em",marginTop:2,color: kind==="route"?"var(--accent-2)":"var(--accent)"}}>
+              <span className="l-meta mute" style={{marginTop:2,color: kind==="route"?"var(--accent-2)":"var(--accent)"}}>
                 {kind === "route" ? "→ "+href : "↓ "+href}
               </span>
             </span>
           ))}
         </div>
         <span style={{marginLeft:"auto",fontWeight:600}}>hi@igneel.dev</span>
-        <span className="mono mute" style={{fontSize:9,letterSpacing:".1em",marginLeft:6,color:"var(--accent)"}}>mailto:</span>
+        <span className="l-meta mute" style={{marginLeft:6,color:"var(--accent)"}}>mailto:</span>
 
         <div className="annot" style={{top:-2,right:340,transform:"rotate(-2deg)"}}>↑ <span style={{color:"var(--accent)"}}>orange</span> = scroll-to-section<br/>↑ <span style={{color:"var(--accent-2)"}}>blue</span> = navigate to new page</div>
       </nav>
 
       {/* SCENE 01 — terminal boot + hero (F's signature opening) */}
       <section id="hero" style={{padding:"36px 36px 22px",position:"relative"}}>
-        <div className="mono" style={{fontSize:13,lineHeight:1.7}}>
+        <div className="c-md">
           <div><span style={{color:"var(--accent)"}}>$</span> ./hello.sh</div>
           <div className="mute" style={{paddingLeft:14}}>[boot] mounting portfolio…</div>
           <div className="mute" style={{paddingLeft:14}}>[boot] loading vaibhav.profile…</div>
           <div className="mute" style={{paddingLeft:14}}>[ok ] ready in 0.42s</div>
         </div>
 
-        <h1 className="serif" style={{fontSize:74,lineHeight:.95,margin:"22px 0 8px",fontWeight:800,letterSpacing:"-.015em"}}>
+        <h1 className="t-display" style={{margin:"22px 0 8px"}}>
           I’m <span className="hilite">Vaibhav.</span><br/>
           I build software<br/>
           that <span className="squig">teaches itself</span><br/>
           to write more software.
         </h1>
-        <p className="mute" style={{fontSize:18,maxWidth:560,marginTop:14}}>
+        <p className="t-lead mute" style={{maxWidth:560,marginTop:14}}>
           B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance.
         </p>
 
@@ -762,41 +762,41 @@ function WFHybridPlus(){
       <section id="work" data-scene="work" style={{padding:"24px 36px",position:"relative"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between"}}>
           <div>
-            <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}} data-section-label>SCENE 02 — SELECTED WORK</div>
-            <h2 className="serif" style={{fontSize:36,fontWeight:800,margin:"4px 0 0"}} data-section-title>Three things I shipped.</h2>
+            <div className="l-eyebrow mute" data-section-label>SCENE 02 — SELECTED WORK</div>
+            <h2 className="t-h2" style={{margin:"4px 0 0"}} data-section-title>Three things I shipped.</h2>
           </div>
-          <span className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>PINNED · 3× SCROLL</span>
+          <span className="l-eyebrow mute">PINNED · 3× SCROLL</span>
         </div>
 
         <div style={{display:"grid",gridTemplateColumns:"1.1fr 0.9fr",gap:18,marginTop:14,alignItems:"start"}}>
           {/* LEFT — pinned hero card (3 slides stacked, only active shown in wireframe) */}
           <div className="box-wob" style={{padding:14,background:"var(--paper-2)",boxShadow:"5px 5px 0 var(--ink)",position:"relative"}}>
             <div className="img-ph" style={{aspectRatio:"16 / 10"}} data-slide="0" data-slide-state="active">codeflow — split-pane preview (16:10)</div>
-            <div className="mono" style={{fontSize:11,marginTop:10,letterSpacing:".14em",color:"var(--accent)"}}>NOW SHOWING · <span data-counter>01</span>/03</div>
-            <div className="serif" style={{fontSize:30,fontWeight:800,marginTop:4}}>CodeFlow</div>
-            <div className="mute" style={{fontSize:15,marginTop:2}}>AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.</div>
+            <div className="l-eyebrow" style={{marginTop:10,color:"var(--accent)"}}>NOW SHOWING · <span data-counter>01</span>/03</div>
+            <div className="t-h3" style={{marginTop:4}}>CodeFlow</div>
+            <div className="t-body mute" style={{marginTop:2}}>AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.</div>
             <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:10}}>
               {["next.js","trpc","prisma","inngest","e2b","openai"].map(t=>(
-                <span key={t} className="pill mono" style={{fontSize:11,padding:"3px 8px"}}>{t}</span>
+                <span key={t} className="pill">{t}</span>
               ))}
             </div>
-            <div className="mono" style={{fontSize:11,marginTop:12,letterSpacing:".12em",color:"var(--accent-2)"}}>READ THE CASE STUDY → /work/codeflow</div>
+            <div className="l-eyebrow" style={{marginTop:12,color:"var(--accent-2)"}}>READ THE CASE STUDY → /work/codeflow</div>
 
             {/* dim hint that two more slides live in this same cell */}
-            <div className="mono mute" style={{position:"absolute",top:14,right:18,fontSize:10,letterSpacing:".14em",opacity:.5}}>[data-slide=1, 2 stacked here]</div>
+            <div className="l-meta mute" style={{position:"absolute",top:14,right:18,opacity:.5}}>[data-slide=1, 2 stacked here]</div>
           </div>
 
           {/* RIGHT — up-next rail */}
           <div style={{display:"flex",flexDirection:"column",gap:10}}>
-            <div className="mute mono" style={{fontSize:11,letterSpacing:".14em"}}>UP NEXT — KEEPS SCROLLING</div>
+            <div className="l-eyebrow mute">UP NEXT — KEEPS SCROLLING</div>
 
             <div className="box" style={{padding:10,background:"var(--paper-2)"}} data-side="1">
               <div style={{display:"grid",gridTemplateColumns:"110px 1fr",gap:10}}>
                 <div className="img-ph" style={{aspectRatio:"16 / 10"}}>taskforge ui</div>
                 <div>
-                  <div className="mono mute" style={{fontSize:10,letterSpacing:".12em"}}>02 · COLLABORATION</div>
-                  <div className="serif" style={{fontSize:18,fontWeight:700}}>TaskForge</div>
-                  <div className="mute" style={{fontSize:13,lineHeight:1.3}}>Real-time Kanban + AI task elaboration · Liveblocks + Mongo</div>
+                  <div className="l-meta mute">02 · COLLABORATION</div>
+                  <div className="t-h5" style={{marginTop:2}}>TaskForge</div>
+                  <div className="t-sm mute" style={{marginTop:2}}>Real-time Kanban + AI task elaboration · Liveblocks + Mongo</div>
                 </div>
               </div>
             </div>
@@ -805,9 +805,9 @@ function WFHybridPlus(){
               <div style={{display:"grid",gridTemplateColumns:"110px 1fr",gap:10}}>
                 <div className="img-ph" style={{aspectRatio:"16 / 10"}}>traveloop</div>
                 <div>
-                  <div className="mono mute" style={{fontSize:10,letterSpacing:".12em"}}>03 · HACKATHON</div>
-                  <div className="serif" style={{fontSize:18,fontWeight:700}}>Traveloop</div>
-                  <div className="mute" style={{fontSize:13,lineHeight:1.3}}>Odoo Hackathon · The Knights · trip planner with collaborative edits</div>
+                  <div className="l-meta mute">03 · HACKATHON</div>
+                  <div className="t-h5" style={{marginTop:2}}>Traveloop</div>
+                  <div className="t-sm mute" style={{marginTop:2}}>Odoo Hackathon · The Knights · trip planner with collaborative edits</div>
                 </div>
               </div>
             </div>
@@ -825,7 +825,7 @@ function WFHybridPlus(){
 
         {/* see-all-projects affordance */}
         <div style={{marginTop:18,display:"flex",alignItems:"center",gap:14,padding:"12px 16px",border:"1.6px dashed var(--ink)",borderRadius:8,background:"var(--paper-2)"}}>
-          <span className="mono mute" style={{fontSize:12}}>// want the full list? wall-engine, arch-install, dotfiles, more —</span>
+          <span className="c-sm mute">// want the full list? wall-engine, arch-install, dotfiles, more —</span>
           <span style={{marginLeft:"auto"}} className="btn">see all projects → /work</span>
         </div>
         <div className="annot b" style={{right:36,top:-4}}>↑ pins for 3× viewport, then releases</div>
@@ -837,10 +837,10 @@ function WFHybridPlus(){
       <section id="about" style={{padding:"24px 36px",position:"relative"}}>
         <div style={{display:"flex",alignItems:"baseline",justifyContent:"space-between"}}>
           <div>
-            <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>SCENE 03 — ABOUT, BY WAY OF</div>
-            <h2 className="serif" style={{fontSize:36,fontWeight:800,margin:"4px 0 0"}}>The long way around.</h2>
+            <div className="l-eyebrow mute">SCENE 03 — ABOUT, BY WAY OF</div>
+            <h2 className="t-h2" style={{margin:"4px 0 0"}}>The long way around.</h2>
           </div>
-          <span className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>09 STOPS</span>
+          <span className="l-eyebrow mute">09 STOPS</span>
         </div>
 
         <div style={{display:"grid",gridTemplateColumns:"1.5fr 1fr",gap:24,marginTop:18}}>
@@ -859,15 +859,13 @@ function WFHybridPlus(){
               ["2022","started at GBU","First lecture, first ‘wait, I love this’ moment."],
             ].map(([y,t,d],i)=>(
               <div key={i} style={{display:"grid",gridTemplateColumns:"86px 24px 1fr",gap:0,padding:"10px 0",position:"relative",alignItems:"start"}}>
-                <div className="mono serif" style={{textAlign:"right",paddingRight:18}}>
-                  <div className="serif" style={{fontSize:16,fontWeight:700,marginTop:2}}>{y}</div>
-                </div>
+                <div className="t-h5" style={{textAlign:"right",paddingRight:18,marginTop:2}}>{y}</div>
                 <div style={{display:"flex",justifyContent:"center"}}>
                   <div style={{width:12,height:12,borderRadius:"50%",border:"2px solid var(--ink)",background:i===0?"var(--accent)":"var(--paper)",marginTop:6,zIndex:1}}></div>
                 </div>
                 <div style={{paddingLeft:14}}>
-                  <div className="serif" style={{fontSize:17,fontWeight:700,lineHeight:1.15}}>{t}</div>
-                  <div className="mute" style={{fontSize:13,marginTop:2}}>{d}</div>
+                  <div className="t-h5">{t}</div>
+                  <div className="t-sm mute" style={{marginTop:2}}>{d}</div>
                 </div>
               </div>
             ))}
@@ -876,24 +874,24 @@ function WFHybridPlus(){
           {/* sidebar: skills + stack */}
           <div style={{display:"flex",flexDirection:"column",gap:14}}>
             <div className="box" style={{padding:14,background:"var(--paper-2)"}}>
-              <div className="mono mute" style={{fontSize:11,letterSpacing:".14em"}}>STACK · DAILY</div>
+              <div className="l-eyebrow mute">STACK · DAILY</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:8}}>
                 {["typescript","next.js","react","node","python","prisma","mongo","tailwind","inngest"].map(t=>(
-                  <span key={t} className="pill mono" style={{fontSize:11}}>{t}</span>
+                  <span key={t} className="pill">{t}</span>
                 ))}
               </div>
             </div>
             <div className="box" style={{padding:14,background:"var(--paper-2)"}}>
-              <div className="mono mute" style={{fontSize:11,letterSpacing:".14em"}}>STACK · POKING AT</div>
+              <div className="l-eyebrow mute">STACK · POKING AT</div>
               <div style={{display:"flex",gap:6,flexWrap:"wrap",marginTop:8}}>
                 {["rust","duckdb","hyprland","glsl"].map(t=>(
-                  <span key={t} className="pill mono" style={{fontSize:11,opacity:.85}}>{t}</span>
+                  <span key={t} className="pill" style={{opacity:.85}}>{t}</span>
                 ))}
               </div>
             </div>
             <div className="box-dash" style={{padding:14}}>
-              <div className="mono mute" style={{fontSize:11,letterSpacing:".14em"}}>WHEN I’M NOT CODING</div>
-              <div style={{fontSize:14,marginTop:6,lineHeight:1.4}}>Ricing my Arch setup. Reading sci-fi. Hunting good filter coffee.</div>
+              <div className="l-eyebrow mute">WHEN I’M NOT CODING</div>
+              <div className="t-body" style={{marginTop:6}}>Ricing my Arch setup. Reading sci-fi. Hunting good filter coffee.</div>
             </div>
             <div className="annot" style={{position:"relative",left:6,top:6}}>↑ ‘poking at’ updates often</div>
           </div>
@@ -904,7 +902,7 @@ function WFHybridPlus(){
 
       {/* SCENE 04 — coming soon, each links to a future route */}
       <section style={{padding:"22px 36px",position:"relative"}}>
-        <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>SCENE 04 — ALSO ON THIS SITE</div>
+        <div className="l-eyebrow mute">SCENE 04 — ALSO ON THIS SITE</div>
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:14,marginTop:10}}>
           {[
             ["experiments","tiny demos, shaders, half-finished ideas","/experiments"],
@@ -914,9 +912,9 @@ function WFHybridPlus(){
           ].map(([h,s,route])=>(
             <div key={h} className="box" style={{padding:14,position:"relative",background:"var(--paper-2)"}}>
               <span className="stamp" style={{position:"absolute",top:-12,right:10}}>future</span>
-              <div className="serif" style={{fontSize:20,fontWeight:800}}>{h}</div>
-              <div className="mute mono" style={{fontSize:11,marginTop:6}}>{s}</div>
-              <div className="mono" style={{fontSize:10,marginTop:10,letterSpacing:".14em",color:"var(--accent-2)"}}>→ {route}</div>
+              <div className="t-h4">{h}</div>
+              <div className="c-xs mute" style={{marginTop:6}}>{s}</div>
+              <div className="l-meta" style={{marginTop:10,color:"var(--accent-2)"}}>→ {route}</div>
             </div>
           ))}
         </div>
@@ -925,9 +923,9 @@ function WFHybridPlus(){
       {/* CTA strip */}
       <section style={{margin:"14px 36px 0",padding:"16px 18px",border:"1.6px solid var(--ink)",borderRadius:10,background:"var(--paper-2)",display:"grid",gridTemplateColumns:"1.4fr 1fr",gap:18,alignItems:"center"}}>
         <div>
-          <div className="mono mute" style={{fontSize:11,letterSpacing:".18em",color:"var(--accent)"}}>END OF STORY · YOUR MOVE</div>
-          <div className="serif" style={{fontSize:26,fontWeight:800,margin:"4px 0 2px"}}>Hiring? Building? Curious?</div>
-          <div className="mute" style={{fontSize:14}}>Drop a line — I respond fast.</div>
+          <div className="l-eyebrow" style={{color:"var(--accent)"}}>END OF STORY · YOUR MOVE</div>
+          <div className="t-h3" style={{margin:"4px 0 2px"}}>Hiring? Building? Curious?</div>
+          <div className="t-body mute">Drop a line — I respond fast.</div>
         </div>
         <div style={{display:"flex",flexDirection:"column",gap:8}}>
           <span className="btn solid">hi@igneel.dev</span>
@@ -935,7 +933,7 @@ function WFHybridPlus(){
         </div>
       </section>
 
-      <footer style={{padding:"14px 36px 18px",fontFamily:"IBM Plex Mono",fontSize:12,display:"flex",justifyContent:"space-between"}}>
+      <footer className="c-sm" style={{padding:"14px 36px 18px",display:"flex",justifyContent:"space-between"}}>
         <span className="mute">$ exit 0 · built with too much GSAP &amp; coffee</span>
         <span className="mute">© Vaibhav Verma · 2026</span>
       </footer>
@@ -964,40 +962,40 @@ function WFWorkIndex(){
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
         <span style={{width:10,height:10,border:"1.4px solid var(--ink)",borderRadius:"50%"}}></span>
-        <div className="mono" style={{marginLeft:8,fontSize:12}}>vaibhav@noida:~/igneel.dev/work$</div>
-        <div className="mono mute" style={{marginLeft:"auto",fontSize:12}}>ls -la projects/</div>
+        <div className="c-sm" style={{marginLeft:8}}>vaibhav@noida:~/igneel.dev/work$</div>
+        <div className="c-sm mute" style={{marginLeft:"auto"}}>ls -la projects/</div>
       </div>
 
       <section style={{padding:"24px 36px"}}>
-        <div className="mono mute" style={{fontSize:11,letterSpacing:".18em"}}>↩ <span style={{color:"var(--accent-2)"}}>/</span> back home</div>
-        <h1 className="serif" style={{fontSize:54,lineHeight:1,margin:"10px 0 6px",fontWeight:800}}>All projects.</h1>
-        <p className="mute" style={{fontSize:16,maxWidth:560}}>Everything I’ve shipped, in build-log form. Sort by recency, filter by tag, click a row to expand.</p>
+        <div className="l-eyebrow mute">↩ <span style={{color:"var(--accent-2)"}}>/</span> back home</div>
+        <h1 className="t-h1" style={{margin:"10px 0 6px"}}>All projects.</h1>
+        <p className="t-lead mute" style={{maxWidth:560}}>Everything I’ve shipped, in build-log form. Sort by recency, filter by tag, click a row to expand.</p>
 
         {/* filter bar */}
         <div style={{display:"flex",gap:8,flexWrap:"wrap",marginTop:14,alignItems:"center"}}>
-          <span className="mono mute" style={{fontSize:11,letterSpacing:".14em",marginRight:4}}>FILTER —</span>
+          <span className="l-eyebrow mute" style={{marginRight:4}}>FILTER —</span>
           {["all","flagship","oss","hackathon","collab","dotfiles","wip"].map((t,i)=>(
-            <span key={t} className="pill mono" style={{fontSize:11,background: i===0?"var(--ink)":"var(--paper-2)",color: i===0?"var(--paper)":"var(--ink)"}}>{t}</span>
+            <span key={t} className="pill" style={{background: i===0?"var(--ink)":"var(--paper-2)",color: i===0?"var(--paper)":"var(--ink)"}}>{t}</span>
           ))}
-          <span className="mono mute" style={{fontSize:11,marginLeft:"auto",letterSpacing:".14em"}}>sort: ↓ recency</span>
+          <span className="l-eyebrow mute" style={{marginLeft:"auto"}}>sort: ↓ recency</span>
         </div>
       </section>
 
       <section style={{padding:"0 36px 18px"}}>
         <div className="box" style={{padding:"14px 18px",background:"var(--paper-2)"}}>
           {/* table header */}
-          <div className="mono mute" style={{display:"grid",gridTemplateColumns:"60px 100px 130px 1fr 1.1fr 70px 110px",gap:14,fontSize:10,letterSpacing:".14em",padding:"4px 0 8px",borderBottom:"1px dashed var(--ink)"}}>
+          <div className="l-meta mute" style={{display:"grid",gridTemplateColumns:"60px 100px 130px 1fr 1.1fr 70px 110px",gap:14,padding:"4px 0 8px",borderBottom:"1px dashed var(--ink)"}}>
             <span>STATUS</span><span>TAG</span><span>NAME</span><span>BLURB</span><span>STACK</span><span>YEAR</span><span style={{textAlign:"right"}}>NOTES</span>
           </div>
           {rows.map((r,i)=>(
-            <div key={i} className="mono" style={{display:"grid",gridTemplateColumns:"60px 100px 130px 1fr 1.1fr 70px 110px",gap:14,fontSize:13,padding:"10px 0",borderBottom:i<rows.length-1?"1px dashed rgba(127,127,127,.35)":"none",alignItems:"center"}}>
+            <div key={i} className="c-md" style={{display:"grid",gridTemplateColumns:"60px 100px 130px 1fr 1.1fr 70px 110px",gap:14,padding:"10px 0",borderBottom:i<rows.length-1?"1px dashed rgba(127,127,127,.35)":"none",alignItems:"center"}}>
               <span style={{color:r[0]==="[ok ]"?"#3a7d3a":r[0]==="[wip]"?"#b06b00":"var(--accent)"}}>{r[0]}</span>
               <span className="mute">{r[1]}</span>
               <span style={{fontWeight:700}}>{r[2]}</span>
               <span className="mute">{r[3]}</span>
-              <span className="mute" style={{fontSize:11}}>{r[4]}</span>
-              <span className="mute" style={{fontSize:11}}>{r[5]}</span>
-              <span className="mute" style={{textAlign:"right",fontSize:11}}>{r[6]}</span>
+              <span className="c-xs mute">{r[4]}</span>
+              <span className="c-xs mute">{r[5]}</span>
+              <span className="c-xs mute" style={{textAlign:"right"}}>{r[6]}</span>
             </div>
           ))}
         </div>
@@ -1005,14 +1003,14 @@ function WFWorkIndex(){
       </section>
 
       <section style={{padding:"6px 36px 22px"}}>
-        <div className="mono mute" style={{fontSize:12}}>$ git log --oneline | head -3</div>
-        <div className="mono mute" style={{fontSize:12,marginTop:6,paddingLeft:14}}>a3f01b2 · docs(traveloop): wrote case study draft</div>
-        <div className="mono mute" style={{fontSize:12,paddingLeft:14}}>7c01d8a · feat(codeflow): add gemini provider</div>
-        <div className="mono mute" style={{fontSize:12,paddingLeft:14}}>1e7f9d4 · chore(arch-install): split out wm setup</div>
-        <div className="mono mute" style={{fontSize:11,marginTop:12,letterSpacing:".14em"}}>→ FULL LOG ON GITHUB.COM/IGNEEL0601</div>
+        <div className="c-sm mute">$ git log --oneline | head -3</div>
+        <div className="c-sm mute" style={{marginTop:6,paddingLeft:14}}>a3f01b2 · docs(traveloop): wrote case study draft</div>
+        <div className="c-sm mute" style={{paddingLeft:14}}>7c01d8a · feat(codeflow): add gemini provider</div>
+        <div className="c-sm mute" style={{paddingLeft:14}}>1e7f9d4 · chore(arch-install): split out wm setup</div>
+        <div className="l-eyebrow mute" style={{marginTop:12}}>→ FULL LOG ON GITHUB.COM/IGNEEL0601</div>
       </section>
 
-      <footer style={{padding:"14px 36px",borderTop:"1.5px dashed var(--ink)",fontFamily:"IBM Plex Mono",fontSize:12,display:"flex",justifyContent:"space-between"}}>
+      <footer className="c-sm" style={{padding:"14px 36px",borderTop:"1.5px dashed var(--ink)",display:"flex",justifyContent:"space-between"}}>
         <span className="mute">$ cd ..</span>
         <span className="mute">© Vaibhav Verma · 2026</span>
       </footer>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
-import { gsap, SplitText } from "@/lib/gsap";
+import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
@@ -117,6 +117,21 @@ export function SceneBoot() {
           duration: 0.25,
           ease: E.precise,
         }, "+=0.05");
+
+      const stickyEl = root.querySelector<HTMLElement>("[data-boot-sticky]");
+      if (stickyEl) {
+        gsap.to(stickyEl, {
+          autoAlpha: 0,
+          y: -40,
+          ease: "none",
+          scrollTrigger: {
+            trigger: root,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+      }
     });
 
     return () => mm.revert();
@@ -127,9 +142,10 @@ export function SceneBoot() {
       ref={rootRef}
       data-scene="boot"
       id="hero"
-      className="relative px-6 md:px-10 pt-8 pb-12 min-h-screen overflow-hidden"
+      className="relative min-h-screen"
     >
-      <div className="mono text-[13px] leading-7 space-y-0.5">
+      <div data-boot-sticky className="sticky top-0 px-6 md:px-10 pt-8 pb-12">
+      <div className="c-md space-y-0.5">
         <div>
           <span style={{ color: "var(--accent)" }} data-boot-prompt>
             {BOOT_PROMPT_FULL}
@@ -144,29 +160,26 @@ export function SceneBoot() {
 
       <h1
         data-headline
-        className="serif font-extrabold tracking-tight mt-6 mb-2"
-        style={{ fontSize: "clamp(40px, 6vw, 68px)", lineHeight: 1.02 }}
+        className="t-display mt-6 mb-2"
+        style={{ fontSize: "clamp(40px, 7vh, 72px)" }}
       >
         {HEADLINE_LINES.map((line, i) => (
           <HeadlineLine key={i} tokens={line} />
         ))}
       </h1>
 
-      <p
-        data-subhead
-        className="mute text-base md:text-lg max-w-xl mt-4"
-        style={{ fontFamily: "var(--font-mono)" }}
-      >
+      <p data-subhead className="c-md mute max-w-xl mt-4">
         B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance.
       </p>
 
       <div className="flex flex-wrap gap-3 mt-7">
         <a data-cta href="#work" className="btn solid">↓ scroll the story</a>
-        <a data-cta href="/resume.pdf" className="btn">$ download résumé.pdf</a>
+        <a data-cta href="/vaibhav_resume.pdf" download className="btn">$ download résumé.pdf</a>
         <a data-cta href="mailto:hi@igneel.dev" className="btn">hi@igneel.dev</a>
       </div>
 
       <span data-cursor aria-hidden className="mt-3" />
+      </div>
     </section>
   );
 }

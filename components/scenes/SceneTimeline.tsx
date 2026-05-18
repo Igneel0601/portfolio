@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { TIMELINE, LOGS } from "@/lib/content";
-import { gsap } from "@/lib/gsap";
+import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { useLenis } from "@/lib/lenis";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
@@ -12,10 +13,34 @@ export function SceneTimeline() {
   const [activeIdx, setActiveIdx] = useState(0);
   const lastIdxRef = useRef(0);
   const maxProgressRef = useRef(0);
+  const stRef = useRef<ScrollTrigger | null>(null);
+  const lenis = useLenis();
 
   useEffect(() => {
     if (!rootRef.current) return;
     const root = rootRef.current;
+
+    // once timeline complete: both up + down scrolls accelerate 5× inside pin,
+    // tapering to natural speed within 100vh of either pin edge for smooth handoff
+    const onWheel = (e: WheelEvent) => {
+      if (!lenis) return;
+      if (maxProgressRef.current < 0.999) return;
+      const st = stRef.current;
+      if (!st) return;
+      const cur = lenis.scroll;
+      if (cur < st.start || cur > st.end) return;
+      const vh = window.innerHeight;
+      if (e.deltaY < 0) {
+        if (cur - st.start <= vh) return;
+      } else {
+        if (st.end - cur <= vh) return;
+      }
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      lenis.scrollTo(cur + e.deltaY * 8, { duration: 0.3, lock: true, force: true });
+    };
+    window.addEventListener("wheel", onWheel, { passive: false, capture: true });
+
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
@@ -80,14 +105,16 @@ export function SceneTimeline() {
           trigger: root,
           pin: true,
           start: "top top",
-          end: "+=200%",
+          end: "+=600%",
           scrub: 0.5,
           anticipatePin: 1,
           invalidateOnRefresh: true,
           onRefresh: () => fitTrack(),
           onUpdate: (self) => {
-            // forward-only progress: track the max we've seen so reverse-scroll doesn't undo
-            const p = Math.max(self.progress, maxProgressRef.current);
+            // timeline scrubs across first half of pin; second half = static buffer
+            const raw = self.progress;
+            const mapped = Math.min(raw / 0.5, 1);
+            const p = Math.max(mapped, maxProgressRef.current);
             maxProgressRef.current = p;
             const idx = Math.min(
               stops.length - 1,
@@ -122,13 +149,19 @@ export function SceneTimeline() {
         },
       });
 
+      stRef.current = tl.scrollTrigger ?? null;
+
       return () => {
         tl.kill();
+        stRef.current = null;
       };
     });
 
-    return () => mm.revert();
-  }, []);
+    return () => {
+      window.removeEventListener("wheel", onWheel, { capture: true } as EventListenerOptions);
+      mm.revert();
+    };
+  }, [lenis]);
 
   const logTlRef = useRef<gsap.core.Timeline | null>(null);
   const firstRunRef = useRef(true);
@@ -230,24 +263,34 @@ export function SceneTimeline() {
       ref={rootRef}
       data-scene="about"
       id="about"
-      className="relative px-6 md:px-10 py-16 overflow-hidden min-h-screen"
+      className="relative px-6 md:px-10 py-10 overflow-hidden flex flex-col"
+      style={{
+        // happly-style cross-scene parallax: scene 03 starts 100vh earlier
+        // than scene 02's outer ends — covers the rest-phase scroll runway
+        // so there's no gap. Scene 02's stage translates up faster (-70vh)
+        // while scene 03 rises at scroll speed, creating the parallax.
+        marginTop: "-100vh",
+        background: "var(--paper)",
+        zIndex: 1,
+        minHeight: "100vh",
+        height: "100vh",
+      }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0 pt-6 md:pt-8">
         <div className="flex items-baseline justify-between">
           <div>
-            <div className="mono mute text-[11px] tracking-[0.18em]">SCENE 03 — ABOUT, BY WAY OF</div>
-            <h2 data-section-title className="serif text-3xl md:text-4xl font-extrabold mt-1">
+            <h2 data-section-title className="t-h2">
               The long way around.
             </h2>
           </div>
-          <span className="mono mute text-[11px] tracking-[0.18em]">
+          <span className="l-eyebrow mute">
             {String(TIMELINE.length).padStart(2, "0")} STOPS
           </span>
         </div>
 
-        <div className="grid gap-6 md:gap-8 mt-8 md:grid-cols-[1.5fr_1fr]">
+        <div className="grid gap-6 md:gap-8 mt-6 md:grid-cols-[1fr_1fr] flex-1 min-h-0">
           {/* timeline */}
-          <div className="relative">
+          <div className="relative flex flex-col h-full">
             <div
               data-track
               aria-hidden
@@ -258,10 +301,10 @@ export function SceneTimeline() {
               <div
                 key={i}
                 data-stop
-                className="grid gap-0 items-start py-3"
+                className="grid gap-0 items-start flex-1 min-h-0"
                 style={{ gridTemplateColumns: "86px 24px 1fr" }}
               >
-                <div className="serif text-base font-bold pr-4 text-right mt-1">{stop.when}</div>
+                <div className="t-h5 pr-4 text-right mt-1">{stop.when}</div>
                 <div className="flex justify-center relative" style={{ zIndex: 1 }}>
                   <span
                     data-stop-dot
@@ -276,28 +319,28 @@ export function SceneTimeline() {
                   />
                 </div>
                 <div data-stop-detail className="pl-3">
-                  <div className="serif text-[17px] font-bold leading-tight">{stop.title}</div>
-                  <div className="mute text-[13px] mt-1">{stop.blurb}</div>
+                  <div className="t-h5">{stop.title}</div>
+                  <div className="t-sm mute mt-1">{stop.blurb}</div>
                 </div>
               </div>
             ))}
           </div>
 
           {/* logs panel — swaps content per active timeline stop */}
-          <div className="md:sticky md:top-24 self-start">
+          <div className="h-full flex flex-col min-h-0">
             <div
-              className="box p-4 font-mono"
-              style={{ background: "var(--paper-2)", minHeight: 280 }}
+              className="box p-4 font-mono flex flex-col"
+              style={{ background: "var(--paper-2)", height: "40%", minHeight: 0 }}
             >
               <div className="flex items-baseline justify-between mb-3">
-                <div className="mono text-[11px] tracking-[0.14em]" style={{ color: "var(--accent)" }}>
+                <div className="l-eyebrow" style={{ color: "var(--accent)" }}>
                   LOGS · {currentStop?.when ?? ""}
                 </div>
-                <span className="mono mute text-[10px] tracking-[0.12em]">
+                <span className="l-meta mute">
                   {String(activeIdx + 1).padStart(2, "0")}/{String(TIMELINE.length).padStart(2, "0")}
                 </span>
               </div>
-              <div className="mono mute text-[11px] tracking-[0.12em] mb-3">
+              <div className="l-tag mute mb-3">
                 {currentStop?.title}
               </div>
               <div ref={logsRef} className="space-y-1.5">
@@ -306,7 +349,7 @@ export function SceneTimeline() {
                     key={`${activeIdx}-${i}`}
                     data-log-line
                     data-text={line}
-                    className="mono text-[13px] leading-snug log-line"
+                    className="c-md log-line"
                     style={{
                       color: line.startsWith("$") ? "var(--accent-2)" : "var(--ink)",
                     }}

@@ -98,6 +98,21 @@
   .squig{background-image:radial-gradient(circle,var(--accent) 1.2px,transparent 1.4px);background-size:6px 4px;background-repeat:repeat-x;background-position:0 100%;padding-bottom:6px;}
   /* slight rotations so it feels hand-placed */
   .skew-l{transform:rotate(-.6deg);} .skew-r{transform:rotate(.5deg);}
+
+  /* ─────── print layout ─────── */
+  html,body{background:#0a0c10;}
+  .print-root{display:flex;flex-direction:column;gap:24px;padding:24px;align-items:center;}
+  .print-page{display:flex;flex-direction:column;gap:10px;align-items:flex-start;}
+  .print-head{display:flex;justify-content:space-between;width:980px;padding:0 4px;}
+  .print-frame{position:relative;overflow:hidden;border:1.5px solid var(--ink);background:var(--paper);}
+
+  @page { size: 980px 2700px; margin: 18px; }
+  @media print {
+    html,body{background:#0e1116 !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .print-root{padding:0;gap:0;}
+    .print-page{page-break-inside:avoid;break-inside:avoid;}
+    .annot,.arrow{display:none !important;}
+  }
 </style>
 </head>
 <body>
@@ -109,10 +124,15 @@
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 
-<script type="text/babel" src="design-canvas.jsx"></script>
-<script type="text/babel" src="tweaks-panel.jsx"></script>
 <script type="text/babel" src="wireframes.jsx"></script>
-<script type="text/babel" src="app.jsx"></script>
+<script type="text/babel" src="app-print.jsx"></script>
+<script type="text/babel">
+  // auto-print once fonts + JSX are ready
+  (async () => {
+    try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch(e){}
+    setTimeout(() => window.print(), 500);
+  })();
+</script>
 
 </body>
 </html>

@@ -158,7 +158,7 @@ export function WorkLog() {
               data-filter
               data-active={f === filter ? "true" : undefined}
               onClick={() => handleFilter(f)}
-              className="pill text-[11px]"
+              className="pill sm"
               style={{
                 background: f === filter ? "var(--ink)" : "var(--paper-2)",
                 color: f === filter ? "var(--paper)" : "var(--ink)",

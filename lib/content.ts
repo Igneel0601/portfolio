@@ -8,6 +8,12 @@ export type ProjectStats = {
   lastPush: string;
 };
 
+export type ProjectDetails = {
+  what: string;
+  why: string;
+  how: string;
+};
+
 export type Project = {
   id: string;
   index: string;
@@ -21,6 +27,7 @@ export type Project = {
   date: string;
   stats: ProjectStats;
   gitLog: string[];
+  details?: ProjectDetails;
 };
 
 export const PROJECTS: Project[] = [
@@ -31,11 +38,10 @@ export const PROJECTS: Project[] = [
     name: "CodeFlow",
     blurb:
       "AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.",
-    stack: ["next.js 16", "react 19", "tRPC", "prisma", "inngest", "e2b", "openai/gemini"],
+    stack: ["next.js", "react", "tRPC", "prisma", "inngest", "e2b", "openai/gemini"],
     url: "code-flow-hazel.vercel.app",
     meta: "61 commits · solo",
-    image:
-      "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1760&q=80",
+    image: "/projects/codeflow.png",
     date: "2026-05",
     stats: {
       commits: 61,
@@ -51,6 +57,14 @@ export const PROJECTS: Project[] = [
       "b2e8c4  fix: e2b sandbox timeout",
       "c1d9f7  chore: prisma migrate",
     ],
+    details: {
+      what:
+        "CodeFlow is an AI-powered development platform where you build a working web app by chatting with agents. You describe what you want, the agents generate and execute Next.js code inside a real E2B sandbox, and the result shows up in a split-pane live preview you can keep iterating on — file tree, message history, the works.",
+      why:
+        "Most AI builders either spit out static mockups or hand you a zip and wish you luck. Neither survives contact with real engineering. CodeFlow runs actual code in an actual sandbox, so the thing you see is the thing that works — and you can keep talking to it until it's right, instead of restarting from scratch every time you change your mind.",
+      how:
+        "Next.js + React + TypeScript on the frontend, Tailwind + Shadcn for the UI. tRPC fronts the agent calls; Inngest runs them as background jobs so a single message can take minutes without blocking the UI. Code generation and execution live inside E2B Code Interpreter sandboxes, with OpenAI and Gemini interchangeable as the underlying model. Prisma + Postgres back the persistence layer, Clerk handles auth, and there's usage tracking + Pro subscription for rate limiting.",
+    },
   },
   {
     id: "taskforge",
@@ -59,10 +73,9 @@ export const PROJECTS: Project[] = [
     name: "TaskForge",
     blurb:
       "Real-time Kanban with AI task elaboration. Liveblocks + Mongo, presence-aware boards that feel like Figma for tickets.",
-    stack: ["next.js", "liveblocks", "mongodb", "tailwind", "openai"],
+    stack: ["next.js", "liveblocks", "mongodb", "tailwind", "nextauth"],
     meta: "shipped · live",
-    image:
-      "https://images.unsplash.com/photo-1507925921958-8a62f3d1a50d?auto=format&fit=crop&w=1760&q=80",
+    image: "/projects/taskforge.png",
     date: "2025-11",
     stats: {
       commits: 21,
@@ -75,8 +88,16 @@ export const PROJECTS: Project[] = [
     gitLog: [
       "4f12aa  feat: presence avatars",
       "7e3b9c  fix: liveblocks reconnect",
-      "9d6e1f  chore: bump next 16",
+      "9d6e1f  chore: bump next",
     ],
+    details: {
+      what:
+        "TaskForge is a real-time collaborative Kanban board — Trello meets Notion, with multiplayer baked in. Customizable boards and columns, drag-and-drop cards, threaded comments on each task, and Google OAuth so a whole team can sign in and start moving tickets around together within seconds of opening the dashboard.",
+      why:
+        "Most Kanban tools either feel slow and bureaucratic or quietly fall apart the moment more than one person opens the same board. I wanted presence to be a first-class citizen — you can literally see other cursors moving, cards getting dragged, and comments landing in real time — without giving up the persistence and structure of a proper task tracker you can actually run a sprint on.",
+      how:
+        "Next.js handles SSR and routing, Tailwind drives the UI, and the entire realtime layer rides on Liveblocks — it broadcasts board state, cursors, and edits to every connected client without me writing a single line of websocket code. NextAuth gates access via Google OAuth, and MongoDB persists boards, columns, cards, and comment threads. Drag-and-drop is wired straight into Liveblocks so reorderings sync instantly across every collaborator on the board.",
+    },
   },
   {
     id: "traveloop",
@@ -85,17 +106,16 @@ export const PROJECTS: Project[] = [
     name: "Traveloop",
     blurb:
       "Odoo Hackathon · The Knights · group build, shipped on the clock. Itinerary planner with collaborative edits.",
-    stack: ["react", "node", "postgres", "tailwind"],
+    stack: ["next.js", "react", "prisma", "postgres", "tailwind", "shadcn", "nextauth"],
     meta: "hackathon · group of 4",
-    image:
-      "https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=1760&q=80",
+    image: "/projects/traveloop.png",
     date: "2026-02",
     stats: {
       commits: 38,
       branches: 4,
-      langs: "js 64% · jsx 26% · css 10%",
+      langs: "ts 72% · tsx 22% · css 6%",
       team: "group · 4",
-      deployed: "firebase",
+      deployed: "vercel",
       lastPush: "2026-02-14",
     },
     gitLog: [
@@ -103,6 +123,14 @@ export const PROJECTS: Project[] = [
       "2a4f73  fix: itinerary diff merge",
       "6e9012  chore: ship-it readme",
     ],
+    details: {
+      what:
+        "Traveloop is a full-stack travel-planning workspace built at the Odoo Hackathon by The Knights. It stitches multi-city itineraries, day-grouped activities, per-stop budgets with Recharts visualizations, packing checklists, markdown notes, and a community feed of shared trips into one integrated app you can run a whole vacation out of.",
+      why:
+        "Planning a trip usually means juggling a dozen browser tabs — one for the itinerary, one for budget math, one for restaurants, one for notes — and none of them talk to each other. We wanted a single workspace where the trip, the money, the gear list, and the journal all live in the same place, with the structure of a proper tool and the speed of something we'd actually open every day.",
+      how:
+        "Next.js with App Router and server components everywhere by default; client islands only where there's real interaction. All mutations are Server Actions sharing Zod schemas with React Hook Form, so the same validation runs on both sides. Prisma + PostgreSQL handle a 12-table schema (users, trips, stops, activities, expenses, packing items). NextAuth.js v5 with the credentials provider handles auth, gating the app route group at the layout level.",
+    },
   },
 ];
 

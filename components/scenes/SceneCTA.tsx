@@ -65,13 +65,13 @@ export function SceneCTA() {
         style={{ background: "var(--paper-2)" }}
       >
         <div>
-          <div data-cta-eyebrow className="mono text-[11px] tracking-[0.18em]" style={{ color: "var(--accent)" }}>
+          <div data-cta-eyebrow className="l-eyebrow" style={{ color: "var(--accent)" }}>
             END OF STORY · YOUR MOVE
           </div>
-          <div data-cta-headline className="serif text-2xl md:text-3xl font-extrabold mt-1.5 mb-1">
+          <div data-cta-headline className="t-h3 mt-1.5 mb-1">
             Hiring? Building? Curious?
           </div>
-          <div data-cta-sub className="mute text-sm md:text-base">Drop a line — I respond fast.</div>
+          <div data-cta-sub className="t-body mute">Drop a line — I respond fast.</div>
         </div>
         <div className="flex flex-col gap-2">
           <a data-cta-button href={`mailto:${CONTACT.email}`} className="btn solid justify-center">
@@ -83,7 +83,7 @@ export function SceneCTA() {
         </div>
       </section>
 
-      <footer ref={footerRef} className="px-6 md:px-10 py-5 mono text-xs flex justify-between mute">
+      <footer ref={footerRef} className="px-6 md:px-10 py-5 c-xs flex justify-between mute">
         <span data-footer-line>$ exit 0 · built with too much GSAP &amp; coffee</span>
         <span data-footer-line>© Vaibhav Verma · 2026</span>
       </footer>

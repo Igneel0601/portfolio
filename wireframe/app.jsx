@@ -117,6 +117,90 @@ function App(){
             </div>
           </DCArtboard>
 
+          <DCArtboard id="typescale" label="Type scale (single source of truth)" width={880} height={1500}>
+            <div style={{padding:32,background:"var(--paper)",height:"100%",color:"var(--ink)",boxSizing:"border-box",overflow:"auto"}}>
+              <div className="l-eyebrow" style={{color:"var(--accent)"}}>TYPE SYSTEM · v1</div>
+              <h2 className="t-h2" style={{margin:"6px 0 4px"}}>One scale, no exceptions.</h2>
+              <p className="t-sm mute" style={{margin:"0 0 18px",maxWidth:560}}>
+                Every text element in the design must pick a class from this sheet. If a moment needs a size that isn’t here, the system is wrong — fix the scale, not the instance.
+              </p>
+
+              {/* DISPLAY + HEADINGS */}
+              <div className="l-eyebrow mute" style={{marginTop:6}}>DISPLAY &amp; HEADINGS — Fraunces</div>
+              <div style={{borderTop:"1.5px solid var(--ink)",marginTop:6}}></div>
+              {[
+                ["t-display","72 / .95 / 800 / -.02em","Hero only"],
+                ["t-h1",     "56 / 1.00 / 800 / -.015em","Page titles (e.g. /work)"],
+                ["t-h2",     "36 / 1.05 / 700 / -.01em","Scene headers"],
+                ["t-h3",     "28 / 1.15 / 700","Featured card title"],
+                ["t-h4",     "20 / 1.20 / 700","Future-card title, sidebar h"],
+                ["t-h5",     "17 / 1.25 / 600","Rail card, timeline entry"],
+              ].map(([cls,spec,use])=>(
+                <div key={cls} style={{display:"grid",gridTemplateColumns:"1fr 160px 200px",gap:14,alignItems:"baseline",padding:"10px 0",borderBottom:"1px dashed var(--ink)"}}>
+                  <span className={cls}>The long way around.</span>
+                  <span className="c-xs mute">{cls} · {spec}</span>
+                  <span className="t-sm mute">{use}</span>
+                </div>
+              ))}
+
+              {/* BODY */}
+              <div className="l-eyebrow mute" style={{marginTop:22}}>BODY — Kalam</div>
+              <div style={{borderTop:"1.5px solid var(--ink)",marginTop:6}}></div>
+              {[
+                ["t-lead","18 / 1.45 / 400","Hero subhead, page lead"],
+                ["t-body","15 / 1.50 / 400","Default paragraph"],
+                ["t-sm",  "13 / 1.40 / 400","Card description, caption"],
+                ["t-xs",  "12 / 1.40 / 400","Tiny hint text"],
+              ].map(([cls,spec,use])=>(
+                <div key={cls} style={{display:"grid",gridTemplateColumns:"1fr 160px 200px",gap:14,alignItems:"baseline",padding:"8px 0",borderBottom:"1px dashed var(--ink)"}}>
+                  <span className={cls}>Real-time Kanban + AI task elaboration.</span>
+                  <span className="c-xs mute">{cls} · {spec}</span>
+                  <span className="t-sm mute">{use}</span>
+                </div>
+              ))}
+
+              {/* MONO LABELS */}
+              <div className="l-eyebrow mute" style={{marginTop:22}}>MONO LABELS — IBM Plex Mono · UPPERCASE</div>
+              <div style={{borderTop:"1.5px solid var(--ink)",marginTop:6}}></div>
+              {[
+                ["l-eyebrow","11 / .18em / 500","Scene eyebrow, filter label"],
+                ["l-meta",   "10 / .14em / 500","Sub-meta (02 · COLLABORATION)"],
+                ["l-tag",    "11 / .10em / 500","Lowercase mono labels"],
+              ].map(([cls,spec,use])=>(
+                <div key={cls} style={{display:"grid",gridTemplateColumns:"1fr 160px 200px",gap:14,alignItems:"baseline",padding:"8px 0",borderBottom:"1px dashed var(--ink)"}}>
+                  <span className={cls}>SCENE 02 — SELECTED WORK</span>
+                  <span className="c-xs mute">{cls} · {spec}</span>
+                  <span className="t-sm mute">{use}</span>
+                </div>
+              ))}
+
+              {/* MONO CODE */}
+              <div className="l-eyebrow mute" style={{marginTop:22}}>MONO CODE — preserves case</div>
+              <div style={{borderTop:"1.5px solid var(--ink)",marginTop:6}}></div>
+              {[
+                ["c-md","13 / 1.60","Terminal lines, nav"],
+                ["c-sm","12 / 1.50","Footer, hint copy"],
+                ["c-xs","11 / 1.40","Tiny meta inside cards"],
+              ].map(([cls,spec,use])=>(
+                <div key={cls} style={{display:"grid",gridTemplateColumns:"1fr 160px 200px",gap:14,alignItems:"baseline",padding:"8px 0",borderBottom:"1px dashed var(--ink)"}}>
+                  <span className={cls}>$ ./hello.sh — ready in 0.42s</span>
+                  <span className="c-xs mute">{cls} · {spec}</span>
+                  <span className="t-sm mute">{use}</span>
+                </div>
+              ))}
+
+              <div className="box-dash" style={{padding:12,marginTop:18}}>
+                <div className="l-eyebrow mute">RULES</div>
+                <ul className="t-sm" style={{margin:"6px 0 0",paddingLeft:18,lineHeight:1.5}}>
+                  <li>Pick a class. Never set <span className="c-xs">fontSize</span> inline.</li>
+                  <li>Eyebrows are <span className="c-xs">l-eyebrow</span>. Always. .18em tracking, 11px.</li>
+                  <li>Card descriptions are <span className="c-xs">t-sm mute</span> — never 14px ad hoc.</li>
+                  <li>Color via <span className="c-xs">color:</span> only — don’t restyle size on accent text.</li>
+                </ul>
+              </div>
+            </div>
+          </DCArtboard>
+
           <DCArtboard id="systemnotes" label="Visual system" width={680} height={820}>
             <div style={{padding:32,background:"var(--paper)",height:"100%",fontFamily:'"Kalam",sans-serif',color:"var(--ink)"}}>
               <div className="mono" style={{fontSize:11,letterSpacing:".2em",color:"var(--accent)"}}>WORKING SYSTEM</div>
