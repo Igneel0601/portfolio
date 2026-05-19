@@ -1,0 +1,122 @@
+---
+slug: taskforge
+title: TaskForge
+tagline: Real-time kanban where presence is a first-class citizen.
+blurb: kanban with real-time cursors. before the second user joined.
+tag: product
+indexStatus: archived
+role: duo · design + full-stack
+status: shipped · live
+timeline: Sep → Nov 2025 · weekends
+commits: 21
+order: 2
+stack: [Next.js, React, TypeScript, Tailwind, Liveblocks, MongoDB, NextAuth]
+infra: [Liveblocks, MongoDB Atlas, Google OAuth, Vercel]
+links:
+  repo: https://github.com/Igneel0601/TaskForge
+cover: /projects/taskforge.png
+---
+
+## tl;dr
+
+TaskForge is a **real-time collaborative kanban board** — Trello meets Notion with multiplayer baked in. Customizable boards and columns, drag-and-drop cards, threaded comments, Google OAuth, all of it syncing live across every connected client.
+
+<TLDR>
+- **What:** real-time kanban with cursors, presence, and threaded comments
+- **Hard part:** drag-and-drop that stays consistent across N clients without conflict
+- **Why it matters:** proves I can ship multiplayer state without writing my own sync layer
+</TLDR>
+
+## the problem
+
+Most kanban tools fall into one of two camps. Either they feel slow and bureaucratic (Jira), or they quietly fall apart the second more than one person opens the same board. Trello tries — it polls for updates and shows other people's changes eventually. "Eventually" is not the same as "now."
+
+I wanted presence to be a first-class citizen. You see other cursors moving. You see cards being dragged. Comments land in real time. And the board still has the structure of a proper tracker you can actually run a sprint on.
+
+## architecture
+
+Frontend is a normal Next.js app. The real-time layer is a single Liveblocks room per board — every connected client subscribes to the same shared state. Mutations broadcast to all peers; persistence to Mongo happens out-of-band so the source of truth doesn't block UI updates.
+
+<AsciiDiagram caption="presence + persistence in two parallel paths" n="01">
+{`
+   ┌──────────────┐     subscribe      ┌────────────────────┐
+   │   client A   │ ◀────────────────▶ │                    │
+   └──────────────┘    Liveblocks      │     Liveblocks     │
+                          room         │   (shared state)   │
+   ┌──────────────┐                    │                    │
+   │   client B   │ ◀────────────────▶ │                    │
+   └──────────────┘                    └─────────┬──────────┘
+                                                 │
+                                          on mutation
+                                                 ▼
+                                       ┌──────────────────┐
+                                       │  Next.js API     │
+                                       │  → MongoDB Atlas │
+                                       └──────────────────┘
+`}
+</AsciiDiagram>
+
+## key decisions
+
+<Decision n="01" picked="Liveblocks" rejected="raw WebSockets + ShareDB">
+  Building my own CRDT layer for a portfolio project is yak-shaving. Liveblocks
+  gives me presence (cursors, avatars), shared storage, and conflict-free updates
+  out of the box. I write zero websocket code.
+</Decision>
+
+<Decision n="02" picked="MongoDB" rejected="Postgres + Prisma">
+  Boards are nested document trees — board > columns > cards > comments. Mongo's
+  document model maps to this naturally. SQL would mean either 4 joins per fetch
+  or jamming JSON into a `jsonb` column.
+</Decision>
+
+<Decision n="03" picked="NextAuth + Google" rejected="Clerk / Auth0">
+  One provider, zero per-MAU cost, ships with the Next.js conventions I'm already
+  using. Adding email/password later is a flag flip.
+</Decision>
+
+<Decision n="04" picked="drag-and-drop wired to Liveblocks state">
+  Dragging a card locally updates the Liveblocks document. Every other client
+  sees the move before the server has even acknowledged. Optimism is the default;
+  conflicts are rare because Liveblocks orders mutations server-side.
+</Decision>
+
+## walkthrough
+
+<Steps>
+  <Step n="01" label="sign in" hint="~3s">
+    <Figure
+      src="/projects/taskforge.png"
+      alt="TaskForge sign-in screen"
+      placeholder="google oauth sign-in"
+    />
+  </Step>
+  <Step n="02" label="create a board" hint="~5s">
+    <Figure placeholder="empty board, columns ready to fill" />
+  </Step>
+  <Step n="03" label="invite + multiplayer" hint="live">
+    <Figure placeholder="cursors visible, second user dragging a card" />
+  </Step>
+  <Step n="04" label="threaded comments" hint="per-card">
+    <Figure placeholder="card modal open, comment thread on the right" />
+  </Step>
+</Steps>
+
+## the stack
+
+<Bullets>
+- **frontend:** Next.js, React, TypeScript, Tailwind, shadcn/ui
+- **realtime:** Liveblocks (rooms, presence, shared storage)
+- **auth:** NextAuth.js with Google OAuth
+- **data:** MongoDB Atlas for persistent board state
+- **deploy:** Vercel
+</Bullets>
+
+## what's next
+
+<Bullets>
+- AI task elaboration — paste a vague ticket, get acceptance criteria <Tag>in progress</Tag>
+- @-mentions + notifications
+- swimlanes / WIP limits per column
+- export board to markdown
+</Bullets>

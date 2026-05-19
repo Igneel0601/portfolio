@@ -250,27 +250,6 @@ export const FUTURE: FutureModule[] = [
   { label: "/dev/letters", blurb: "one email a month, no spam", route: "/letters" },
 ];
 
-export type WorkLogRow = {
-  status: "ok" | "wip";
-  tag: string;
-  name: string;
-  blurb: string;
-  stack: string;
-  year: string;
-  notes: string;
-};
-
-export const WORK_LOG_ROWS: WorkLogRow[] = [
-  { status: "ok",  tag: "flagship",  name: "codeflow",     blurb: "An AI-powered website builder.",          stack: "TS · Next 16 · tRPC · Inngest",      year: "2026", notes: "61" },
-  { status: "ok",  tag: "collab",    name: "taskforge",    blurb: "Real-time kanban + AI task elaboration.", stack: "TS · Next · Liveblocks · Mongo",     year: "2025", notes: "21" },
-  { status: "ok",  tag: "hackathon", name: "traveloop",    blurb: "Trip planner — Odoo Hackathon.",          stack: "React · Firebase",                    year: "2026", notes: "group" },
-  { status: "ok",  tag: "oss",       name: "wall-engine",  blurb: "Dynamic wallpaper switcher for Hyprland.",stack: "Shell · SDDM",                        year: "2025", notes: "3★ 1 fork" },
-  { status: "ok",  tag: "dotfiles",  name: "arch-install", blurb: "My Arch setup, scripted top-to-bottom.",  stack: "Shell · Linux",                       year: "2024", notes: "—" },
-  { status: "wip", tag: "next",      name: "…",            blurb: "writing the README first.",                stack: "tbd",                                 year: "2026", notes: "early" },
-];
-
-export const WORK_FILTERS = ["all", "flagship", "oss", "hackathon", "collab", "dotfiles", "wip"] as const;
-
 export const GIT_LOG_PREVIEW: string[] = [
   "a3f01b2 · docs(traveloop): wrote case study draft",
   "7c01d8a · feat(codeflow): add gemini provider",

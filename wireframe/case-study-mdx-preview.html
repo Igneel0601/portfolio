@@ -1,0 +1,743 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>_template.mdx (rendered preview) · igneel.dev</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:   #0a0d12;
+    --paper-2: #11161d;
+    --ink:     #e6edf3;
+    --ink-soft:#8b949e;
+    --ink-dim: #5b6573;
+    --hair:    rgba(230,237,243,.10);
+    --hair-2:  rgba(230,237,243,.18);
+    --accent:  #6ee7a7;
+    --accent-2:#7fb3ff;
+    --warn:    #f0b73a;
+
+    --pad-x: clamp(20px, 4vw, 56px);
+    --maxw: 880px;
+    --mono:  "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:var(--mono); font-size:14px; line-height:1.7; }
+  body{ min-height:100vh; display:flex; flex-direction:column; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--accent); color:#0a0d12; }
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:var(--paper); }
+  ::-webkit-scrollbar-thumb{ background:#222933; border-radius:6px; }
+
+  /* tab bar */
+  .term-bar{
+    display:flex; align-items:center; gap:10px;
+    padding:10px var(--pad-x);
+    border-bottom:1px solid var(--hair);
+    background:rgba(10,13,18,.7);
+  }
+  .mac-dot{ width:11px; height:11px; border-radius:50%; background:#3a4250; }
+  .mac-dot.r{ background:#ff5f57; }
+  .mac-dot.y{ background:#febc2e; }
+  .mac-dot.g{ background:#28c840; }
+  .term-bar .prompt{ font-size:12px; color:var(--ink-soft); margin-left:6px; }
+  .term-bar .right{ margin-left:auto; font-size:11px; color:var(--ink-dim); letter-spacing:.04em; }
+
+  /* nav */
+  .nav{
+    display:flex; align-items:center; gap:24px;
+    padding:14px var(--pad-x);
+    border-bottom:1px solid var(--hair);
+  }
+  .nav .brand{ font-weight:600; font-size:13.5px; }
+  .nav .brand .dot{ color:var(--accent); }
+  .nav .crumbs{ color: var(--ink-dim); font-size:12.5px; }
+  .nav .crumbs a{ color:var(--ink-soft); transition:color .18s ease; }
+  .nav .crumbs a:hover{ color:var(--accent); }
+  .nav .crumbs .sep{ margin: 0 8px; }
+  .nav .crumbs .here{ color:var(--ink); }
+  .nav .right-link{
+    margin-left:auto; font-size:12px; color:var(--ink-soft);
+    padding:7px 12px; border:1px solid var(--hair-2); border-radius:10px;
+    transition:border-color .18s ease, color .18s ease;
+  }
+  .nav .right-link:hover{ border-color:var(--accent); color:var(--accent); }
+
+  /* template banner */
+  .banner{
+    background: rgba(240,183,58,.06);
+    border-bottom: 1px solid rgba(240,183,58,.18);
+    color: var(--warn);
+    padding: 10px var(--pad-x);
+    font-size: 11.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    display:flex; align-items:center; gap: 12px;
+  }
+  .banner .lbl{ color: var(--warn); }
+  .banner .dim{ color: var(--ink-dim); letter-spacing:.04em; text-transform: none; }
+  .banner .right{ margin-left: auto; color: var(--ink-dim); letter-spacing: .04em; text-transform: none; font-size: 11.5px; }
+
+  /* doc */
+  .doc{
+    max-width: var(--maxw);
+    width: 100%;
+    margin: 0 auto;
+    padding: clamp(36px, 5vw, 56px) var(--pad-x) 64px;
+  }
+  .doc > * + *{ margin-top: 32px; }
+
+  .crumb-line{ color: var(--ink-dim); font-size: 12px; margin-bottom: 24px; }
+  .crumb-line a{ color: var(--ink-soft); }
+  .crumb-line a:hover{ color: var(--accent); }
+  .crumb-line .sep{ margin: 0 8px; color: var(--ink-dim); }
+
+  .hero-title{
+    font-size: clamp(40px, 6vw, 56px);
+    line-height: 1.02;
+    letter-spacing: -.035em;
+    font-weight: 500;
+    color: var(--ink);
+    margin: 0;
+  }
+  .hero-title .acc{ color: var(--accent); }
+  .placeholder{
+    background: rgba(110,231,167,.08);
+    border-bottom: 1px dashed rgba(110,231,167,.4);
+    padding: 0 2px;
+    color: var(--ink);
+  }
+  .hero-tag{
+    margin-top: 12px;
+    font-size: 15px;
+    color: var(--ink-soft);
+    max-width: 60ch;
+    line-height: 1.6;
+  }
+  .hero-actions{
+    display:flex; gap: 8px; flex-wrap: wrap;
+    margin-top: 22px;
+  }
+  .pill{
+    display:inline-flex; align-items:center; gap:6px;
+    padding: 6px 12px;
+    border: 1px solid var(--hair-2);
+    border-radius: 999px;
+    font-size: 12px; color: var(--ink);
+    transition: border-color .18s ease, color .18s ease;
+  }
+  .pill:hover{ border-color: var(--accent); color: var(--accent); }
+  .pill .live{ color: var(--accent); }
+  .pill .ext{ color: var(--ink-dim); }
+
+  /* frontmatter */
+  .frontmatter{
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    background: var(--paper-2);
+    overflow: hidden;
+  }
+  .frontmatter .fm-bar{
+    display:flex; gap: 8px; align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--hair);
+    font-size: 11.5px; color: var(--ink-dim); letter-spacing: .08em;
+  }
+  .frontmatter .fm-body{
+    padding: 14px 18px 16px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.95;
+  }
+  .frontmatter .row{
+    display:grid; grid-template-columns: 110px 1fr; gap: 14px;
+  }
+  .frontmatter .k{ color: var(--ink-dim); }
+  .frontmatter .v{ color: var(--ink); }
+  .frontmatter .v .str{ color: var(--accent); }
+  .frontmatter .v .num{ color: var(--accent-2); }
+  .frontmatter hr{ border: none; border-top: 1px dashed var(--hair); margin: 8px 0; }
+
+  /* h2 */
+  .h2{
+    display:flex; align-items: baseline; gap: 14px;
+    font-size: 22px;
+    line-height: 1.25;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -.005em;
+    margin: 0;
+    padding-top: 18px;
+  }
+  .h2 .n{
+    color: var(--ink-dim);
+    font-size: 12px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    width: 38px;
+  }
+  .h2 .hash{ color: var(--accent); }
+
+  .lede{
+    color: var(--ink-soft);
+    font-size: 14.5px;
+    line-height: 1.75;
+    max-width: 64ch;
+  }
+  .lede strong{ color: var(--ink); font-weight: 500; }
+  .lede code{
+    color: var(--ink); background: rgba(230,237,243,.06);
+    border: 1px solid var(--hair-2);
+    padding: 1px 6px; border-radius: 4px; font-size: 13px;
+  }
+
+  /* bullets */
+  .tldr{
+    list-style: none; padding: 0;
+    display: flex; flex-direction: column; gap: 2px;
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin: 18px 0 0;
+  }
+  .tldr li{
+    display: flex; gap: 14px; align-items: baseline;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--hair);
+  }
+  .tldr li:last-child{ border-bottom: none; }
+  .tldr li::before{ content: "›"; color: var(--accent); flex-shrink: 0; }
+  .tldr li b{ color: var(--ink); font-weight: 500; }
+
+  .ul{ padding-left: 0; margin: 12px 0 0; list-style: none; }
+  .ul li{
+    padding: 4px 0 4px 22px;
+    position: relative;
+    color: var(--ink-soft);
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  .ul li::before{
+    content: "›";
+    position: absolute; left: 4px;
+    color: var(--accent);
+  }
+  .ul li b{ color: var(--ink); font-weight: 500; }
+  .ul li .tag{
+    display: inline-block;
+    margin-left: 8px;
+    padding: 1px 8px;
+    border: 1px solid var(--hair-2);
+    border-radius: 999px;
+    font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent);
+    vertical-align: 2px;
+  }
+
+  /* image placeholder */
+  .figure{ display:flex; flex-direction: column; gap: 10px; }
+  .img-ph{
+    position:relative;
+    background:
+      repeating-linear-gradient(135deg, transparent 0 14px, rgba(230,237,243,.045) 14px 15px),
+      linear-gradient(135deg, #0c1119 0%, #131a25 100%);
+    border:1px solid var(--hair);
+    border-radius:8px;
+    color:var(--ink-dim);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    aspect-ratio: 16 / 9;
+  }
+  .img-ph.wide{ aspect-ratio: 21 / 9; }
+  .img-ph::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      linear-gradient(45deg, transparent 49.5%, rgba(230,237,243,.06) 49.5% 50.5%, transparent 50.5%),
+      linear-gradient(-45deg, transparent 49.5%, rgba(230,237,243,.06) 49.5% 50.5%, transparent 50.5%);
+  }
+  .img-ph .lbl{
+    position: relative; z-index: 2;
+    display:flex; flex-direction: column; align-items: center; gap: 8px;
+    padding: 16px;
+    text-align: center;
+  }
+  .img-ph .tag{
+    color: var(--ink); border: 1px solid var(--hair-2);
+    padding: 2px 9px; border-radius: 4px;
+    font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
+    background: rgba(10,13,18,.5);
+  }
+  .img-ph .desc{ color: var(--ink-dim); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; max-width: 40ch;  }
+  .img-ph .path{ color: var(--ink-dim); font-size: 10.5px; letter-spacing: .04em; margin-top: 4px; opacity: .6; }
+
+  .caption{ color: var(--ink-dim); font-size: 12px; letter-spacing: .04em; padding-left: 4px; }
+  .caption .n{ color: var(--accent-2); }
+
+  /* code */
+  .code{
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    background: var(--paper-2);
+    overflow: hidden;
+  }
+  .code .head{
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--hair);
+    color: var(--ink-dim);
+    font-size: 11.5px; letter-spacing: .08em;
+  }
+  .code .head .lang{
+    margin-left: auto;
+    padding: 1px 8px; border-radius: 4px;
+    border: 1px solid var(--hair-2);
+    color: var(--ink-soft);
+    font-size: 10.5px; letter-spacing: .16em; text-transform: uppercase;
+  }
+  .code pre{
+    margin: 0; padding: 16px 18px;
+    font: 12.5px/1.7 var(--mono);
+    color: var(--ink-soft);
+    overflow-x: auto; white-space: pre;
+  }
+  .code .kw  { color: var(--accent-2); }
+  .code .str { color: var(--accent); }
+  .code .key { color: var(--ink); }
+  .code .cmt { color: var(--ink-dim); font-style: italic; }
+
+  /* decisions */
+  .decisions{ display:flex; flex-direction: column; gap: 16px; margin-top: 18px; }
+  .decision{
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--paper-2);
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .decision .num{ color: var(--accent); font-size: 12.5px; letter-spacing: .14em; }
+  .decision h4{
+    color: var(--ink); margin: 0 0 6px;
+    font-size: 14.5px; font-weight: 500;
+  }
+  .decision h4 .vs{ color: var(--ink-dim); margin: 0 6px; }
+  .decision h4 .picked{ color: var(--accent); }
+  .decision h4 .other { color: var(--ink-dim); text-decoration: line-through; }
+  .decision p{ margin: 0; color: var(--ink-soft); font-size: 13px; line-height: 1.65; }
+
+  /* steps */
+  .steps{ display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  .step{ display: flex; flex-direction: column; gap: 10px; }
+  .step .label{
+    display:flex; align-items: baseline; gap: 10px;
+    font-size: 12px; color: var(--ink-soft);
+  }
+  .step .label .n{ color: var(--accent); }
+  .step .label .hint{ color: var(--ink-dim); margin-left: auto; }
+
+  /* stats */
+  .stats{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+  .stat{
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--paper-2);
+  }
+  .stat .v{
+    color: var(--ink); font-size: 26px; line-height: 1.1;
+    letter-spacing: -.02em; font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .stat .v .unit{ color: var(--ink-dim); font-size: 14px; margin-left: 4px; }
+  .stat .k{
+    color: var(--ink-dim);
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  }
+
+  /* pager */
+  .pager{
+    margin-top: 56px;
+    border-top: 1px solid var(--hair);
+    padding-top: 28px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+  .pager .pg{
+    border: 1px solid var(--hair);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: var(--paper-2);
+  }
+  .pager .pg .meta{ color: var(--ink-dim); font-size: 11px; letter-spacing: .14em; text-transform: uppercase; }
+  .pager .pg .ttl{ color: var(--ink); font-size: 16px; margin-top: 4px; }
+  .pager .pg.next{ text-align: right; }
+
+  footer{
+    padding: 22px var(--pad-x) 30px;
+    border-top: 1px solid var(--hair);
+    display:flex; justify-content: space-between; align-items: center; gap: 20px;
+    font-size: 11.5px; color: var(--ink-dim);
+    flex-wrap: wrap;
+  }
+  footer a{ color: var(--ink-soft); }
+  footer a:hover{ color: var(--accent); }
+  footer .socials{ display: flex; gap: 18px; }
+
+  @media (max-width: 880px){
+    .stats{ grid-template-columns: 1fr 1fr; }
+    .steps{ grid-template-columns: 1fr; }
+    .frontmatter .row{ grid-template-columns: 90px 1fr; }
+  }
+  @media (max-width: 560px){
+    .pager{ grid-template-columns: 1fr; }
+    .stats{ grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="term-bar">
+  <span class="mac-dot r"></span>
+  <span class="mac-dot y"></span>
+  <span class="mac-dot g"></span>
+  <span class="prompt">vaibhav@noida:~/igneel.dev$ cat case-study-mdx/_template.mdx | mdx-render</span>
+  <span class="right">preview · unstyled placeholders highlighted</span>
+</div>
+
+<nav class="nav">
+  <a class="brand" href="/">igneel<span class="dot">.</span>dev</a>
+  <span class="crumbs">
+    <a href="/#work">~/work</a>
+    <span class="sep">/</span>
+    <span class="here">_template.mdx</span>
+  </span>
+  <a class="right-link" href="case-study-mdx/_template.mdx">view raw .mdx →</a>
+</nav>
+
+<div class="banner">
+  <span class="lbl">▲ template preview</span>
+  <span class="dim">— placeholders highlighted in mint. lorem ipsum is filler. drop in real content before shipping.</span>
+  <span class="right">rendered from _template.mdx</span>
+</div>
+
+<main class="doc">
+
+  <div class="crumb-line">
+    <a href="/#work">← /work</a>
+    <span class="sep">·</span>
+    <a href="/work">all projects</a>
+    <span class="sep">·</span>
+    case study <span class="placeholder">[N]</span> / <span class="placeholder">[N]</span>
+  </div>
+
+  <header>
+    <h1 class="hero-title"><span class="placeholder">Project Name</span><span class="acc">.</span></h1>
+    <p class="hero-tag">
+      <span class="placeholder">[REPLACE: tagline — one line that earns the click. 8–14 words.]</span>
+    </p>
+    <div class="hero-actions">
+      <a class="pill" href="#"><span class="live">●</span> live · <span class="placeholder">example.com</span> <span class="ext">↗</span></a>
+      <a class="pill" href="#">$ git source <span class="ext">↗</span></a>
+      <a class="pill" href="#">$ jump to demo</a>
+    </div>
+  </header>
+
+  <!-- 01 frontmatter -->
+  <section>
+    <h2 class="h2"><span class="n">01</span><span class="hash">#</span> frontmatter</h2>
+    <div class="frontmatter" style="margin-top:16px;">
+      <div class="fm-bar">--- <span style="margin-left:auto">project-slug.yaml</span></div>
+      <div class="fm-body">
+        <div class="row"><span class="k">project</span><span class="v"><span class="str">"<span class="placeholder">Project Name</span>"</span></span></div>
+        <div class="row"><span class="k">tagline</span><span class="v"><span class="str">"<span class="placeholder">one line</span>"</span></span></div>
+        <div class="row"><span class="k">role</span><span class="v"><span class="str">"<span class="placeholder">solo · design + full-stack</span>"</span></span></div>
+        <div class="row"><span class="k">status</span><span class="v"><span class="str">"live · v0.4"</span></span></div>
+        <div class="row"><span class="k">timeline</span><span class="v"><span class="placeholder">Feb → Apr 2026 · ~N weekends</span></span></div>
+        <div class="row"><span class="k">commits</span><span class="v"><span class="num"><span class="placeholder">N</span></span></span></div>
+        <hr/>
+        <div class="row"><span class="k">stack</span><span class="v"><span class="placeholder">Lang · Framework · ORM · DB · UI</span></span></div>
+        <div class="row"><span class="k">infra</span><span class="v"><span class="placeholder">Hosting · Queue · AI · Auth</span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 tl;dr -->
+  <section>
+    <h2 class="h2"><span class="n">02</span><span class="hash">#</span> tl;dr</h2>
+    <p class="lede" style="margin-top:14px;">
+      Lorem ipsum <strong><span class="placeholder">[REPLACE: one-sentence summary of the project]</span></strong> dolor sit amet,
+      consectetur adipiscing elit. Built <span class="placeholder">[solo / with a team of N]</span> over <span class="placeholder">[timeline]</span>,
+      shipped at <span class="placeholder">[URL]</span>.
+    </p>
+    <ul class="tldr">
+      <li><b>What:</b> <span class="placeholder">[REPLACE: product category in 6 words]</span></li>
+      <li><b>Hard part:</b> <span class="placeholder">[REPLACE: the one technical problem you'd brag about]</span></li>
+      <li><b>Why it matters:</b> <span class="placeholder">[REPLACE: what this proves about you / the space]</span></li>
+    </ul>
+  </section>
+
+  <!-- 03 problem -->
+  <section>
+    <h2 class="h2"><span class="n">03</span><span class="hash">#</span> the problem</h2>
+    <p class="lede" style="margin-top:14px;">
+      <span class="placeholder">[REPLACE: 2-4 sentences on the gap this fills. who suffers, what they
+      currently do instead, why existing options miss.]</span>
+    </p>
+    <p class="lede" style="margin-top:14px;">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Existing tools — <code><span class="placeholder">[alt-1]</span></code>,
+      <code><span class="placeholder">[alt-2]</span></code> — are good, but they <span class="placeholder">[their critical limitation]</span>.
+      <strong><span class="placeholder">[the metric that mattered]</span></strong> was the thing I wanted to move.
+    </p>
+  </section>
+
+  <!-- 04 hero shot -->
+  <section>
+    <h2 class="h2"><span class="n">04</span><span class="hash">#</span> at a glance</h2>
+    <div class="figure" style="margin-top:16px;">
+      <div class="img-ph wide">
+        <div class="lbl">
+          <span class="tag">[ image · 01 ]</span>
+          <span class="desc">hero shot — full app in real use</span>
+          <span class="path">/public/case/[slug]/hero.png · 21:9</span>
+        </div>
+      </div>
+      <div class="caption">fig. <span class="n">01</span> · full-bleed product hero · 2400×1030, dark theme.</div>
+    </div>
+  </section>
+
+  <!-- 05 constraints -->
+  <section>
+    <h2 class="h2"><span class="n">05</span><span class="hash">#</span> constraints &amp; scope</h2>
+    <ul class="ul">
+      <li><b><span class="placeholder">[CONSTRAINT 1]</span>:</b> <span class="placeholder">[e.g. "solo. no co-founders."]</span></li>
+      <li><b><span class="placeholder">[CONSTRAINT 2]</span>:</b> <span class="placeholder">[e.g. "weekends only. ~12 hrs/wk."]</span></li>
+      <li><b><span class="placeholder">[CONSTRAINT 3]</span>:</b> <span class="placeholder">[e.g. "$30/mo infra ceiling."]</span></li>
+      <li><b>scope cut:</b> <span class="placeholder">[what you explicitly didn't build, and why.]</span></li>
+    </ul>
+  </section>
+
+  <!-- 06 architecture -->
+  <section>
+    <h2 class="h2"><span class="n">06</span><span class="hash">#</span> architecture</h2>
+    <p class="lede" style="margin-top:14px;">
+      <span class="placeholder">[REPLACE: 2-3 sentences explaining the diagram. name the loops. call out the ONE clever bit.]</span>
+      Lorem ipsum — three async loops glued together: <strong><span class="placeholder">[loop 1]</span></strong>,
+      <strong><span class="placeholder">[loop 2]</span></strong>, and <strong><span class="placeholder">[loop 3]</span></strong>.
+      The trick was <span class="placeholder">[the non-obvious move]</span>.
+    </p>
+
+    <div class="figure" style="margin-top:16px;">
+      <div class="code">
+        <div class="head">
+          <span>diagram</span>
+          <span class="lang">ascii</span>
+        </div>
+<pre>   <span class="cmt">┌─────────────┐    [verb]    ┌─────────────┐    [verb]    ┌──────────────┐</span>
+   <span class="cmt">│   client    │ ───────────▶ │   server    │ ───────────▶ │   service    │</span>
+   <span class="cmt">│  (browser)  │ ◀─────────── │   (api)     │              │  (worker)    │</span>
+   <span class="cmt">└─────────────┘   streams    └─────────────┘              └──────┬───────┘</span>
+                                                                    <span class="cmt">│</span>
+                                                                    <span class="cmt">▼</span>
+                                                            <span class="cmt">┌──────────────┐</span>
+                                                            <span class="cmt">│  sandbox /   │</span>
+                                                            <span class="cmt">│  data layer  │</span>
+                                                            <span class="cmt">└──────────────┘</span>
+</pre>
+      </div>
+      <div class="caption">fig. <span class="n">02</span> · request flow · <span class="placeholder">[one-line description]</span></div>
+    </div>
+  </section>
+
+  <!-- 07 decisions -->
+  <section>
+    <h2 class="h2"><span class="n">07</span><span class="hash">#</span> key decisions</h2>
+    <div class="decisions">
+      <div class="decision">
+        <span class="num">01</span>
+        <div>
+          <h4><span class="picked"><span class="placeholder">[CHOICE A]</span></span><span class="vs">vs.</span><span class="other"><span class="placeholder">[CHOICE B]</span></span></h4>
+          <p>
+            <span class="placeholder">[REPLACE: 2-3 sentences on the tradeoff.]</span>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. The reason I picked [A] over [B] was <span class="placeholder">[concrete reason — speed, cost, type-safety, hiring]</span>.
+          </p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="num">02</span>
+        <div>
+          <h4><span class="picked"><span class="placeholder">[CHOICE A]</span></span><span class="vs">vs.</span><span class="other"><span class="placeholder">[CHOICE B]</span></span></h4>
+          <p>
+            <span class="placeholder">[REPLACE]</span>. Lorem ipsum dolor sit amet. Quantify the tradeoff if you can — <span class="placeholder">"cost ~3¢/session in practice"</span>.
+          </p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="num">03</span>
+        <div>
+          <h4><span class="picked"><span class="placeholder">[CHOICE A]</span></span><span class="vs">vs.</span><span class="other"><span class="placeholder">[CHOICE B]</span></span></h4>
+          <p>
+            <span class="placeholder">[REPLACE]</span>. Sed do eiusmod tempor incididunt ut labore et dolore magna. End-to-end types meant I caught two whole categories of bugs at compile time.
+          </p>
+        </div>
+      </div>
+      <div class="decision">
+        <span class="num">04</span>
+        <div>
+          <h4><span class="picked"><span class="placeholder">[CHOICE A]</span></span></h4>
+          <p>
+            <span class="placeholder">[REPLACE: a decision with no rejected alternative — just a clever default.]</span>
+            Caught in <code><span class="placeholder">path/to/file.ts:functionName</span></code>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 walkthrough -->
+  <section>
+    <h2 class="h2"><span class="n">08</span><span class="hash">#</span> walkthrough</h2>
+    <p class="lede" style="margin-top:14px;">
+      <span class="placeholder">[REPLACE: one line teasing the flow. "Four frames, prompt to preview."]</span>
+    </p>
+    <div class="steps">
+      <div class="step">
+        <div class="label"><span class="n">01.</span> <span class="placeholder">[action verb]</span> <span class="hint">/route or ~5s</span></div>
+        <div class="img-ph"><div class="lbl"><span class="tag">[ image · 02 ]</span><span class="desc">empty state with focus on the trigger</span></div></div>
+      </div>
+      <div class="step">
+        <div class="label"><span class="n">02.</span> <span class="placeholder">[action verb]</span> <span class="hint">~5s</span></div>
+        <div class="img-ph"><div class="lbl"><span class="tag">[ image · 03 ]</span><span class="desc">loading / provisioning state</span></div></div>
+      </div>
+      <div class="step">
+        <div class="label"><span class="n">03.</span> <span class="placeholder">[action verb]</span> <span class="hint">~25s</span></div>
+        <div class="img-ph"><div class="lbl"><span class="tag">[ image · 04 ]</span><span class="desc">content streaming / progress</span></div></div>
+      </div>
+      <div class="step">
+        <div class="label"><span class="n">04.</span> <span class="placeholder">[action verb]</span> <span class="hint">~40s total</span></div>
+        <div class="img-ph"><div class="lbl"><span class="tag">[ image · 05 ]</span><span class="desc">final result, success state</span></div></div>
+      </div>
+    </div>
+    <div class="caption" style="margin-top:12px;">fig. <span class="n">03–06</span> · end-to-end flow · capture at 1440×900, 2x.</div>
+  </section>
+
+  <!-- 09 deep dive -->
+  <section>
+    <h2 class="h2"><span class="n">09</span><span class="hash">#</span> deep dive · the hard part</h2>
+    <p class="lede" style="margin-top:14px;">
+      <span class="placeholder">[REPLACE: 2-3 sentences framing the problem.]</span> Lorem ipsum dolor sit amet,
+      consectetur adipiscing elit. The naive approach (<code>await everything</code>) blocks the UI.
+      The fix: <span class="placeholder">[the pattern you used]</span>.
+    </p>
+
+    <div class="figure" style="margin-top:16px;">
+      <div class="code">
+        <div class="head">
+          <span><span class="placeholder">path/to/file.ts</span></span>
+          <span class="lang">typescript</span>
+        </div>
+<pre><span class="kw">export const</span> <span class="key">runJob</span> = createFunction(
+  { <span class="key">id</span>: <span class="str">"run-job"</span> },
+  { <span class="key">event</span>: <span class="str">"job/start.requested"</span> },
+  <span class="kw">async</span> ({ event, step }) =&gt; {
+    <span class="kw">const</span> plan = <span class="kw">await</span> step.<span class="key">run</span>(<span class="str">"plan"</span>, () =&gt; planSteps(event.data.input));
+
+    <span class="kw">for</span> (<span class="kw">const</span> item <span class="kw">of</span> plan.items) {
+      <span class="cmt">// each item is its own retryable step</span>
+      <span class="kw">await</span> step.<span class="key">run</span>(<span class="str">`process:${item.id}`</span>, <span class="kw">async</span> () =&gt; {
+        <span class="kw">const</span> result = <span class="kw">await</span> process(item);
+        <span class="kw">await</span> pubsub.<span class="key">publish</span>(event.data.jobId, { item, result });
+      });
+    }
+
+    <span class="kw">return</span> { <span class="key">status</span>: <span class="str">"done"</span>, <span class="key">count</span>: plan.items.length };
+  }
+);</pre>
+      </div>
+      <div class="caption">snippet <span class="n">01</span> · the [feature] loop · every step is its own resumable unit.</div>
+    </div>
+
+    <p class="lede" style="margin-top:18px;">
+      <span class="placeholder">[REPLACE: 1-2 sentences on what the snippet earned you.]</span> The aha moment: once each item is a step, retries are free, partial-progress on cold start is free, and the UI just listens for the published events.
+    </p>
+  </section>
+
+  <!-- 10 outcomes -->
+  <section>
+    <h2 class="h2"><span class="n">10</span><span class="hash">#</span> outcomes</h2>
+    <div class="stats">
+      <div class="stat">
+        <div class="v"><span class="placeholder">N</span><span class="unit">commits</span></div>
+        <div class="k">solo · main branch</div>
+      </div>
+      <div class="stat">
+        <div class="v"><span class="placeholder">~N</span><span class="unit">sec</span></div>
+        <div class="k"><span class="placeholder">[latency metric]</span></div>
+      </div>
+      <div class="stat">
+        <div class="v"><span class="placeholder">$N</span><span class="unit">/unit</span></div>
+        <div class="k"><span class="placeholder">[cost metric]</span></div>
+      </div>
+      <div class="stat">
+        <div class="v"><span class="placeholder">N</span><span class="unit">weekends</span></div>
+        <div class="k"><span class="placeholder">[timeline metric]</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 learned -->
+  <section>
+    <h2 class="h2"><span class="n">11</span><span class="hash">#</span> what I'd do differently</h2>
+    <ul class="ul">
+      <li><b><span class="placeholder">[MISTAKE 1, named]</span>.</b> <span class="placeholder">[REPLACE: 1 sentence on the cost + 1 on the fix.]</span> Lorem ipsum dolor sit amet — should have done [X] instead of [Y].</li>
+      <li><b><span class="placeholder">[MISTAKE 2]</span>.</b> <span class="placeholder">[REPLACE]</span>. Consectetur adipiscing elit.</li>
+      <li><b><span class="placeholder">[MISTAKE 3]</span>.</b> <span class="placeholder">[REPLACE]</span>. Bolting on [thing] at the end touched 40% of the routes.</li>
+      <li><b><span class="placeholder">[MISTAKE 4 — optional]</span>.</b> <span class="placeholder">[REPLACE]</span>.</li>
+    </ul>
+  </section>
+
+  <!-- 12 next -->
+  <section>
+    <h2 class="h2"><span class="n">12</span><span class="hash">#</span> what's next</h2>
+    <ul class="ul">
+      <li><span class="placeholder">[REPLACE: next feature, with one-line justification]</span> <span class="tag">in progress</span></li>
+      <li><span class="placeholder">[REPLACE: a feature you're excited about]</span></li>
+      <li><span class="placeholder">[REPLACE: an infra upgrade once usage justifies it]</span></li>
+      <li>writeup: <em><span class="placeholder">[REPLACE: a writeup you'll spin off]</span></em></li>
+    </ul>
+  </section>
+
+  <!-- pager -->
+  <nav class="pager">
+    <a class="pg prev" href="#" onclick="event.preventDefault()">
+      <div class="meta">← prev · auto-generated</div>
+      <div class="ttl"><span class="placeholder">[Previous Project]</span></div>
+    </a>
+    <a class="pg next" href="#" onclick="event.preventDefault()">
+      <div class="meta">next · auto-generated →</div>
+      <div class="ttl"><span class="placeholder">[Next Project]</span></div>
+    </a>
+  </nav>
+
+</main>
+
+<footer>
+  <span>$ template · fill placeholders, ship</span>
+  <div class="socials">
+    <a href="case-study-mdx/_template.mdx">_template.mdx</a>
+    <a href="case-study-mdx/mdx-components.tsx">mdx-components.tsx</a>
+    <a href="case-study-mdx/case-study.module.css">case-study.module.css</a>
+    <a href="case-study-mdx/README.md">README.md</a>
+  </div>
+  <span>© Vaibhav Verma · 2026</span>
+</footer>
+
+</body>
+</html>

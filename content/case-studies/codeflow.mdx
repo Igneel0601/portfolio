@@ -1,0 +1,131 @@
+---
+slug: codeflow
+title: CodeFlow
+tagline: Chat with agents, get real Next.js code running in a sandbox.
+blurb: AI builder where the agents actually run their own code. mostly.
+tag: product
+indexStatus: active
+role: solo · design + full-stack
+status: live · v0.4
+timeline: Feb → May 2026 · weekends
+commits: 61
+order: 1
+stack: [Next.js 16, React 19, TypeScript, tRPC, Prisma, Postgres, Tailwind, shadcn]
+infra: [E2B sandboxes, Inngest, OpenAI / Gemini, Clerk, Vercel]
+links:
+  live: https://code-flow-hazel.vercel.app
+  repo: https://github.com/Igneel0601
+cover: /projects/codeflow.png
+notes:
+  - live's offline — ran out of OpenAI credits. starving artist arc.
+---
+
+## tl;dr
+
+CodeFlow is an **AI-powered development platform** where you build a working web app by chatting with agents. Describe what you want, the agents generate and execute Next.js code inside a real E2B sandbox, and the result shows up in a split-pane live preview you can keep iterating on.
+
+<TLDR>
+- **What:** chat → working Next.js app, live in a sandbox
+- **Hard part:** turning long-running agent runs into a UI that stays responsive
+- **Why it matters:** AI builders are everywhere; almost none of them run the code they generate
+</TLDR>
+
+## the problem
+
+Most AI builders either spit out static mockups or hand you a zip and wish you luck. Neither survives contact with real engineering. The thing the agent generates and the thing that actually works aren't the same thing — you find out by trying to run it.
+
+CodeFlow runs actual code in an actual sandbox. The thing you see is the thing that works. You keep talking to it until it's right, instead of restarting from scratch every time you change your mind.
+
+## architecture
+
+Three async loops glued together: the chat UI, an Inngest background job runner, and an E2B sandbox doing the actual execution. The trick was making the long, slow agent runs feel snappy — you can't `await` a multi-minute job from a Server Action without freezing the UI.
+
+<AsciiDiagram caption="message → background job → sandbox → live preview" n="01">
+{`
+   ┌─────────────┐    tRPC    ┌─────────────┐   event   ┌──────────────┐
+   │   client    │ ─────────▶ │   server    │ ────────▶ │   Inngest    │
+   │  (browser)  │ ◀───────── │   (Next.js) │           │   worker     │
+   └─────────────┘  realtime  └─────────────┘           └──────┬───────┘
+         ▲                                                     │
+         │                                                     ▼
+         │            ┌──────────────────────────────────────────────┐
+         └──────────  │      E2B Code Interpreter sandbox            │
+            preview   │  generate · run · stream files & output      │
+                      └──────────────────────────────────────────────┘
+`}
+</AsciiDiagram>
+
+## key decisions
+
+<Decision n="01" picked="Inngest background jobs" rejected="server actions">
+  A single chat message can take minutes — agent reasoning, code gen, sandbox boot,
+  install, execute. Server Actions block the request lifetime; Inngest gives me
+  durable, retryable steps with built-in event publishing back to the UI. Worth
+  the extra moving part.
+</Decision>
+
+<Decision n="02" picked="E2B Code Interpreter" rejected="VM-per-user / Docker">
+  Sandboxing untrusted, AI-generated Next.js code is a security problem I don't
+  want to solve. E2B gives me ephemeral isolated runtimes with a clean API, and
+  the cost is per-second so idle sessions don't bleed money.
+</Decision>
+
+<Decision n="03" picked="OpenAI default, Gemini interchangeable" rejected="single model lock-in">
+  Gemini speaks the OpenAI-compatible API, so swapping is one env variable and
+  the agent kit doesn't care. Lets me fall back when one is rate-limiting or
+  cheaper for a given workload.
+</Decision>
+
+<Decision n="04" picked="tRPC + TanStack Query">
+  End-to-end types from procedure to React hook. Caught entire categories of
+  bugs at compile time during refactors — especially around the streaming
+  message shape between server and chat UI.
+</Decision>
+
+## walkthrough
+
+<Steps>
+  <Step n="01" label="describe what to build" hint="~5s">
+    <Figure
+      src="/projects/codeflow.png"
+      alt="CodeFlow chat input with a prompt typed in"
+      placeholder="empty chat with the prompt input focused"
+    />
+  </Step>
+  <Step n="02" label="agents go to work" hint="~30s">
+    <Figure
+      placeholder="loading: sandbox provisioning, files streaming in"
+    />
+  </Step>
+  <Step n="03" label="split-pane preview" hint="live">
+    <Figure
+      placeholder="left: live app preview · right: file tree + code"
+    />
+  </Step>
+  <Step n="04" label="iterate in chat" hint="~each message">
+    <Figure
+      placeholder="follow-up message changes the running app in place"
+    />
+  </Step>
+</Steps>
+
+## the stack
+
+<Bullets>
+- **frontend:** Next.js 16, React 19, TypeScript, Tailwind v4, shadcn/ui, Radix
+- **api:** tRPC + TanStack Query — typed from procedure to hook
+- **jobs:** Inngest + @inngest/agent-kit — durable steps, retries, pub/sub back to UI
+- **ai:** OpenAI default, Gemini swappable via `AI_PROVIDER` env
+- **exec:** E2B Code Interpreter sandboxes
+- **data:** Prisma + Postgres
+- **auth & billing:** Clerk + usage tracking with Pro tier rate limits
+</Bullets>
+
+## what's next
+
+<Bullets>
+- multi-file edit diffs visible in chat <Tag>in progress</Tag>
+- session resume across reloads
+- shareable preview URLs
+- writeup: *building agent loops that survive cold-start*
+</Bullets>
