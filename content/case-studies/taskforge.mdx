@@ -37,24 +37,12 @@ I wanted presence to be a first-class citizen. You see other cursors moving. You
 
 Frontend is a normal Next.js app. The real-time layer is a single Liveblocks room per board — every connected client subscribes to the same shared state. Mutations broadcast to all peers; persistence to Mongo happens out-of-band so the source of truth doesn't block UI updates.
 
-<AsciiDiagram caption="presence + persistence in two parallel paths" n="01">
-{`
-   ┌──────────────┐     subscribe      ┌────────────────────┐
-   │   client A   │ ◀────────────────▶ │                    │
-   └──────────────┘    Liveblocks      │     Liveblocks     │
-                          room         │   (shared state)   │
-   ┌──────────────┐                    │                    │
-   │   client B   │ ◀────────────────▶ │                    │
-   └──────────────┘                    └─────────┬──────────┘
-                                                 │
-                                          on mutation
-                                                 ▼
-                                       ┌──────────────────┐
-                                       │  Next.js API     │
-                                       │  → MongoDB Atlas │
-                                       └──────────────────┘
-`}
-</AsciiDiagram>
+<figure className="cs-arch-figure">
+  <div className="cs-arch-box">
+    <ZoomableImage src="/projects/taskforge-diagram.svg" alt="TaskForge architecture" />
+  </div>
+  <figcaption>fig. <span className="acc">01</span> · presence + persistence in two parallel paths</figcaption>
+</figure>
 
 ## key decisions
 

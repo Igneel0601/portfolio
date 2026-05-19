@@ -53,6 +53,7 @@ html {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-size: clamp(14px, 0.7vw + 9px, 18px);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -84,25 +85,25 @@ body {
    - l-*             : eyebrow/meta/tag chrome (mono, uppercase)
    - c-*             : code/terminal text (mono, no transform)
 */
-.t-display { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 72px; line-height: 0.95; font-weight: 800; letter-spacing: -0.02em; }
-.t-h1      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 56px; line-height: 1.00; font-weight: 800; letter-spacing: -0.015em; }
-.t-h2      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 36px; line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
-.t-h3      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 28px; line-height: 1.15; font-weight: 700; letter-spacing: -0.005em; }
-.t-h4      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 20px; line-height: 1.20; font-weight: 700; }
-.t-h5      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 17px; line-height: 1.25; font-weight: 600; }
+.t-display { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 4.5rem; line-height: 0.95; font-weight: 800; letter-spacing: -0.02em; }
+.t-h1      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 3.5rem; line-height: 1.00; font-weight: 800; letter-spacing: -0.015em; }
+.t-h2      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 2.25rem; line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
+.t-h3      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.75rem; line-height: 1.15; font-weight: 700; letter-spacing: -0.005em; }
+.t-h4      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.25rem; line-height: 1.20; font-weight: 700; }
+.t-h5      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.0625rem; line-height: 1.25; font-weight: 600; }
 
-.t-lead    { font-family: var(--font-body), system-ui, sans-serif; font-size: 18px; line-height: 1.45; font-weight: 400; }
-.t-body    { font-family: var(--font-body), system-ui, sans-serif; font-size: 15px; line-height: 1.50; font-weight: 400; }
-.t-sm      { font-family: var(--font-body), system-ui, sans-serif; font-size: 13px; line-height: 1.40; font-weight: 400; }
-.t-xs      { font-family: var(--font-body), system-ui, sans-serif; font-size: 12px; line-height: 1.40; font-weight: 400; }
+.t-lead    { font-family: var(--font-body), system-ui, sans-serif; font-size: 1.125rem; line-height: 1.45; font-weight: 400; }
+.t-body    { font-family: var(--font-body), system-ui, sans-serif; font-size: 0.9375rem; line-height: 1.50; font-weight: 400; }
+.t-sm      { font-family: var(--font-body), system-ui, sans-serif; font-size: 0.8125rem; line-height: 1.40; font-weight: 400; }
+.t-xs      { font-family: var(--font-body), system-ui, sans-serif; font-size: 0.75rem; line-height: 1.40; font-weight: 400; }
 
-.l-eyebrow { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: 0.18em; font-weight: 500; text-transform: uppercase; }
-.l-meta    { font-family: var(--font-mono), ui-monospace, monospace; font-size: 10px; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; }
-.l-tag     { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; letter-spacing: 0.10em; font-weight: 500; }
+.l-eyebrow { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.6875rem; letter-spacing: 0.18em; font-weight: 500; text-transform: uppercase; }
+.l-meta    { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.625rem; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; }
+.l-tag     { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.6875rem; letter-spacing: 0.10em; font-weight: 500; }
 
-.c-md      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 13px; line-height: 1.60; }
-.c-sm      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 12px; line-height: 1.50; }
-.c-xs      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 11px; line-height: 1.40; }
+.c-md      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.8125rem; line-height: 1.60; }
+.c-sm      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.75rem; line-height: 1.50; }
+.c-xs      { font-family: var(--font-mono), ui-monospace, monospace; font-size: 0.6875rem; line-height: 1.40; }
 
 .btn {
   display: inline-flex;
@@ -114,7 +115,7 @@ body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-mono), monospace;
-  font-size: 12px;
+  font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   box-shadow: 3px 3px 0 var(--ink);
@@ -141,11 +142,11 @@ body {
   border: 1.4px solid var(--ink);
   border-radius: 999px;
   font-family: var(--font-mono), monospace;
-  font-size: 12px;
+  font-size: 0.75rem;
   background: var(--paper);
   color: var(--ink);
 }
-.pill.sm { font-size: 11px; padding: 2px 8px; }
+.pill.sm { font-size: 0.6875rem; padding: 2px 8px; }
 
 .link {
   color: var(--accent);
@@ -174,7 +175,7 @@ body {
   border: 1.4px solid var(--accent);
   color: var(--accent);
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
+  font-size: 0.625rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   transform: rotate(-3deg);
@@ -326,12 +327,12 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .cs-mac-r   { background: #ff5f57; }
 .cs-mac-y   { background: #febc2e; }
 .cs-mac-g   { background: #28c840; }
-.cs-prompt  { font-size: 12px; color: var(--ink-soft); margin-left: 6px; }
-.cs-term-right { margin-left: auto; font-size: 11px; color: var(--ink-dim); letter-spacing: .04em; }
+.cs-prompt  { font-size: 0.75rem; color: var(--ink-soft); margin-left: 6px; }
+.cs-term-right { margin-left: auto; font-size: 0.6875rem; color: var(--ink-dim); letter-spacing: .04em; }
 
 .cs-crumb-line {
   color: var(--ink-dim);
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: .04em;
   margin-bottom: 24px;
   font-family: var(--mono);
@@ -365,13 +366,13 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   display: flex;
   flex-direction: column;
   gap: 0;
-  font-size: 13px;
+  font-size: 0.8125rem;
   color: var(--ink-soft);
   border-left: 1px solid var(--hair);
   padding-left: 18px;
 }
 .cs-toc-lbl {
-  font-size: 10.5px;
+  font-size: 0.656rem;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -386,7 +387,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   margin-left: -18px;
   padding-left: 18px;
   color: var(--ink-soft);
-  font-size: 13px;
+  font-size: 0.8125rem;
   line-height: 1.5;
   transition: color .15s ease, border-color .15s ease;
   border-left: 1px solid transparent;
@@ -395,7 +396,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   color: var(--ink-dim);
   width: 24px;
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   letter-spacing: .04em;
 }
 .cs-toc a:hover { color: var(--ink); }
@@ -431,7 +432,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .cs-hero-title .acc { color: var(--accent); }
 .cs-hero-tag {
   margin-top: 12px;
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--ink-soft);
   max-width: 60ch;
   line-height: 1.6;
@@ -449,13 +450,171 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   padding: 6px 12px;
   border: 1px solid var(--hair-2);
   border-radius: 999px;
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--ink);
   transition: border-color .18s ease, color .18s ease;
 }
 .cs-pill:hover { border-color: var(--accent); color: var(--accent); }
 .cs-pill .live { color: var(--accent); }
 .cs-pill .ext  { color: var(--ink-dim); }
+
+/* architecture figure (SVG diagram) */
+.cs-arch-figure {
+  margin: 1rem 0 0;
+}
+.cs-arch-box {
+  padding: 1.5rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.625rem;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-arch-box img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+}
+
+.cs-arch-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: zoom-in;
+}
+.cs-arch-trigger img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+}
+.cs-arch-expand-hint {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--hair-2);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--paper) 80%, transparent);
+  color: var(--ink-soft);
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  font-family: var(--mono);
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+}
+.cs-arch-trigger:hover .cs-arch-expand-hint { opacity: 1; }
+
+.cs-arch-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: color-mix(in oklab, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.cs-arch-modal-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 1400px;
+  border: 1px solid var(--hair);
+  border-radius: 0.75rem;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+.cs-arch-toolbar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.25rem;
+  border: 1px solid var(--hair-2);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--paper) 80%, transparent);
+}
+.cs-arch-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.cs-arch-toolbar button:hover {
+  background: var(--paper-3);
+  color: var(--ink);
+}
+.cs-arch-close { margin-left: 0.5rem; border-left: 1px solid var(--hair); padding-left: 0.5rem; }
+.cs-arch-canvas {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+}
+.cs-arch-canvas:active { cursor: grabbing; }
+.cs-arch-canvas img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.cs-arch-figure figcaption {
+  margin-top: 0.875rem;
+  color: var(--ink-dim);
+  font-size: 0.75rem;
+  letter-spacing: .04em;
+  font-family: var(--mono);
+  text-align: center;
+}
+.cs-arch-figure figcaption .acc { color: var(--accent-2); }
+
+/* mermaid diagram block */
+.cs-mermaid {
+  margin: 16px 0 0;
+  padding: 24px;
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-mermaid-render { display: flex; justify-content: center; }
+.cs-mermaid-render svg { max-width: 100%; height: auto; }
+.cs-mermaid-caption {
+  margin-top: 14px;
+  color: var(--ink-dim);
+  font-size: 0.75rem;
+  letter-spacing: .04em;
+  font-family: var(--mono);
+  text-align: center;
+}
+.cs-mermaid-n { color: var(--accent-2); }
 
 /* /not-found */
 .nf-main {
@@ -481,7 +640,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   .nf-content { grid-template-columns: 1fr; row-gap: 32px; }
 }
 .nf-eyebrow {
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: .18em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -521,7 +680,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .nf-sub {
   margin: 18px 0 0;
   max-width: 50ch;
-  font-size: 15px;
+  font-size: 0.9375rem;
   line-height: 1.7;
   color: var(--ink-soft);
 }
@@ -530,14 +689,13 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 2;
 }
 .nf-routes-lbl {
-  font-size: 11px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--ink-dim);
+  font-size: 0.8125rem;
+  letter-spacing: .04em;
+  color: var(--accent);
   margin-bottom: 8px;
 }
 .nf-route {
@@ -549,7 +707,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 }
 .nf-route .nf-arr { color: var(--ink-dim); transition: color .18s ease, transform .18s ease; }
 .nf-route .nf-path { color: var(--ink); }
-.nf-route .nf-meta { color: var(--ink-dim); margin-left: auto; padding-left: 16px; font-size: 12px; }
+.nf-route .nf-meta { color: var(--ink-dim); margin-left: auto; padding-left: 16px; font-size: 0.75rem; }
 .nf-route:hover { color: var(--accent); }
 .nf-route:hover .nf-path,
 .nf-route:hover .nf-arr,
@@ -562,7 +720,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   gap: 24px;
   padding: 20px clamp(24px, 5vw, 56px);
   border-top: 1px solid var(--hair);
-  font-size: 11.5px;
+  font-size: 0.72rem;
   color: var(--ink-dim);
   letter-spacing: .04em;
   font-family: var(--mono);
@@ -616,7 +774,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .cs-pager-link:hover { border-color: var(--accent); }
 .cs-pager-card:nth-child(2) { align-items: flex-end; text-align: right; }
 .cs-pager-lbl {
-  font-size: 11px;
+  font-size: 0.6875rem;
   letter-spacing: .14em;
   text-transform: uppercase;
   color: var(--ink-dim);
@@ -630,12 +788,12 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   gap: 6px;
 }
 .cs-pager-title {
-  font-size: 15px;
+  font-size: 0.9375rem;
   color: var(--ink);
 }
 .cs-pager-link:hover .cs-pager-title { color: var(--accent); }
 .cs-pager-empty { opacity: .5; }
-.cs-pager-empty-txt { color: var(--ink-dim); font-size: 13px; }
+.cs-pager-empty-txt { color: var(--ink-dim); font-size: 0.8125rem; }
 
 .cs-footer {
   display: flex;
@@ -645,7 +803,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   padding: 20px clamp(20px, 4vw, 56px);
   border-top: 1px solid var(--hair);
   font-family: var(--mono);
-  font-size: 11.5px;
+  font-size: 0.72rem;
   color: var(--ink-dim);
   letter-spacing: .04em;
 }

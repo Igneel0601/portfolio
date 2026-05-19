@@ -15,6 +15,8 @@
 import * as React from "react";
 import styles from "./case-study.module.css";
 import { slugify } from "./slug";
+import { Mermaid } from "./Mermaid";
+import { ZoomableImage } from "./ZoomableImage";
 
 function nodeText(node: React.ReactNode): string {
   if (node == null || typeof node === "boolean") return "";
@@ -91,10 +93,12 @@ export function Figure({ src, alt, caption, n, aspect, placeholder }: FigureProp
 
 export function AsciiDiagram({
   children,
+  art,
   caption,
   n,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
+  art?: string;
   caption?: string;
   n?: string;
 }) {
@@ -105,7 +109,7 @@ export function AsciiDiagram({
           <span>diagram</span>
           <span className={styles.codeLang}>ascii</span>
         </div>
-        <pre className={styles.codePre}>{children}</pre>
+        <pre className={styles.codePre}>{art ?? children}</pre>
       </div>
       {caption && (
         <figcaption className={styles.caption}>
@@ -307,6 +311,7 @@ export function buildMdxComponents() {
     p:  (props: any) => <p className={styles.lede} {...props} />,
     ul: (props: any) => <ul className={styles.mdUl} {...props} />,
     code: (props: any) => <code className={styles.inlineCode} {...props} />,
+    pre: (props: any) => <pre className={styles.codeBlock} {...props} />,
     a: (props: any) => <a className={styles.link} {...props} />,
 
     // custom components used in mdx
@@ -315,6 +320,8 @@ export function buildMdxComponents() {
     Tag,
     Figure,
     AsciiDiagram,
+    Mermaid,
+    ZoomableImage,
     Code,
     Decision,
     Steps,

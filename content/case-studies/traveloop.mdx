@@ -37,31 +37,12 @@ Traveloop puts the lanes in one workspace, with a single trip object that owns i
 
 Server Components first, Server Actions for mutations. No separate `/api/v1/*` REST surface to maintain — every mutation is a typed `'use server'` function with Zod validation and a `safeAction()` error envelope. RBAC enforced at the layout level so non-admins literally 404 on `/admin`.
 
-<AsciiDiagram caption="App Router · RSC pages · Server Actions · Prisma · Postgres" n="01">
-{`
-   ┌───────────────────────────────────────────────────────────┐
-   │  Browser  (Next.js 16 · App Router · RSC)                 │
-   │                                                           │
-   │   Pages (RSC)        Client islands      Forms + charts   │
-   │   src/app/(app)/*    Navbar, Dialogs     RHF + Zod        │
-   │                                          Recharts         │
-   └────────────┬──────────────────────────────────────────────┘
-                │ 'use server' actions  /  route handlers
-                ▼
-   ┌───────────────────────────────────────────────────────────┐
-   │  Server (same Next.js process)                            │
-   │   src/server/actions/*     ← mutations (trips, stops,     │
-   │                              expenses, notes, packing)    │
-   │   src/lib/auth.ts          ← Auth.js v5 (credentials)     │
-   │   src/lib/server-action-utils ← safeAction() envelope     │
-   └────────────┬──────────────────────────────────────────────┘
-                │ Prisma ORM
-                ▼
-   ┌───────────────────────────────────────────────────────────┐
-   │  PostgreSQL · 12 tables · User > Trip > Stop > Activity   │
-   └───────────────────────────────────────────────────────────┘
-`}
-</AsciiDiagram>
+<figure className="cs-arch-figure">
+  <div className="cs-arch-box">
+    <ZoomableImage src="/projects/traveloop-diagram.svg" alt="Traveloop architecture" />
+  </div>
+  <figcaption>fig. <span className="acc">01</span> · App Router · RSC pages · Server Actions · Prisma · Postgres</figcaption>
+</figure>
 
 ## key decisions
 

@@ -40,20 +40,12 @@ CodeFlow runs actual code in an actual sandbox. The thing you see is the thing t
 
 Three async loops glued together: the chat UI, an Inngest background job runner, and an E2B sandbox doing the actual execution. The trick was making the long, slow agent runs feel snappy — you can't `await` a multi-minute job from a Server Action without freezing the UI.
 
-<AsciiDiagram caption="message → background job → sandbox → live preview" n="01">
-{`
-   ┌─────────────┐    tRPC    ┌─────────────┐   event   ┌──────────────┐
-   │   client    │ ─────────▶ │   server    │ ────────▶ │   Inngest    │
-   │  (browser)  │ ◀───────── │   (Next.js) │           │   worker     │
-   └─────────────┘  realtime  └─────────────┘           └──────┬───────┘
-         ▲                                                     │
-         │                                                     ▼
-         │            ┌──────────────────────────────────────────────┐
-         └──────────  │      E2B Code Interpreter sandbox            │
-            preview   │  generate · run · stream files & output      │
-                      └──────────────────────────────────────────────┘
-`}
-</AsciiDiagram>
+<figure className="cs-arch-figure">
+  <div className="cs-arch-box">
+    <ZoomableImage src="/projects/codeflow-diagram.svg" alt="CodeFlow architecture" />
+  </div>
+  <figcaption>fig. <span className="acc">01</span> · message → background job → sandbox → live preview</figcaption>
+</figure>
 
 ## key decisions
 

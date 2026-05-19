@@ -32,7 +32,7 @@ export default function NotFound() {
         </div>
 
         <nav className="nf-right nf-routes" aria-label="suggested routes">
-          <div className="nf-routes-lbl">$ ls ~</div>
+          <div className="nf-routes-lbl">$ ls</div>
           {ROUTES.map((r) => (
             <Link key={r.path} href={r.href} className="nf-route no-pop">
               <ArrowRight size={14} className="nf-arr" aria-hidden />
