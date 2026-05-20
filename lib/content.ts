@@ -141,7 +141,7 @@ export type NavLink = {
 };
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "work", href: "#work", kind: "scroll" },
+  { label: "work", href: "/work", kind: "route" },
   { label: "writing", href: "/writing", kind: "route" },
   { label: "experiments", href: "/experiments", kind: "route" },
   { label: "about", href: "#about", kind: "scroll" },

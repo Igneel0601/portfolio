@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, ChevronRight } from "lucide-react";
+import { MoveLeft, ArrowUpRight, ChevronRight } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 
 const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;
@@ -177,7 +177,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           href="/"
           className="work-back-link mono mute text-[11px] tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
         >
-          <ArrowLeft size={12} aria-hidden /> <span style={{ color: "var(--accent-2)" }}>/</span> back home
+          <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> <span style={{ color: "var(--accent-2)" }}>/</span>back home
         </Link>
         <h1
           data-page-title
@@ -217,7 +217,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
                   [{row.status}]
                 </span>
                 <span className="work-chev" aria-hidden>
-                  {row.slug && <ChevronRight size={14} />}
+                  {row.slug && <ChevronRight size={14} strokeWidth={1.5} />}
                 </span>
               </>
             );

@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, ArrowRight, MoveLeft } from 'lucide-react'
 import type { Metadata } from 'next'
-import { getPostBySlug, getPostSlugs } from '@/lib/posts'
+import { getAdjacentPosts, getPostBySlug, getPostSlugs } from '@/lib/posts'
 import { PostBody } from '@/components/writing/PostBody'
+import { ReadingProgress } from '@/components/writing/ReadingProgress'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -27,7 +28,7 @@ function resolveMediaUrl(url: string | undefined | null): string | null {
 
 function formatDate(iso: string | null) {
   if (!iso) return '—'
-  return new Date(iso).toISOString().slice(0, 10).replace(/-/g, ' · ')
+  return new Date(iso).toISOString().slice(0, 10).replace(/-/g, '·')
 }
 
 export async function generateMetadata({
@@ -65,97 +66,99 @@ export default async function PostPage({
   const post = await getPostBySlug(slug)
   if (!post) notFound()
 
+  const { prev, next } = await getAdjacentPosts(slug)
   const heroUrl = resolveMediaUrl(post.heroImage?.url)
+  const filename = `${slug}.md`
 
   return (
-    <main className="flex-1 pb-24">
-      <section className="w-post-shell pt-24">
-        <aside className="w-aside l-meta" aria-label="post metadata">
-          <span className="w-label">filed</span>
-          <span className="w-val">{formatDate(post.publishedAt)}</span>
+    <>
+      <ReadingProgress />
+      <main className="flex-1 pb-24">
+        <section
+          className="wp-shell"
+          style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
+        >
+          <div className="cs-crumb-line" style={{ display: 'flex', alignItems: 'center' }}>
+            <Link href="/writing" className="cs-back-link no-pop">
+              <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> /writing
+            </Link>
+            <span className="cs-sep">·</span>
+            <span>{filename}</span>
+          </div>
 
-          {post.categories.length > 0 && (
-            <>
-              <span className="w-label">under</span>
-              {post.categories.map((c) => (
-                <span key={c.id} className="w-val">
-                  {c.title}
-                </span>
-              ))}
-            </>
+          <h1 className="wp-title">{post.title}</h1>
+
+          {post.metaDescription && <p className="wp-lead">{post.metaDescription}</p>}
+
+          <div className="wp-meta-strip">
+            {post.categories.map((c, i) => (
+              <span key={c.slug} style={{ display: 'contents' }}>
+                {i > 0 && <span className="wp-sep">·</span>}
+                <span className="wp-tag">{c.title.toLowerCase()}</span>
+              </span>
+            ))}
+            {post.categories.length > 0 && <span className="wp-sep">·</span>}
+            <span>
+              <b>{post.readMinutes}</b> min read
+            </span>
+            <span className="wp-sep">·</span>
+            <span>{post.wordCount.toLocaleString()} words</span>
+            <span className="wp-sep">·</span>
+            <span>{formatDate(post.publishedAt)}</span>
+            <span className="wp-file">{filename}</span>
+          </div>
+
+          {heroUrl && (
+            <Image
+              src={heroUrl}
+              alt={post.heroImage?.alt ?? ''}
+              width={post.heroImage?.width ?? 1600}
+              height={post.heroImage?.height ?? 900}
+              priority
+              unoptimized
+              className="wp-hero"
+            />
           )}
 
-          <span className="w-label">file</span>
-          <span className="w-val">{slug}.md</span>
-        </aside>
+          {post.content && (
+            <article className="w-prose wp-prose-wrap">
+              <PostBody value={post.content} />
+            </article>
+          )}
 
-        <div className="cs-crumb-line">
-          <Link href="/writing" className="cs-back-link no-pop">
-            <ArrowLeft size={12} aria-hidden /> / writing
-          </Link>
-          <span className="cs-sep">·</span>
-          <span>{slug}.md</span>
-        </div>
+          {(prev || next) && (
+            <nav className="wp-pager" aria-label="post navigation">
+              {prev ? (
+                <Link href={`/writing/${prev.slug}`} className="wp-pager-card no-pop">
+                  <span className="wp-pager-lbl">
+                    <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> previous
+                  </span>
+                  <span className="wp-pager-ttl">{prev.title}</span>
+                </Link>
+              ) : (
+                <span />
+              )}
+              {next ? (
+                <Link href={`/writing/${next.slug}`} className="wp-pager-card next no-pop">
+                  <span className="wp-pager-lbl">
+                    next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+                  </span>
+                  <span className="wp-pager-ttl">{next.title}</span>
+                </Link>
+              ) : (
+                <span />
+              )}
+            </nav>
+          )}
 
-        <h1
-          className="t-display"
-          style={{
-            marginTop: '1.25rem',
-            maxWidth: '18ch',
-            letterSpacing: '0.025em',
-            lineHeight: 1.05,
-          }}
-        >
-          {post.title}
-        </h1>
-
-        {post.metaDescription && (
-          <p
-            className="t-lead"
-            style={{
-              marginTop: '1rem',
-              color: 'var(--ink-soft)',
-              fontStyle: 'italic',
-              maxWidth: '52ch',
-            }}
-          >
-            {post.metaDescription}
-          </p>
-        )}
-
-        {heroUrl && (
-          <Image
-            src={heroUrl}
-            alt={post.heroImage?.alt ?? ''}
-            width={post.heroImage?.width ?? 1600}
-            height={post.heroImage?.height ?? 900}
-            priority
-            unoptimized
-            style={{
-              width: '100%',
-              height: 'auto',
-              borderRadius: '4px',
-              margin: '2.5rem 0',
-            }}
-          />
-        )}
-
-        {post.content && (
-          <div
-            className="w-prose t-lead"
-            style={{ marginTop: '3rem', maxWidth: '72ch', color: 'var(--ink)' }}
-          >
-            <PostBody value={post.content} />
+          <div className="wp-foot">
+            <Link href="/writing" className="no-pop">
+              ← back to writing
+            </Link>
+            <span>// fin</span>
           </div>
-        )}
-
-        <div className="w-post-footer">
-          <Link href="/writing" className="l-meta no-pop">
-            ← back to writing
-          </Link>
-          <span className="l-meta">// fin</span>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+    </>
   )
 }

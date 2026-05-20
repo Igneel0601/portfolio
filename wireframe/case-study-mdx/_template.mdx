@@ -1,0 +1,292 @@
+---
+# ─── frontmatter ────────────────────────────────────────────
+# everything between the `---` lines is metadata.
+# the page header pill row + the projects index both read from this.
+# REPLACE every value below. don't ship the placeholders.
+
+slug:        project-slug                  # url: /work/project-slug
+title:       Project Name                  # displayed as h1
+tagline:     One line that earns the click # 8–14 words. show, don't tell.
+role:        solo · design + full-stack    # solo / collab / hackathon / oss · what you did
+status:      live · v0.4                   # live · archived · wip · shipped
+timeline:    Feb → Apr 2026 · ~N weekends  # human-readable, not exact dates
+commits:     N                             # number, no quotes
+order:       1                             # 1 = first/flagship. controls prev/next pager.
+
+stack:       [Lang, Framework, ORM, DB, UI]
+infra:       [Hosting, Queue, AI, Auth]
+
+links:
+  live:    https://example.com
+  repo:    https://github.com/you/repo
+  demo:    https://youtube.com/watch?v=xxx  # optional
+  rfc:     /writing/rfc-project-slug        # optional
+
+# ─── og / preview card ─────────────────────────────────────
+cover:       /case/project-slug/og.png      # 1200×630
+words:       7400                           # auto-computed if you skip
+readMinutes: 9                              # auto-computed if you skip
+---
+
+{/*
+  ┌──────────────────────────────────────────────────────────┐
+  │  CASE STUDY TEMPLATE — fill it in, top to bottom.        │
+  │                                                          │
+  │  • REPLACE [bracketed labels] with your content.         │
+  │  • DELETE sections that don't apply (e.g. drop           │
+  │    `## deep dive` if the project is small).              │
+  │  • Lorem ipsum is filler — replace before shipping.      │
+  │  • All `<Components>` map to React components in         │
+  │    ./mdx-components.tsx.                                 │
+  └──────────────────────────────────────────────────────────┘
+*/}
+
+{/* ─── 02 · tl;dr ───────────────────────────────────────────
+   first thing visitors read. earns the rest of the page.
+   keep prose ≤ 3 sentences. use **bold** for the key term.
+   the <TLDR> bullets are for skim readers — exactly 3 items.
+*/}
+
+## tl;dr
+
+Lorem ipsum **[REPLACE: one-sentence summary of the project]** dolor sit amet,
+consectetur adipiscing elit. Built [solo / with a team of N] over [timeline],
+shipped at [URL].
+
+<TLDR>
+- **What:** [REPLACE: product category in 6 words. "v0-style site builder", "real-time kanban"]
+- **Hard part:** [REPLACE: the one technical problem you'd brag about at a bar]
+- **Why it matters:** [REPLACE: what this proves about you / the space]
+</TLDR>
+
+{/* ─── 03 · the problem ─────────────────────────────────────
+   2–4 sentences. answer: what hurt before this existed?
+   avoid feature lists. focus on the gap.
+*/}
+
+## the problem
+
+[REPLACE: 2-4 sentences on the gap this fills. who suffers, what they currently
+do instead, why existing options miss.]
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+incididunt ut labore et dolore magna aliqua. Existing tools — `[alt-1]`,
+`[alt-2]`, `[alt-3]` — are good, but they [REPLACE: their critical limitation].
+**[REPLACE: the metric that mattered to me]** was the thing I wanted to move.
+
+{/* ─── 04 · hero shot ───────────────────────────────────────
+   one big image. 21:9 works best. ideal capture: 2400×1030.
+   if you don't have one yet, the placeholder will sit happily.
+*/}
+
+## at a glance
+
+<Figure
+  src="/case/[slug]/hero.png"
+  alt="[REPLACE: alt text for the hero shot]"
+  caption="full-bleed product hero · 2400×1030, dark theme"
+  n="01"
+  aspect="wide"
+  placeholder="hero shot — full app in real use"
+/>
+
+{/* ─── 05 · constraints ─────────────────────────────────────
+   what was the box you had to design inside?
+   solo? deadline? budget? scope cut you made on day 1?
+   these signal seniority — "here's what I gave up to ship".
+*/}
+
+## constraints &amp; scope
+
+<Bullets>
+- **[CONSTRAINT 1]:** [REPLACE: e.g. "solo. no co-founders, no design partner."]
+- **[CONSTRAINT 2]:** [REPLACE: e.g. "weekends only. ~12 hrs/wk budget."]
+- **[CONSTRAINT 3]:** [REPLACE: e.g. "$30/mo infra ceiling. forced serverless."]
+- **scope cut:** [REPLACE: what you explicitly didn't build, and why that was right.]
+</Bullets>
+
+{/* ─── 06 · architecture ────────────────────────────────────
+   the system in one diagram. use ascii — it matches the theme
+   AND signals you can think in boxes-and-arrows without figma.
+   1 paragraph of prose above it. NO LONGER than ~80 chars per ascii line.
+*/}
+
+## architecture
+
+[REPLACE: 2-3 sentences explaining the diagram below. name the loops/services/loops.
+call out the ONE clever bit — "the trick was X".]
+
+Lorem ipsum dolor sit amet — three async loops glued together: **[loop 1]**,
+**[loop 2]**, and **[loop 3]**. The trick was [REPLACE: the non-obvious move].
+
+<AsciiDiagram caption="request flow · [REPLACE: one-line description]" n="02">
+{`
+   ┌─────────────┐    [verb]    ┌─────────────┐    [verb]    ┌──────────────┐
+   │   client    │ ───────────▶ │   server    │ ───────────▶ │   service    │
+   │  (browser)  │ ◀─────────── │   (api)     │              │  (worker)    │
+   └─────────────┘   streams    └─────────────┘              └──────┬───────┘
+                                                                    │
+                                                                    ▼
+                                                            ┌──────────────┐
+                                                            │  sandbox /   │
+                                                            │  data layer  │
+                                                            └──────────────┘
+`}
+</AsciiDiagram>
+
+{/* ─── 07 · key decisions ───────────────────────────────────
+   3–4 forks in the road. each one is:
+     - what you picked
+     - what you rejected
+     - 2-3 sentences on why
+   this is the MOST IMPORTANT section. hiring managers skim straight here.
+*/}
+
+## key decisions
+
+<Decision n="01" picked="[CHOICE A]" rejected="[CHOICE B]">
+  [REPLACE: 2-3 sentences on the tradeoff.] Lorem ipsum dolor sit amet,
+  consectetur adipiscing elit. The reason I picked [A] over [B] was
+  [REPLACE: concrete reason — speed, cost, type-safety, hiring].
+</Decision>
+
+<Decision n="02" picked="[CHOICE A]" rejected="[CHOICE B]">
+  [REPLACE]. Lorem ipsum dolor sit amet. Quantify the tradeoff if you can —
+  "cost ~3¢/session in practice", "shaved 6 seconds off median TTI", etc.
+</Decision>
+
+<Decision n="03" picked="[CHOICE A]" rejected="[CHOICE B]">
+  [REPLACE]. Sed do eiusmod tempor incididunt ut labore et dolore magna.
+  End-to-end types meant I caught two whole categories of bugs at compile time.
+</Decision>
+
+<Decision n="04" picked="[CHOICE A]">
+  [REPLACE: a decision with no rejected alternative — just a clever default.]
+  Caught in `path/to/file.ts:functionName`.
+</Decision>
+
+{/* ─── 08 · walkthrough ─────────────────────────────────────
+   3–6 frames of the user journey. each frame = one screenshot
+   + one-line caption + a duration hint.
+   placeholder images are fine for now — capture and drop in later.
+*/}
+
+## walkthrough
+
+[REPLACE: one line teasing the flow. "Four frames, prompt to preview."]
+
+<Steps>
+  <Step n="01" label="[REPLACE: action verb]" hint="/route or ~5s">
+    <Figure
+      src="/case/[slug]/step-01.png"
+      alt="[REPLACE]"
+      placeholder="empty state with focus on the trigger"
+    />
+  </Step>
+  <Step n="02" label="[REPLACE]" hint="~5s">
+    <Figure
+      src="/case/[slug]/step-02.png"
+      alt="[REPLACE]"
+      placeholder="loading / provisioning state"
+    />
+  </Step>
+  <Step n="03" label="[REPLACE]" hint="~25s">
+    <Figure
+      src="/case/[slug]/step-03.png"
+      alt="[REPLACE]"
+      placeholder="content streaming / progress"
+    />
+  </Step>
+  <Step n="04" label="[REPLACE]" hint="~40s total">
+    <Figure
+      src="/case/[slug]/step-04.png"
+      alt="[REPLACE]"
+      placeholder="final result, success state"
+    />
+  </Step>
+</Steps>
+
+{/* ─── 09 · deep dive ───────────────────────────────────────
+   one technical problem, in depth. prose → code → outcome.
+   pick the problem you'd want an interviewer to ask you about.
+   30–60 lines of code max — anything longer belongs in a writeup.
+*/}
+
+## deep dive · the hard part
+
+[REPLACE: 2-3 sentences framing the problem.] Lorem ipsum dolor sit amet,
+consectetur adipiscing elit. Sed do eiusmod tempor incididunt — and the naive
+approach (`await everything`) blocks the UI. The fix: [REPLACE: the pattern you used].
+
+<Code file="path/to/file.ts" lang="typescript" caption="the [feature] loop · every step is its own resumable unit" n="01">
+{`export const runJob = createFunction(
+  { id: "run-job" },
+  { event: "job/start.requested" },
+  async ({ event, step }) => {
+    const plan = await step.run("plan", () => planSteps(event.data.input));
+
+    for (const item of plan.items) {
+      // each item is its own retryable step
+      await step.run(\`process:\${item.id}\`, async () => {
+        const result = await process(item);
+        await pubsub.publish(event.data.jobId, { item, result });
+      });
+    }
+
+    return { status: "done", count: plan.items.length };
+  }
+);`}
+</Code>
+
+[REPLACE: 1-2 sentences on what the snippet earned you.] The aha moment: once
+each item is a step, retries are free, partial-progress on cold start is free,
+and the UI just listens for the published events.
+
+{/* ─── 10 · outcomes ────────────────────────────────────────
+   4 numbers. NO MORE. if you can't quantify, drop this section.
+   good metrics: commits, performance, cost, time-to-X, users, stars.
+   bad metrics: "lots", "many", "improved significantly".
+*/}
+
+## outcomes
+
+<Stats>
+  <Stat value="N"     unit="commits"  label="solo · main branch" />
+  <Stat value="~N"    unit="sec"      label="[REPLACE: latency metric]" />
+  <Stat value="$N"    unit="/unit"    label="[REPLACE: cost metric]" />
+  <Stat value="N"     unit="weekends" label="[REPLACE: timeline metric]" />
+</Stats>
+
+{/* ─── 11 · what I'd do differently ─────────────────────────
+   the honest section. signals seniority.
+   3-5 things. each one is a SPECIFIC mistake, not "communicate more".
+*/}
+
+## what I'd do differently
+
+<Bullets>
+- **[MISTAKE 1, named].** [REPLACE: 1 sentence on the cost + 1 on the fix.]
+  Lorem ipsum dolor sit amet — should have done [X] instead of [Y].
+- **[MISTAKE 2].** [REPLACE]. Consectetur adipiscing elit.
+- **[MISTAKE 3].** [REPLACE]. Bolting on [thing] at the end touched 40% of the routes.
+- **[MISTAKE 4 — optional].** [REPLACE].
+</Bullets>
+
+{/* ─── 12 · what's next ─────────────────────────────────────
+   3-5 roadmap items. tag each as "in progress" / "next" / "maybe".
+   showing forward motion is more important than completeness.
+*/}
+
+## what's next
+
+<Bullets>
+- [REPLACE: next feature, with one-line justification] <Tag>in progress</Tag>
+- [REPLACE: a feature you're excited about]
+- [REPLACE: an infra upgrade once usage justifies it]
+- writeup: *[REPLACE: a writeup you'll spin off from this project]*
+</Bullets>
+
+{/* ─── 13 · footer pager ────────────────────────────────────
+   generated automatically from `order` in frontmatter.
+   delete this comment block once you've read it.
+*/}

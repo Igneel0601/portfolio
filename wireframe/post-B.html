@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Entwined Lives — Vaibhav Verma</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500;1,9..144,600;1,9..144,700&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  /* progress sliver */
+  .progress{position:fixed;top:0;left:0;height:2px;background:var(--accent);width:0;z-index:60;transition:width .12s linear;}
+
+  .shell{width:min(96%,64rem);margin:0 auto;padding:clamp(20px,2.5vw,32px) 2rem 0;flex:1;}
+
+  /* rail breadcrumb */
+  .rail{font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:baseline;gap:10px;}
+  .rail a{color:var(--ink-soft);text-decoration:none;transition:color .18s ease;}
+  .rail a:hover{color:var(--accent);}
+  .rail .sep{opacity:.5;}
+
+  /* eyebrow above title */
+  .eyebrow{font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;margin-top:3rem;display:flex;align-items:center;gap:12px;}
+  .eyebrow .rule{display:inline-block;width:24px;height:1px;background:var(--accent);}
+  .eyebrow .acc{color:var(--accent);}
+
+  /* hero — left-aligned but generous */
+  .hero-title{font-family:var(--font-serif);font-size:clamp(56px,8vw,120px);font-weight:800;line-height:.95;letter-spacing:-.025em;margin:1.25rem 0 0;max-width:14ch;}
+  .hero-dek{font-family:var(--font-serif);font-style:italic;font-size:clamp(20px,1.8vw,28px);color:var(--ink-soft);margin:1.5rem 0 0;max-width:36ch;line-height:1.35;font-weight:400;}
+
+  /* meta strip — 4 columns instead of sidebar */
+  .meta-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:24px;margin-top:3rem;padding:1.25rem 0;border-top:1px solid var(--hair);border-bottom:1px solid var(--hair);}
+  .meta-strip .cell{display:flex;flex-direction:column;gap:6px;}
+  .meta-strip .lbl{font-family:var(--font-mono);font-size:.625rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;}
+  .meta-strip .val{font-family:var(--font-mono);font-size:.8125rem;color:var(--ink);letter-spacing:.04em;}
+  .meta-strip .val.acc{color:var(--accent);}
+
+  /* prose — centered, single column */
+  .prose{margin:4rem auto 0;max-width:62ch;font-family:var(--font-body);font-size:1.0625rem;line-height:1.85;color:var(--ink);}
+  .prose p{margin:0 0 1.4rem;}
+  .prose .lead{font-family:var(--font-serif);font-style:italic;font-size:1.35rem;line-height:1.5;color:var(--ink);margin-bottom:2.4rem;font-weight:400;}
+  .prose h2{font-family:var(--font-serif);font-size:2.25rem;font-weight:700;margin:3rem 0 1.4rem;letter-spacing:-.01em;line-height:1.15;display:flex;align-items:baseline;gap:14px;scroll-margin-top:5rem;}
+  .prose h2 .n{font-family:var(--font-mono);font-size:.65em;color:var(--accent);font-weight:500;letter-spacing:.14em;font-style:normal;line-height:1;}
+  .prose h3{font-family:var(--font-serif);font-size:1.5rem;font-weight:600;margin:2.4rem 0 1rem;letter-spacing:-.005em;}
+  .prose em{font-style:italic;color:var(--ink);}
+  .prose strong{color:var(--ink);font-weight:600;}
+  .prose code{background:color-mix(in oklab,var(--ink) 6%,transparent);color:var(--accent);padding:1px 6px;border-radius:3px;font-family:var(--font-mono);font-size:.9em;}
+  .prose a{color:var(--ink);border-bottom:1px solid color-mix(in oklab,var(--accent) 55%,transparent);text-decoration:none;transition:border-color .2s ease,color .2s ease;}
+  .prose a:hover{color:var(--accent);border-bottom-color:var(--accent);}
+  .prose ul, .prose ol{padding-left:1.4rem;margin:1rem 0 1.4rem;}
+  .prose li{margin:.35rem 0;}
+
+  /* centered pull-quote with hair rules */
+  .prose blockquote{font-family:var(--font-serif);font-style:italic;font-size:1.65rem;line-height:1.4;font-weight:500;color:var(--ink);margin:3rem auto;text-align:center;max-width:42ch;padding:0;border:none;}
+  .prose blockquote::before, .prose blockquote::after{content:'';display:block;width:24px;height:1px;background:var(--accent);margin:0 auto;}
+  .prose blockquote::before{margin-bottom:20px;}
+  .prose blockquote::after{margin-top:20px;}
+
+  /* horizontal rule as ornament */
+  .prose hr{border:none;margin:3rem 0;text-align:center;color:var(--ink-dim);letter-spacing:1.5rem;padding-left:1.5rem;font-family:var(--font-serif);font-size:1rem;}
+  .prose hr::before{content:'· · ·';}
+
+  .prose pre{padding:1rem 1.25rem;border-radius:6px;background:var(--paper-2);overflow:auto;margin:1.5rem 0;font-family:var(--font-mono);font-size:.8rem;line-height:1.6;color:var(--ink-soft);border:1px solid var(--hair);}
+  .prose pre code{background:transparent;padding:0;color:var(--ink-soft);}
+
+  /* footer block */
+  .post-foot{max-width:62ch;margin:5rem auto 0;padding-top:1.5rem;border-top:1px solid var(--hair-2);}
+  .foot-row{display:flex;justify-content:space-between;align-items:baseline;font-family:var(--font-mono);font-size:.625rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;}
+  .foot-row a{color:var(--ink-soft);text-decoration:none;transition:color .18s ease;}
+  .foot-row a:hover{color:var(--accent);}
+
+  .related{margin-top:2.5rem;display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .related .card{padding:18px 20px;border:1px solid var(--hair);border-radius:8px;background:var(--paper-2);text-decoration:none;color:inherit;transition:border-color .2s ease;display:flex;flex-direction:column;gap:8px;}
+  .related .card:hover{border-color:var(--accent);}
+  .related .card.next{text-align:right;align-items:flex-end;}
+  .related .lbl{font-family:var(--font-mono);font-size:.625rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;}
+  .related .ttl{font-family:var(--font-serif);font-size:1.1rem;color:var(--ink);font-weight:600;line-height:1.25;}
+  .related .card:hover .ttl{color:var(--accent);}
+
+  @media (max-width:720px){
+    .meta-strip{grid-template-columns:repeat(2,1fr);}
+    .related{grid-template-columns:1fr;}
+    .related .card.next{text-align:left;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+  <div class="parallax-bg"></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <nav class="nav" aria-label="primary">
+    <div class="nav-row">
+      <a href="/" class="nav-brand">igneel.dev</a>
+      <ul class="nav-links">
+        <li><a href="/work">work</a></li>
+        <li><a href="/writing" class="active">writing</a></li>
+        <li><a href="/experiments">experiments</a></li>
+        <li><a href="/about">about</a></li>
+        <li><a href="/now">/now</a></li>
+        <li><a href="/uses">/uses</a></li>
+      </ul>
+      <a href="mailto:hi@igneel.dev" class="nav-mail">hi@igneel.dev</a>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <div class="rail">
+      <a href="/writing">← writing</a>
+      <span class="sep">/</span>
+      <span>reading-the-living-world</span>
+    </div>
+
+    <div class="eyebrow">
+      <span class="rule"></span>
+      <span>an essay · <span class="acc">2026 · 05 · 20</span></span>
+    </div>
+
+    <h1 class="hero-title">Entwined Lives</h1>
+    <p class="hero-dek">On plants, animals, and the trouble with drawing lines between them.</p>
+
+    <div class="meta-strip">
+      <div class="cell">
+        <span class="lbl">filed</span>
+        <span class="val">2026 · 05 · 20</span>
+      </div>
+      <div class="cell">
+        <span class="lbl">read</span>
+        <span class="val">8 min · 1,847w</span>
+      </div>
+      <div class="cell">
+        <span class="lbl">under</span>
+        <span class="val">essay · ecology</span>
+      </div>
+      <div class="cell">
+        <span class="lbl">file</span>
+        <span class="val acc">reading-the-living-world.md</span>
+      </div>
+    </div>
+
+    <article class="prose">
+      <p class="lead">The forest teeming with life, where trees stretch towards the sky and roots delve deep into the earth, it's easy to assume that plants and animals exist in separate realms.</p>
+
+      <p>But this dichotomy is more than just a convenient way to organize our understanding of nature — it's a fundamental mistake. The line between flora and fauna blurs when we look closely at the intricate web of relationships that binds these organisms together.</p>
+
+      <h2 id="correlated-worlds"><span class="n">§ 01</span> My correlated worlds</h2>
+      <p>One place to start this journey is with mycorrhizal networks, the hidden fungal connections that crisscross the forest floor. These underground pathways allow plants to share nutrients and information with each other, creating a vast, unseen network that defies our traditional notions of individuality.</p>
+
+      <blockquote>A single tree's roots can span acres, linking it to scores of neighbors in a mutualistic relationship.</blockquote>
+
+      <p>But mycorrhizal networks aren't just limited to plants. They also connect with other organisms — like fungi and even animals, which can tap into this underground resource. The fungus <em>Pisolithus arrhizus</em> forms relationships with both trees and insects, demonstrating that the boundaries between plant and animal are far more permeable than we often assume.</p>
+
+      <hr />
+
+      <h2 id="permeable-boundary"><span class="n">§ 02</span> The permeable boundary</h2>
+      <p>Once you start to see these connections, you can't unsee them. The orchid that mimics a wasp; the ant that farms the aphid; the fungus that turns the carpenter ant into a marionette. We name them, we file them in kingdoms, and then they slip the file and walk into another room. Taxonomy is a useful fiction — until it isn't.</p>
+
+      <p>The deeper you look, the less the categories hold. Plants behave; animals photosynthesize (the sea slug <em>Elysia chlorotica</em> steals chloroplasts from algae and runs them for months). The categories are for us, not for the world.</p>
+    </article>
+
+    <div class="post-foot">
+      <div class="foot-row">
+        <a href="/writing">← back to writing</a>
+        <span>// fin</span>
+      </div>
+
+      <div class="related">
+        <a class="card" href="/writing/separate-cms">
+          <span class="lbl">← previous</span>
+          <span class="ttl">Why I spun up a separate CMS</span>
+        </a>
+        <a class="card next" href="/writing/software-that-writes-software">
+          <span class="lbl">next →</span>
+          <span class="ttl">Notes on software that writes software</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <span>© 2026 · vaibhav verma</span>
+    <span>·</span>
+    <a href="/writing">writing</a>
+    <a href="/now">/now</a>
+    <span class="spacer">build · 2026·05·20</span>
+  </footer>
+
+  <script>
+    (function(){
+      const el = document.getElementById('progress');
+      function tick(){
+        const h = document.documentElement;
+        const max = h.scrollHeight - h.clientHeight;
+        const pct = max > 0 ? (h.scrollTop / max) * 100 : 0;
+        el.style.width = Math.max(0, Math.min(100, pct)) + '%';
+      }
+      tick();
+      document.addEventListener('scroll', tick, {passive:true});
+      window.addEventListener('resize', tick);
+    })();
+  </script>
+</body>
+</html>

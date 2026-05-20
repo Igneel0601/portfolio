@@ -50,6 +50,21 @@ export type PostListItem = {
   updatedAt: string
   metaDescription: string | null
   categories: Category[]
+  wordCount: number
+  readMinutes: number
+}
+
+function extractText(node: LexicalNode): string {
+  if (typeof node.text === 'string') return node.text
+  if (!node.children) return ''
+  return node.children.map(extractText).join(' ')
+}
+
+function countWords(content: LexicalContent | null | undefined): number {
+  if (!content?.root) return 0
+  const text = extractText(content.root)
+  const matches = text.trim().match(/\S+/g)
+  return matches ? matches.length : 0
 }
 
 export type Post = PostListItem & {
@@ -136,15 +151,20 @@ export async function getAllPosts(): Promise<PostListItem[]> {
   )
   if (rows.length === 0) return []
   const cats = await fetchCategoriesForPosts(rows.map((r) => r.id))
-  return rows.map((r) => ({
-    id: r.id,
-    title: r.title,
-    slug: r.slug,
-    publishedAt: r.published_at,
-    updatedAt: r.updated_at,
-    metaDescription: r.meta_description,
-    categories: cats.get(r.id) ?? [],
-  }))
+  return rows.map((r) => {
+    const wordCount = countWords(r.content)
+    return {
+      id: r.id,
+      title: r.title,
+      slug: r.slug,
+      publishedAt: r.published_at,
+      updatedAt: r.updated_at,
+      metaDescription: r.meta_description,
+      categories: cats.get(r.id) ?? [],
+      wordCount,
+      readMinutes: Math.max(1, Math.round(wordCount / 220)),
+    }
+  })
 }
 
 export async function getPostSlugs(): Promise<string[]> {
@@ -168,6 +188,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     fetchCategoriesForPosts([row.id]),
     fetchMediaByIds([row.hero_image_id, row.meta_image_id].filter((v): v is number => v != null)),
   ])
+  const wordCount = countWords(row.content)
   return {
     id: row.id,
     title: row.title,
@@ -180,5 +201,19 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     categories: cats.get(row.id) ?? [],
     heroImage: row.hero_image_id ? media.get(row.hero_image_id) ?? null : null,
     metaImage: row.meta_image_id ? media.get(row.meta_image_id) ?? null : null,
+    wordCount,
+    readMinutes: Math.max(1, Math.round(wordCount / 220)),
+  }
+}
+
+export async function getAdjacentPosts(
+  slug: string,
+): Promise<{ prev: PostListItem | null; next: PostListItem | null }> {
+  const posts = await getAllPosts()
+  const idx = posts.findIndex((p) => p.slug === slug)
+  if (idx === -1) return { prev: null, next: null }
+  return {
+    prev: posts[idx + 1] ?? null,
+    next: posts[idx - 1] ?? null,
   }
 }

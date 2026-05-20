@@ -239,14 +239,24 @@ export function Nav() {
                     {l.label}
                   </a>
                 ) : (
-                  <Link
-                    data-nav-link
-                    data-nav-kind={l.kind}
-                    href={l.href}
-                    className="nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
-                  >
-                    {l.label}
-                  </Link>
+                  (() => {
+                    const isActive =
+                      l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(`${l.href}/`)
+                    return (
+                      <Link
+                        data-nav-link
+                        data-nav-kind={l.kind}
+                        data-active={isActive ? "true" : undefined}
+                        href={l.href}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full${
+                          isActive ? " after:w-full" : ""
+                        }`}
+                      >
+                        {l.label}
+                      </Link>
+                    )
+                  })()
                 )}
               </li>
             ))}
@@ -309,16 +319,24 @@ export function Nav() {
                 {l.label}
               </a>
             ) : (
-              <Link
-                key={l.href}
-                data-nav-link
-                data-nav-kind={l.kind}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="t-h2"
-              >
-                {l.label}
-              </Link>
+              (() => {
+                const isActive =
+                  l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(`${l.href}/`)
+                return (
+                  <Link
+                    key={l.href}
+                    data-nav-link
+                    data-nav-kind={l.kind}
+                    data-active={isActive ? "true" : undefined}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className="t-h2"
+                  >
+                    {l.label}
+                  </Link>
+                )
+              })()
             ),
           )}
         </div>

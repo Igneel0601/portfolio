@@ -35,7 +35,7 @@ export function NotFoundView() {
           <div className="nf-routes-lbl">$ ls</div>
           {ROUTES.map((r) => (
             <Link key={r.path} href={r.href} className="nf-route no-pop">
-              <ArrowRight size={14} className="nf-arr" aria-hidden />
+              <ArrowRight size={14} strokeWidth={1.5} className="nf-arr" aria-hidden />
               <span className="nf-path">{r.path}</span>
               <span className="nf-meta">{r.meta}</span>
             </Link>

@@ -340,12 +340,12 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   color: var(--ink-dim);
   font-size: 0.75rem;
   letter-spacing: .04em;
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
   font-family: var(--mono);
 }
 .cs-crumb-line a { color: var(--ink-soft); transition: color .18s ease; }
 .cs-crumb-line a:hover { color: var(--accent); }
-.cs-crumb-line .cs-sep { margin: 0 8px; color: var(--ink-dim); }
+.cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
 
 .cs-doc {
   max-width: 1280px;
@@ -840,10 +840,11 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   padding: 0 2rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 12rem;
+  grid-auto-flow: dense;
   gap: 0 3rem;
 }
 .w-post-shell > * { grid-column: 1; }
-.w-post-shell > .w-aside { grid-column: 2; }
+.w-post-shell > .w-aside { grid-column: 2; grid-row: 1; }
 
 @media (max-width: 900px) {
   .w-post-shell { grid-template-columns: 1fr; }
@@ -878,6 +879,138 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .w-row:hover .w-row-title { color: var(--accent); }
 .w-row-title { transition: color 0.25s ease; max-width: 22ch; }
 
+/* /writing archive (writing-A) */
+.wa-prompt {
+  margin-top: 3rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.04em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+.wa-prompt .wa-cmd { color: var(--accent); }
+.wa-prompt .wa-sep, .wa-row-top .wa-sep { opacity: 0.5; }
+
+.wa-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.wa-chip {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  color: var(--ink-soft);
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--hair-2, var(--hair));
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.18s ease, color 0.18s ease;
+  text-transform: lowercase;
+}
+.wa-chip:hover { border-color: var(--accent); color: var(--accent); }
+.wa-chip.on { border-color: var(--accent); color: var(--accent); }
+.wa-chip .wa-ct { color: var(--ink-dim); margin-left: 0.375rem; }
+
+.wa-table { margin-top: 1.5rem; display: grid; gap: 0; }
+.wa-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--hair);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+.wa-row:first-child { border-top: 1px solid var(--hair); }
+.wa-row:hover { background: color-mix(in oklab, var(--accent) 4%, transparent); }
+.wa-row:hover .wa-title { color: var(--accent); }
+
+.wa-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  color: var(--ink-dim);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 0.45rem;
+}
+.wa-row-top .wa-acc { color: var(--accent); }
+
+.wa-title {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.5rem;
+  line-height: 1.2;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--ink);
+  transition: color 0.25s ease;
+  margin: 0;
+}
+.wa-dek {
+  margin-top: 0.4rem;
+  font-style: italic;
+  font-size: 0.9375rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+  max-width: 72ch;
+}
+.wa-row-bot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  color: var(--ink-dim);
+  letter-spacing: 0.04em;
+  text-align: right;
+  white-space: nowrap;
+}
+.wa-row-bot b { color: var(--ink-soft); font-weight: 500; }
+
+.wa-empty {
+  color: var(--ink-dim);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  padding: 2rem 0;
+}
+
+.wa-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-dim);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.wa-foot .wa-rss { color: var(--accent); text-decoration: none; }
+.wa-foot .wa-rss:hover { text-decoration: underline; }
+
+@media (max-width: 55em) {
+  .wa-row { grid-template-columns: 1fr; gap: 0.8rem; padding: 1.2rem 0; }
+  .wa-title { font-size: 1.3rem; }
+  .wa-row-bot {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    text-align: left;
+    column-gap: 0.625rem;
+  }
+}
+
 .w-aside {
   text-align: right;
   position: sticky;
@@ -901,10 +1034,10 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .w-prose > p:first-of-type::first-letter {
   font-family: var(--font-serif), Georgia, serif;
   font-weight: 800;
-  font-size: 5.5em;
+  font-size: 6em;
   line-height: 0.80;
   float: left;
-  margin: 0em 0.05em -0.06em 0;
+  margin: 0.04em 0.05em 0em 0em;
   color: var(--ink);
 }
 
@@ -973,3 +1106,141 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 }
 .w-post-footer a { color: var(--ink-soft); text-decoration: none; transition: color 0.2s ease; }
 .w-post-footer a:hover { color: var(--accent); }
+
+/* /writing/[slug] post (post-A) */
+.wp-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0;
+  z-index: 60;
+  transition: width 0.12s linear;
+  pointer-events: none;
+}
+
+.wp-shell {
+  width: min(92%, 48rem);
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.wp-title {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.05;
+  font-weight: 800;
+  letter-spacing: -0.015em;
+  margin: 0.5rem 0 0;
+  max-width: 18ch;
+}
+.wp-lead {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+  line-height: 1.5;
+  font-size: 1.125rem;
+  max-width: 62ch;
+}
+
+.wp-meta-strip {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+.wp-meta-strip b { color: var(--ink-soft); font-weight: 500; }
+.wp-meta-strip .wp-sep { opacity: 0.45; }
+.wp-meta-strip .wp-tag {
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.wp-meta-strip .wp-file { margin-left: auto; color: var(--accent); }
+
+.wp-hero {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 2.5rem 0 0;
+}
+
+.wp-prose-wrap {
+  margin-top: 2.5rem;
+  max-width: 72ch;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.wp-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hair);
+  font-family: var(--font-mono), ui-monospace, monospace;
+}
+.wp-pager-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.5rem;
+  background: var(--paper-2);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.18s ease;
+}
+.wp-pager-card:hover { border-color: var(--accent); }
+.wp-pager-card.next { align-items: flex-end; text-align: right; }
+.wp-pager-card .wp-pager-lbl {
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.wp-pager-card .wp-pager-ttl {
+  font-family: var(--font-fraunces), Georgia, serif;
+  font-size: 1.0625rem;
+  color: var(--ink);
+  font-weight: 600;
+}
+.wp-pager-card:hover .wp-pager-ttl { color: var(--accent); }
+
+.wp-foot {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hair);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-dim);
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.wp-foot a { color: var(--ink-soft); text-decoration: none; transition: color 0.18s ease; }
+.wp-foot a:hover { color: var(--accent); }
+
+@media (max-width: 56.25rem) {
+  .wp-pager { grid-template-columns: 1fr; }
+  .wp-pager-card.next { align-items: flex-start; text-align: left; }
+  .wp-meta-strip .wp-file { margin-left: 0; }
+}
