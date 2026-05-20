@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
 import { useLenis } from "@/lib/lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -9,6 +10,8 @@ import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
 export function Nav() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const navRef = useRef<HTMLElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
@@ -33,25 +36,27 @@ export function Nav() {
       const nav = navRef.current!;
       const links = gsap.utils.toArray<HTMLElement>("[data-nav-link]", nav);
 
-      if (isReduce) {
-        gsap.set(nav, { autoAlpha: 1, y: 0 });
-        gsap.set(links, { autoAlpha: 1, y: 0 });
-        return;
-      }
+      // Delay applies regardless of reduced-motion preference.
+      // Reduced-motion only skips the slide easing, not the delay.
+      const skipSlide = isReduce;
 
-      // Initial state — hidden, drops in after boot finishes
+
+      // Initial state — nav hidden + slightly above. After delay, snap
+      // visibility on and slide down into place.
       gsap.set(nav, { autoAlpha: 0, y: -12 });
-      gsap.set(links, { autoAlpha: 0, y: -8 });
 
       const tl = gsap.timeline({
-        delay: 1.8,
+        delay: isHome ? 2.8 : 0.1,
         defaults: { ease: E.precise },
         onComplete: () => {
           enteredRef.current = true;
         },
       });
-      tl.to(nav, { autoAlpha: 1, y: 0, duration: D.md })
-        .to(links, { autoAlpha: 1, y: 0, duration: D.sm, stagger: 0.04 }, "-=0.30");
+      if (skipSlide) {
+        tl.set(nav, { autoAlpha: 1, y: 0 });
+      } else {
+        tl.set(nav, { autoAlpha: 1 }).to(nav, { y: 0, duration: D.md });
+      }
 
       // Sticky chrome toggle — set [data-stuck] when tabbar leaves viewport
       const tabbar = document.querySelector<HTMLElement>("[data-tabbar]");
@@ -139,9 +144,12 @@ export function Nav() {
     };
   }, [lenis]);
 
-  // animate the nav in/out when hidden state flips
+  // animate the nav in/out when hidden state flips.
+  // Skip until boot animation has completed (enteredRef.current === true),
+  // otherwise this fires on mount and overrides the boot delay.
   useEffect(() => {
     if (!navRef.current) return;
+    if (!enteredRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       gsap.set(navRef.current, { yPercent: 0, autoAlpha: 1 });
@@ -199,7 +207,14 @@ export function Nav() {
       <nav
         ref={navRef}
         data-nav
-        className="sticky top-0 z-50 px-6 md:px-10 transition-colors duration-200"
+        style={{
+          visibility: 'hidden',
+          opacity: 0,
+          background: 'color-mix(in oklab, var(--paper) 15%, transparent)',
+          backdropFilter: 'blur(24px) saturate(140%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(140%)',
+        }}
+        className="sticky top-0 z-50 px-6 md:px-10"
       >
         <div className="hidden md:flex items-center gap-5 py-3 c-md">
           <Link

@@ -13,7 +13,7 @@ function renderText(node: LexicalNode, key: string) {
   const text = node.text ?? ''
   const fmt = typeof node.format === 'number' ? node.format : 0
   let el: React.ReactNode = text
-  if (fmt & FORMAT_CODE) el = <code className="px-1 py-0.5 rounded bg-white/10 font-mono text-[0.9em]">{el}</code>
+  if (fmt & FORMAT_CODE) el = <code>{el}</code>
   if (fmt & FORMAT_BOLD) el = <strong>{el}</strong>
   if (fmt & FORMAT_ITALIC) el = <em>{el}</em>
   if (fmt & FORMAT_UNDERLINE) el = <u>{el}</u>
@@ -35,23 +35,14 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       return <br key={key} />
 
     case 'paragraph':
-      return (
-        <p key={key} className="my-4 leading-7 opacity-90">
-          {renderChildren(node.children, key)}
-        </p>
-      )
+      return <p key={key}>{renderChildren(node.children, key)}</p>
 
     case 'heading': {
       const tag = (node.tag as 'h1' | 'h2' | 'h3' | 'h4') ?? 'h2'
-      const sizes: Record<string, string> = {
-        h1: 'text-3xl mt-10 mb-4',
-        h2: 'text-2xl mt-10 mb-4',
-        h3: 'text-xl mt-8 mb-3',
-        h4: 'text-lg mt-6 mb-3',
-      }
+      const cls = tag === 'h1' ? 't-h1' : tag === 'h2' ? 't-h2' : tag === 'h3' ? 't-h3' : 't-h4'
       const Tag = tag
       return (
-        <Tag key={key} className={`font-medium ${sizes[tag]}`}>
+        <Tag key={key} className={cls}>
           {renderChildren(node.children, key)}
         </Tag>
       )
@@ -59,30 +50,63 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
 
     case 'list': {
       const Tag = node.listType === 'number' ? 'ol' : 'ul'
-      const cls = node.listType === 'number' ? 'list-decimal' : 'list-disc'
       return (
-        <Tag key={key} className={`${cls} pl-6 my-4 space-y-1`}>
+        <Tag
+          key={key}
+          style={{
+            paddingLeft: '1.5rem',
+            margin: '1rem 0 1.4rem',
+            listStyleType: node.listType === 'number' ? 'decimal' : 'disc',
+          }}
+        >
           {renderChildren(node.children, key)}
         </Tag>
       )
     }
 
     case 'listitem':
-      return <li key={key}>{renderChildren(node.children, key)}</li>
+      return (
+        <li key={key} style={{ marginBottom: '0.35rem' }}>
+          {renderChildren(node.children, key)}
+        </li>
+      )
 
     case 'quote':
       return (
-        <blockquote key={key} className="border-l-2 border-white/30 pl-4 my-6 opacity-80 italic">
+        <blockquote
+          key={key}
+          style={{
+            borderLeft: '2px solid var(--accent)',
+            paddingLeft: '1rem',
+            margin: '2rem 0',
+            color: 'var(--ink-soft)',
+            fontStyle: 'italic',
+          }}
+        >
           {renderChildren(node.children, key)}
         </blockquote>
       )
 
     case 'horizontalrule':
-      return <hr key={key} className="my-8 border-white/10" />
+      return (
+        <div key={key} className="w-ornament" aria-hidden>
+          · · ·
+        </div>
+      )
 
     case 'code':
       return (
-        <pre key={key} className="my-6 p-4 rounded bg-black/40 overflow-x-auto text-sm font-mono">
+        <pre
+          key={key}
+          className="c-md"
+          style={{
+            padding: '1rem',
+            borderRadius: '4px',
+            background: 'var(--paper-2)',
+            overflow: 'auto',
+            margin: '1.5rem 0',
+          }}
+        >
           <code>{renderChildren(node.children, key)}</code>
         </pre>
       )
@@ -90,9 +114,10 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
     case 'link':
     case 'autolink': {
       const fields = node.fields
-      const url = fields?.linkType === 'internal' && fields?.doc?.value?.slug
-        ? `/writing/${fields.doc.value.slug}`
-        : fields?.url ?? '#'
+      const url =
+        fields?.linkType === 'internal' && fields?.doc?.value?.slug
+          ? `/writing/${fields.doc.value.slug}`
+          : fields?.url ?? '#'
       const external = /^https?:\/\//.test(url)
       return (
         <a
@@ -100,7 +125,6 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
           href={url}
           target={external && fields?.newTab ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
-          className="underline decoration-dotted underline-offset-2 hover:opacity-80"
         >
           {renderChildren(node.children, key)}
         </a>
@@ -119,13 +143,13 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
         if (!media?.url) return null
         const src = media.url.startsWith('http') ? media.url : `${BLOGGZ_URL}${media.url}`
         return (
-          <figure key={key} className="my-8">
+          <figure key={key} style={{ margin: '2.5rem 0' }}>
             <Image
               src={src}
               alt={media.alt ?? ''}
               width={1600}
               height={900}
-              className="w-full h-auto rounded"
+              style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
               unoptimized
             />
           </figure>
@@ -134,15 +158,25 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
 
       if (blockType === 'banner') {
         const style = (fields.style as string) ?? 'info'
-        const colors: Record<string, string> = {
-          info: 'border-blue-400/50 bg-blue-400/10',
-          warning: 'border-yellow-400/50 bg-yellow-400/10',
-          error: 'border-red-400/50 bg-red-400/10',
-          success: 'border-emerald-400/50 bg-emerald-400/10',
+        const tones: Record<string, { border: string; bg: string }> = {
+          info: { border: 'var(--accent)', bg: 'color-mix(in oklab, var(--accent) 8%, transparent)' },
+          warning: { border: '#facc15', bg: 'rgba(250, 204, 21, 0.08)' },
+          error: { border: '#f87171', bg: 'rgba(248, 113, 113, 0.08)' },
+          success: { border: 'var(--accent-2)', bg: 'color-mix(in oklab, var(--accent-2) 8%, transparent)' },
         }
+        const t = tones[style] ?? tones.info
         const content = fields.content as LexicalContent | undefined
         return (
-          <div key={key} className={`my-6 p-4 border-l-2 rounded-r ${colors[style] ?? colors.info}`}>
+          <div
+            key={key}
+            style={{
+              margin: '1.5rem 0',
+              padding: '1rem',
+              borderLeft: `2px solid ${t.border}`,
+              background: t.bg,
+              borderRadius: '0 4px 4px 0',
+            }}
+          >
             {content && renderChildren(content.root.children, `${key}.banner`)}
           </div>
         )
@@ -150,8 +184,25 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
 
       if (blockType === 'code') {
         return (
-          <pre key={key} className="my-6 p-4 rounded bg-black/40 overflow-x-auto text-sm font-mono">
-            {fields.language ? <div className="opacity-50 text-xs mb-2">{String(fields.language)}</div> : null}
+          <pre
+            key={key}
+            className="c-md"
+            style={{
+              padding: '1rem',
+              borderRadius: '4px',
+              background: 'var(--paper-2)',
+              overflow: 'auto',
+              margin: '1.5rem 0',
+            }}
+          >
+            {fields.language ? (
+              <div
+                className="l-meta"
+                style={{ color: 'var(--ink-dim)', marginBottom: '0.5rem' }}
+              >
+                {String(fields.language)}
+              </div>
+            ) : null}
             <code>{String(fields.code ?? '')}</code>
           </pre>
         )
@@ -170,5 +221,5 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
 }
 
 export function PostBody({ value }: { value: LexicalContent }) {
-  return <div className="text-[15px]">{renderNode(value.root, 'root')}</div>
+  return <>{renderNode(value.root, 'root')}</>
 }
