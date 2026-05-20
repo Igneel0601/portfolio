@@ -35,4 +35,5 @@
 ## Later
 
 - [ ] Terminal as `/terminal` route (separate from 404)
+- [ ] **Custom in-Next admin CMS** — replace Sanity with Prisma + Neon + TipTap + NextAuth-gated `/admin`. Owns DB, owns schema, owns editor UX. Portfolio flex move. ~1-2 days dev.
 - [ ] Letters bot
