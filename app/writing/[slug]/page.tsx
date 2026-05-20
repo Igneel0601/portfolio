@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { ArrowLeft, ArrowRight, MoveLeft } from 'lucide-react'
+import { MoveLeft, MoveRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getAdjacentPosts, getPostBySlug, getPostSlugs } from '@/lib/posts'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
+import { WritingFooter } from '@/components/writing/WritingFooter'
 
 export const revalidate = 60
 export const dynamicParams = true
@@ -73,7 +74,7 @@ export default async function PostPage({
   return (
     <>
       <ReadingProgress />
-      <main className="flex-1 pb-24">
+      <main className="flex-1">
         <section
           className="wp-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
@@ -131,7 +132,8 @@ export default async function PostPage({
               {prev ? (
                 <Link href={`/writing/${prev.slug}`} className="wp-pager-card no-pop">
                   <span className="wp-pager-lbl">
-                    <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> previous
+                    <MoveLeft size={16} strokeWidth={1.5} aria-hidden />
+                    <span>previous</span>
                   </span>
                   <span className="wp-pager-ttl">{prev.title}</span>
                 </Link>
@@ -141,7 +143,8 @@ export default async function PostPage({
               {next ? (
                 <Link href={`/writing/${next.slug}`} className="wp-pager-card next no-pop">
                   <span className="wp-pager-lbl">
-                    next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+                    <span>next</span>
+                    <MoveRight size={16} strokeWidth={1.5} aria-hidden />
                   </span>
                   <span className="wp-pager-ttl">{next.title}</span>
                 </Link>
@@ -152,13 +155,19 @@ export default async function PostPage({
           )}
 
           <div className="wp-foot">
-            <Link href="/writing" className="no-pop">
-              ← back to writing
+            <Link
+              href="/writing"
+              className="no-pop"
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            >
+              <MoveLeft size={16} strokeWidth={1.5} aria-hidden />
+              <span>/writing</span>
             </Link>
             <span>// fin</span>
           </div>
         </section>
       </main>
+      <WritingFooter slug={slug} />
     </>
   )
 }

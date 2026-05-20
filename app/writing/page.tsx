@@ -1,5 +1,6 @@
 import { getAllPosts } from '@/lib/posts'
 import { WritingArchive } from '@/components/writing/WritingArchive'
+import { WritingFooter } from '@/components/writing/WritingFooter'
 
 export const revalidate = 60
 
@@ -12,8 +13,9 @@ export default async function WritingPage() {
   const posts = await getAllPosts()
 
   return (
-    <main className="flex-1 pb-24">
-      <section className="w-shell" style={{ paddingTop: 'clamp(20px, 2.5vw, 28px)' }}>
+    <>
+      <main className="flex-1">
+        <section className="w-shell" style={{ paddingTop: 'clamp(20px, 2.5vw, 28px)' }}>
         <div className="l-eyebrow" style={{ color: 'var(--ink-dim)' }}>
           archive · {new Date().getFullYear()}
         </div>
@@ -42,8 +44,10 @@ export default async function WritingPage() {
           Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.
         </p>
 
-        <WritingArchive posts={posts} />
-      </section>
-    </main>
+          <WritingArchive posts={posts} />
+        </section>
+      </main>
+      <WritingFooter slug="index" />
+    </>
   )
 }

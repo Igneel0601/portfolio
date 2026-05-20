@@ -34,6 +34,11 @@ export const metadata: Metadata = {
   title: "Vaibhav Verma — software engineer",
   description:
     "I build software that teaches itself to write more software. CSE grad, Noida. Open to full-time + freelance.",
+  alternates: {
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
   openGraph: {
     title: "Vaibhav Verma — software engineer",
     description:
