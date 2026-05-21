@@ -26,7 +26,7 @@
 - [x] Delete `components/scenes/ScenePinnedWork.tsx.bak` and `components/ProjectCard.tsx.bak`
 - [ ] Real favicon + OG image in `app/layout.tsx` metadata (title/desc done)
 - [ ] Mobile pass — scenes use `100vh` + GSAP pin; verify <768px
-- [ ] `prefers-reduced-motion` audit in Timeline / CTA (Experiments already has it; Future deleted)
+- [x] `prefers-reduced-motion` audit — global CSS kill-switch + all GSAP scenes guarded via `motionMM`/`isReduce`
 - [ ] `/work` table mobile layout (rows stack badly below md)
 
 ## Nice-to-have
