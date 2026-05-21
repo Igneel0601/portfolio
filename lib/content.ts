@@ -145,8 +145,8 @@ export const NAV_LINKS: NavLink[] = [
   { label: "writing", href: "/writing", kind: "route" },
   { label: "experiments", href: "/experiments", kind: "route" },
   { label: "about", href: "#about", kind: "scroll" },
-  { label: "/now", href: "/now", kind: "route" },
-  { label: "/uses", href: "/uses", kind: "route" },
+  // { label: "/now", href: "/now", kind: "route" },   // route not built yet
+  // { label: "/uses", href: "/uses", kind: "route" }, // route not built yet
   { label: "hi@igneel.dev", href: "mailto:hi@igneel.dev", kind: "mailto" },
 ];
 
@@ -235,19 +235,6 @@ export const LOGS: string[][] = [
     "looking: full-time · freelance",
     "off-keyboard: arch ricing, sci-fi, filter coffee",
   ],
-];
-
-export type FutureModule = {
-  label: string;
-  blurb: string;
-  route: string;
-};
-
-export const FUTURE: FutureModule[] = [
-  { label: "experiments", blurb: "tiny demos, shaders, half-finished ideas", route: "/experiments" },
-  { label: "writing", blurb: "notes from building in public", route: "/writing" },
-  { label: "/now", blurb: "what I'm doing this month", route: "/now" },
-  { label: "/dev/letters", blurb: "one email a month, no spam", route: "/letters" },
 ];
 
 export const GIT_LOG_PREVIEW: string[] = [
