@@ -237,19 +237,6 @@ export const LOGS: string[][] = [
   ],
 ];
 
-export type FutureModule = {
-  label: string;
-  blurb: string;
-  route: string;
-};
-
-export const FUTURE: FutureModule[] = [
-  { label: "experiments", blurb: "tiny demos, shaders, half-finished ideas", route: "/experiments" },
-  { label: "writing", blurb: "notes from building in public", route: "/writing" },
-  { label: "/now", blurb: "what I'm doing this month", route: "/now" },
-  { label: "/dev/letters", blurb: "one email a month, no spam", route: "/letters" },
-];
-
 export const GIT_LOG_PREVIEW: string[] = [
   "a3f01b2 · docs(traveloop): wrote case study draft",
   "7c01d8a · feat(codeflow): add gemini provider",

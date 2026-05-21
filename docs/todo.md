@@ -8,18 +8,25 @@
 - [x] rem-based typography with `clamp()` root — scales across screen sizes
 - [x] Type check + production build green
 - [x] Dim parallax background dots (3% → 5%)
+- [x] `/writing` archive + `/writing/[slug]` post live, backed by bloggz CMS (Neon/Payload)
+- [x] RSS feed at `/rss.xml` with dynamic site URL
+- [x] Route-aware nav active state (green text on current route)
+- [x] Typography unified via tokens (t-*, l-*, c-*); IBM Plex Sans dropped; two-family rule (Fraunces + Plex Mono)
+- [x] Reading column narrowed to `--w-reading: 63ch` for /writing
+- [x] `app/layout.tsx` metadata — title, description, OG title/description, RSS alternate
+- [x] Custom CMS — replaced Sanity plan with standalone bloggz repo (Payload + Neon)
 
 ## Blockers (broken UX)
 
-- [ ] Nav stubs — `/writing`, `/now`, `/uses` (404 absorbs; remove from nav or build stubs)
+- [ ] Nav stubs — `/now`, `/uses` still 404 (`/writing` now live; remove these two from nav or scaffold stubs)
 
 ## Should-do before shipping
 
-- [ ] Decide `SceneFuture` — mount in `app/page.tsx` or delete
-- [ ] Delete `components/scenes/ScenePinnedWork.tsx.bak` (or restore)
-- [ ] `app/layout.tsx` metadata — title, description, OG image, real favicon
+- [x] Decide `SceneFuture` — deleted (file + FUTURE export); already off homepage flow
+- [x] Delete `components/scenes/ScenePinnedWork.tsx.bak` and `components/ProjectCard.tsx.bak`
+- [ ] Real favicon + OG image in `app/layout.tsx` metadata (title/desc done)
 - [ ] Mobile pass — scenes use `100vh` + GSAP pin; verify <768px
-- [ ] `prefers-reduced-motion` audit in Timeline / CTA / Future (Experiments already has it)
+- [ ] `prefers-reduced-motion` audit in Timeline / CTA (Experiments already has it; Future deleted)
 - [ ] `/work` table mobile layout (rows stack badly below md)
 
 ## Nice-to-have
@@ -30,10 +37,9 @@
 ## Vibe consistency
 
 - [ ] SceneCTA copy break — "Hiring? Building? Curious?" + "Drop a line — I respond fast." + button "github · linkedin · x" are plain marketing prose; rewrite in terminal grammar (e.g. `$ contact --me`, `# replies within ~24h`, `gh / in / x`)
-- [ ] Delete unused `components/scenes/TerminalBar.tsx` (not imported anywhere) — or wire it in
+- [ ] Delete unused `components/scenes/TerminalBar.tsx` (still not imported anywhere) — or wire it in
 
 ## Later
 
 - [ ] Terminal as `/terminal` route (separate from 404)
-- [ ] **Custom in-Next admin CMS** — replace Sanity with Prisma + Neon + TipTap + NextAuth-gated `/admin`. Owns DB, owns schema, owns editor UX. Portfolio flex move. ~1-2 days dev.
 - [ ] Letters bot
