@@ -15,24 +15,31 @@
 - [x] Reading column narrowed to `--w-reading: 63ch` for /writing
 - [x] `app/layout.tsx` metadata — title, description, OG title/description, RSS alternate
 - [x] Custom CMS — replaced Sanity plan with standalone bloggz repo (Payload + Neon)
-
-## Blockers (broken UX)
-
-- [ ] Nav stubs — `/now`, `/uses` still 404 (`/writing` now live; remove these two from nav or scaffold stubs)
+- [x] `prefers-reduced-motion` audit — global CSS kill-switch + all GSAP scenes guarded
+- [x] `/terminal` route — full interactive shell (virtual fs, commands, easter eggs, vim/cowsay/fortune/coffee, themes, history persistence)
+- [x] `ollama run` wired to Groq (llama-3.1-8b-instant) via `/api/ollama/run` with IP rate-limit + 500-char cap
+- [x] Terminal visual refit — full-bleed wallpaper, kitty-window frame with gradient accent border, fastfetch-style boot panel (portrait + system/hardware), palette dots
+- [x] `fastfetch` command re-renders the boot panel (alias: `neofetch`)
+- [x] Terminal mobile fallback — single "open on desktop" card
+- [x] Terminal auto-refocus input (incl. `preventScroll`) — no clicking needed between commands
+- [x] Terminal inside-window scroll (page itself doesn't scroll on long output)
+- [x] Drop dead `SceneFuture` + `FUTURE` export
+- [x] Delete `ProjectCard.tsx.bak` + `ScenePinnedWork.tsx.bak`
+- [x] `/now`, `/uses` hidden from nav until routes exist
 
 ## Should-do before shipping
 
-- [x] Decide `SceneFuture` — deleted (file + FUTURE export); already off homepage flow
-- [x] Delete `components/scenes/ScenePinnedWork.tsx.bak` and `components/ProjectCard.tsx.bak`
 - [ ] Real favicon + OG image in `app/layout.tsx` metadata (title/desc done)
 - [ ] Mobile pass — scenes use `100vh` + GSAP pin; verify <768px
-- [x] `prefers-reduced-motion` audit — global CSS kill-switch + all GSAP scenes guarded via `motionMM`/`isReduce`
 - [ ] `/work` table mobile layout (rows stack badly below md)
+- [ ] Compress `public/term/wallpaper.jpg` (13MB) + `public/term/portrait.png` (6MB) → WebP
+- [ ] Persistent rate limit on `/api/ollama/run` (Upstash free tier; current in-memory map resets per edge instance)
 
 ## Nice-to-have
 
 - [ ] Lighthouse pass — verify `next/image` priority hints
 - [ ] Real git log from GH API on `/work` footer (deferred)
+- [ ] Dynamic import for `lib/terminal/groq.ts` (lazy-load LLM client)
 
 ## Vibe consistency
 
@@ -41,5 +48,6 @@
 
 ## Later
 
-- [ ] Terminal as `/terminal` route (separate from 404)
+- [ ] `/now`, `/uses` routes (currently commented out of nav)
 - [ ] Letters bot
+- [ ] Terminal v2: tab completion · pipes · real ANSI colour codes · `ollama` quota indicator
