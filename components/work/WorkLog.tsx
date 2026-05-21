@@ -41,14 +41,14 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
-      const { isReduce } = ctx.conditions as { isReduce: boolean };
+      const { isReduce, isMobile } = ctx.conditions as { isReduce: boolean; isMobile: boolean };
       const back = root.querySelector<HTMLElement>("[data-back-link]");
       const title = root.querySelector<HTMLElement>("[data-page-title]");
       const filters = gsap.utils.toArray<HTMLElement>("[data-filter]", root);
       const rowEls = gsap.utils.toArray<HTMLElement>("[data-row]", root);
       const gitLines = gsap.utils.toArray<HTMLElement>("[data-git-line]", root);
 
-      if (isReduce) {
+      if (isReduce || isMobile) {
         gsap.set([back, title, ...filters, ...rowEls, ...gitLines], {
           autoAlpha: 1,
           x: 0,

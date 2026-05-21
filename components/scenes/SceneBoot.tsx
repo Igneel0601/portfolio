@@ -55,7 +55,7 @@ export function SceneBoot() {
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
-      const { isReduce } = ctx.conditions as { isReduce: boolean };
+      const { isReduce, isMobile } = ctx.conditions as { isReduce: boolean; isMobile: boolean };
       const prompt = root.querySelector<HTMLElement>("[data-boot-prompt]");
       const lines = gsap.utils.toArray<HTMLElement>("[data-boot-line]", root);
       const words = gsap.utils.toArray<HTMLElement>("[data-headline-word]", root);
@@ -63,7 +63,7 @@ export function SceneBoot() {
       const ctas = gsap.utils.toArray<HTMLElement>("[data-cta]", root);
       const cursor = root.querySelector<HTMLElement>("[data-cursor]");
 
-      if (isReduce) {
+      if (isReduce || isMobile) {
         if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
         gsap.set([...lines, sub, ...ctas, cursor], { autoAlpha: 1, x: 0, y: 0 });
         gsap.set(words, { yPercent: 0, autoAlpha: 1 });

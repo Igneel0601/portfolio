@@ -524,7 +524,7 @@ export function ExperimentsClient() {
         style={{
           position: "sticky",
           top: "var(--nav-h, 52px)",
-          height: "calc(100vh - var(--nav-h, 52px))",
+          height: "calc(100dvh - var(--nav-h, 52px))",
           width: "100%",
           overflow: "hidden",
           isolation: "isolate",

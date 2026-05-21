@@ -341,7 +341,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   position: sticky;
   top: 5rem;
   align-self: start;
-  max-height: calc(100vh - 7.5rem);
+  max-height: calc(100dvh - 7.5rem);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -379,6 +379,17 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 }
 .cs-toc a[data-active] .cs-toc-n { color: var(--accent); }
 
+/* TOC details — wraps contents so we can collapse on phones.
+   On desktop/tablet: details is transparent (no marker, no toggle behavior). */
+.cs-toc-details {
+  display: contents;
+}
+.cs-toc-summary {
+  display: none;
+  list-style: none;
+}
+.cs-toc-summary::-webkit-details-marker { display: none; }
+
 @media (max-width: 1024px) {
   .cs-doc {
     grid-template-columns: 1fr;
@@ -391,6 +402,57 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
     top: 0;
     max-height: none;
     order: 2;
+  }
+}
+
+/* Phones: TOC moves above article + becomes a real <details> bar. */
+@media (max-width: 767.98px) {
+  .cs-toc {
+    order: 1;
+    border-left: none;
+    padding-left: 0;
+    margin-bottom: 1.25rem;
+  }
+  .cs-toc-details {
+    display: block;
+    border: 1px solid var(--hair);
+    border-radius: 0.5rem;
+    background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+  }
+  .cs-toc-details[open] {
+    padding-bottom: 0.5rem;
+  }
+  .cs-toc-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.875rem;
+    cursor: pointer;
+    color: var(--ink-soft);
+    user-select: none;
+  }
+  .cs-toc-summary::before {
+    content: "▸";
+    color: var(--accent);
+    font-size: 0.75rem;
+    transition: transform 0.15s ease;
+    display: inline-block;
+  }
+  .cs-toc-details[open] .cs-toc-summary::before {
+    transform: rotate(90deg);
+  }
+  .cs-toc-lbl {
+    display: none;
+  }
+  .cs-toc a {
+    margin-left: 0;
+    padding-left: 1.5rem;
+    padding-right: 0.875rem;
+    border-left: none;
+  }
+  .cs-toc a[data-active] {
+    border-left: none;
+    background: color-mix(in oklab, var(--accent) 8%, transparent);
   }
 }
 

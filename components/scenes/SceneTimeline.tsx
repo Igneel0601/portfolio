@@ -269,11 +269,11 @@ export function SceneTimeline() {
         // than scene 02's outer ends — covers the rest-phase scroll runway
         // so there's no gap. Scene 02's stage translates up faster (-70vh)
         // while scene 03 rises at scroll speed, creating the parallax.
-        marginTop: "-100vh",
+        marginTop: "-100dvh",
         background: "var(--paper)",
         zIndex: 1,
-        minHeight: "100vh",
-        height: "100vh",
+        minHeight: "100dvh",
+        height: "100dvh",
       }}
     >
       <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0 pt-6 md:pt-8">

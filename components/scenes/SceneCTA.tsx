@@ -17,14 +17,14 @@ export function SceneCTA() {
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
-      const { isReduce } = ctx.conditions as { isReduce: boolean };
+      const { isReduce, isMobile } = ctx.conditions as { isReduce: boolean; isMobile: boolean };
       const eyebrow = root.querySelector<HTMLElement>("[data-cta-eyebrow]");
       const headline = root.querySelector<HTMLElement>("[data-cta-headline]");
       const sub = root.querySelector<HTMLElement>("[data-cta-sub]");
       const buttons = gsap.utils.toArray<HTMLElement>("[data-cta-button]", root);
       const footerLines = footer ? gsap.utils.toArray<HTMLElement>("[data-footer-line]", footer) : [];
 
-      if (isReduce) {
+      if (isReduce || isMobile) {
         gsap.set([eyebrow, headline, sub, ...buttons, ...footerLines], { autoAlpha: 1, y: 0 });
         return;
       }
