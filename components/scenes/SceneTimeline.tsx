@@ -329,7 +329,7 @@ export function SceneTimeline() {
           {/* logs panel — swaps content per active timeline stop */}
           <div className="h-full flex flex-col min-h-0">
             <div
-              className="box p-4 font-mono flex flex-col"
+              className="box p-4 mono flex flex-col"
               style={{ background: "var(--paper-2)", height: "40%", minHeight: 0 }}
             >
               <div className="flex items-baseline justify-between mb-3">

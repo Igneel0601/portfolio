@@ -284,7 +284,7 @@ export function Nav() {
             data-nav-toggle
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="text-lg leading-none px-2 py-1 border rounded"
+            className="c-md leading-none px-2 py-1 border rounded"
             style={{ borderColor: "var(--ink)" }}
           >
             ☰
@@ -302,7 +302,7 @@ export function Nav() {
           <button
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="absolute top-4 right-5 text-2xl leading-none"
+            className="absolute top-4 right-5 t-h4 leading-none"
           >
             ×
           </button>

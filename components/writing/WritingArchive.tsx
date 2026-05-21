@@ -43,7 +43,7 @@ export function WritingArchive({ posts }: Props) {
 
   return (
     <>
-      <div className="wa-prompt">
+      <div className="wa-prompt c-md">
         <span className="wa-cmd">$ ls /writing</span>
         <span className="wa-sep">·</span>
         <span>
@@ -63,7 +63,7 @@ export function WritingArchive({ posts }: Props) {
             type="button"
             role="tab"
             aria-selected={active === null}
-            className={`wa-chip${active === null ? ' on' : ''}`}
+            className={`wa-chip c-xs${active === null ? ' on' : ''}`}
             onClick={() => setActive(null)}
           >
             all <span className="wa-ct">{posts.length}</span>
@@ -74,7 +74,7 @@ export function WritingArchive({ posts }: Props) {
               type="button"
               role="tab"
               aria-selected={active === t.slug}
-              className={`wa-chip${active === t.slug ? ' on' : ''}`}
+              className={`wa-chip c-xs${active === t.slug ? ' on' : ''}`}
               onClick={() => setActive(t.slug)}
             >
               {t.title.toLowerCase()} <span className="wa-ct">{tagCounts.get(t.slug) ?? 0}</span>
@@ -85,7 +85,7 @@ export function WritingArchive({ posts }: Props) {
 
       <div className="wa-table">
         {filtered.length === 0 ? (
-          <p className="wa-empty">// no entries match this filter</p>
+          <p className="wa-empty c-md">// no entries match this filter</p>
         ) : (
           filtered.map((p) => (
             <Link
@@ -96,7 +96,7 @@ export function WritingArchive({ posts }: Props) {
             >
               <div>
                 {p.categories.length > 0 && (
-                  <div className="wa-row-top">
+                  <div className="wa-row-top l-eyebrow">
                     {p.categories.map((c, i) => (
                       <span key={c.slug}>
                         <span className={i === 0 ? 'wa-acc' : undefined}>{c.title.toLowerCase()}</span>
@@ -105,10 +105,10 @@ export function WritingArchive({ posts }: Props) {
                     ))}
                   </div>
                 )}
-                <h2 className="wa-title">{p.title}</h2>
-                {p.metaDescription && <p className="wa-dek">{p.metaDescription}</p>}
+                <h2 className="wa-title t-h3">{p.title}</h2>
+                {p.metaDescription && <p className="wa-dek t-body">{p.metaDescription}</p>}
               </div>
-              <div className="wa-row-bot">
+              <div className="wa-row-bot c-xs">
                 <span>{formatDate(p.publishedAt)}</span>
                 <span>
                   <b>{p.readMinutes}</b> min · {p.wordCount.toLocaleString()} words
@@ -119,7 +119,7 @@ export function WritingArchive({ posts }: Props) {
         )}
       </div>
 
-      <div className="wa-foot">
+      <div className="wa-foot l-meta">
         <span>// end of log</span>
         <a href="/rss.xml" className="wa-rss">↳ rss</a>
       </div>

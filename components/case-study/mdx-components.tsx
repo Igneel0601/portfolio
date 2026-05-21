@@ -33,17 +33,17 @@ function nodeText(node: React.ReactNode): string {
 
 /** A 3-bullet skim list. Use right under the `## tl;dr` heading. */
 export function TLDR({ children }: { children: React.ReactNode }) {
-  return <ul className={styles.tldr}>{children}</ul>;
+  return <ul className={`${styles.tldr} t-lead`}>{children}</ul>;
 }
 
 /** A generic bulleted list with the › marker. Used for constraints, learned, next. */
 export function Bullets({ children }: { children: React.ReactNode }) {
-  return <ul className={styles.ul}>{children}</ul>;
+  return <ul className={`${styles.ul} t-lead`}>{children}</ul>;
 }
 
 /** Inline status tag — `<Tag>in progress</Tag>`. */
 export function Tag({ children }: { children: React.ReactNode }) {
-  return <span className={styles.inlineTag}>{children}</span>;
+  return <span className={`${styles.inlineTag} l-tag`}>{children}</span>;
 }
 
 /* ─── figure / image placeholder ───────────────────────── */
@@ -66,8 +66,8 @@ export function Figure({ src, alt, caption, n, aspect, placeholder }: FigureProp
       {showPlaceholder ? (
         <div className={`${styles.imgPh} ${aspectClass}`}>
           <div className={styles.imgPhLbl}>
-            <span className={styles.imgPhTag}>{n ? `[ image · ${n} ]` : "[ image ]"}</span>
-            <span className={styles.imgPhDesc}>
+            <span className={`${styles.imgPhTag} l-meta`}>{n ? `[ image · ${n} ]` : "[ image ]"}</span>
+            <span className={`${styles.imgPhDesc} l-meta`}>
               {placeholder || alt || "drop a screenshot here"}
             </span>
           </div>
@@ -81,7 +81,7 @@ export function Figure({ src, alt, caption, n, aspect, placeholder }: FigureProp
         />
       )}
       {caption && (
-        <figcaption className={styles.caption}>
+        <figcaption className={`${styles.caption} c-sm`}>
           fig. {n && <span className={styles.captionN}>{n}</span>} · {caption}
         </figcaption>
       )}
@@ -105,14 +105,14 @@ export function AsciiDiagram({
   return (
     <figure className={styles.figure}>
       <div className={styles.code}>
-        <div className={styles.codeHead}>
+        <div className={`${styles.codeHead} l-meta`}>
           <span>diagram</span>
-          <span className={styles.codeLang}>ascii</span>
+          <span className={`${styles.codeLang} l-meta`}>ascii</span>
         </div>
-        <pre className={styles.codePre}>{art ?? children}</pre>
+        <pre className={`${styles.codePre} c-md`}>{art ?? children}</pre>
       </div>
       {caption && (
-        <figcaption className={styles.caption}>
+        <figcaption className={`${styles.caption} c-sm`}>
           fig. {n && <span className={styles.captionN}>{n}</span>} · {caption}
         </figcaption>
       )}
@@ -138,14 +138,14 @@ export function Code({
   return (
     <figure className={styles.figure}>
       <div className={styles.code}>
-        <div className={styles.codeHead}>
+        <div className={`${styles.codeHead} l-meta`}>
           <span>{file || "snippet"}</span>
-          <span className={styles.codeLang}>{lang}</span>
+          <span className={`${styles.codeLang} l-meta`}>{lang}</span>
         </div>
-        <pre className={styles.codePre}>{children}</pre>
+        <pre className={`${styles.codePre} c-md`}>{children}</pre>
       </div>
       {caption && (
-        <figcaption className={styles.caption}>
+        <figcaption className={`${styles.caption} c-sm`}>
           snippet {n && <span className={styles.captionN}>{n}</span>} · {caption}
         </figcaption>
       )}
@@ -167,10 +167,10 @@ export function Decision({
   children: React.ReactNode;
 }) {
   return (
-    <div className={styles.decision}>
-      <span className={styles.decisionNum}>{n}</span>
+    <div className={`${styles.decision} t-body`}>
+      <span className={`${styles.decisionNum} c-sm`}>{n}</span>
       <div className={styles.decisionBody}>
-        <h4 className={styles.decisionH}>
+        <h4 className={`${styles.decisionH} t-h5`}>
           <span className={styles.picked}>{picked}</span>
           {rejected && (
             <>
@@ -204,7 +204,7 @@ export function Step({
 }) {
   return (
     <div className={styles.step}>
-      <div className={styles.stepLabel}>
+      <div className={`${styles.stepLabel} c-sm`}>
         <span className={styles.stepN}>{n}.</span>
         <span>{label}</span>
         {hint && <span className={styles.stepHint}>{hint}</span>}
@@ -230,12 +230,12 @@ export function Stat({
   label: string;
 }) {
   return (
-    <div className={styles.stat}>
-      <div className={styles.statV}>
+    <div className={`${styles.stat} c-md`}>
+      <div className={`${styles.statV} t-h3`}>
         {value}
-        {unit && <span className={styles.statUnit}>{unit}</span>}
+        {unit && <span className={`${styles.statUnit} t-sm`}>{unit}</span>}
       </div>
-      <div className={styles.statK}>{label}</div>
+      <div className={`${styles.statK} l-meta`}>{label}</div>
     </div>
   );
 }
@@ -267,8 +267,8 @@ export function Frontmatter({ data }: { data: Record<string, any> }) {
     ]);
   }
   return (
-    <div className={styles.frontmatter}>
-      <div className={styles.fmBar}>
+    <div className={`${styles.frontmatter} c-md`}>
+      <div className={`${styles.fmBar} l-meta`}>
         --- <span style={{ marginLeft: "auto" }}>{data.slug}.yaml</span>
       </div>
       <div className={styles.fmBody}>
@@ -294,8 +294,8 @@ export function makeH2(counter: { n: number }) {
     const idx = String(counter.n).padStart(2, "0");
     const resolvedId = id ?? slugify(nodeText(children));
     return (
-      <h2 className={styles.h2} id={resolvedId} data-toc-section={resolvedId}>
-        <span className={styles.h2N}>{idx}</span>
+      <h2 className={`${styles.h2} t-h3`} id={resolvedId} data-toc-section={resolvedId}>
+        <span className={`${styles.h2N} l-meta`}>{idx}</span>
         <span className={styles.h2Hash}>#</span>
         <span>{children}</span>
       </h2>
@@ -308,10 +308,10 @@ export function buildMdxComponents() {
   const counter = { n: 0 };
   return {
     h2: makeH2(counter),
-    p:  (props: any) => <p className={styles.lede} {...props} />,
-    ul: (props: any) => <ul className={styles.mdUl} {...props} />,
-    code: (props: any) => <code className={styles.inlineCode} {...props} />,
-    pre: (props: any) => <pre className={styles.codeBlock} {...props} />,
+    p:  (props: any) => <p className={`${styles.lede} t-lead`} {...props} />,
+    ul: (props: any) => <ul className={`${styles.mdUl} t-lead`} {...props} />,
+    code: (props: any) => <code className={`${styles.inlineCode} c-md`} {...props} />,
+    pre: (props: any) => <pre className={`${styles.codeBlock} c-md`} {...props} />,
     a: (props: any) => <a className={styles.link} {...props} />,
 
     // custom components used in mdx

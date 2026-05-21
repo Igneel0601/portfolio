@@ -161,7 +161,6 @@ export function SceneBoot() {
       <h1
         data-headline
         className="t-display mt-6 mb-2"
-        style={{ fontSize: "clamp(40px, 7vh, 72px)" }}
       >
         {HEADLINE_LINES.map((line, i) => (
           <HeadlineLine key={i} tokens={line} />

@@ -79,7 +79,7 @@ export default async function PostPage({
           className="wp-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
-          <div className="cs-crumb-line" style={{ display: 'flex', alignItems: 'center' }}>
+          <div className="cs-crumb-line c-sm" style={{ display: 'flex', alignItems: 'center' }}>
             <Link href="/writing" className="cs-back-link no-pop">
               <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> /writing
             </Link>
@@ -87,11 +87,11 @@ export default async function PostPage({
             <span>{filename}</span>
           </div>
 
-          <h1 className="wp-title">{post.title}</h1>
+          <h1 className="wp-title t-display">{post.title}</h1>
 
-          {post.metaDescription && <p className="wp-lead">{post.metaDescription}</p>}
+          {post.metaDescription && <p className="wp-lead t-lead">{post.metaDescription}</p>}
 
-          <div className="wp-meta-strip">
+          <div className="wp-meta-strip c-xs">
             {post.categories.map((c, i) => (
               <span key={c.slug} style={{ display: 'contents' }}>
                 {i > 0 && <span className="wp-sep">·</span>}
@@ -131,22 +131,22 @@ export default async function PostPage({
             <nav className="wp-pager" aria-label="post navigation">
               {prev ? (
                 <Link href={`/writing/${prev.slug}`} className="wp-pager-card no-pop">
-                  <span className="wp-pager-lbl">
+                  <span className="wp-pager-lbl l-eyebrow">
                     <MoveLeft size={16} strokeWidth={1.5} aria-hidden />
                     <span>previous</span>
                   </span>
-                  <span className="wp-pager-ttl">{prev.title}</span>
+                  <span className="wp-pager-ttl t-h5">{prev.title}</span>
                 </Link>
               ) : (
                 <span />
               )}
               {next ? (
                 <Link href={`/writing/${next.slug}`} className="wp-pager-card next no-pop">
-                  <span className="wp-pager-lbl">
+                  <span className="wp-pager-lbl l-eyebrow">
                     <span>next</span>
                     <MoveRight size={16} strokeWidth={1.5} aria-hidden />
                   </span>
-                  <span className="wp-pager-ttl">{next.title}</span>
+                  <span className="wp-pager-ttl t-h5">{next.title}</span>
                 </Link>
               ) : (
                 <span />
@@ -154,7 +154,7 @@ export default async function PostPage({
             </nav>
           )}
 
-          <div className="wp-foot">
+          <div className="wp-foot l-meta">
             <Link
               href="/writing"
               className="no-pop"

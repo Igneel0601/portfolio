@@ -89,7 +89,7 @@ export function ZoomableImage({
         aria-label="open diagram in fullscreen"
       >
         <img src={src} alt={alt} />
-        <span className="cs-arch-expand-hint">
+        <span className="cs-arch-expand-hint c-xs">
           <Maximize2 size={14} aria-hidden /> click to explore
         </span>
       </button>

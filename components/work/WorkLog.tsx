@@ -175,13 +175,13 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
         <Link
           data-back-link
           href="/"
-          className="work-back-link mono mute text-[11px] tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
+          className="work-back-link mono mute c-xs tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
         >
           <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> <span style={{ color: "var(--accent-2)" }}>/</span>back home
         </Link>
         <h1
           data-page-title
-          className="serif text-5xl md:text-6xl font-extrabold mt-3 mb-2"
+          className="t-display mt-3 mb-2"
         >
           All projects.
         </h1>
@@ -194,7 +194,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           style={{ background: "var(--paper-2)", maxWidth: 1280 }}
         >
           <div
-            className="mono mute hidden md:grid pb-2 mb-2 border-b border-dashed text-[10px] tracking-[0.14em] gap-4"
+            className="l-meta mute hidden md:grid pb-2 mb-2 border-b border-dashed gap-4"
             style={{
               gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
               columnGap: "clamp(32px, 5vw, 64px)",
@@ -222,7 +222,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
               </>
             );
 
-            const className = `work-row mono text-[13px] py-2.5 ${
+            const className = `work-row c-md py-2.5 ${
               i < rows.length - 1 ? "border-b border-dashed" : ""
             } md:grid md:items-center gap-4`;
             const style = {
@@ -261,14 +261,14 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
       </section>
 
       <section className="py-6 mx-auto" style={{ maxWidth: 1280 }}>
-        <div className="mono mute text-xs">$ git log --oneline | head -3</div>
+        <div className="c-sm mute">$ git log --oneline | head -3</div>
         <div data-git-log className="mt-1.5 space-y-1">
           {GIT_LOG_PREVIEW.map((line, i) => (
             <div
               key={i}
               data-git-line
               data-text={line}
-              className="mono mute text-xs pl-4"
+              className="c-sm mute pl-4"
             >
               {line}
             </div>
@@ -278,7 +278,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           href="https://github.com/Igneel0601"
           target="_blank"
           rel="noopener"
-          className="mono mute text-[11px] mt-4 tracking-[0.14em] inline-flex items-center gap-1.5 no-pop"
+          className="l-meta mute mt-4 inline-flex items-center gap-1.5 no-pop"
         >
           FULL LOG ON GITHUB.COM/IGNEEL0601
           <ArrowUpRight size={12} aria-hidden />

@@ -74,7 +74,7 @@ export default async function Page({
       <main>
         <div className="cs-doc">
           <article className="cs-content">
-            <div className="cs-crumb-line">
+            <div className="cs-crumb-line c-sm">
               <a href="/work" className="cs-back-link no-pop">
                 <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> /back to work
               </a>
@@ -82,17 +82,17 @@ export default async function Page({
               <span>{slug}.md</span>
             </div>
 
-            <h1 className="cs-hero-title">
+            <h1 className="cs-hero-title t-display">
               {data.title}
               <span className="acc">.</span>
             </h1>
-            {data.tagline && <p className="cs-hero-tag">{data.tagline}</p>}
+            {data.tagline && <p className="cs-hero-tag t-lead">{data.tagline}</p>}
 
             {(data.links?.live || data.links?.repo) && (
               <div className="cs-hero-actions">
                 {data.links.live && (
                   <a
-                    className="cs-pill no-pop"
+                    className="cs-pill c-sm no-pop"
                     href={data.links.live}
                     target="_blank"
                     rel="noopener"
@@ -104,7 +104,7 @@ export default async function Page({
                 )}
                 {data.links.repo && (
                   <a
-                    className="cs-pill no-pop"
+                    className="cs-pill c-sm no-pop"
                     href={data.links.repo}
                     target="_blank"
                     rel="noopener"

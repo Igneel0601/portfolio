@@ -63,11 +63,10 @@ function FittingParagraph({
   return (
     <p
       ref={ref}
+      className="t-body"
       style={{
         minHeight: 0,
         overflow: "hidden",
-        lineHeight: 1.45,
-        fontFamily: "var(--font-body), system-ui, sans-serif",
         textAlign: "justify",
       }}
     >
@@ -120,10 +119,7 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
   return (
     <div className="relative w-full h-full flex flex-col">
       <div className="w-full flex flex-col px-6 md:px-10 py-4 md:py-6 gap-4 flex-1 min-h-0">
-        <h2
-          className="t-h1 m-0"
-          style={{ fontSize: "clamp(36px, 5vh, 56px)" }}
-        >
+        <h2 className="t-h1 m-0">
           {project.name}
         </h2>
         <div
@@ -667,7 +663,7 @@ export function ExperimentsClient() {
             style={{
               position: "relative",
               margin: 0,
-              fontSize: "min(22vw, 280px)",
+              fontSize: "min(22vw, 17.5rem)",
               lineHeight: 0.9,
               fontWeight: 500,
               transformOrigin: "100% 50%",

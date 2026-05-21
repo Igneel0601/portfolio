@@ -15,19 +15,12 @@ export default async function WritingPage() {
   return (
     <>
       <main className="flex-1">
-        <section className="w-shell" style={{ paddingTop: 'clamp(20px, 2.5vw, 28px)' }}>
+        <section className="w-shell" style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}>
         <div className="l-eyebrow" style={{ color: 'var(--ink-dim)' }}>
           archive · {new Date().getFullYear()}
         </div>
 
-        <h1
-          className="t-display"
-          style={{
-            marginTop: '0.75rem',
-            letterSpacing: '0.025em',
-            lineHeight: 1.05,
-          }}
-        >
+        <h1 className="t-display" style={{ marginTop: '0.75rem' }}>
           writing
           <span style={{ color: 'var(--accent)' }}>.</span>
         </h1>

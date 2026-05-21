@@ -58,9 +58,9 @@ export function SceneFuture() {
             style={{ background: "var(--paper-2)" }}
           >
             <span className="stamp absolute -top-3 right-3">future</span>
-            <div className="serif text-xl font-extrabold">{label}</div>
-            <div className="mute mono text-[11px] mt-2">{blurb}</div>
-            <div className="mono text-[10px] tracking-[0.14em] mt-3" style={{ color: "var(--accent-2)" }}>→ {route}</div>
+            <div className="t-h4">{label}</div>
+            <div className="mute c-xs mt-2">{blurb}</div>
+            <div className="c-xs tracking-[0.14em] mt-3" style={{ color: "var(--accent-2)" }}>→ {route}</div>
           </Link>
         ))}
       </div>

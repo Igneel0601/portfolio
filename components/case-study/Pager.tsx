@@ -16,17 +16,17 @@ export function Pager({
           href={`/work/${prev.slug}`}
           className="cs-pager-card cs-pager-link no-pop"
         >
-          <span className="cs-pager-lbl">
+          <span className="cs-pager-lbl l-eyebrow">
             <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> prev
           </span>
-          <span className="cs-pager-title">[{prev.title}]</span>
+          <span className="cs-pager-title t-body">[{prev.title}]</span>
         </Link>
       ) : (
         <div className="cs-pager-card cs-pager-empty">
-          <span className="cs-pager-lbl">
+          <span className="cs-pager-lbl l-eyebrow">
             <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> prev
           </span>
-          <span className="cs-pager-empty-txt">no earlier study</span>
+          <span className="cs-pager-empty-txt c-md">no earlier study</span>
         </div>
       )}
       {next ? (
@@ -34,17 +34,17 @@ export function Pager({
           href={`/work/${next.slug}`}
           className="cs-pager-card cs-pager-link no-pop"
         >
-          <span className="cs-pager-lbl">
+          <span className="cs-pager-lbl l-eyebrow">
             next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
           </span>
-          <span className="cs-pager-title">[{next.title}]</span>
+          <span className="cs-pager-title t-body">[{next.title}]</span>
         </Link>
       ) : (
         <div className="cs-pager-card cs-pager-empty">
-          <span className="cs-pager-lbl">
+          <span className="cs-pager-lbl l-eyebrow">
             next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
           </span>
-          <span className="cs-pager-empty-txt">end of series</span>
+          <span className="cs-pager-empty-txt c-md">end of series</span>
         </div>
       )}
     </nav>

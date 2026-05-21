@@ -73,7 +73,7 @@ export function Mermaid({
         <div className="cs-mermaid-render" dangerouslySetInnerHTML={{ __html: svg }} />
       )}
       {caption && (
-        <figcaption className="cs-mermaid-caption">
+        <figcaption className="cs-mermaid-caption c-sm">
           fig. {n && <span className="cs-mermaid-n">{n}</span>} · {caption}
         </figcaption>
       )}

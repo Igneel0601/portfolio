@@ -35,7 +35,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       return <br key={key} />
 
     case 'paragraph':
-      return <p key={key}>{renderChildren(node.children, key)}</p>
+      return <p key={key} className="t-lead">{renderChildren(node.children, key)}</p>
 
     case 'heading': {
       const tag = (node.tag as 'h1' | 'h2' | 'h3' | 'h4') ?? 'h2'
@@ -53,6 +53,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       return (
         <Tag
           key={key}
+          className="t-lead"
           style={{
             paddingLeft: '1.5rem',
             margin: '1rem 0 1.4rem',
@@ -75,6 +76,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       return (
         <blockquote
           key={key}
+          className="t-lead"
           style={{
             borderLeft: '2px solid var(--accent)',
             paddingLeft: '1rem',

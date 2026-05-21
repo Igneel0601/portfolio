@@ -4,9 +4,9 @@ export function Breadcrumb({ slug, words }: { slug: string; words?: number }) {
       <span className="cs-mac-dot cs-mac-r" />
       <span className="cs-mac-dot cs-mac-y" />
       <span className="cs-mac-dot cs-mac-g" />
-      <span className="cs-prompt">$ cat case-study/{slug}.md</span>
+      <span className="cs-prompt c-sm">$ cat case-study/{slug}.md</span>
       {typeof words === "number" && (
-        <span className="cs-term-right">
+        <span className="cs-term-right c-xs">
           {words.toLocaleString()} words · {Math.max(1, Math.round(words / 220))} min read
         </span>
       )}
