@@ -87,7 +87,7 @@ export default async function PostPage({
             <span>{filename}</span>
           </div>
 
-          <h1 className="wp-title t-display">{post.title}</h1>
+          <h1 className="wp-title t-h1">{post.title}</h1>
 
           {post.metaDescription && <p className="wp-lead t-lead">{post.metaDescription}</p>}
 

@@ -39,7 +39,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
 
     case 'heading': {
       const tag = (node.tag as 'h1' | 'h2' | 'h3' | 'h4') ?? 'h2'
-      const cls = tag === 'h1' ? 't-h1' : tag === 'h2' ? 't-h2' : tag === 'h3' ? 't-h3' : 't-h4'
+      const cls = tag === 'h1' ? 't-h2' : tag === 'h2' ? 't-h3' : tag === 'h3' ? 't-h4' : 't-h5'
       const Tag = tag
       return (
         <Tag key={key} className={cls}>
