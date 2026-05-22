@@ -1,4 +1,4 @@
-import { ExperimentsClient } from "@/components/experiments/ExperimentsClient";
+import { SceneExperimentsStatic } from "@/components/experiments/SceneExperimentsStatic";
 
 export const metadata = {
   title: "Experiments — Vaibhav Verma",
@@ -8,7 +8,7 @@ export const metadata = {
 export default function ExperimentsPage() {
   return (
     <main className="flex-1">
-      <ExperimentsClient />
+      <SceneExperimentsStatic />
     </main>
   );
 }
