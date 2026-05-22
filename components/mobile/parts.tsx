@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 import type { Project, TimelineStop } from "@/lib/content";
 import { BOOT_LINES, CONTACT } from "@/lib/content";
@@ -151,7 +152,7 @@ export function HeroSection() {
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
         <Btn variant="solid" href="/work">
-          $ cat work →
+          $ cat work <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
         </Btn>
         <Btn href="/vaibhav_resume.pdf">$ download résumé.pdf</Btn>
         <Btn href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
@@ -259,7 +260,13 @@ export function ProjectCard({ project }: { project: Project }) {
               letterSpacing: ".04em",
             }}
           >
-            cat CASE_STUDY.md →
+            cat CASE_STUDY.md{" "}
+            <ArrowRight
+              size={12}
+              strokeWidth={1.5}
+              aria-hidden
+              style={{ display: "inline-block", verticalAlign: "-2px" }}
+            />
           </span>
           <span style={{ fontFamily: "var(--mono)", fontSize: 9, color: inkDim }}>
             {project.meta}
@@ -597,7 +604,7 @@ export function PageHeader({
           textDecoration: "none",
         }}
       >
-        <span>←</span> {back}
+        <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> {back}
       </Link>
       {eyebrow && (
         <div

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { CornerDownRight } from 'lucide-react'
 import type { PostListItem } from '@/lib/posts'
 
 function formatDate(iso: string | null) {
@@ -121,7 +122,9 @@ export function WritingArchive({ posts }: Props) {
 
       <div className="wa-foot l-meta">
         <span>// end of log</span>
-        <a href="/rss.xml" className="wa-rss">↳ rss</a>
+        <a href="/rss.xml" className="wa-rss" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+          <CornerDownRight size={14} strokeWidth={1.5} aria-hidden /> rss
+        </a>
       </div>
     </>
   )
