@@ -171,6 +171,7 @@ export function SceneTimeline() {
   useEffect(() => {
     if (!logsRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia("(max-width: 767.98px)").matches;
     const lines = Array.from(
       logsRef.current.querySelectorAll<HTMLElement>("[data-log-line]"),
     );
@@ -180,7 +181,7 @@ export function SceneTimeline() {
 
     const fullTexts = lines.map((el) => el.dataset.text || "");
 
-    if (reduced) {
+    if (reduced || mobile) {
       lines.forEach((el, i) => {
         el.textContent = fullTexts[i];
         el.removeAttribute("data-typing");

@@ -41,21 +41,28 @@ export function Nav() {
       const skipSlide = isReduce;
 
 
-      // Initial state — nav hidden + slightly above. After delay, snap
-      // visibility on and slide down into place.
-      gsap.set(nav, { autoAlpha: 0, y: -12 });
-
-      const tl = gsap.timeline({
-        delay: isHome ? 2.8 : 0.1,
-        defaults: { ease: E.precise },
-        onComplete: () => {
-          enteredRef.current = true;
-        },
-      });
-      if (skipSlide) {
-        tl.set(nav, { autoAlpha: 1, y: 0 });
+      // Mobile: no intro animation — show immediately. Scroll hide/show still applies.
+      let tl: gsap.core.Timeline | null = null;
+      if (isMobile) {
+        gsap.set(nav, { autoAlpha: 1, y: 0 });
+        enteredRef.current = true;
       } else {
-        tl.set(nav, { autoAlpha: 1 }).to(nav, { y: 0, duration: D.md });
+        // Initial state — nav hidden + slightly above. After delay, snap
+        // visibility on and slide down into place.
+        gsap.set(nav, { autoAlpha: 0, y: -12 });
+
+        tl = gsap.timeline({
+          delay: isHome ? 2.8 : 0.1,
+          defaults: { ease: E.precise },
+          onComplete: () => {
+            enteredRef.current = true;
+          },
+        });
+        if (skipSlide) {
+          tl.set(nav, { autoAlpha: 1, y: 0 });
+        } else {
+          tl.set(nav, { autoAlpha: 1 }).to(nav, { y: 0, duration: D.md });
+        }
       }
 
       // Sticky chrome toggle — set [data-stuck] when tabbar leaves viewport
@@ -92,7 +99,7 @@ export function Nav() {
       }
 
       return () => {
-        tl.kill();
+        tl?.kill();
         stickyST?.kill();
         sectionTriggers.forEach((t) => t.kill());
       };
@@ -208,13 +215,11 @@ export function Nav() {
         ref={navRef}
         data-nav
         style={{
-          visibility: 'hidden',
-          opacity: 0,
           background: 'color-mix(in oklab, var(--paper) 15%, transparent)',
           backdropFilter: 'blur(24px) saturate(140%)',
           WebkitBackdropFilter: 'blur(24px) saturate(140%)',
         }}
-        className="sticky top-0 z-50 px-6 md:px-10"
+        className="sticky top-0 z-50 px-6 md:px-10 md:invisible md:opacity-0"
       >
         <div className="hidden md:flex items-center gap-5 py-3 c-md">
           <Link

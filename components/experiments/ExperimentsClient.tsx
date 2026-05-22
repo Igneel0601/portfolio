@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/content";
 import { ScrollTrigger } from "@/lib/gsap";
+import { SceneExperimentsStatic } from "./SceneExperimentsStatic";
 
 // Terminal vibe — dark bar bg, green text. Different green tones per project.
 const BAR_BG = "#0a0d12"; // slightly darker than --paper for contrast
@@ -202,6 +203,23 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
 
 
 export function ExperimentsClient() {
+  // Phones get a stacked-card render (no scrollytelling). Touch + clip-path +
+  // ResizeObserver layouts produced overlapping text on real devices.
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767.98px)");
+    const apply = () => setIsMobile(mq.matches);
+    apply();
+    mq.addEventListener("change", apply);
+    return () => mq.removeEventListener("change", apply);
+  }, []);
+
+  if (isMobile) return <SceneExperimentsStatic />;
+  return <ExperimentsDesktop />;
+}
+
+function ExperimentsDesktop() {
   const outerRef = useRef<HTMLDivElement | null>(null);
   const stageRef = useRef<HTMLDivElement | null>(null);
   const seamRef = useRef<HTMLDivElement | null>(null);
