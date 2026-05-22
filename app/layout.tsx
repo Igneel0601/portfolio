@@ -57,6 +57,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
         {children}
