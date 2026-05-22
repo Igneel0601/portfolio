@@ -91,9 +91,9 @@ export function MobileNav() {
               display: "inline-flex",
               flexDirection: "column",
               justifyContent: "center",
-              gap: 5,
-              width: 24,
-              height: 24,
+              gap: 4,
+              width: 18,
+              height: 18,
               padding: 0,
               background: "transparent",
               border: 0,
@@ -105,7 +105,7 @@ export function MobileNav() {
               aria-hidden
               style={{
                 display: "block",
-                width: 16,
+                width: 14,
                 height: 1.5,
                 background: "var(--ink)",
                 borderRadius: 1,
@@ -118,8 +118,8 @@ export function MobileNav() {
               aria-hidden
               style={{
                 display: "block",
-                width: 22,
-                height: 2,
+                width: 14,
+                height: 1.5,
                 background: "var(--ink)",
                 borderRadius: 1,
                 transition: "transform 0.25s ease, opacity 0.2s ease",
@@ -135,7 +135,11 @@ export function MobileNav() {
         <div
           data-mobile-nav-overlay
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5"
-          style={{ background: "var(--paper)" }}
+          style={{
+            background: "color-mix(in oklab, var(--paper) 60%, transparent)",
+            backdropFilter: "blur(20px) saturate(140%)",
+            WebkitBackdropFilter: "blur(20px) saturate(140%)",
+          }}
         >
           {NAV_LINKS.map((l) => {
             if (l.kind === "scroll") {

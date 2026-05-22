@@ -12,7 +12,7 @@ import {
 export function MobileHome() {
   return (
     <div style={{ background: "var(--paper)" }}>
-      <div style={{ height: "100dvh", position: "relative" }}>
+      <div style={{ height: "120dvh", position: "relative" }}>
         <div style={{ position: "sticky", top: 0 }}>
           <BootBlock />
           <HeroSection />
