@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
-import "./globals.css";
+import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { MotionProvider } from "@/components/MotionProvider";
-import { Nav } from "@/components/Nav";
-import CustomCursor from "@/components/CustomCursor";
-import { Background } from "@/components/Background";
+import { DesktopShell } from "@/components/shells/DesktopShell";
+import { MobileShell } from "@/components/shells/MobileShell";
+import { getDevice } from "@/lib/device";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -48,21 +47,18 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const device = await getDevice();
+  const Shell = device === "mobile" ? MobileShell : DesktopShell;
   return (
     <html
       lang="en"
       className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <MotionProvider>
-          <Background />
-          <CustomCursor />
-          <Nav />
-          {children}
-        </MotionProvider>
+        <Shell>{children}</Shell>
         <Analytics />
         <SpeedInsights />
       </body>

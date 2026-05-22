@@ -3,17 +3,22 @@ import { SceneExperiments } from "@/components/scenes/SceneExperiments";
 import { SceneTimeline } from "@/components/scenes/SceneTimeline";
 import { SceneCTA } from "@/components/scenes/SceneCTA";
 import { MobileHome } from "@/components/mobile/MobileHome";
+import { getDevice } from "@/lib/device";
 
-export default function Home() {
+export default async function Home() {
+  if ((await getDevice()) === "mobile") {
+    return (
+      <main className="flex-1">
+        <MobileHome />
+      </main>
+    );
+  }
   return (
     <main className="flex-1">
-      <div className="hidden md:block">
-        <SceneBoot />
-        <SceneExperiments />
-        <SceneTimeline />
-        <SceneCTA />
-      </div>
-      <MobileHome />
+      <SceneBoot />
+      <SceneExperiments />
+      <SceneTimeline />
+      <SceneCTA />
     </main>
   );
 }

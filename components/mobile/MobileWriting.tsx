@@ -12,7 +12,7 @@ function fmtDate(iso: string | null): string {
 
 export function MobileWriting({ posts }: { posts: PostListItem[] }) {
   return (
-    <div className="md:hidden" style={{ background: "var(--paper)" }}>
+    <div style={{ background: "var(--paper)" }}>
       <PageHeader eyebrow="$ ls ~/writing" title="writing" />
       <DashedRule />
       {posts.map((p) => {

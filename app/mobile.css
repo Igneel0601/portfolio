@@ -1,0 +1,3 @@
+/* Mobile-only styles. Mobile components (components/mobile/*) use inline
+   styles plus typography token classes from tokens.css, so this file stays
+   empty until a real mobile-only rule is needed. */

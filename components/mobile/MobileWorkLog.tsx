@@ -4,7 +4,7 @@ import { DashedRule, PageHeader, WorkPageRow } from "./parts";
 
 export function MobileWorkLog({ rows }: { rows: WorkRow[] }) {
   return (
-    <div className="md:hidden" style={{ background: "var(--paper)" }}>
+    <div style={{ background: "var(--paper)" }}>
       <PageHeader title="All projects" />
       <DashedRule />
       {rows.map((r, i) => (

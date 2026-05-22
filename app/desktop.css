@@ -1,0 +1,234 @@
+/* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
+.parallax-bg {
+  position: fixed;
+  inset: -64px 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--ink) 5%, transparent) 1px,
+    transparent 2px
+  );
+  background-size: 32px 32px;
+  background-repeat: repeat;
+  transform: translate3d(0, var(--bg-y, 0), 0);
+  filter: blur(var(--bg-blur, 0));
+  will-change: transform, filter;
+}
+
+/* apple-ish custom cursor (ported from mr-main) */
+* { cursor: none !important; }
+
+#custom-cursor {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    width 0.18s ease,
+    height 0.18s ease,
+    border-radius 0.18s ease,
+    background-color 0.18s ease;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity, width, height, border-radius;
+}
+
+#custom-cursor.text {
+  width: 6px;
+  height: 30px;
+  border-radius: 6px;
+  background-color: var(--accent);
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+#custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.25);
+  opacity: 0.6 !important;
+}
+
+@media (hover: none), (pointer: coarse) {
+  * { cursor: auto !important; }
+  #custom-cursor { display: none !important; }
+}
+
+a, button {
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* every link pops + recolors + grows underline on hover.
+   exclude .btn, .logo-link, .no-pop, and anything obviously structural */
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex),
+button:not(.btn):not(.no-pop):not(.grid):not(.flex) {
+  display: inline-block;
+  position: relative;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex)::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 1.5px;
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered {
+  transform: scale(1.08) !important;
+  color: var(--accent) !important;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover::after,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
+  width: 100%;
+}
+
+/* identity cursor blink — only CSS animation allowed by motion spec */
+[data-cursor] {
+  display: inline-block;
+  width: 9px;
+  height: 18px;
+  background: var(--accent);
+  vertical-align: -0.18em;
+  margin-left: 2px;
+  animation: blink 1.06s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* nav link styling */
+[data-nav][data-stuck]             { background: color-mix(in oklab, var(--paper-2) 80%, transparent); backdrop-filter: blur(12px); border-bottom-color: color-mix(in oklab, var(--ink) 15%, transparent); }
+
+[data-nav-link]                    { color: var(--ink); transition: color 0.18s ease; }
+[data-nav-link][data-active]       { color: var(--accent); }
+[data-nav-link][data-nav-kind="route"]:hover  { color: var(--accent-2); }
+[data-nav-link][data-nav-kind="scroll"]:hover { color: var(--accent); }
+
+/* /work — build log table */
+.work-row { position: relative; transition: background-color .15s ease; }
+.work-row[data-link="true"] { cursor: pointer; }
+.work-row[data-link="true"]:hover .work-name,
+.work-row[data-link="true"]:hover .font-bold {
+  color: var(--accent);
+}
+.work-row[data-link="true"] .work-chev { opacity: 0; transition: opacity .15s ease; color: var(--accent); justify-self: end; }
+.work-row[data-link="true"]:hover .work-chev { opacity: 1; }
+.work-row[data-hidden="true"] { display: none; }
+
+/* .work-status — color is set by data-status-row variants below. */
+.work-row[data-status-row="active"]   .work-status { color: var(--accent); }
+.work-row[data-status-row="wip"]      .work-status { color: var(--accent); font-style: italic; }
+.work-row[data-status-row="archived"] .work-status { color: var(--ink-dim); }
+.work-row[data-status-row="dead"]     .work-status { color: var(--ink-dim); opacity: .5; text-decoration: line-through; }
+
+.work-row[data-status-row="wip"] { opacity: .65; font-style: italic; }
+
+.work-blurb { min-width: 0; }
+
+.work-back-link { transition: color .15s ease; }
+.work-back-link:hover { color: var(--accent); }
+
+/* /writing archive (writing-A) */
+.wa-prompt {
+  margin-top: 3rem;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+.wa-prompt .wa-cmd { color: var(--accent); }
+.wa-prompt .wa-sep, .wa-row-top .wa-sep { opacity: 0.5; }
+
+.wa-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.wa-chip {
+  color: var(--ink-soft);
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--hair-2, var(--hair));
+  border-radius: 999px;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.18s ease, color 0.18s ease;
+  text-transform: lowercase;
+}
+.wa-chip:hover { border-color: var(--accent); color: var(--accent); }
+.wa-chip.on { border-color: var(--accent); color: var(--accent); }
+.wa-chip .wa-ct { color: var(--ink-dim); margin-left: 0.375rem; }
+
+.wa-table { margin-top: 1.5rem; display: grid; gap: 0; }
+.wa-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--hair);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+.wa-row:first-child { border-top: 1px solid var(--hair); }
+.wa-row:hover { background: color-mix(in oklab, var(--accent) 4%, transparent); }
+.wa-row:hover .wa-title { color: var(--accent); }
+
+.wa-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.45rem;
+}
+.wa-row-top .wa-acc { color: var(--accent); }
+
+.wa-title {
+  color: var(--ink);
+  transition: color 0.25s ease;
+  margin: 0;
+}
+.wa-dek {
+  margin-top: 0.4rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 72ch;
+}
+.wa-row-bot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  color: var(--ink-dim);
+  text-align: right;
+  white-space: nowrap;
+}
+.wa-row-bot b { color: var(--ink-soft); font-weight: 500; }
+
+.wa-empty {
+  color: var(--ink-dim);
+  padding: 2rem 0;
+}
+
+.wa-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-dim);
+}
+.wa-foot .wa-rss { color: var(--accent); text-decoration: none; }
+.wa-foot .wa-rss:hover { text-decoration: underline; }

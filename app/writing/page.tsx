@@ -2,6 +2,7 @@ import { getAllPosts } from '@/lib/posts'
 import { WritingArchive } from '@/components/writing/WritingArchive'
 import { WritingFooter } from '@/components/writing/WritingFooter'
 import { MobileWriting } from '@/components/mobile/MobileWriting'
+import { getDevice } from '@/lib/device'
 
 export const revalidate = 60
 
@@ -11,13 +12,21 @@ export const metadata = {
 }
 
 export default async function WritingPage() {
-  const posts = await getAllPosts()
+  const [posts, device] = await Promise.all([getAllPosts(), getDevice()])
+
+  if (device === 'mobile') {
+    return (
+      <main className="flex-1">
+        <MobileWriting posts={posts} />
+      </main>
+    )
+  }
 
   return (
     <>
       <main className="flex-1">
         <section
-          className="w-shell hidden md:block"
+          className="w-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
           <div className="l-eyebrow" style={{ color: 'var(--ink-dim)' }}>
@@ -43,11 +52,8 @@ export default async function WritingPage() {
 
           <WritingArchive posts={posts} />
         </section>
-        <MobileWriting posts={posts} />
       </main>
-      <div className="hidden md:block">
-        <WritingFooter slug="index" />
-      </div>
+      <WritingFooter slug="index" />
     </>
   )
 }

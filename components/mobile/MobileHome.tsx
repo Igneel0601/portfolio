@@ -11,7 +11,7 @@ import {
 
 export function MobileHome() {
   return (
-    <div className="md:hidden" style={{ background: "var(--paper)" }}>
+    <div style={{ background: "var(--paper)" }}>
       <div style={{ height: "100dvh", position: "relative" }}>
         <div style={{ position: "sticky", top: 0 }}>
           <BootBlock />
