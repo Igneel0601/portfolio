@@ -69,7 +69,7 @@ export function MobileNav() {
       <nav
         data-mobile-nav
         data-hidden={hidden ? "true" : undefined}
-        className="sticky top-0 z-50 px-6"
+        className="sticky top-0 z-[110] px-6"
         style={{
           background: "color-mix(in oklab, var(--paper) 15%, transparent)",
           backdropFilter: "blur(24px) saturate(140%)",
@@ -84,11 +84,49 @@ export function MobileNav() {
             igneel.dev
           </Link>
           <button
-            aria-label="Open menu"
-            onClick={() => setOpen(true)}
-            className="c-md leading-none px-2 py-1"
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            onClick={() => setOpen((v) => !v)}
+            style={{
+              display: "inline-flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              gap: 6,
+              width: 28,
+              height: 28,
+              padding: 0,
+              background: "transparent",
+              border: 0,
+              cursor: "pointer",
+              WebkitTapHighlightColor: "transparent",
+            }}
           >
-            ☰
+            <span
+              aria-hidden
+              style={{
+                display: "block",
+                width: 22,
+                height: 2,
+                background: "var(--ink)",
+                borderRadius: 1,
+                transition: "transform 0.25s ease, opacity 0.2s ease",
+                transformOrigin: "center",
+                transform: open ? "translateY(4px) rotate(45deg)" : "none",
+              }}
+            />
+            <span
+              aria-hidden
+              style={{
+                display: "block",
+                width: 22,
+                height: 2,
+                background: "var(--ink)",
+                borderRadius: 1,
+                transition: "transform 0.25s ease, opacity 0.2s ease",
+                transformOrigin: "center",
+                transform: open ? "translateY(-4px) rotate(-45deg)" : "none",
+              }}
+            />
           </button>
         </div>
       </nav>
@@ -99,13 +137,6 @@ export function MobileNav() {
           className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5"
           style={{ background: "var(--paper)" }}
         >
-          <button
-            aria-label="Close menu"
-            onClick={() => setOpen(false)}
-            className="absolute top-4 right-5 t-h4 leading-none"
-          >
-            ×
-          </button>
           {NAV_LINKS.map((l) => {
             if (l.kind === "scroll") {
               return (
