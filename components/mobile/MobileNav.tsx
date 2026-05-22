@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
@@ -8,6 +8,12 @@ import { NAV_LINKS } from "@/lib/content";
 export function MobileNav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const openRef = useRef(open);
+
+  useEffect(() => {
+    openRef.current = open;
+  }, [open]);
 
   // Lock page scroll while overlay is open.
   useEffect(() => {
@@ -16,6 +22,34 @@ export function MobileNav() {
     return () => {
       document.documentElement.style.overflow = "";
     };
+  }, [open]);
+
+  // Auto-hide on scroll-down, re-show on scroll-up. Mirrors the desktop Nav
+  // behavior. Disabled while the overlay menu is open so the nav can't slide
+  // away mid-tap.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let lastY = window.scrollY ?? 0;
+    let rafId = 0;
+    const tick = () => {
+      const y = window.scrollY ?? 0;
+      if (!openRef.current) {
+        const delta = y - lastY;
+        if (delta > 5 && y > 10) setHidden(true);
+        else if (delta < -5) setHidden(false);
+      }
+      lastY = y;
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafId);
+  }, []);
+
+  // Force visible whenever the overlay is opened.
+  useEffect(() => {
+    if (open) setHidden(false);
   }, [open]);
 
   const handleScrollLink = (
@@ -34,11 +68,15 @@ export function MobileNav() {
     <>
       <nav
         data-mobile-nav
+        data-hidden={hidden ? "true" : undefined}
         className="sticky top-0 z-50 px-6"
         style={{
           background: "color-mix(in oklab, var(--paper) 15%, transparent)",
           backdropFilter: "blur(24px) saturate(140%)",
           WebkitBackdropFilter: "blur(24px) saturate(140%)",
+          transform: hidden ? "translateY(-110%)" : "translateY(0)",
+          transition: "transform 0.28s ease",
+          willChange: "transform",
         }}
       >
         <div className="flex items-center justify-between py-3 c-md">
