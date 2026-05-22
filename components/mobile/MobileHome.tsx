@@ -1,4 +1,5 @@
-import { PROJECTS, TIMELINE } from "@/lib/content";
+import { PROJECTS } from "@/lib/content";
+import { MobileTimeline } from "./MobileTimeline";
 import {
   BootBlock,
   CTASection,
@@ -6,7 +7,6 @@ import {
   ProjectCard,
   SectionHeader,
   SiteFooter,
-  TimelineSection,
 } from "./parts";
 
 export function MobileHome() {
@@ -22,7 +22,7 @@ export function MobileHome() {
       {PROJECTS.map((p) => (
         <ProjectCard key={p.id} project={p} />
       ))}
-      <TimelineSection stops={TIMELINE} />
+      <MobileTimeline />
       <CTASection />
       <SiteFooter />
     </div>
