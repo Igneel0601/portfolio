@@ -91,9 +91,9 @@ export function MobileNav() {
               display: "inline-flex",
               flexDirection: "column",
               justifyContent: "center",
-              gap: 6,
-              width: 28,
-              height: 28,
+              gap: 5,
+              width: 24,
+              height: 24,
               padding: 0,
               background: "transparent",
               border: 0,
@@ -105,13 +105,13 @@ export function MobileNav() {
               aria-hidden
               style={{
                 display: "block",
-                width: 22,
-                height: 2,
+                width: 16,
+                height: 1.5,
                 background: "var(--ink)",
                 borderRadius: 1,
                 transition: "transform 0.25s ease, opacity 0.2s ease",
                 transformOrigin: "center",
-                transform: open ? "translateY(4px) rotate(45deg)" : "none",
+                transform: open ? "translateY(3px) rotate(45deg)" : "none",
               }}
             />
             <span
@@ -124,7 +124,7 @@ export function MobileNav() {
                 borderRadius: 1,
                 transition: "transform 0.25s ease, opacity 0.2s ease",
                 transformOrigin: "center",
-                transform: open ? "translateY(-4px) rotate(-45deg)" : "none",
+                transform: open ? "translateY(-3px) rotate(-45deg)" : "none",
               }}
             />
           </button>
