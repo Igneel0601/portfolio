@@ -3,9 +3,12 @@ import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { DesktopShell } from "@/components/shells/DesktopShell";
-import { MobileShell } from "@/components/shells/MobileShell";
-import { getDevice } from "@/lib/device";
+
+// Root layout intentionally has NO shell. Middleware (middleware.ts) rewrites
+// every UA-routable URL into /d/* or /m/* per User-Agent; the matching subtree
+// layout (app/d/layout.tsx or app/m/layout.tsx) provides chrome + per-tree CSS.
+// Routes outside the subtrees (api, rss, sitemap, robots, not-found) render
+// here without chrome — they're either machine-readable or full-bleed.
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -47,18 +50,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const device = await getDevice();
-  const Shell = device === "mobile" ? MobileShell : DesktopShell;
   return (
     <html
       lang="en"
       className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Shell>{children}</Shell>
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>

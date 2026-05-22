@@ -1,4 +1,3 @@
-import "@/app/desktop.css";
 import { Background } from "@/components/Background";
 import CustomCursor from "@/components/CustomCursor";
 import { MotionProvider } from "@/components/MotionProvider";

@@ -8,9 +8,6 @@ import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
 import { WritingFooter } from '@/components/writing/WritingFooter'
 
-export const revalidate = 60
-export const dynamicParams = true
-
 export async function generateStaticParams() {
   try {
     const slugs = await getPostSlugs()

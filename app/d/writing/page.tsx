@@ -1,8 +1,6 @@
 import { getAllPosts } from '@/lib/posts'
 import { WritingArchive } from '@/components/writing/WritingArchive'
 import { WritingFooter } from '@/components/writing/WritingFooter'
-import { MobileWriting } from '@/components/mobile/MobileWriting'
-import { getDevice } from '@/lib/device'
 
 export const revalidate = 60
 
@@ -12,15 +10,7 @@ export const metadata = {
 }
 
 export default async function WritingPage() {
-  const [posts, device] = await Promise.all([getAllPosts(), getDevice()])
-
-  if (device === 'mobile') {
-    return (
-      <main className="flex-1">
-        <MobileWriting posts={posts} />
-      </main>
-    )
-  }
+  const posts = await getAllPosts()
 
   return (
     <>

@@ -48,8 +48,7 @@ export function MobileNav() {
           <button
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="c-md leading-none px-2 py-1 border rounded"
-            style={{ borderColor: "var(--ink)" }}
+            className="c-md leading-none px-2 py-1"
           >
             ☰
           </button>
