@@ -15,7 +15,7 @@ const SKIP_EXACT = new Set([
   "/favicon.ico",
 ]);
 
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // Already-prefixed paths (subtree pages render directly): no rewrite.
@@ -42,6 +42,6 @@ export function middleware(req: NextRequest) {
 export const config = {
   // Match every request; the function itself decides what to skip. The matcher
   // here only filters Next's internal static assets to avoid even invoking
-  // middleware for them.
+  // proxy for them.
   matcher: ["/((?!_next/static|_next/image|favicon\\.ico).*)"],
 };

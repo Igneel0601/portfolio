@@ -13,7 +13,7 @@ This document explains how that's wired so a contributor can find the right file
 ```
 ┌─────────────────────── request ────────────────────────┐
 │                                                        │
-│  middleware.ts                                         │
+│  proxy.ts                                              │
 │    └─ reads User-Agent                                 │
 │        ├─ mobile UA  →  rewrite path to /m/...         │
 │        └─ desktop UA →  rewrite path to /d/...         │
@@ -47,7 +47,7 @@ This document explains how that's wired so a contributor can find the right file
 │   │                                                    │
 │   └─ not-found.tsx    ← root-level 404 fallback        │
 │                                                        │
-│  URL bar shows /work, /writing/foo — middleware        │
+│  URL bar shows /work, /writing/foo — proxy             │
 │  rewrites are transparent to the browser.              │
 └────────────────────────────────────────────────────────┘
 ```
@@ -96,9 +96,9 @@ Two cases:
 
 If you put a desktop rule in `tokens.css` it will ship to mobile and (probably) be inert; if you put a mobile rule in `tokens.css` it will ship to desktop and (probably) be inert. Both work but they're sloppy. Each tree has its own bucket — use it.
 
-## Middleware
+## Proxy
 
-`middleware.ts` at the project root. Skip list:
+`proxy.ts` at the project root (Next 16 renamed the convention from `middleware` to `proxy`; the exported function must be named `proxy`). Skip list:
 
 - Already-prefixed paths (`/d/*`, `/m/*`) — these are the rewritten destinations; no further rewrite.
 - API + machine-readable routes (`/api/*`, `/rss.xml`, `/sitemap.xml`, `/robots.txt`, `/favicon.ico`).
@@ -123,7 +123,7 @@ UA regex deliberately omits `iPad` — modern iPadOS reports a desktop Safari UA
 
 After any structural change:
 
-1. `npm run build` — check the route table. Top-level routes should appear under `/d/*` and `/m/*`. Articles should show `●` (SSG with generateStaticParams) under both trees. Middleware row at the bottom: `ƒ Proxy (Middleware)`.
+1. `npm run build` — check the route table. Top-level routes should appear under `/d/*` and `/m/*`. Articles should show `●` (SSG with generateStaticParams) under both trees. Proxy row at the bottom: `ƒ Proxy`.
 2. Dev: open `localhost:3000/` with default Chrome UA → scrollytelling + custom cursor + parallax. View source: only `tokens.css` and the `app/d/...` CSS chunk linked.
 3. Dev: Chrome DevTools → Network conditions → User agent "iPhone" → reload. `MobileHome` only. `document.querySelector('[data-nav]')` (desktop nav) is null; `[data-mobile-nav]` is present. View source: only `tokens.css` and the `app/m/...` CSS chunk linked. No `desktop.css`.
 4. `curl -sI -H 'User-Agent: Mozilla/5.0 (iPhone; ...)' http://localhost:3000/ | grep -i vary` → `Vary: User-Agent`.

@@ -4,7 +4,7 @@ import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Root layout intentionally has NO shell. Middleware (middleware.ts) rewrites
+// Root layout intentionally has NO shell. Proxy (proxy.ts) rewrites
 // every UA-routable URL into /d/* or /m/* per User-Agent; the matching subtree
 // layout (app/d/layout.tsx or app/m/layout.tsx) provides chrome + per-tree CSS.
 // Routes outside the subtrees (api, rss, sitemap, robots, not-found) render
