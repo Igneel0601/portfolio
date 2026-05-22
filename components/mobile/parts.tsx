@@ -56,32 +56,27 @@ function Btn({
   variant?: "solid" | "outline";
   href?: string;
 }) {
-  const solid = variant === "solid";
+  // Use the shared .btn class from tokens.css so mobile matches desktop's
+  // hard-shadow + uppercase aesthetic. Stretch full-width inside a stacked CTA.
+  const className = variant === "solid" ? "btn solid" : "btn";
   const style: CSSProperties = {
-    display: "flex",
-    alignItems: "center",
+    width: "100%",
     justifyContent: "center",
-    padding: "10px 14px",
-    borderRadius: 7,
-    border: `1.5px solid ${solid ? ink : hair2}`,
-    background: solid ? ink : "transparent",
-    color: solid ? paper : inkSoft,
-    fontFamily: "var(--mono)",
-    fontSize: "0.6875rem",
-    textTransform: "uppercase",
-    letterSpacing: ".07em",
     WebkitTapHighlightColor: "transparent",
-    boxShadow: solid ? "2px 2px 0 rgba(230,237,243,.1)" : undefined,
     textDecoration: "none",
   };
   if (href) {
     return (
-      <Link href={href} style={style}>
+      <Link href={href} className={className} style={style}>
         {children}
       </Link>
     );
   }
-  return <span style={style}>{children}</span>;
+  return (
+    <span className={className} style={style}>
+      {children}
+    </span>
+  );
 }
 
 /* ── home ──────────────────────────────────────────────── */
@@ -348,61 +343,34 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
 
 export function CTASection() {
   return (
-    <div
+    <section
+      className="box"
       style={{
-        margin: "12px 22px",
-        border: `1px solid color-mix(in oklab, ${accent} 22%, transparent)`,
-        borderRadius: 10,
-        padding: 14,
+        margin: "24px 22px",
+        padding: 20,
         background: paper2,
+        display: "grid",
+        gap: 16,
       }}
     >
-      <div
-        className="l-eyebrow"
-        style={{ fontSize: 9, color: accent, marginBottom: 4 }}
-      >
-        END OF STORY · YOUR MOVE
-      </div>
-      <div className="t-h3" style={{ color: ink, margin: "0 0 3px" }}>
-        Hiring? Building? Curious?
-      </div>
-      <div
-        className="t-sm"
-        style={{ color: inkSoft, fontSize: 13, margin: "0 0 12px" }}
-      >
-        Drop a line — I respond fast.
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <Link
-          href={`mailto:${CONTACT.email}`}
-          style={{
-            border: `1px solid color-mix(in oklab, ${accent} 45%, transparent)`,
-            padding: "9px 14px",
-            borderRadius: 6,
-            fontFamily: "var(--mono)",
-            fontSize: "0.6875rem",
-            color: accent,
-            textAlign: "center",
-            textDecoration: "none",
-          }}
-        >
-          {CONTACT.email}
-        </Link>
-        <div
-          style={{
-            border: `1px solid ${hair}`,
-            padding: "9px 14px",
-            borderRadius: 6,
-            fontFamily: "var(--mono)",
-            fontSize: "0.6875rem",
-            color: inkDim,
-            textAlign: "center",
-          }}
-        >
-          github · linkedin · x
+      <div>
+        <div className="l-eyebrow" style={{ color: accent, marginBottom: 6 }}>
+          END OF STORY · YOUR MOVE
+        </div>
+        <div className="t-h3" style={{ color: ink, margin: "0 0 4px" }}>
+          Hiring? Building? Curious?
+        </div>
+        <div className="t-body mute" style={{ margin: 0 }}>
+          Drop a line — I respond fast.
         </div>
       </div>
-    </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <Btn variant="solid" href={`mailto:${CONTACT.email}`}>
+          {CONTACT.email}
+        </Btn>
+        <Btn href={CONTACT.github}>github · linkedin · x</Btn>
+      </div>
+    </section>
   );
 }
 
