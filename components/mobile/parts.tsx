@@ -65,17 +65,36 @@ function Btn({
     WebkitTapHighlightColor: "transparent",
     textDecoration: "none",
   };
-  if (href) {
+  if (!href) {
     return (
-      <Link href={href} className={className} style={style}>
+      <span className={className} style={style}>
         {children}
-      </Link>
+      </span>
+    );
+  }
+  // mailto:, tel:, external URLs, and static-file paths (anything with a
+  // dotted extension like .pdf) need a plain <a> — next/link tries to
+  // client-route them and either 404s or fails to trigger a download.
+  const isExternal =
+    /^(mailto:|tel:|https?:)/i.test(href) || /\.[a-z0-9]+(\?|#|$)/i.test(href);
+  if (isExternal) {
+    const isFile = /\.[a-z0-9]+(\?|#|$)/i.test(href) && !/^https?:/i.test(href);
+    return (
+      <a
+        href={href}
+        className={className}
+        style={style}
+        {...(isFile ? { download: "" } : {})}
+        {...(/^https?:/i.test(href) ? { target: "_blank", rel: "noreferrer" } : {})}
+      >
+        {children}
+      </a>
     );
   }
   return (
-    <span className={className} style={style}>
+    <Link href={href} className={className} style={style}>
       {children}
-    </span>
+    </Link>
   );
 }
 
@@ -134,7 +153,7 @@ export function HeroSection() {
         <Btn variant="solid" href="/work">
           $ cat work →
         </Btn>
-        <Btn href="/resume.pdf">$ download résumé.pdf</Btn>
+        <Btn href="/vaibhav_resume.pdf">$ download résumé.pdf</Btn>
         <Btn href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
       </div>
     </div>
