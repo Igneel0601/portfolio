@@ -74,7 +74,7 @@ export default async function Page({
           <article className="cs-content">
             <div className="cs-crumb-line c-sm">
               <a href="/work" className="cs-back-link no-pop">
-                <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
+                <MoveLeft className="i-lg" aria-hidden /> ../
               </a>
               <span className="cs-sep">·</span>
               <span>{slug}.md</span>
@@ -97,7 +97,7 @@ export default async function Page({
                   >
                     <span className="live">●</span> live ·{" "}
                     {data.links.live.replace(/^https?:\/\//, "").replace(/\/$/, "")}{" "}
-                    <MoveUpRight size={12} className="ext" aria-hidden />
+                    <MoveUpRight className="i-xs ext" aria-hidden />
                   </a>
                 )}
                 {data.links.repo && (
@@ -107,7 +107,7 @@ export default async function Page({
                     target="_blank"
                     rel="noopener"
                   >
-                    $ git source <MoveUpRight size={12} className="ext" aria-hidden />
+                    $ git source <MoveUpRight className="i-xs ext" aria-hidden />
                   </a>
                 )}
               </div>
@@ -115,12 +115,14 @@ export default async function Page({
 
             <Frontmatter data={data} />
 
+            <Toc items={tocItems} variant="inline" />
+
             <MDXRemote source={content} components={buildMdxComponents()} />
 
             <Pager prev={prev} next={next} />
           </article>
 
-          <Toc items={tocItems} />
+          <Toc items={tocItems} variant="sidebar" />
         </div>
       </main>
       <StudyFooter slug={slug} />

@@ -78,7 +78,7 @@ export default async function PostPage({
         >
           <div className="cs-crumb-line c-sm" style={{ display: 'flex', alignItems: 'center' }}>
             <Link href="/writing" className="cs-back-link no-pop">
-              <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
+              <MoveLeft className="i-lg" aria-hidden /> ../
             </Link>
             <span className="cs-sep">·</span>
             <span>{filename}</span>
@@ -129,7 +129,7 @@ export default async function PostPage({
               {prev ? (
                 <Link href={`/writing/${prev.slug}`} className="wp-pager-card no-pop">
                   <span className="wp-pager-lbl l-eyebrow">
-                    <MoveLeft size={16} strokeWidth={1.5} aria-hidden />
+                    <MoveLeft className="i-md" aria-hidden />
                     <span>previous</span>
                   </span>
                   <span className="wp-pager-ttl t-h5">{prev.title}</span>
@@ -141,7 +141,7 @@ export default async function PostPage({
                 <Link href={`/writing/${next.slug}`} className="wp-pager-card next no-pop">
                   <span className="wp-pager-lbl l-eyebrow">
                     <span>next</span>
-                    <MoveRight size={16} strokeWidth={1.5} aria-hidden />
+                    <MoveRight className="i-md" aria-hidden />
                   </span>
                   <span className="wp-pager-ttl t-h5">{next.title}</span>
                 </Link>
@@ -157,7 +157,7 @@ export default async function PostPage({
               className="no-pop"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
             >
-              <MoveLeft size={16} strokeWidth={1.5} aria-hidden />
+              <MoveLeft className="i-md" aria-hidden />
               <span>/writing</span>
             </Link>
             <span>// fin</span>

@@ -150,7 +150,7 @@ function MobileTerminal() {
         <h1 className={styles.mobileTitle}>needs a real keyboard.</h1>
         <p className={styles.mobileSub}>open this on desktop for the full thing.</p>
         <Link href="/" className={styles.mobileBack}>
-          <MoveLeft size={14} strokeWidth={1.5} aria-hidden /> ../
+          <MoveLeft className="i-sm" aria-hidden /> ../
         </Link>
       </div>
     </div>

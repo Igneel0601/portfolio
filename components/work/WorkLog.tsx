@@ -177,7 +177,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           href="/"
           className="work-back-link mono mute c-xs tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
         >
-          <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
+          <MoveLeft className="i-lg" aria-hidden /> ../
         </Link>
         <h1
           data-page-title
@@ -217,7 +217,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
                   [{row.status}]
                 </span>
                 <span className="work-chev" aria-hidden>
-                  {row.slug && <ChevronRight size={14} strokeWidth={1.5} />}
+                  {row.slug && <ChevronRight className="i-sm" />}
                 </span>
               </>
             );
@@ -281,7 +281,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           className="l-meta mute mt-4 inline-flex items-center gap-1.5 no-pop"
         >
           FULL LOG ON GITHUB.COM/IGNEEL0601
-          <MoveUpRight size={12} aria-hidden />
+          <MoveUpRight className="i-xs" aria-hidden />
         </a>
       </section>
     </div>

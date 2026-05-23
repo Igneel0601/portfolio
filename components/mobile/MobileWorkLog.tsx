@@ -53,9 +53,8 @@ export function MobileWorkLog({ rows }: { rows: WorkRow[] }) {
         >
           FULL LOG ON GITHUB{" "}
           <MoveUpRight
-            size={11}
-            strokeWidth={1.5}
             aria-hidden
+            className="i-xs"
             style={{ display: "inline-block", verticalAlign: "-1px" }}
           />
         </div>
