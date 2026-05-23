@@ -9,7 +9,7 @@ export const metadata = {
 export default async function WorkPage() {
   const rows = await listWorkRows();
   return (
-    <main className="flex-1 pb-12">
+    <main className="flex-1 pb-12 page-shell">
       <WorkLog rows={rows} />
     </main>
   );

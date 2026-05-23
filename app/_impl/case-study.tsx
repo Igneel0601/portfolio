@@ -7,7 +7,7 @@ import {
   buildMdxComponents,
   Frontmatter,
 } from "@/components/case-study/mdx-components";
-import { MoveLeft, MoveUpRight } from "lucide-react";
+import { MoveUpRight } from "lucide-react";
 import { Toc } from "@/components/case-study/Toc";
 import { Pager } from "@/components/case-study/Pager";
 import { StudyFooter } from "@/components/case-study/StudyFooter";
@@ -71,14 +71,10 @@ export async function CaseStudyPage({
 
   return (
     <>
-      <main>
+      <main className={shell === "d" ? "page-shell" : undefined}>
         <div className="cs-doc">
           <article className="cs-content">
             <div className="cs-crumb-line c-sm">
-              <a href="/work" className="cs-back-link no-pop">
-                <MoveLeft className="i-lg" aria-hidden /> ../
-              </a>
-              <span className="cs-sep">·</span>
               <span>{slug}.md</span>
             </div>
 

@@ -9,7 +9,7 @@ export function DesktopShell({ children }: { children: React.ReactNode }) {
       <Background />
       <CustomCursor />
       <Nav />
-      <div className="page-shell">{children}</div>
+      {children}
     </MotionProvider>
   );
 }
