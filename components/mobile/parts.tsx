@@ -435,10 +435,10 @@ export function WorkPageRow({ row }: { row: WorkRowLike }) {
   const linked = !!row.slug;
   const [pressed, setPressed] = useState(false);
   const STATUS_COLOR: Record<string, string> = {
-    active: accent,
-    wip: "#f5a524",
-    archived: inkDim,
-    dead: "#ef4444",
+    active: "var(--status-active)",
+    wip: "var(--status-wip)",
+    archived: "var(--status-archived)",
+    dead: "var(--status-dead)",
   };
   const sc = STATUS_COLOR[row.status] ?? inkDim;
   const isDead = row.status === "dead";

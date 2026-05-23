@@ -11,6 +11,13 @@
   --hair-2: rgba(230, 237, 243, 0.18);
   --accent: #6ee7a7;
   --accent-2: #5eead4;
+  /* status palette — single source of truth for work-row state colors.
+     Used by both desktop.css (.work-row[data-status-row="..."]) and
+     mobile parts.tsx (WorkPageRow STATUS_COLOR map). */
+  --status-active: var(--accent);
+  --status-wip: #f5a524;
+  --status-archived: var(--ink-dim);
+  --status-dead: #ef4444;
   --mono: var(--font-plex-mono), ui-monospace, monospace;
   --highlight: rgba(110, 231, 167, 0.22);
   --scrollbar-thumb: var(--accent);

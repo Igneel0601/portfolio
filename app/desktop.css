@@ -134,14 +134,12 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .work-row[data-link="true"]:hover .work-chev { opacity: 1; }
 .work-row[data-hidden="true"] { display: none; }
 
-/* .work-status — color is set by data-status-row variants below.
-   Palette mirrors mobile (components/mobile/parts.tsx WorkPageRow).
-   active=accent, wip=amber, archived=ink-dim, dead=muted red. */
-.work-row[data-status-row="active"]   .work-status { color: var(--accent); }
-.work-row[data-status-row="wip"]      .work-status { color: #f5a524; }
-.work-row[data-status-row="archived"] .work-status { color: var(--ink-dim); }
+/* .work-status — color comes from --status-* tokens in tokens.css. */
+.work-row[data-status-row="active"]   .work-status { color: var(--status-active); }
+.work-row[data-status-row="wip"]      .work-status { color: var(--status-wip); }
+.work-row[data-status-row="archived"] .work-status { color: var(--status-archived); }
 .work-row[data-status-row="dead"]     .work-status {
-  color: #ef4444;
+  color: var(--status-dead);
   text-decoration: line-through;
 }
 
