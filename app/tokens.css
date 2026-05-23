@@ -237,18 +237,17 @@ body {
 .cs-doc > .cs-content > * + * { margin-top: 2rem; }
 
 /* TOC sidebar */
+/* TOC variants are picked by the shell at render time (see
+   app/_impl/case-study.tsx CaseStudyPage):
+   - .cs-toc-sidebar: rendered only on /d, sticky right column
+   - .cs-toc-inline:  rendered only on /m, collapsible bar inside article
+   Each variant gets its own layout; .cs-toc carries only the truly
+   shared bits (typography, link styling, active state). */
 .cs-toc {
-  position: sticky;
-  top: 5rem;
-  align-self: start;
-  max-height: calc(100dvh - 7.5rem);
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 0;
   color: var(--ink-soft);
-  border-left: 1px solid var(--hair);
-  padding-left: 1.125rem;
 }
 .cs-toc-lbl {
   color: var(--ink-dim);
@@ -260,8 +259,6 @@ body {
   gap: 1rem;
   align-items: baseline;
   padding: 0.4375rem 0 0.4375rem 0;
-  margin-left: -1.125rem;
-  padding-left: 1.125rem;
   color: var(--ink-soft);
   transition: color .15s ease, border-color .15s ease;
   border-left: 1px solid transparent;
@@ -279,25 +276,63 @@ body {
 }
 .cs-toc a[data-active] .cs-toc-n { color: var(--accent); }
 
-/* TOC details — wraps contents so we can collapse on phones.
-   On desktop/tablet: details is transparent (no marker, no toggle behavior). */
-.cs-toc-details {
-  display: contents;
+/* Sidebar (desktop): sticky right-column rail with a left hairline. */
+.cs-toc-sidebar {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+  max-height: calc(100dvh - 7.5rem);
+  overflow-y: auto;
+  border-left: 1px solid var(--hair);
+  padding-left: 1.125rem;
 }
-.cs-toc-summary {
-  display: none;
+.cs-toc-sidebar a {
+  margin-left: -1.125rem;
+  padding-left: 1.125rem;
+}
+
+/* Inline (mobile): collapsible <details> bar that sits after Frontmatter. */
+.cs-toc-inline { margin: 1.25rem 0; }
+.cs-toc-inline .cs-toc-details {
+  border: 1px solid var(--hair);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-toc-inline .cs-toc-details[open] { padding-bottom: 0.5rem; }
+.cs-toc-inline .cs-toc-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.875rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+  user-select: none;
   list-style: none;
 }
-.cs-toc-summary::-webkit-details-marker { display: none; }
+.cs-toc-inline .cs-toc-summary::-webkit-details-marker { display: none; }
+.cs-toc-inline .cs-toc-summary::before {
+  content: "▸";
+  color: var(--accent);
+  font-size: 0.75rem;
+  transition: transform 0.15s ease;
+  display: inline-block;
+}
+.cs-toc-inline .cs-toc-details[open] .cs-toc-summary::before {
+  transform: rotate(90deg);
+}
+.cs-toc-inline .cs-toc-lbl { display: none; }
+.cs-toc-inline a {
+  padding-left: 1.5rem;
+  padding-right: 0.875rem;
+  border-left: none;
+}
+.cs-toc-inline a[data-active] {
+  border-left: none;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+}
 
-/* Two TOC renders exist in the DOM (see app/_impl/case-study.tsx):
-   - .cs-toc-sidebar: grid-column 3 on desktop, sticky
-   - .cs-toc-inline:  inside <article>, between Frontmatter and prose
-   On desktop only the sidebar is visible; on tablet/phone the inline
-   copy is visible (positioned naturally after the frontmatter) and the
-   sidebar disappears. */
-.cs-toc-inline { display: none; }
-
+/* Tablet/narrow desktop: collapse the 3-column grid since the sidebar
+   would crowd the prose. */
 @media (max-width: 1024px) {
   .cs-doc {
     grid-template-columns: 1fr;
@@ -305,61 +340,6 @@ body {
   }
   .cs-doc > .cs-content { grid-column: 1; }
   .cs-toc-sidebar { display: none; }
-
-  .cs-toc-inline {
-    display: flex;
-    position: relative;
-    top: 0;
-    max-height: none;
-    margin: 1.25rem 0;
-    border-left: none;
-    padding-left: 0;
-  }
-}
-
-/* Phones: TOC becomes a real collapsible <details> bar. */
-@media (max-width: 767.98px) {
-  .cs-toc-inline .cs-toc-details {
-    display: block;
-    border: 1px solid var(--hair);
-    border-radius: 0.5rem;
-    background: color-mix(in oklab, var(--paper-2) 50%, transparent);
-  }
-  .cs-toc-inline .cs-toc-details[open] {
-    padding-bottom: 0.5rem;
-  }
-  .cs-toc-inline .cs-toc-summary {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 0.875rem;
-    cursor: pointer;
-    color: var(--ink-soft);
-    user-select: none;
-  }
-  .cs-toc-inline .cs-toc-summary::before {
-    content: "▸";
-    color: var(--accent);
-    font-size: 0.75rem;
-    transition: transform 0.15s ease;
-    display: inline-block;
-  }
-  .cs-toc-inline .cs-toc-details[open] .cs-toc-summary::before {
-    transform: rotate(90deg);
-  }
-  .cs-toc-inline .cs-toc-lbl {
-    display: none;
-  }
-  .cs-toc-inline a {
-    margin-left: 0;
-    padding-left: 1.5rem;
-    padding-right: 0.875rem;
-    border-left: none;
-  }
-  .cs-toc-inline a[data-active] {
-    border-left: none;
-    background: color-mix(in oklab, var(--accent) 8%, transparent);
-  }
 }
 
 .cs-hero-title {

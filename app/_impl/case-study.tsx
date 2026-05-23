@@ -46,10 +46,12 @@ export async function generateMetadata({
   };
 }
 
-export default async function Page({
+export async function CaseStudyPage({
   params,
+  shell,
 }: {
   params: Promise<{ slug: string }>;
+  shell: "d" | "m";
 }) {
   const { slug } = await params;
   const loaded = await loadCase(slug);
@@ -115,14 +117,14 @@ export default async function Page({
 
             <Frontmatter data={data} />
 
-            <Toc items={tocItems} variant="inline" />
+            {shell === "m" && <Toc items={tocItems} variant="inline" />}
 
             <MDXRemote source={content} components={buildMdxComponents()} />
 
             <Pager prev={prev} next={next} />
           </article>
 
-          <Toc items={tocItems} variant="sidebar" />
+          {shell === "d" && <Toc items={tocItems} variant="sidebar" />}
         </div>
       </main>
       <StudyFooter slug={slug} />
