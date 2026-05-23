@@ -2,10 +2,23 @@ import { TocHighlight } from "./TocHighlight";
 
 export type TocItem = { n: string; title: string; id: string };
 
-export function Toc({ items }: { items: TocItem[] }) {
+export function Toc({
+  items,
+  variant = "sidebar",
+}: {
+  items: TocItem[];
+  /** "sidebar" mounts the scroll highlighter; "inline" skips it so
+   *  rendering two TOCs (mobile inline + desktop sidebar) doesn't double-
+   *  observe scroll. Inline copy still gets highlighted because
+   *  TocHighlight uses querySelectorAll across both copies. */
+  variant?: "sidebar" | "inline";
+}) {
   if (items.length === 0) return null;
   return (
-    <aside className="cs-toc c-md" aria-label="table of contents">
+    <aside
+      className={`cs-toc cs-toc-${variant} c-md`}
+      aria-label="table of contents"
+    >
       <details className="cs-toc-details">
         <summary className="cs-toc-summary l-eyebrow"># contents</summary>
         <div className="cs-toc-lbl l-eyebrow"># contents</div>
@@ -21,7 +34,7 @@ export function Toc({ items }: { items: TocItem[] }) {
           </a>
         ))}
       </details>
-      <TocHighlight ids={items.map((i) => i.id)} />
+      {variant === "sidebar" && <TocHighlight ids={items.map((i) => i.id)} />}
     </aside>
   );
 }
