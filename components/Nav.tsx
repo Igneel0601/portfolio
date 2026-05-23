@@ -219,9 +219,9 @@ export function Nav() {
           backdropFilter: 'blur(24px) saturate(140%)',
           WebkitBackdropFilter: 'blur(24px) saturate(140%)',
         }}
-        className="sticky top-0 z-50 px-6 md:px-10 md:invisible md:opacity-0"
+        className="sticky top-0 z-50"
       >
-        <div className="hidden md:flex items-center gap-5 py-3 c-md">
+        <div className="page-shell hidden md:flex items-center gap-5 py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"
@@ -276,7 +276,7 @@ export function Nav() {
           </a>
         </div>
 
-        <div className="md:hidden flex items-center justify-between py-3 c-md">
+        <div className="page-shell md:hidden flex items-center justify-between py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"

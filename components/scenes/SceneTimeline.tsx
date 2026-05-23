@@ -264,7 +264,7 @@ export function SceneTimeline() {
       ref={rootRef}
       data-scene="about"
       id="about"
-      className="relative px-6 md:px-10 py-10 overflow-hidden flex flex-col"
+      className="relative py-10 overflow-hidden flex flex-col"
       style={{
         // happly-style cross-scene parallax: scene 03 starts 100vh earlier
         // than scene 02's outer ends — covers the rest-phase scroll runway

@@ -198,6 +198,22 @@ body {
   }
 }
 
+/* ───────── page shell (desktop) ─────────
+   Single source of truth for the desktop content gutter. Wraps every
+   page body inside DesktopShell (Nav sits outside, edge-anchored).
+   Pages that need full-bleed escape via position: fixed (parallax bg,
+   modals) or the width:100vw + margin-left calc(50% - 50vw) trick. */
+.page-shell {
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  align-self: center; /* body is flex column; align-self centers in cross-axis */
+  /* Horizontal-only padding (longhand) so any vertical padding from
+     callers (Tailwind py-* etc.) survives the cascade. */
+  padding-left: clamp(1.25rem, 4vw, 3.5rem);
+  padding-right: clamp(1.25rem, 4vw, 3.5rem);
+}
+
 /* ───────── case-study chrome (outside the MDX module) ───────── */
 .cs-term-bar {
   display: flex;
@@ -223,10 +239,10 @@ body {
 .cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
 
 .cs-doc {
-  max-width: 80rem;
-  width: 100%;
-  margin: 0 auto;
-  padding: clamp(1.25rem, 2.5vw, 1.75rem) clamp(1.25rem, 4vw, 3.5rem) 4rem;
+  /* Outer max-width + horizontal gutter come from .page-shell.
+     This rule only owns the inner 3-column grid: empty left rail,
+     prose column (max 48rem), TOC sidebar column. */
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 4rem;
   display: grid;
   grid-template-columns: minmax(0, 1fr) min(48rem, 100%) minmax(0, 1fr);
   column-gap: clamp(1.5rem, 3vw, 3rem);
@@ -334,10 +350,7 @@ body {
 /* Tablet/narrow desktop: collapse the 3-column grid since the sidebar
    would crowd the prose. */
 @media (max-width: 1024px) {
-  .cs-doc {
-    grid-template-columns: 1fr;
-    max-width: 55rem;
-  }
+  .cs-doc { grid-template-columns: 1fr; }
   .cs-doc > .cs-content { grid-column: 1; }
   .cs-toc-sidebar { display: none; }
 }

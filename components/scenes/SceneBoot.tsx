@@ -145,7 +145,7 @@ export function SceneBoot() {
       id="hero"
       className="relative min-h-screen"
     >
-      <div data-boot-sticky className="sticky top-0 px-6 md:px-10 pt-8 pb-12">
+      <div data-boot-sticky className="sticky top-0 pt-8 pb-12">
       <div className="c-md space-y-0.5">
         <div>
           <span style={{ color: "var(--accent)" }} data-boot-prompt>

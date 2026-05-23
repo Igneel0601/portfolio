@@ -83,7 +83,7 @@ export function SceneCTA() {
         </div>
       </section>
 
-      <footer ref={footerRef} className="px-6 md:px-10 py-5 c-xs flex justify-between mute">
+      <footer ref={footerRef} className="py-5 c-xs flex justify-between mute">
         <span data-footer-line>$ exit 0 · built with too much GSAP &amp; coffee</span>
         <span data-footer-line>© Vaibhav Verma · 2026</span>
       </footer>

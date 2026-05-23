@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MoveLeft, MoveUpRight, ChevronRight } from "lucide-react";
+import { MoveUpRight, ChevronRight } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 
 const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;
@@ -42,14 +42,13 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
       const { isReduce, isMobile } = ctx.conditions as { isReduce: boolean; isMobile: boolean };
-      const back = root.querySelector<HTMLElement>("[data-back-link]");
       const title = root.querySelector<HTMLElement>("[data-page-title]");
       const filters = gsap.utils.toArray<HTMLElement>("[data-filter]", root);
       const rowEls = gsap.utils.toArray<HTMLElement>("[data-row]", root);
       const gitLines = gsap.utils.toArray<HTMLElement>("[data-git-line]", root);
 
       if (isReduce || isMobile) {
-        gsap.set([back, title, ...filters, ...rowEls, ...gitLines], {
+        gsap.set([title, ...filters, ...rowEls, ...gitLines], {
           autoAlpha: 1,
           x: 0,
           y: 0,
@@ -61,9 +60,6 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
         }
         return;
       }
-
-      gsap.set(back, { autoAlpha: 0, x: -8 });
-      gsap.to(back, { autoAlpha: 1, x: 0, duration: D.sm, ease: E.precise });
 
       let split: SplitText | null = null;
       if (title) {
@@ -171,14 +167,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
 
   return (
     <div ref={rootRef}>
-      <section className="pt-6 mx-auto" style={{ maxWidth: 1280 }}>
-        <Link
-          data-back-link
-          href="/"
-          className="work-back-link mono mute c-xs tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
-        >
-          <MoveLeft className="i-lg" aria-hidden /> ../
-        </Link>
+      <section className="pt-6">
         <h1
           data-page-title
           className="t-display mt-3 mb-2"
@@ -188,10 +177,10 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
 
       </section>
 
-      <section className="px-6 md:px-10 mt-10">
+      <section className="mt-10">
         <div
-          className="box p-3 md:p-4 mx-auto"
-          style={{ background: "var(--paper-2)", maxWidth: 1280 }}
+          className="box p-3 md:p-4"
+          style={{ background: "var(--paper-2)" }}
         >
           <div
             className="l-meta mute hidden md:grid pb-2 mb-2 border-b border-dashed gap-4"
@@ -260,7 +249,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
         </div>
       </section>
 
-      <section className="py-6 mx-auto" style={{ maxWidth: 1280 }}>
+      <section className="py-6">
         <div className="c-sm mute">$ git log --oneline | head -3</div>
         <div data-git-log className="mt-1.5 space-y-1">
           {GIT_LOG_PREVIEW.map((line, i) => (
