@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowUpRight } from 'lucide-react'
+import { MoveLeft } from 'lucide-react'
 import styles from './terminal.module.css'
 import { useTerminal } from './useTerminal'
 import { TerminalLine } from './TerminalLine'
@@ -150,7 +150,7 @@ function MobileTerminal() {
         <h1 className={styles.mobileTitle}>needs a real keyboard.</h1>
         <p className={styles.mobileSub}>open this on desktop for the full thing.</p>
         <Link href="/" className={styles.mobileBack}>
-          <ArrowUpRight size={14} strokeWidth={1.5} aria-hidden /> back to home
+          <MoveLeft size={14} strokeWidth={1.5} aria-hidden /> ../
         </Link>
       </div>
     </div>

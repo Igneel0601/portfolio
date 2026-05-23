@@ -1,5 +1,5 @@
 import type { WorkRow } from "@/lib/work-rows";
-import { ArrowUpRight } from "lucide-react";
+import { MoveUpRight } from "lucide-react";
 import { GIT_LOG_PREVIEW } from "@/lib/content";
 import { DashedRule, PageHeader, WorkPageRow } from "./parts";
 
@@ -52,7 +52,7 @@ export function MobileWorkLog({ rows }: { rows: WorkRow[] }) {
           }}
         >
           FULL LOG ON GITHUB{" "}
-          <ArrowUpRight
+          <MoveUpRight
             size={11}
             strokeWidth={1.5}
             aria-hidden

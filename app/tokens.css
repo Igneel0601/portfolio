@@ -197,7 +197,7 @@ body {
   color: var(--ink-dim);
   margin-bottom: 1.5rem;
 }
-.cs-crumb-line a { color: var(--ink-soft); transition: color .18s ease; }
+.cs-crumb-line a { color: var(--accent-2); transition: color .18s ease; }
 .cs-crumb-line a:hover { color: var(--accent); }
 .cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
 

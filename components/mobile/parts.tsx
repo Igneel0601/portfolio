@@ -1,7 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import { MoveLeft, MoveRight } from "lucide-react";
+import { useState, type CSSProperties, type ReactNode } from "react";
 import type { Project, TimelineStop } from "@/lib/content";
 import { BOOT_LINES, CONTACT } from "@/lib/content";
 
@@ -152,7 +154,7 @@ export function HeroSection() {
       </p>
       <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
         <Btn variant="solid" href="/work">
-          $ cat work <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+          $ cat work <MoveRight size={18} strokeWidth={1.5} aria-hidden />
         </Btn>
         <Btn href="/vaibhav_resume.pdf">$ download résumé.pdf</Btn>
         <Btn href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
@@ -261,7 +263,7 @@ export function ProjectCard({ project }: { project: Project }) {
             }}
           >
             cat CASE_STUDY.md{" "}
-            <ArrowRight
+            <MoveRight
               size={12}
               strokeWidth={1.5}
               aria-hidden
@@ -431,43 +433,42 @@ type WorkRowLike = {
 
 export function WorkPageRow({ row }: { row: WorkRowLike }) {
   const linked = !!row.slug;
-  const sc =
-    ({ active: accent, wip: accent2, archived: inkDim } as Record<string, string>)[row.status] ||
-    inkDim;
+  const [pressed, setPressed] = useState(false);
+  const STATUS_COLOR: Record<string, string> = {
+    active: accent,
+    wip: "#f5a524",
+    archived: inkDim,
+    dead: "#ef4444",
+  };
+  const sc = STATUS_COLOR[row.status] ?? inkDim;
+  const isDead = row.status === "dead";
   const inner = (
     <div
       style={{
         display: "grid",
         gridTemplateColumns: "1fr auto",
-        gridTemplateAreas: '"name chev" "blurb blurb" "tag status"',
+        gridTemplateAreas: '"name name" "blurb blurb" "tag status"',
         rowGap: 3,
         columnGap: 8,
         padding: "13px 22px",
         borderBottom: `1px solid ${hair}`,
         alignItems: "center",
         WebkitTapHighlightColor: "transparent",
+        opacity: isDead ? 0.5 : undefined,
       }}
     >
       <span
+        className="m-work-name"
         style={{
           gridArea: "name",
           fontFamily: "var(--mono)",
           fontSize: "0.75rem",
           fontWeight: 600,
-          color: ink,
+          color: pressed ? accent : linked ? accent2 : ink,
+          transition: "color 120ms ease",
         }}
       >
         {row.name}
-      </span>
-      <span
-        style={{
-          gridArea: "chev",
-          fontFamily: "var(--mono)",
-          fontSize: "0.8125rem",
-          color: linked ? accent2 : "transparent",
-        }}
-      >
-        ›
       </span>
       <p
         style={{
@@ -503,6 +504,8 @@ export function WorkPageRow({ row }: { row: WorkRowLike }) {
           padding: "1px 5px",
           borderRadius: 3,
           justifySelf: "end",
+          textDecoration: isDead ? "line-through" : undefined,
+          opacity: isDead ? 0.5 : undefined,
         }}
       >
         [{row.status}]
@@ -513,6 +516,11 @@ export function WorkPageRow({ row }: { row: WorkRowLike }) {
     return (
       <Link
         href={`/work/${row.slug}`}
+        className="m-work-row"
+        onPointerDown={() => setPressed(true)}
+        onPointerUp={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
         style={{ display: "block", color: "inherit", textDecoration: "none" }}
       >
         {inner}
@@ -579,7 +587,7 @@ export function WritingRow({
 }
 
 export function PageHeader({
-  back = "back home",
+  back = "../",
   backHref = "/",
   eyebrow,
   title,
@@ -590,31 +598,33 @@ export function PageHeader({
   title: ReactNode;
 }) {
   return (
-    <div style={{ padding: "18px 22px 6px" }}>
+    <div style={{ padding: "18px 22px 18px" }}>
       <Link
         href={backHref}
         style={{
           fontFamily: "var(--mono)",
           fontSize: 10,
           color: accent2,
-          marginBottom: 8,
           display: "inline-flex",
           alignItems: "center",
           gap: 4,
           textDecoration: "none",
         }}
       >
-        <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> {back}
+        <MoveLeft size={14} strokeWidth={1.5} aria-hidden /> {back}
       </Link>
       {eyebrow && (
         <div
           className="l-eyebrow"
-          style={{ fontSize: 10, color: inkDim, marginBottom: 3, marginTop: 8 }}
+          style={{ fontSize: 10, color: inkDim, marginTop: 24, marginBottom: 4 }}
         >
           {eyebrow}
         </div>
       )}
-      <h1 className="t-display" style={{ color: ink, margin: 0 }}>
+      <h1
+        className="t-display"
+        style={{ color: ink, margin: 0, marginTop: eyebrow ? 0 : 24 }}
+      >
         {title}
         <span style={{ color: accent }}>.</span>
       </h1>

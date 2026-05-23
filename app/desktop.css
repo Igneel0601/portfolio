@@ -118,6 +118,14 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 /* /work — build log table */
 .work-row { position: relative; transition: background-color .15s ease; }
 .work-row[data-link="true"] { cursor: pointer; }
+
+/* Default state for linked rows: name in accent-2 (teal) to signal tappable,
+   mirroring the mobile WorkPageRow treatment. Non-linked rows inherit ink. */
+.work-row[data-link="true"] .work-name,
+.work-row[data-link="true"] .font-bold {
+  color: var(--accent-2);
+}
+
 .work-row[data-link="true"]:hover .work-name,
 .work-row[data-link="true"]:hover .font-bold {
   color: var(--accent);
@@ -126,17 +134,24 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .work-row[data-link="true"]:hover .work-chev { opacity: 1; }
 .work-row[data-hidden="true"] { display: none; }
 
-/* .work-status — color is set by data-status-row variants below. */
+/* .work-status — color is set by data-status-row variants below.
+   Palette mirrors mobile (components/mobile/parts.tsx WorkPageRow).
+   active=accent, wip=amber, archived=ink-dim, dead=muted red. */
 .work-row[data-status-row="active"]   .work-status { color: var(--accent); }
-.work-row[data-status-row="wip"]      .work-status { color: var(--accent); font-style: italic; }
+.work-row[data-status-row="wip"]      .work-status { color: #f5a524; }
 .work-row[data-status-row="archived"] .work-status { color: var(--ink-dim); }
-.work-row[data-status-row="dead"]     .work-status { color: var(--ink-dim); opacity: .5; text-decoration: line-through; }
+.work-row[data-status-row="dead"]     .work-status {
+  color: #ef4444;
+  text-decoration: line-through;
+}
 
-.work-row[data-status-row="wip"] { opacity: .65; font-style: italic; }
+/* Whole-row treatment: dead rows fade out; wip no longer dims (the amber
+   pill is signal enough). */
+.work-row[data-status-row="dead"] { opacity: .5; }
 
 .work-blurb { min-width: 0; }
 
-.work-back-link { transition: color .15s ease; }
+.work-back-link { color: var(--accent-2); transition: color .15s ease; }
 .work-back-link:hover { color: var(--accent); }
 
 /* /writing archive (writing-A) */

@@ -1,3 +1,12 @@
 /* Mobile-only styles. Mobile components (components/mobile/*) use inline
-   styles plus typography token classes from tokens.css, so this file stays
-   empty until a real mobile-only rule is needed. */
+   styles plus typography token classes from tokens.css; this file holds
+   the few rules that need :active / pseudo-element / @media expressivity
+   inline styles can't reach. */
+
+/* WorkPageRow — tap feedback: name flashes accent while the link is held. */
+.m-work-name {
+  transition: color 80ms ease;
+}
+.m-work-row:active .m-work-name {
+  color: var(--accent);
+}

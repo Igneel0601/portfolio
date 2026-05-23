@@ -7,7 +7,7 @@ import {
   buildMdxComponents,
   Frontmatter,
 } from "@/components/case-study/mdx-components";
-import { MoveLeft, ArrowUpRight } from "lucide-react";
+import { MoveLeft, MoveUpRight } from "lucide-react";
 import { Toc } from "@/components/case-study/Toc";
 import { Pager } from "@/components/case-study/Pager";
 import { StudyFooter } from "@/components/case-study/StudyFooter";
@@ -74,7 +74,7 @@ export default async function Page({
           <article className="cs-content">
             <div className="cs-crumb-line c-sm">
               <a href="/work" className="cs-back-link no-pop">
-                <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> /back to work
+                <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
               </a>
               <span className="cs-sep">·</span>
               <span>{slug}.md</span>
@@ -97,7 +97,7 @@ export default async function Page({
                   >
                     <span className="live">●</span> live ·{" "}
                     {data.links.live.replace(/^https?:\/\//, "").replace(/\/$/, "")}{" "}
-                    <ArrowUpRight size={12} className="ext" aria-hidden />
+                    <MoveUpRight size={12} className="ext" aria-hidden />
                   </a>
                 )}
                 {data.links.repo && (
@@ -107,7 +107,7 @@ export default async function Page({
                     target="_blank"
                     rel="noopener"
                   >
-                    $ git source <ArrowUpRight size={12} className="ext" aria-hidden />
+                    $ git source <MoveUpRight size={12} className="ext" aria-hidden />
                   </a>
                 )}
               </div>

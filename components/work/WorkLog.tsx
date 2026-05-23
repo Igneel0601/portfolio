@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MoveLeft, ArrowUpRight, ChevronRight } from "lucide-react";
+import { MoveLeft, MoveUpRight, ChevronRight } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 
 const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;
@@ -177,7 +177,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           href="/"
           className="work-back-link mono mute c-xs tracking-[0.18em] inline-flex items-center gap-1.5 no-pop"
         >
-          <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> <span style={{ color: "var(--accent-2)" }}>/</span>back home
+          <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
         </Link>
         <h1
           data-page-title
@@ -281,7 +281,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           className="l-meta mute mt-4 inline-flex items-center gap-1.5 no-pop"
         >
           FULL LOG ON GITHUB.COM/IGNEEL0601
-          <ArrowUpRight size={12} aria-hidden />
+          <MoveUpRight size={12} aria-hidden />
         </a>
       </section>
     </div>

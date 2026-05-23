@@ -78,7 +78,7 @@ export default async function PostPage({
         >
           <div className="cs-crumb-line c-sm" style={{ display: 'flex', alignItems: 'center' }}>
             <Link href="/writing" className="cs-back-link no-pop">
-              <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> /writing
+              <MoveLeft size={18} strokeWidth={1.5} aria-hidden /> ../
             </Link>
             <span className="cs-sep">·</span>
             <span>{filename}</span>

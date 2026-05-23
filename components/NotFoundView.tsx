@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowRight } from "lucide-react";
+import { MoveRight } from "lucide-react";
 
 const ROUTES = [
   { href: "/", path: "/", meta: "home" },
@@ -35,7 +35,7 @@ export function NotFoundView() {
           <div className="nf-routes-lbl c-md">$ ls</div>
           {ROUTES.map((r) => (
             <Link key={r.path} href={r.href} className="nf-route no-pop">
-              <ArrowRight size={14} strokeWidth={1.5} className="nf-arr" aria-hidden />
+              <MoveRight size={14} strokeWidth={1.5} className="nf-arr" aria-hidden />
               <span className="nf-path">{r.path}</span>
               <span className="nf-meta c-sm">{r.meta}</span>
             </Link>

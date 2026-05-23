@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ArrowDown } from "lucide-react";
+import { MoveDown } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
 import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
@@ -174,7 +174,7 @@ export function SceneBoot() {
 
       <div className="flex flex-wrap gap-3 mt-7">
         <a data-cta href="#work" className="btn solid">
-          <ArrowDown size={16} strokeWidth={1.5} aria-hidden /> scroll the story
+          <MoveDown size={16} strokeWidth={1.5} aria-hidden /> scroll the story
         </a>
         <a data-cta href="/vaibhav_resume.pdf" download className="btn">$ download résumé.pdf</a>
         <a data-cta href="mailto:hi@igneel.dev" className="btn">hi@igneel.dev</a>
