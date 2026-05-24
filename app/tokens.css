@@ -210,10 +210,10 @@ body {
 .page-shell {
   width: 100%;
   max-width: 80rem;
-  margin: 0 auto;
+  /* Horizontal-only margin + padding (longhand) so any vertical spacing
+     from callers (Tailwind my-* / py-* etc.) survives the cascade. */
+  margin-inline: auto;
   align-self: center; /* body is flex column; align-self centers in cross-axis */
-  /* Horizontal-only padding (longhand) so any vertical padding from
-     callers (Tailwind py-* etc.) survives the cascade. */
   padding-left: clamp(1.25rem, 4vw, 3.5rem);
   padding-right: clamp(1.25rem, 4vw, 3.5rem);
 }
