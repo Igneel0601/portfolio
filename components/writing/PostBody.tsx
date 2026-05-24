@@ -21,6 +21,25 @@ function renderText(node: LexicalNode, key: string) {
   return <span key={key}>{el}</span>
 }
 
+const BLOCK_TYPES = new Set([
+  'paragraph',
+  'heading',
+  'quote',
+  'list',
+  'listitem',
+  'upload',
+  'block',
+])
+
+function hasBlockDescendant(children: LexicalNode[] | undefined): boolean {
+  if (!children) return false
+  for (const c of children) {
+    if (BLOCK_TYPES.has(c.type)) return true
+    if (hasBlockDescendant(c.children)) return true
+  }
+  return false
+}
+
 function renderChildren(children: LexicalNode[] | undefined, parentKey: string): React.ReactNode {
   if (!children) return null
   return children.map((child, i) => renderNode(child, `${parentKey}.${i}`))
@@ -35,16 +54,20 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       return <br key={key} />
 
     case 'paragraph': {
-      // Lexical wraps standalone upload/media-block nodes in a paragraph. A
-      // <figure> can't legally be a child of <p> — emitting that triggers a
-      // hydration mismatch and the figure is silently dropped. If the only
-      // meaningful child is a block element, unwrap and render it directly.
+      // Lexical lets paragraphs contain block-level descendants (uploads,
+      // headings nested inside link nodes pasted from rich sources, etc.).
+      // None of that is legal HTML inside <p>, and the resulting hydration
+      // mismatch drops the offending content. Detect any block descendant
+      // and either unwrap a lone block child or fall back to <div>.
       const meaningful = (node.children ?? []).filter(
         (c) => !(c.type === 'text' && (c.text ?? '').trim() === ''),
       )
       const onlyChild = meaningful.length === 1 ? meaningful[0] : null
       if (onlyChild && (onlyChild.type === 'upload' || onlyChild.type === 'block')) {
         return renderNode(onlyChild, key)
+      }
+      if (hasBlockDescendant(node.children)) {
+        return <div key={key} className="t-lead">{renderChildren(node.children, key)}</div>
       }
       return <p key={key} className="t-lead">{renderChildren(node.children, key)}</p>
     }
@@ -139,6 +162,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
           href={url}
           target={external && fields?.newTab ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
+          className="no-pop"
         >
           {renderChildren(node.children, key)}
         </a>

@@ -824,9 +824,11 @@ body {
   padding: 0 2rem;
 }
 
-/* exception to token-only rule: ::first-letter pseudo cannot take a class.
-   Drop-cap stays here and intentionally uses serif at 6em. */
-.w-prose > p:first-of-type::first-letter {
+/* Drop cap on first paragraph — opt-in per post via `.dropcap` on the
+   article. Add the class in post.tsx based on a Bloggz `dropCap` flag once
+   the field exists (default off for now).
+   Exception to token-only rule: ::first-letter pseudo cannot take a class. */
+.w-prose.dropcap > p:first-of-type::first-letter {
   font-family: var(--font-serif), Georgia, serif;
   font-weight: 800;
   font-size: 6em;
@@ -858,13 +860,22 @@ body {
   padding: 0.1em 0.4em;
   border-radius: 3px;
 }
+/* Prose links: accent green from the rest, nav-style underline grows from
+   left on hover. Carries .no-pop in JSX so the global a:hover scale rule
+   in desktop.css skips them. */
 .w-prose a {
-  color: var(--ink);
-  border-bottom: 1px solid color-mix(in oklab, var(--accent) 55%, transparent);
-  transition: border-color 0.2s ease, color 0.2s ease;
+  color: var(--accent);
   text-decoration: none;
+  position: relative;
+  display: inline;
+  background-image: linear-gradient(var(--accent), var(--accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1.5px;
+  transition: background-size 0.3s ease;
+  padding-bottom: 0.0625rem;
 }
-.w-prose a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.w-prose a:hover { background-size: 100% 1.5px; }
 
 .w-ornament {
   text-align: center;
@@ -896,10 +907,14 @@ body {
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 3.5rem);
 }
-.wp-shell > .wp-prose-wrap,
-.wp-shell > .wp-pager {
+.wp-shell > .wp-prose-wrap {
   width: min(100%, var(--w-reading));
   margin-inline: auto;
+}
+/* pager bleeds to full gutter width — visual "next chapter" beat detached
+   from the narrow prose column above. */
+.wp-shell > .wp-pager {
+  width: 100%;
 }
 
 .wp-title {
