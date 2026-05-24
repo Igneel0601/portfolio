@@ -35,6 +35,11 @@ export default async function CaseStudyV2() {
 
   return (
     <main className="flex-1 page-shell" style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}>
+      <style>{`
+        .exp-content [class*="steps"] {
+          grid-template-columns: 1fr !important;
+        }
+      `}</style>
       <div className="exp-doc">
         <article className="exp-content">
           <div className="l-eyebrow" style={{ color: "var(--ink-dim)" }}>

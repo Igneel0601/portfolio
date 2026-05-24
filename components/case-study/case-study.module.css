@@ -255,11 +255,8 @@
 /* ─── walkthrough steps ────────────────────────────────── */
 .steps {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  /* Row gap is wider than column gap so the next row reads as a new pair,
-     not a caption for the row above. */
+  grid-template-columns: 1fr;
   row-gap: 2.25rem;
-  column-gap: 1.125rem;
   margin-top: 1.125rem;
 }
 .step { display: flex; flex-direction: column; gap: 0.625rem; }
