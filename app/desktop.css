@@ -163,6 +163,67 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 }
 .wa-prompt .wa-cmd { color: var(--accent); }
 .wa-prompt .wa-sep, .wa-row-top .wa-sep { opacity: 0.5; }
+/* Terminal-flavored filter: hairline-bordered trigger sized to content,
+   sits on prompt line like a shell flag. Built on <details> so the OS
+   popup never appears and the custom cursor stays in control. */
+.wa-filter {
+  margin-left: auto;
+  position: relative;
+}
+.wa-filter-summary {
+  list-style: none;
+  user-select: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--hair);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.wa-filter-summary::-webkit-details-marker { display: none; }
+.wa-filter-summary::marker { content: ''; }
+.wa-filter-summary:hover { border-color: var(--accent); color: var(--ink); }
+.wa-filter[open] .wa-filter-summary { border-color: var(--accent); color: var(--ink); }
+.wa-filter-label { color: var(--ink-dim); }
+.wa-filter-label::after { content: ':'; }
+.wa-filter-current { color: var(--accent); }
+.wa-filter-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% - 1px);
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-1, var(--paper-2));
+  border: 1px solid var(--accent);
+  padding: 0.125rem;
+  z-index: 20;
+  white-space: nowrap;
+}
+.wa-filter-opt {
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: var(--ink-soft);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.wa-filter-opt:hover { background: color-mix(in oklab, var(--accent) 12%, transparent); color: var(--accent); }
+.wa-filter-opt.on { color: var(--accent); background: color-mix(in oklab, var(--accent) 6%, transparent); }
+.wa-filter-opt .wa-ct { color: var(--ink-dim); }
 
 .wa-filters {
   display: flex;
