@@ -115,7 +115,7 @@ export default async function PostPage({
           )}
 
           {post.content && (
-            <article className="w-prose wp-prose-wrap">
+            <article className={`w-prose wp-prose-wrap${post.dropCap ? ' dropcap' : ''}`}>
               <PostBody value={post.content} />
             </article>
           )}
@@ -146,10 +146,6 @@ export default async function PostPage({
               )}
             </nav>
           )}
-
-          <div className="wp-foot l-meta">
-            <span>// fin</span>
-          </div>
         </section>
       </main>
       <WritingFooter slug={slug} />

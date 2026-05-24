@@ -72,6 +72,7 @@ export type Post = PostListItem & {
   heroImage: Media | null
   metaTitle: string | null
   metaImage: Media | null
+  dropCap: boolean
 }
 
 type PostRow = {
@@ -85,6 +86,7 @@ type PostRow = {
   meta_description: string | null
   hero_image_id: number | null
   meta_image_id: number | null
+  drop_cap: boolean | null
 }
 
 type MediaRow = {
@@ -196,7 +198,7 @@ export async function getPostSlugs(): Promise<string[]> {
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const { rows } = await pool.query<PostRow>(
-    `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id
+    `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id, drop_cap
      FROM posts
      WHERE ${PUBLISHED} AND slug = $1
      LIMIT 1`,
@@ -230,6 +232,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     categories: cats.get(row.id) ?? [],
     heroImage: row.hero_image_id ? media.get(row.hero_image_id) ?? null : null,
     metaImage: row.meta_image_id ? media.get(row.meta_image_id) ?? null : null,
+    dropCap: row.drop_cap === true,
     wordCount,
     readMinutes: Math.max(1, Math.round(wordCount / 220)),
   }
