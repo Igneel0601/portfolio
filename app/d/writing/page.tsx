@@ -16,7 +16,7 @@ export default async function WritingPage() {
     <>
       <main className="flex-1">
         <section
-          className="w-shell"
+          className="page-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
           <div className="l-eyebrow" style={{ color: 'var(--ink-dim)' }}>

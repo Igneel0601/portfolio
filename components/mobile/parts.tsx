@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { MoveLeft, MoveRight } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Project, TimelineStop } from "@/lib/content";
 import { BOOT_LINES, CONTACT } from "@/lib/content";
@@ -259,21 +259,14 @@ export function WritingRow({
 }
 
 export function PageHeader({
-  back = "../",
-  backHref = "/",
   eyebrow,
   title,
 }: {
-  back?: string;
-  backHref?: string;
   eyebrow?: string;
   title: ReactNode;
 }) {
   return (
     <div className="m-page-header">
-      <Link href={backHref} className="m-page-back">
-        <MoveLeft className="i-sm" aria-hidden /> {back}
-      </Link>
       {eyebrow && <div className="l-eyebrow m-page-eyebrow">{eyebrow}</div>}
       <h1
         className="t-display m-page-title"

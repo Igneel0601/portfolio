@@ -6,6 +6,7 @@ import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
 import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
+import { Btn } from "@/components/Btn";
 
 const HEADLINE_LINES = [
   ["I'm", { hilite: "Vaibhav." }],
@@ -112,6 +113,9 @@ export function SceneBoot() {
           duration: 0.45,
           ease: E.precise,
           stagger: 0.08,
+          // Clear inline transform after intro so .btn:active can take over —
+          // otherwise GSAP's `translate(0,0)` wins via inline > class.
+          clearProps: "transform",
         }, "-=0.15")
         .to(cursor, {
           autoAlpha: 1,
@@ -143,7 +147,7 @@ export function SceneBoot() {
       ref={rootRef}
       data-scene="boot"
       id="hero"
-      className="relative min-h-screen"
+      className="relative min-h-screen page-shell"
     >
       <div data-boot-sticky className="sticky top-0 pt-8 pb-12">
       <div className="c-md space-y-0.5">
@@ -173,11 +177,11 @@ export function SceneBoot() {
       </p>
 
       <div className="flex flex-wrap gap-3 mt-7">
-        <a data-cta href="#work" className="btn solid">
+        <Btn data-cta href="#work" variant="solid">
           <MoveDown className="i-md" aria-hidden /> scroll the story
-        </a>
-        <a data-cta href="/vaibhav_resume.pdf" download className="btn">$ download résumé.pdf</a>
-        <a data-cta href="mailto:hi@igneel.dev" className="btn">hi@igneel.dev</a>
+        </Btn>
+        <Btn data-cta href="/vaibhav_resume.pdf" download>$ download résumé.pdf</Btn>
+        <Btn data-cta href="mailto:hi@igneel.dev">hi@igneel.dev</Btn>
       </div>
 
       <span data-cursor aria-hidden className="mt-3" />

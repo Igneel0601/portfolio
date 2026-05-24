@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/content";
 import { ScrollTrigger } from "@/lib/gsap";
+import { Btn } from "@/components/Btn";
 
 // Terminal vibe — dark bar bg, green text. Different green tones per project.
 const BAR_BG = "#0a0d12"; // slightly darker than --paper for contrast
@@ -14,60 +15,19 @@ const TEXT_TINTS = [
   "#a3e7c4", // softer green
 ];
 
-// Shrinks its body font-size until the rendered text fits inside the row's
-// visible height. Watches the parent for size changes and re-fits. Children
-// can include the SectionLabel + the body text — the label keeps its own size
-// (since the .t-h5 class wins) and only the inherited body font-size changes.
-function FittingParagraph({
-  children,
-  maxSize = 18,
-  minSize = 12,
-}: {
-  children: ReactNode;
-  maxSize?: number;
-  minSize?: number;
-}) {
-  const ref = useRef<HTMLParagraphElement | null>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    let raf = 0;
-    const fit = () => {
-      let size = maxSize;
-      el.style.fontSize = `${size}px`;
-      // shrink in 0.5px steps; cap at ~14 iterations (maxSize 18 → minSize 11)
-      while (el.scrollHeight > el.clientHeight + 0.5 && size > minSize) {
-        size -= 0.5;
-        el.style.fontSize = `${size}px`;
-      }
-    };
-    const schedule = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(fit);
-    };
-    schedule();
-    // Observe the PARENT (the row), not the paragraph itself — observing the
-    // paragraph would loop because fontSize changes trigger its own resize.
-    const parent = el.parentElement;
-    const ro = new ResizeObserver(schedule);
-    if (parent) ro.observe(parent);
-    window.addEventListener("resize", schedule);
-    return () => {
-      cancelAnimationFrame(raf);
-      ro.disconnect();
-      window.removeEventListener("resize", schedule);
-    };
-  }, [maxSize, minSize, children]);
-
+// Renders a paragraph whose font-size is set in lockstep with its siblings by
+// ProjectBody's sync-fit effect. All three paragraphs land at the same size —
+// the largest that fits the most-content-heavy one — keeping visual rhythm.
+function FittingParagraph({ children }: { children: ReactNode }) {
   return (
     <p
-      ref={ref}
       className="t-body"
+      data-fit-para
       style={{
         minHeight: 0,
         overflow: "hidden",
         textAlign: "justify",
+        margin: 0,
       }}
     >
       {children}
@@ -116,6 +76,47 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
     };
   }, []);
 
+  // Sync-fit all three paragraphs to the SAME font-size (the largest that fits
+  // the most-content-heavy one). Necessary because the panel is locked to the
+  // sticky stage's 100dvh and the right column's height is synced to the left
+  // (image + tech-stack), so available height per row is fixed.
+  useEffect(() => {
+    const right = rightColRef.current;
+    if (!right) return;
+    const paras = Array.from(
+      right.querySelectorAll<HTMLParagraphElement>("p[data-fit-para]"),
+    );
+    if (paras.length === 0) return;
+    const MAX = 30;
+    const MIN = 13;
+    let raf = 0;
+    const fit = () => {
+      let size = MAX;
+      paras.forEach((p) => (p.style.fontSize = `${size}px`));
+      while (
+        size > MIN &&
+        paras.some((p) => p.scrollHeight > p.clientHeight + 0.5)
+      ) {
+        size -= 0.5;
+        paras.forEach((p) => (p.style.fontSize = `${size}px`));
+      }
+    };
+    const schedule = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(fit);
+    };
+    schedule();
+    const ro = new ResizeObserver(schedule);
+    ro.observe(right);
+    paras.forEach((p) => p.parentElement && ro.observe(p.parentElement));
+    window.addEventListener("resize", schedule);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+      window.removeEventListener("resize", schedule);
+    };
+  }, []);
+
   return (
     <div className="relative w-full h-full flex flex-col">
       <div className="w-full flex flex-col px-6 md:px-10 py-4 md:py-6 gap-4 flex-1 min-h-0">
@@ -153,7 +154,7 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
               </div>
               <div className="flex flex-wrap gap-1.5">
                 {project.stack.map((t) => (
-                  <span key={t} className="pill">{t}</span>
+                  <span key={t} className="pill sm">{t}</span>
                 ))}
               </div>
             </div>
@@ -161,7 +162,9 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
 
           {/* RIGHT — height is JS-synced to match the left column's intrinsic
               (image + stack). Three rows of equal height clip any overflowing
-              paragraph so the column never extends past the stack's bottom. */}
+              paragraph so the column never extends past the stack's bottom.
+              All three paragraphs share one font-size via the sync-fit effect
+              above. */}
           <div
             ref={rightColRef}
             className="grid gap-4"
@@ -186,13 +189,15 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
               {project.details?.how ??
                 `${project.stats.langs}. Deployed on ${project.stats.deployed}. Last push ${project.stats.lastPush}.`}
             </FittingParagraph>
-            <a
-              href={`/work/${project.id}`}
-              className="btn term justify-self-start"
+            <div
+              className="justify-self-start"
+              style={{ padding: "0.25rem 0.375rem 0.375rem 0.25rem" }}
             >
-              cat ~/projects/{project.id}/CASE_STUDY.md
-              <ExternalLink size={14} strokeWidth={2} aria-hidden />
-            </a>
+              <Btn href={`/work/${project.id}`} variant="term">
+                cat ~/projects/{project.id}/CASE_STUDY.md
+                <ExternalLink size={14} strokeWidth={2} aria-hidden />
+              </Btn>
+            </div>
           </div>
         </div>
       </div>
@@ -530,8 +535,8 @@ function ExperimentsDesktop() {
         ref={stageRef}
         style={{
           position: "sticky",
-          top: "var(--nav-h, 52px)",
-          height: "calc(100dvh - var(--nav-h, 52px))",
+          top: 0,
+          height: "100dvh",
           width: "100%",
           overflow: "hidden",
           isolation: "isolate",
@@ -654,6 +659,7 @@ function ExperimentsDesktop() {
             still gets a correctly-centered rect. */}
         <div
           aria-hidden
+          className="page-shell"
           style={{
             position: "absolute",
             inset: 0,
@@ -662,6 +668,7 @@ function ExperimentsDesktop() {
             justifyContent: "center",
             zIndex: 90,
             pointerEvents: "none",
+            containerType: "inline-size",
           }}
         >
           <h2
@@ -670,7 +677,7 @@ function ExperimentsDesktop() {
             style={{
               position: "relative",
               margin: 0,
-              fontSize: "min(22vw, 17.5rem)",
+              fontSize: "min(20.83cqw, 16rem)",
               lineHeight: 0.9,
               fontWeight: 500,
               transformOrigin: "100% 50%",

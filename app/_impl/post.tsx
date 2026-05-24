@@ -76,11 +76,7 @@ export default async function PostPage({
           className="wp-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
-          <div className="cs-crumb-line c-sm" style={{ display: 'flex', alignItems: 'center' }}>
-            <Link href="/writing" className="cs-back-link no-pop">
-              <MoveLeft className="i-lg" aria-hidden /> ../
-            </Link>
-            <span className="cs-sep">·</span>
+          <div className="cs-crumb-line c-sm">
             <span>{filename}</span>
           </div>
 
@@ -152,14 +148,6 @@ export default async function PostPage({
           )}
 
           <div className="wp-foot l-meta">
-            <Link
-              href="/writing"
-              className="no-pop"
-              style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
-            >
-              <MoveLeft className="i-md" aria-hidden />
-              <span>/writing</span>
-            </Link>
             <span>// fin</span>
           </div>
         </section>

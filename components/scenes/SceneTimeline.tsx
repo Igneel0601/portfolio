@@ -111,6 +111,19 @@ export function SceneTimeline() {
           invalidateOnRefresh: true,
           onRefresh: () => fitTrack(),
           onUpdate: (self) => {
+            // During the Scene 02 ↔ Scene 03 overlap, section bg = paper + dot
+            // pattern (masks Scene 02 but still visually shows dots). Once
+            // we're past the overlap, drop both layers so the global moving
+            // .parallax-bg dots reveal beneath. Threshold tuned so the swap
+            // happens just after Scene 02's sticky stage scrolls away.
+            if (self.progress > 0.03) {
+              root.style.backgroundColor = "transparent";
+              root.style.backgroundImage = "none";
+            } else {
+              root.style.backgroundColor = "var(--paper)";
+              root.style.backgroundImage =
+                "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 2px)";
+            }
             // timeline scrubs across first half of pin; second half = static buffer
             const raw = self.progress;
             const mapped = Math.min(raw / 0.5, 1);
@@ -271,13 +284,17 @@ export function SceneTimeline() {
         // so there's no gap. Scene 02's stage translates up faster (-70vh)
         // while scene 03 rises at scroll speed, creating the parallax.
         marginTop: "-100dvh",
-        background: "var(--paper)",
+        backgroundColor: "var(--paper)",
+        backgroundImage:
+          "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 2px)",
+        backgroundSize: "32px 32px",
+        backgroundRepeat: "repeat",
         zIndex: 1,
         minHeight: "100dvh",
         height: "100dvh",
       }}
     >
-      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0 pt-6 md:pt-8">
+      <div className="page-shell flex-1 flex flex-col min-h-0 pt-6 md:pt-8">
         <div className="flex items-baseline justify-between">
           <div>
             <h2 data-section-title className="t-h2">
