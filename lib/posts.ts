@@ -127,6 +127,26 @@ async function fetchCategoriesForPosts(postIds: number[]): Promise<Map<number, C
   return map
 }
 
+// Walks a lexical tree and collects every upload-node's media id. The raw DB
+// stores upload nodes as `{type:'upload', value:<id>, relationTo:'media'}` —
+// no expansion. We collect ids here, then `expandUploads` mutates the tree to
+// inline the resolved media objects so the renderer can access `value.url`.
+function collectUploadIds(node: unknown, into: number[]) {
+  if (!node || typeof node !== 'object') return
+  const n = node as { type?: string; value?: unknown; children?: unknown[] }
+  if (n.type === 'upload' && typeof n.value === 'number') into.push(n.value)
+  if (Array.isArray(n.children)) for (const c of n.children) collectUploadIds(c, into)
+}
+function expandUploads(node: unknown, mediaById: Map<number, Media>) {
+  if (!node || typeof node !== 'object') return
+  const n = node as { type?: string; value?: unknown; children?: unknown[] }
+  if (n.type === 'upload' && typeof n.value === 'number') {
+    const m = mediaById.get(n.value)
+    if (m) n.value = m as unknown as typeof n.value
+  }
+  if (Array.isArray(n.children)) for (const c of n.children) expandUploads(c, mediaById)
+}
+
 async function fetchMediaByIds(ids: number[]): Promise<Map<number, Media>> {
   const map = new Map<number, Media>()
   const uniq = [...new Set(ids.filter((v): v is number => typeof v === 'number'))]
@@ -184,10 +204,19 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   )
   const row = rows[0]
   if (!row) return null
+  const uploadIds: number[] = []
+  collectUploadIds(row.content?.root, uploadIds)
   const [cats, media] = await Promise.all([
     fetchCategoriesForPosts([row.id]),
-    fetchMediaByIds([row.hero_image_id, row.meta_image_id].filter((v): v is number => v != null)),
+    fetchMediaByIds(
+      [row.hero_image_id, row.meta_image_id, ...uploadIds].filter(
+        (v): v is number => v != null,
+      ),
+    ),
   ])
+  // Mutate the lexical tree in-place: replace each upload node's numeric id
+  // value with its resolved Media object so PostBody can read value.url.
+  expandUploads(row.content?.root, media)
   const wordCount = countWords(row.content)
   return {
     id: row.id,

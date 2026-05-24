@@ -34,8 +34,20 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
     case 'linebreak':
       return <br key={key} />
 
-    case 'paragraph':
+    case 'paragraph': {
+      // Lexical wraps standalone upload/media-block nodes in a paragraph. A
+      // <figure> can't legally be a child of <p> — emitting that triggers a
+      // hydration mismatch and the figure is silently dropped. If the only
+      // meaningful child is a block element, unwrap and render it directly.
+      const meaningful = (node.children ?? []).filter(
+        (c) => !(c.type === 'text' && (c.text ?? '').trim() === ''),
+      )
+      const onlyChild = meaningful.length === 1 ? meaningful[0] : null
+      if (onlyChild && (onlyChild.type === 'upload' || onlyChild.type === 'block')) {
+        return renderNode(onlyChild, key)
+      }
       return <p key={key} className="t-lead">{renderChildren(node.children, key)}</p>
+    }
 
     case 'heading': {
       const tag = (node.tag as 'h1' | 'h2' | 'h3' | 'h4') ?? 'h2'
