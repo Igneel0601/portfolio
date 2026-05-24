@@ -7,9 +7,11 @@ export function Footer() {
 
   // Suppress global footer on routes that ship their own status-bar style
   // footer (WritingFooter for /writing/*, StudyFooter for case studies under
-  // /work/[slug]). Those reinforce the editor/filesystem metaphor.
+  // /work/[slug], and the writing-exploration experiment that reuses
+  // WritingFooter). Those reinforce the editor/filesystem metaphor.
   const hasOwnFooter =
     pathname?.startsWith("/writing") ||
+    pathname === "/experiments/writing-exploration" ||
     /^\/work\/[^/]+/.test(pathname ?? "");
 
   if (hasOwnFooter) return null;

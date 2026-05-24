@@ -37,8 +37,8 @@ export default function ExperimentsPage() {
         {EXPERIMENTS.map((e) => (
           <li key={e.slug}>
             <Link
-              href={`/experiments/${e.slug}`}
-              className="box p-5 flex flex-col gap-2 no-pop"
+              href={e.href ?? `/experiments/${e.slug}`}
+              className="box p-5 flex flex-col gap-2 h-full no-pop"
               style={{ background: "var(--paper-2)" }}
             >
               <div className="l-eyebrow" style={{ color: "var(--accent)" }}>

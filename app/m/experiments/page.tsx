@@ -26,7 +26,7 @@ export default function ExperimentsPage() {
         {EXPERIMENTS.map((e) => (
           <li key={e.slug}>
             <Link
-              href={`/experiments/${e.slug}`}
+              href={e.href ?? `/experiments/${e.slug}`}
               className="box p-4 flex flex-col gap-1.5 no-pop"
               style={{ background: "var(--paper-2)" }}
             >
