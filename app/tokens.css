@@ -712,6 +712,77 @@ body {
   .cs-footer-middle, .cs-footer-right { text-align: left; }
 }
 
+/* ─── /experiments — case-study v2 trial layout ──────────────────
+   Narrow prose column (~65ch) for comfortable reading; figures and
+   code break out wider. The 3-col grid lives on .exp-content (so
+   it captures every MDX child), middle column holds the prose, side
+   columns absorb the breakout for `figure` and `pre` children.
+*/
+.exp-doc {
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12.5rem;
+  column-gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+.exp-doc > .cs-toc {
+  grid-column: 2;
+  width: 12.5rem;
+  justify-self: start;
+  position: sticky;
+  top: 5rem;
+}
+@media (max-width: 60rem) {
+  .exp-doc {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .exp-doc > .cs-toc { display: none; }
+}
+.exp-content {
+  display: grid;
+  /* prose left-aligned, slack on the right — outer layout's TOC takes that
+     slack visually, so empty space sits BETWEEN prose and TOC, not on both
+     sides of prose. */
+  grid-template-columns:
+    min(var(--w-reading), 100%)
+    minmax(0, 1fr);
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.5rem;
+}
+.exp-content > * {
+  grid-column: 1;
+  min-width: 0;
+}
+/* break-out: figures, code blocks, and any explicit .exp-breakout
+   span all 3 columns up to a wider max. */
+.exp-content > figure,
+.exp-content > pre,
+.exp-content > .exp-breakout,
+.exp-content > [class*="steps__"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-inline: 0;
+}
+/* steps: stack vertically inside .exp-content (override the 2-col grid set
+   by case-study.module.css, scoped via attribute selector since the class
+   name is hashed). */
+.exp-content [class*="steps__"] {
+  grid-template-columns: 1fr !important;
+}
+.exp-content > pre {
+  padding: 1rem 1.25rem;
+  background: var(--paper-2);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.exp-content > p {
+  color: var(--ink);
+  line-height: 1.7;
+}
+
 /* ─── /writing layout ─────────────────────────────────────────── */
 
 .w-shell {
