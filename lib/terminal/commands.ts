@@ -55,6 +55,7 @@ const HELP = `available commands:
   fastfetch               re-render the boot panel (alias: neofetch)
   git log                 recent commits
   theme                   swap accent colour
+  fullscreen              toggle browser fullscreen (alias: fs)
   exit                    leave terminal (route to /)
 
 llm:
@@ -233,6 +234,26 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
     case 'fastfetch':
     case 'neofetch': {
       ctx.push({ kind: 'boot' })
+      return
+    }
+
+    case 'fullscreen':
+    case 'fs': {
+      if (typeof document === 'undefined') return
+      try {
+        if (document.fullscreenElement) {
+          await document.exitFullscreen()
+          ctx.push({ kind: 'mute', text: '(exited fullscreen)' })
+        } else {
+          await document.documentElement.requestFullscreen()
+          ctx.push({ kind: 'mute', text: '(fullscreen on. press Esc or run `fullscreen` again to exit.)' })
+        }
+      } catch (err) {
+        ctx.push({
+          kind: 'error',
+          text: `fullscreen: ${err instanceof Error ? err.message : 'not available'}`,
+        })
+      }
       return
     }
 
