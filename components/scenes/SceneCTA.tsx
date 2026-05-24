@@ -43,12 +43,12 @@ export function SceneCTA() {
   }, []);
 
   return (
-    <div className="max-w-[80rem] mx-auto">
+    <div className="page-shell my-12">
     <section
       ref={rootRef}
       data-scene="cta"
       id="contact"
-      className="mx-6 md:mx-10 my-12 p-5 md:p-7 box grid gap-6 md:grid-cols-[1.4fr_1fr] items-center"
+      className="p-5 md:p-7 box grid gap-6 md:grid-cols-[1.4fr_1fr] items-center"
       style={{ background: "var(--paper-2)" }}
     >
       <div>

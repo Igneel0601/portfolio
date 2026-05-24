@@ -631,7 +631,9 @@ body {
   max-width: 80rem;
   margin-inline: auto;
   padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
-  border-top: 1px solid var(--hair);
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--hair);
   color: var(--ink-dim);
 }
 .nf-footer-right { margin-left: auto; }
@@ -682,17 +684,22 @@ body {
 .cs-pager-empty { opacity: .5; }
 .cs-pager-empty-txt { color: var(--ink-dim); }
 
+.cs-footer-wrap {
+  width: 100%;
+  margin-top: 3rem;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--hair);
+}
 .cs-footer {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1.5rem;
-  margin-top: 3rem;
   width: 100%;
   max-width: 80rem;
   margin-inline: auto;
   padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
-  border-top: 1px solid var(--hair);
   color: var(--ink-dim);
 }
 .cs-footer-middle { text-align: center; }
