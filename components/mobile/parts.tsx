@@ -20,7 +20,7 @@ export function DashedRule() {
 export function SectionHeader({ eyebrow, title }: { eyebrow: string; title: ReactNode }) {
   return (
     <div className="m-section-header">
-      <div className="l-eyebrow m-section-eyebrow">{eyebrow}</div>
+      <div className="l-tag m-section-eyebrow">{eyebrow}</div>
       <h2 className="t-h1 m-section-title">{title}</h2>
     </div>
   );
@@ -122,9 +122,8 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="m-project-head">
           <span className="c-xs m-project-idx">{project.index}</span>
           <span className="t-h4 m-project-name">{project.name}</span>
-          <span className="l-meta m-project-kind">{project.kind}</span>
+          <span className="l-tag m-project-kind">{project.kind}</span>
         </div>
-        <p className="t-sm m-project-blurb">{project.blurb}</p>
         <div className="m-project-stack">
           {project.stack.map((s) => (
             <span key={s} className="c-xs m-project-chip">
@@ -134,7 +133,7 @@ export function ProjectCard({ project }: { project: Project }) {
         </div>
         <div className="m-project-foot">
           <span className="l-tag m-project-cta">
-            cat CASE_STUDY.md{" "}
+            cat {project.id}.mdx{" "}
             <MoveRight aria-hidden className="i-xs m-project-cta-icon" />
           </span>
           <span className="c-xs m-project-meta">{project.meta}</span>
@@ -280,7 +279,7 @@ export function PageHeader({
 }) {
   return (
     <div className="m-page-header">
-      {eyebrow && <div className="l-meta m-page-eyebrow">{eyebrow}</div>}
+      {eyebrow && <div className="l-tag m-page-eyebrow">{eyebrow}</div>}
       <h1
         className="t-display m-page-title"
         data-eyebrow={eyebrow ? "true" : "false"}

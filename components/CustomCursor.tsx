@@ -4,10 +4,12 @@ import { useEffect } from "react";
 
 export default function CustomCursor() {
   useEffect(() => {
+    // Matches the CSS gate in app/desktop.css. `any-pointer: coarse` catches
+    // any device with touch capability (pure-touch + iPad-with-trackpad), so
+    // we skip the listener setup for devices whose cursor is hidden anyway.
     const prefersNativeCursor =
       typeof window !== "undefined" &&
-      (window.matchMedia?.("(hover: none)").matches ||
-        window.matchMedia?.("(pointer: coarse)").matches);
+      window.matchMedia?.("(any-pointer: coarse)").matches;
 
     if (prefersNativeCursor) return;
 

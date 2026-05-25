@@ -907,7 +907,9 @@ body {
    Editorial pattern: wide masthead → narrow column → wide related strip. */
 .wp-prose-wrap {
   width: min(100%, var(--w-reading));
+  margin-top: 2.5rem;
   margin-inline: auto;
+  color: var(--ink);
 }
 
 .wp-title {
@@ -946,11 +948,6 @@ body {
   height: auto;
   border-radius: 4px;
   margin: 2.5rem 0 0;
-}
-
-.wp-prose-wrap {
-  margin-top: 2.5rem;
-  color: var(--ink);
 }
 
 /* Related posts — Medium-style 2-up cards: category, title, dek, read-time.
