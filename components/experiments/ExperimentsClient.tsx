@@ -199,7 +199,7 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
             >
               <Btn href={`/work/${project.id}`} variant="term">
                 cat ~/projects/{project.id}/CASE_STUDY.md
-                <ExternalLink size={14} strokeWidth={2} aria-hidden />
+                <ExternalLink className="i-sm i-bold" aria-hidden />
               </Btn>
             </div>
           </div>

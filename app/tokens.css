@@ -192,6 +192,9 @@ body {
 .i-sm { width: 0.875rem;  height: 0.875rem; }  /* ~14px */
 .i-md { width: 1rem;      height: 1rem; }      /* ~16px */
 .i-lg { width: 1.125rem;  height: 1.125rem; }  /* ~18px */
+/* Modifier for UI-control icons (zoom buttons, close, external-link badges)
+   that read better at a heavier stroke than the editorial default. */
+.i-bold { stroke-width: 2; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -363,11 +366,16 @@ body {
 }
 .cs-toc-inline .cs-toc-summary::-webkit-details-marker { display: none; }
 .cs-toc-inline .cs-toc-summary::before {
-  content: "▸";
-  color: var(--accent);
-  font-size: 0.75rem;
-  transition: transform 0.15s ease;
+  /* lucide chevron-right, masked so it picks up --accent and animates
+     consistently with the rest of the site's icon system. */
+  content: "";
   display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  background-color: var(--accent);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'><path d='m9 18 6-6-6-6'/></svg>") no-repeat center / contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'><path d='m9 18 6-6-6-6'/></svg>") no-repeat center / contain;
+  transition: transform 0.15s ease;
 }
 .cs-toc-inline .cs-toc-details[open] .cs-toc-summary::before {
   transform: rotate(90deg);
@@ -899,6 +907,7 @@ body {
   max-width: 80rem;
   margin-inline: auto;
   padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+  padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 .wp-shell > .wp-prose-wrap {
   width: min(100%, var(--w-reading));
