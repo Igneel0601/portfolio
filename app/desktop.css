@@ -54,7 +54,11 @@
   opacity: 0.6 !important;
 }
 
-@media (hover: none), (pointer: coarse) {
+/* Disable the custom cursor on anything with touch capability, including
+   iPad-with-trackpad (reports both any-pointer: fine AND any-pointer: coarse).
+   The previous (hover: none), (pointer: coarse) gate matched only pure-touch
+   devices, leaving iPad-with-trackpad with no visible cursor anywhere. */
+@media (any-pointer: coarse) {
   * { cursor: auto !important; }
   #custom-cursor { display: none !important; }
 }
