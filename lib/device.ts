@@ -15,7 +15,7 @@ const MOBILE_UA_RE = /Android|iPhone|iPod|Mobi|Opera Mini/i;
 // UAs — Googlebot Smartphone carries `Mobile` and should hit /m so Google's
 // mobile-first indexing measures the mobile shell. Letting them fall through
 // to MOBILE_UA_RE preserves that.
-const UNFURLER_UA_RE = /facebookexternalhit|embedly|quora link preview|outbrain|whatsapp|telegrambot|discordbot|slackbot|twitterbot|linkedinbot|bingpreview|skypeuripreview|redditbot|tumblr|vkshare|w3c_validator/i;
+const UNFURLER_UA_RE = /facebookexternalhit|embedly|outbrain|whatsapp|telegrambot|discordbot|slackbot|twitterbot|linkedinbot|bingpreview|skypeuripreview|redditbot|vkshare|w3c_validator/i;
 
 export function isUnfurlerUA(ua: string): boolean {
   if (!ua) return false;
