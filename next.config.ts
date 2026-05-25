@@ -2,6 +2,9 @@ import type { NextConfig } from "next";
 import { STATIC_EXTENSIONS_PATTERN } from "./lib/static-extensions";
 
 const nextConfig: NextConfig = {
+  // Hide the floating Next.js dev-route indicator (the "N" badge at
+  // bottom-left in dev). It overlaps the mobile site footer.
+  devIndicators: false,
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
