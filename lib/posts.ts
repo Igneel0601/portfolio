@@ -133,20 +133,62 @@ async function fetchCategoriesForPosts(postIds: number[]): Promise<Map<number, C
 // stores upload nodes as `{type:'upload', value:<id>, relationTo:'media'}` —
 // no expansion. We collect ids here, then `expandUploads` mutates the tree to
 // inline the resolved media objects so the renderer can access `value.url`.
-function collectUploadIds(node: unknown, into: number[]) {
-  if (!node || typeof node !== 'object') return
-  const n = node as { type?: string; value?: unknown; children?: unknown[] }
-  if (n.type === 'upload' && typeof n.value === 'number') into.push(n.value)
-  if (Array.isArray(n.children)) for (const c of n.children) collectUploadIds(c, into)
-}
-function expandUploads(node: unknown, mediaById: Map<number, Media>) {
-  if (!node || typeof node !== 'object') return
-  const n = node as { type?: string; value?: unknown; children?: unknown[] }
-  if (n.type === 'upload' && typeof n.value === 'number') {
-    const m = mediaById.get(n.value)
-    if (m) n.value = m as unknown as typeof n.value
+//
+// Three shapes hold media references:
+//   1. top-level upload nodes (`type:'upload'`, `value:<id>`)
+//   2. mediaBlock custom blocks (`type:'block'`, `fields.blockType:'mediaBlock'`,
+//      `fields.media:<id>`) — Payload stores the ref as a numeric id in the
+//      raw content JSONB
+//   3. nested rich text inside any other `block` (banner callouts etc.) where
+//      `fields.content.root.children` holds another lexical tree
+// We walk all three plus the standard `children` array.
+type BlockNode = {
+  type?: string
+  value?: unknown
+  children?: unknown[]
+  fields?: {
+    blockType?: string
+    media?: unknown
+    content?: { root?: { children?: unknown[] } }
+    [k: string]: unknown
   }
-  if (Array.isArray(n.children)) for (const c of n.children) expandUploads(c, mediaById)
+}
+
+function walkLexical(node: unknown, visit: (n: BlockNode) => void) {
+  if (!node || typeof node !== 'object') return
+  const n = node as BlockNode
+  visit(n)
+  if (n.type === 'block' && n.fields?.content?.root?.children) {
+    for (const c of n.fields.content.root.children) walkLexical(c, visit)
+  }
+  if (Array.isArray(n.children)) for (const c of n.children) walkLexical(c, visit)
+}
+
+function collectUploadIds(node: unknown, into: number[]) {
+  walkLexical(node, (n) => {
+    if (n.type === 'upload' && typeof n.value === 'number') into.push(n.value)
+    if (
+      n.type === 'block' &&
+      n.fields?.blockType === 'mediaBlock' &&
+      typeof n.fields.media === 'number'
+    ) {
+      into.push(n.fields.media)
+    }
+  })
+}
+
+function expandUploads(node: unknown, mediaById: Map<number, Media>) {
+  walkLexical(node, (n) => {
+    if (n.type === 'upload' && typeof n.value === 'number') {
+      const m = mediaById.get(n.value)
+      if (m) n.value = m as unknown as typeof n.value
+    }
+    const f = n.fields
+    if (n.type === 'block' && f?.blockType === 'mediaBlock' && typeof f.media === 'number') {
+      const m = mediaById.get(f.media)
+      if (m) f.media = m as unknown as typeof f.media
+    }
+  })
 }
 
 async function fetchMediaByIds(ids: number[]): Promise<Map<number, Media>> {
