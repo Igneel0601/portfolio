@@ -1,5 +1,10 @@
 const BLOGGZ_URL = process.env.BLOGGZ_URL ?? 'http://localhost:3001'
 
+// Per-process cache of urls we've already warned about in dev, so a single
+// malformed record doesn't spam the terminal once per Lexical-node visit
+// per HMR cycle.
+const warnedUrls = new Set<string>()
+
 // Bloggz stores the Payload local-storage url (e.g. `/api/media/file/x.png`)
 // in `media.url`. The actual bytes live in the shared `media_blob` table
 // (Postgres bytea), populated by Bloggz's afterChange hook. The portfolio
@@ -39,8 +44,10 @@ export function resolveMediaUrl(url: string | null | undefined): string | null {
   if (url.startsWith('/')) return `${BLOGGZ_URL}${url}`
 
   // Bare relative like 'media/x.png' — next/image would throw. Drop it,
-  // but warn in dev so misconfigured Bloggz records don't silently disappear.
-  if (process.env.NODE_ENV !== 'production') {
+  // but warn once-per-url in dev so misconfigured Bloggz records don't
+  // silently disappear.
+  if (process.env.NODE_ENV !== 'production' && !warnedUrls.has(url)) {
+    warnedUrls.add(url)
     console.warn(`[resolveMediaUrl] dropping unresolvable media url: ${JSON.stringify(url)}`)
   }
   return null
