@@ -111,6 +111,19 @@ export function SceneTimeline() {
           invalidateOnRefresh: true,
           onRefresh: () => fitTrack(),
           onUpdate: (self) => {
+            // During the Scene 02 ↔ Scene 03 overlap, section bg = paper + dot
+            // pattern (masks Scene 02 but still visually shows dots). Once
+            // we're past the overlap, drop both layers so the global moving
+            // .parallax-bg dots reveal beneath. Threshold tuned so the swap
+            // happens just after Scene 02's sticky stage scrolls away.
+            if (self.progress > 0.03) {
+              root.style.backgroundColor = "transparent";
+              root.style.backgroundImage = "none";
+            } else {
+              root.style.backgroundColor = "var(--paper)";
+              root.style.backgroundImage =
+                "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 2px)";
+            }
             // timeline scrubs across first half of pin; second half = static buffer
             const raw = self.progress;
             const mapped = Math.min(raw / 0.5, 1);
@@ -171,6 +184,7 @@ export function SceneTimeline() {
   useEffect(() => {
     if (!logsRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const mobile = window.matchMedia("(max-width: 767.98px)").matches;
     const lines = Array.from(
       logsRef.current.querySelectorAll<HTMLElement>("[data-log-line]"),
     );
@@ -180,7 +194,7 @@ export function SceneTimeline() {
 
     const fullTexts = lines.map((el) => el.dataset.text || "");
 
-    if (reduced) {
+    if (reduced || mobile) {
       lines.forEach((el, i) => {
         el.textContent = fullTexts[i];
         el.removeAttribute("data-typing");
@@ -263,20 +277,24 @@ export function SceneTimeline() {
       ref={rootRef}
       data-scene="about"
       id="about"
-      className="relative px-6 md:px-10 py-10 overflow-hidden flex flex-col"
+      className="relative py-10 overflow-hidden flex flex-col"
       style={{
         // happly-style cross-scene parallax: scene 03 starts 100vh earlier
         // than scene 02's outer ends — covers the rest-phase scroll runway
         // so there's no gap. Scene 02's stage translates up faster (-70vh)
         // while scene 03 rises at scroll speed, creating the parallax.
-        marginTop: "-100vh",
-        background: "var(--paper)",
+        marginTop: "-100dvh",
+        backgroundColor: "var(--paper)",
+        backgroundImage:
+          "radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--ink) 5%, transparent) 1px, transparent 2px)",
+        backgroundSize: "32px 32px",
+        backgroundRepeat: "repeat",
         zIndex: 1,
-        minHeight: "100vh",
-        height: "100vh",
+        minHeight: "100dvh",
+        height: "100dvh",
       }}
     >
-      <div className="max-w-6xl mx-auto w-full flex-1 flex flex-col min-h-0 pt-6 md:pt-8">
+      <div className="page-shell flex-1 flex flex-col min-h-0 pt-6 md:pt-8">
         <div className="flex items-baseline justify-between">
           <div>
             <h2 data-section-title className="t-h2">

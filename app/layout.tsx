@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
-import "./globals.css";
+import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { MotionProvider } from "@/components/MotionProvider";
-import { Nav } from "@/components/Nav";
-import CustomCursor from "@/components/CustomCursor";
-import { Background } from "@/components/Background";
+
+// Root layout intentionally has NO shell. Proxy (proxy.ts) rewrites
+// every UA-routable URL into /d/* or /m/* per User-Agent; the matching subtree
+// layout (app/d/layout.tsx or app/m/layout.tsx) provides chrome + per-tree CSS.
+// Routes outside the subtrees (api, rss, sitemap, robots, not-found) render
+// here without chrome — they're either machine-readable or full-bleed.
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -55,14 +57,10 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <MotionProvider>
-          <Background />
-          <CustomCursor />
-          <Nav />
-          {children}
-        </MotionProvider>
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>

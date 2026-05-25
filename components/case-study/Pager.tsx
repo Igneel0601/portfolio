@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { MoveLeft, MoveRight } from "lucide-react";
 import type { StudyMeta } from "@/lib/case-studies";
 
 export function Pager({
@@ -17,14 +17,14 @@ export function Pager({
           className="cs-pager-card cs-pager-link no-pop"
         >
           <span className="cs-pager-lbl l-eyebrow">
-            <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> prev
+            <MoveLeft className="i-sm" aria-hidden /> prev
           </span>
           <span className="cs-pager-title t-body">[{prev.title}]</span>
         </Link>
       ) : (
         <div className="cs-pager-card cs-pager-empty">
           <span className="cs-pager-lbl l-eyebrow">
-            <ArrowLeft size={14} strokeWidth={1.5} aria-hidden /> prev
+            <MoveLeft className="i-sm" aria-hidden /> prev
           </span>
           <span className="cs-pager-empty-txt c-md">no earlier study</span>
         </div>
@@ -35,14 +35,14 @@ export function Pager({
           className="cs-pager-card cs-pager-link no-pop"
         >
           <span className="cs-pager-lbl l-eyebrow">
-            next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+            next <MoveRight className="i-sm" aria-hidden />
           </span>
           <span className="cs-pager-title t-body">[{next.title}]</span>
         </Link>
       ) : (
         <div className="cs-pager-card cs-pager-empty">
           <span className="cs-pager-lbl l-eyebrow">
-            next <ArrowRight size={14} strokeWidth={1.5} aria-hidden />
+            next <MoveRight className="i-sm" aria-hidden />
           </span>
           <span className="cs-pager-empty-txt c-md">end of series</span>
         </div>

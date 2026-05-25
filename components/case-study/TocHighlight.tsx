@@ -15,12 +15,15 @@ export function TocHighlight({ ids }: { ids: string[] }) {
       if (id === currentId) return;
       currentId = id;
       ids.forEach((sid) => {
-        const link = document.querySelector<HTMLAnchorElement>(
+        // Multiple TOC renders (mobile inline + desktop sidebar) share the
+        // same data-toc-link attrs — update every match.
+        const links = document.querySelectorAll<HTMLAnchorElement>(
           `[data-toc-link="${sid}"]`,
         );
-        if (!link) return;
-        if (sid === id) link.setAttribute("data-active", "true");
-        else link.removeAttribute("data-active");
+        links.forEach((link) => {
+          if (sid === id) link.setAttribute("data-active", "true");
+          else link.removeAttribute("data-active");
+        });
       });
     };
 

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useMemo, useState } from 'react'
+import { CornerDownRight } from 'lucide-react'
 import type { PostListItem } from '@/lib/posts'
 
 function formatDate(iso: string | null) {
@@ -55,33 +56,46 @@ export function WritingArchive({ posts }: Props) {
             <span>last commit {formatDate(lastCommit).replace(/·/g, '-')}</span>
           </>
         )}
-      </div>
-
-      {tags.length > 0 && (
-        <div className="wa-filters" role="tablist" aria-label="filter by tag">
-          <button
-            type="button"
-            role="tab"
-            aria-selected={active === null}
-            className={`wa-chip c-xs${active === null ? ' on' : ''}`}
-            onClick={() => setActive(null)}
-          >
-            all <span className="wa-ct">{posts.length}</span>
-          </button>
-          {tags.map((t) => (
+        <details className="wa-filter no-pop">
+          <summary className="wa-filter-summary no-pop">
+            <span className="wa-filter-label">filter</span>
+            <span className="wa-filter-current">
+              {active
+                ? `${tags.find((t) => t.slug === active)?.title.toLowerCase() ?? active} (${tagCounts.get(active) ?? 0})`
+                : `all (${posts.length})`}
+            </span>
+          </summary>
+          <div className="wa-filter-menu" role="listbox" aria-label="filter by category">
             <button
-              key={t.slug}
               type="button"
-              role="tab"
-              aria-selected={active === t.slug}
-              className={`wa-chip c-xs${active === t.slug ? ' on' : ''}`}
-              onClick={() => setActive(t.slug)}
+              role="option"
+              aria-selected={active === null}
+              className={`wa-filter-opt no-pop${active === null ? ' on' : ''}`}
+              onClick={(e) => {
+                setActive(null)
+                ;(e.currentTarget.closest('details') as HTMLDetailsElement | null)?.removeAttribute('open')
+              }}
             >
-              {t.title.toLowerCase()} <span className="wa-ct">{tagCounts.get(t.slug) ?? 0}</span>
+              all <span className="wa-ct">({posts.length})</span>
             </button>
-          ))}
-        </div>
-      )}
+            {tags.map((t) => (
+              <button
+                key={t.slug}
+                type="button"
+                role="option"
+                aria-selected={active === t.slug}
+                className={`wa-filter-opt no-pop${active === t.slug ? ' on' : ''}`}
+                onClick={(e) => {
+                  setActive(t.slug)
+                  ;(e.currentTarget.closest('details') as HTMLDetailsElement | null)?.removeAttribute('open')
+                }}
+              >
+                {t.title.toLowerCase()} <span className="wa-ct">({tagCounts.get(t.slug) ?? 0})</span>
+              </button>
+            ))}
+          </div>
+        </details>
+      </div>
 
       <div className="wa-table">
         {filtered.length === 0 ? (
@@ -121,7 +135,9 @@ export function WritingArchive({ posts }: Props) {
 
       <div className="wa-foot l-meta">
         <span>// end of log</span>
-        <a href="/rss.xml" className="wa-rss">↳ rss</a>
+        <a href="/rss.xml" className="wa-rss" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+          <CornerDownRight size={14} strokeWidth={1.5} aria-hidden /> rss
+        </a>
       </div>
     </>
   )

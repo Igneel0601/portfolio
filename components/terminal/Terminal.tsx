@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { MoveLeft } from 'lucide-react'
 import styles from './terminal.module.css'
 import { useTerminal } from './useTerminal'
 import { TerminalLine } from './TerminalLine'
 
 const PROMPT_PREFIX = 'vaibhav@portfolio'
-
 type Props = {
   postSlugs: { slug: string; title: string }[]
 }
@@ -149,7 +149,7 @@ function MobileTerminal() {
         <h1 className={styles.mobileTitle}>needs a real keyboard.</h1>
         <p className={styles.mobileSub}>open this on desktop for the full thing.</p>
         <Link href="/" className={styles.mobileBack}>
-          ↗ back to home
+          <MoveLeft className="i-sm" aria-hidden /> ../
         </Link>
       </div>
     </div>
@@ -185,8 +185,12 @@ function DesktopTerminal({ postSlugs }: Props) {
   // global focus guard: any keypress outside input pulls focus back
   useEffect(() => {
     if (typeof window === 'undefined') return
+    // Keys we let through so the user can scroll the history with the
+    // keyboard — refocusing the input would swallow them.
+    const SCROLL_KEYS = new Set(['PageUp', 'PageDown', 'Home', 'End'])
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return
+      if (SCROLL_KEYS.has(e.key)) return
       if (document.activeElement === inputRef.current) return
       inputRef.current?.focus({ preventScroll: true })
     }
@@ -194,13 +198,50 @@ function DesktopTerminal({ postSlugs }: Props) {
     return () => window.removeEventListener('keydown', onKey)
   }, [])
 
+  // Auto-follow new output ONLY when the user is already pinned to the
+  // bottom. If they've scrolled up to read history, leave them there.
+  const stickToBottomRef = useRef(true)
   useEffect(() => {
     const el = bodyRef.current
     if (!el) return
-    el.scrollTop = el.scrollHeight
+    const onScroll = () => {
+      const distFromBottom = el.scrollHeight - el.clientHeight - el.scrollTop
+      stickToBottomRef.current = distFromBottom < 24
+    }
+    el.addEventListener('scroll', onScroll, { passive: true })
+    return () => el.removeEventListener('scroll', onScroll)
+  }, [])
+  useEffect(() => {
+    const el = bodyRef.current
+    if (!el) return
+    if (stickToBottomRef.current) el.scrollTop = el.scrollHeight
   }, [history])
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Let PgUp/PgDown/Home/End scroll the history body even when input is focused.
+    const body = bodyRef.current
+    if (body) {
+      if (e.key === 'PageUp') {
+        e.preventDefault()
+        body.scrollBy({ top: -body.clientHeight * 0.9, behavior: 'smooth' })
+        return
+      }
+      if (e.key === 'PageDown') {
+        e.preventDefault()
+        body.scrollBy({ top: body.clientHeight * 0.9, behavior: 'smooth' })
+        return
+      }
+      if (e.key === 'Home' && e.shiftKey) {
+        e.preventDefault()
+        body.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+      if (e.key === 'End' && e.shiftKey) {
+        e.preventDefault()
+        body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' })
+        return
+      }
+    }
     if (e.key === 'Enter') {
       e.preventDefault()
       if (busy) return
@@ -238,6 +279,7 @@ function DesktopTerminal({ postSlugs }: Props) {
         <div
           ref={bodyRef}
           className={`${styles.body} c-md`}
+          data-lenis-prevent
           onClick={() => inputRef.current?.focus({ preventScroll: true })}
         >
             {history.map((entry, i) => (

@@ -77,26 +77,32 @@ Three async loops glued together: the chat UI, an Inngest background job runner,
 ## walkthrough
 
 <Steps>
-  <Step n="01" label="describe what to build" hint="~5s">
+  <Step n="01" label="describe what to build">
     <Figure
-      src="/projects/codeflow.png"
-      alt="CodeFlow chat input with a prompt typed in"
+      src="/case-studies/codeflow/01-describe.png"
+      alt="CodeFlow landing — prompt input focused with a kanban-board request typed in"
       placeholder="empty chat with the prompt input focused"
     />
   </Step>
-  <Step n="02" label="agents go to work" hint="~30s">
+  <Step n="02" label="agents go to work">
     <Figure
+      src="/case-studies/codeflow/02-loading.png"
+      alt="CodeFlow generating an admin dashboard while the Inngest dashboard streams the agent run"
       placeholder="loading: sandbox provisioning, files streaming in"
     />
   </Step>
-  <Step n="03" label="split-pane preview" hint="live">
+  <Step n="03" label="split-pane preview">
     <Figure
+      src="/case-studies/codeflow/03-split-pane.png"
+      alt="CodeFlow with the file tree and a data.ts source file visible alongside the chat"
       placeholder="left: live app preview · right: file tree + code"
     />
   </Step>
-  <Step n="04" label="iterate in chat" hint="~each message">
+  <Step n="04" label="live preview">
     <Figure
-      placeholder="follow-up message changes the running app in place"
+      src="/case-studies/codeflow/04-live-preview.png"
+      alt="Generated Netflix-style homepage running in the sandbox preview"
+      placeholder="generated app running in the sandbox, code panel hidden"
     />
   </Step>
 </Steps>

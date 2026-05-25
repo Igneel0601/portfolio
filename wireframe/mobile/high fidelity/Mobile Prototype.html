@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>igneel.dev · Mobile Prototype</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="components.jsx"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #080a0d; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(110,231,167,.06) 0%, transparent 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(255,255,255,.018) 39px, rgba(255,255,255,.018) 40px),
+      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(255,255,255,.018) 39px, rgba(255,255,255,.018) 40px);
+  }
+
+  /* page-slide transitions */
+  @keyframes slideInRight  { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes slideInLeft   { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes fadeIn        { from { opacity: 0; } to { opacity: 1; } }
+
+  .page-enter-right { animation: slideInRight .28s cubic-bezier(.32,.72,0,1) forwards; }
+  .page-enter-left  { animation: slideInLeft  .28s cubic-bezier(.32,.72,0,1) forwards; }
+  .page-enter-fade  { animation: fadeIn .2s ease forwards; }
+
+  /* scrollbar inside phone */
+  .phone-scroll::-webkit-scrollbar { width: 3px; }
+  .phone-scroll::-webkit-scrollbar-track { background: transparent; }
+  .phone-scroll::-webkit-scrollbar-thumb { background: rgba(110,231,167,.2); border-radius: 99px; }
+
+  /* tap flash */
+  .tappable:active { opacity: .7; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef, useCallback } = React;
+const {
+  T, TS, SERIF, MONO,
+  SCENE_H, Scene,
+  PROJECTS, TIMELINE, WORK_ROWS, WRITING,
+  StatusBar, HomeIndicator, NavBar, NavOverlay,
+  AccentRule, SectionHeader, ImgPlaceholder, Btn, FilterChips,
+  BootBlock, HeroSection, ProjectCard, TimelineSection, CTASection, SiteFooter,
+  WorkPageRow, WritingRow,
+  ReadingProgress, CSBreadcrumb, StackPills, CSPager,
+} = window;
+
+/* ── PAGE COMPONENTS ─────────────────────────────────────── */
+
+function HomePage({ navigate }) {
+  return (
+    <div className="page-enter-fade">
+      <Scene>
+        <BootBlock />
+        <HeroSection navigate={navigate} />
+      </Scene>
+      <Scene>
+        <SectionHeader eyebrow="$ ls ~/projects" title="three things I shipped." />
+        {PROJECTS.map(p => <ProjectCard key={p.id} project={p} navigate={navigate} />)}
+      </Scene>
+      <AccentRule />
+      <Scene>
+        <TimelineSection stops={TIMELINE} />
+      </Scene>
+      <AccentRule />
+      <Scene style={{ minHeight: 'unset' }}>
+        <CTASection />
+        <SiteFooter />
+      </Scene>
+    </div>
+  );
+}
+
+function WorkPage({ navigate }) {
+  const [active, setActive] = useState('all');
+  const chips = ['all','product','event','tool','next'];
+  const filtered = active === 'all' ? WORK_ROWS : WORK_ROWS.filter(r => r.tag === active);
+
+  const GIT = [
+    "a3f01b2 · docs(traveloop): wrote case study",
+    "7c01d8a · feat(codeflow): add gemini provider",
+    "1e7f9d4 · chore(arch-install): split wm setup",
+  ];
+
+  return (
+    <div className="page-enter-right">
+      <div style={{ padding: '16px 22px 6px', background: T.paper }}>
+        <div
+          onClick={() => navigate('home')}
+          style={{ fontFamily: MONO, fontSize: 10, color: T.accent2, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
+        >
+          <span>←</span> back home
+        </div>
+        <h1 style={{ ...TS.display, color: T.ink, margin: 0 }}>
+          All projects<span style={{ color: T.accent }}>.</span>
+        </h1>
+      </div>
+      <FilterChips chips={chips} active={active} onSelect={setActive} />
+      <div style={{ height: 1, background: `repeating-linear-gradient(90deg,${T.hair2} 0 12px,transparent 12px 16px)`, margin: '0 22px 0' }} />
+      {filtered.map((r, i) => <WorkPageRow key={i} row={r} navigate={navigate} />)}
+      <div style={{ padding: '14px 22px 20px', borderTop: `1px dashed ${T.hair}` }}>
+        <div style={{ fontFamily: MONO, fontSize: 9, color: T.inkDim, marginBottom: 6 }}>$ git log --oneline | head -3</div>
+        {GIT.map((l, i) => (
+          <div key={i} style={{ fontFamily: MONO, fontSize: 9, color: T.inkDim, paddingLeft: 14, lineHeight: 1.9 }}>{l}</div>
+        ))}
+        <div style={{ fontFamily: MONO, fontSize: 9, color: T.accent2, marginTop: 8, letterSpacing: '.08em', textTransform: 'uppercase' }}>
+          FULL LOG ON GITHUB ↗
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function WritingPage({ navigate }) {
+  const [active, setActive] = useState('all');
+  const chips = ['all','til','essay','build-log'];
+  const filtered = active === 'all' ? WRITING : WRITING.filter(p => p.kind === active);
+
+  return (
+    <div className="page-enter-right">
+      <div style={{ padding: '18px 22px 4px', background: T.paper }}>
+        <div
+          onClick={() => navigate('home')}
+          style={{ fontFamily: MONO, fontSize: 10, color: T.accent2, marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4, cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
+        >
+          <span>←</span> back home
+        </div>
+        <div style={{ ...TS.eyebrow, fontSize: 10, color: T.inkDim, marginBottom: 3 }}>$ ls ~/writing</div>
+        <h1 style={{ ...TS.h1, color: T.ink, margin: 0 }}>
+          writing<span style={{ color: T.accent }}>.</span>
+        </h1>
+      </div>
+      <FilterChips chips={chips} active={active} onSelect={setActive} />
+      <div style={{ height: 1, background: `repeating-linear-gradient(90deg,${T.hair2} 0 12px,transparent 12px 16px)`, margin: '0 22px 4px' }} />
+      {filtered.map((p, i) => <WritingRow key={i} post={p} />)}
+    </div>
+  );
+}
+
+function CaseStudyPage({ project, navigate }) {
+  return (
+    <div className="page-enter-right">
+      <ReadingProgress pct={pct} />
+      <CSBreadcrumb slug={project.id} navigate={navigate} />
+      <div style={{ padding: '14px 22px 11px' }}>
+        <div style={{ ...TS.eyebrow, fontSize: 9, color: T.accent, marginBottom: 3 }}>{project.index} · {project.kind}</div>
+        <h1 style={{ ...TS.display, color: T.ink, margin: '0 0 6px' }}>{project.name}<span style={{ color: T.accent }}>.</span></h1>
+        <div style={{ fontFamily: MONO, fontSize: 9, color: T.inkDim, lineHeight: 1.75 }}>
+          {project.stack.slice(0,5).join(' · ')}<br/>{project.meta}
+        </div>
+      </div>
+      <div style={{ borderTop: `1px solid ${T.hair}`, borderBottom: `1px solid ${T.hair}` }}>
+        <ImgPlaceholder label="hero screenshot · 16:9" height={195} />
+      </div>
+      <CSTextBlock title="WHAT?" lines={[
+        "CodeFlow lets you describe a web app in plain English and get a working Next.js codebase back in minutes.",
+        "Agents run inside E2B sandboxes — real Node runtimes, not simulated shells — so the code actually compiles before it lands in your editor.",
+      ]} />
+      <CSTextBlock title="WHY?" lines={[
+        "I kept seeing AI coding tools that could write a file but couldn't run it. Wanted to close that loop.",
+      ]} />
+      <CSTextBlock title="HOW?" lines={[
+        "tRPC for the client↔server contract, Inngest for the durable job queue, E2B for sandboxed execution, OpenAI + Gemini as interchangeable backends.",
+        "The frontend polls a live log stream — watching the agent think is half the fun.",
+      ]} />
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '.16em', textTransform: 'uppercase', color: T.accent, padding: '11px 22px 3px' }}>STACK</div>
+      <StackPills stack={project.stack} />
+      <CSPager project={project} navigate={navigate} />
+    </div>
+  );
+}
+
+function CSTextBlock({ title, lines }) {
+  return (
+    <>
+      <div style={{ fontFamily: MONO, fontSize: 10, letterSpacing: '.16em', textTransform: 'uppercase', color: T.accent, padding: '14px 22px 5px' }}>{title}</div>
+      {lines.map((line, i) => (
+        <p key={i} style={{ ...TS.sm, color: T.inkSoft, margin: '0 0 8px', padding: '0 22px', lineHeight: 1.65 }}>{line}</p>
+      ))}
+    </>
+  );
+}
+
+/* ── MAIN APP ────────────────────────────────────────────── */
+function App() {
+  const [route, setRoute] = useState({ page: 'home', data: null });
+  const [navOpen, setNavOpen] = useState(false);
+  const scrollRef = useRef(null);
+  const [scrollPct, setScrollPct] = useState(0);
+
+  const navigate = useCallback((page, data = null) => {
+    setNavOpen(false);
+    setRoute({ page, data });
+    if (scrollRef.current) scrollRef.current.scrollTop = 0;
+  }, []);
+
+  // reading progress for case study
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || route.page !== 'casestudy') return;
+    const handler = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      setScrollPct(max > 0 ? Math.round((el.scrollTop / max) * 100) : 0);
+    };
+    el.addEventListener('scroll', handler, { passive: true });
+    return () => el.removeEventListener('scroll', handler);
+  }, [route.page]);
+
+  // reset scroll pct on page change
+  useEffect(() => { setScrollPct(0); }, [route]);
+
+  const isCS = route.page === 'casestudy';
+
+  return (
+    <div style={{
+      width: 390,
+      height: 844,
+      background: T.paper,
+      borderRadius: 48,
+      border: '1px solid rgba(255,255,255,.07)',
+      boxShadow: '0 0 0 2px rgba(0,0,0,.9), 0 60px 140px rgba(0,0,0,.8), 0 0 80px rgba(110,231,167,.04)',
+      overflow: 'hidden',
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+
+      {/* Status bar */}
+      <StatusBar />
+
+      {/* Sticky nav */}
+      <NavBar
+        onMenu={() => setNavOpen(v => !v)}
+        stuck={isCS}
+      />
+
+      {/* Reading progress bar — case study only */}
+      {isCS && <ReadingProgress pct={scrollPct} />}
+
+      {/* Scrollable content */}
+      <div
+        ref={scrollRef}
+        className="phone-scroll"
+        style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', position: 'relative' }}
+      >
+        {route.page === 'home'      && <HomePage navigate={navigate} />}
+        {route.page === 'work'      && <WorkPage navigate={navigate} />}
+        {route.page === 'writing'   && <WritingPage navigate={navigate} />}
+        {route.page === 'casestudy' && <CaseStudyPage project={route.data} navigate={navigate} />}
+
+        {/* Nav overlay — inside scroll so it covers content */}
+        {navOpen && (
+          <div style={{ position: 'absolute', inset: 0, zIndex: 200 }}>
+            <NavOverlay onClose={() => setNavOpen(false)} navigate={navigate} />
+          </div>
+        )}
+      </div>
+
+      {/* Home indicator */}
+      <HomeIndicator />
+
+      {/* Glint ring */}
+      <div style={{
+        position: 'absolute', inset: 0, borderRadius: 48, pointerEvents: 'none',
+        boxShadow: 'inset 0 1px 0 rgba(255,255,255,.08), inset 0 -1px 0 rgba(0,0,0,.3)',
+      }} />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>

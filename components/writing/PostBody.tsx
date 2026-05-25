@@ -1,7 +1,6 @@
 import type { LexicalContent, LexicalNode } from '@/lib/posts'
+import { resolveMediaUrl } from '@/lib/media'
 import Image from 'next/image'
-
-const BLOGGZ_URL = process.env.BLOGGZ_URL ?? 'http://localhost:3001'
 
 const FORMAT_BOLD = 1
 const FORMAT_ITALIC = 1 << 1
@@ -21,12 +20,37 @@ function renderText(node: LexicalNode, key: string) {
   return <span key={key}>{el}</span>
 }
 
-function renderChildren(children: LexicalNode[] | undefined, parentKey: string): React.ReactNode {
-  if (!children) return null
-  return children.map((child, i) => renderNode(child, `${parentKey}.${i}`))
+const BLOCK_TYPES = new Set([
+  'paragraph',
+  'heading',
+  'quote',
+  'list',
+  'listitem',
+  'upload',
+  'block',
+])
+
+function hasBlockDescendant(children: LexicalNode[] | undefined): boolean {
+  if (!children) return false
+  for (const c of children) {
+    if (BLOCK_TYPES.has(c.type)) return true
+    if (hasBlockDescendant(c.children)) return true
+  }
+  return false
 }
 
-function renderNode(node: LexicalNode, key: string): React.ReactNode {
+type RenderCtx = { mediaCount: number }
+
+function renderChildren(
+  children: LexicalNode[] | undefined,
+  parentKey: string,
+  ctx: RenderCtx,
+): React.ReactNode {
+  if (!children) return null
+  return children.map((child, i) => renderNode(child, `${parentKey}.${i}`, ctx))
+}
+
+function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.ReactNode {
   switch (node.type) {
     case 'text':
       return renderText(node, key)
@@ -34,8 +58,24 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
     case 'linebreak':
       return <br key={key} />
 
-    case 'paragraph':
-      return <p key={key} className="t-lead">{renderChildren(node.children, key)}</p>
+    case 'paragraph': {
+      // Lexical lets paragraphs contain block-level descendants (uploads,
+      // headings nested inside link nodes pasted from rich sources, etc.).
+      // None of that is legal HTML inside <p>, and the resulting hydration
+      // mismatch drops the offending content. Detect any block descendant
+      // and either unwrap a lone block child or fall back to <div>.
+      const meaningful = (node.children ?? []).filter(
+        (c) => !(c.type === 'text' && (c.text ?? '').trim() === ''),
+      )
+      const onlyChild = meaningful.length === 1 ? meaningful[0] : null
+      if (onlyChild && (onlyChild.type === 'upload' || onlyChild.type === 'block')) {
+        return renderNode(onlyChild, key, ctx)
+      }
+      if (hasBlockDescendant(node.children)) {
+        return <div key={key} className="t-lead">{renderChildren(node.children, key, ctx)}</div>
+      }
+      return <p key={key} className="t-lead">{renderChildren(node.children, key, ctx)}</p>
+    }
 
     case 'heading': {
       const tag = (node.tag as 'h1' | 'h2' | 'h3' | 'h4') ?? 'h2'
@@ -43,7 +83,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
       const Tag = tag
       return (
         <Tag key={key} className={cls}>
-          {renderChildren(node.children, key)}
+          {renderChildren(node.children, key, ctx)}
         </Tag>
       )
     }
@@ -60,7 +100,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
             listStyleType: node.listType === 'number' ? 'decimal' : 'disc',
           }}
         >
-          {renderChildren(node.children, key)}
+          {renderChildren(node.children, key, ctx)}
         </Tag>
       )
     }
@@ -68,7 +108,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
     case 'listitem':
       return (
         <li key={key} style={{ marginBottom: '0.35rem' }}>
-          {renderChildren(node.children, key)}
+          {renderChildren(node.children, key, ctx)}
         </li>
       )
 
@@ -85,7 +125,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
             fontStyle: 'italic',
           }}
         >
-          {renderChildren(node.children, key)}
+          {renderChildren(node.children, key, ctx)}
         </blockquote>
       )
 
@@ -109,7 +149,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
             margin: '1.5rem 0',
           }}
         >
-          <code>{renderChildren(node.children, key)}</code>
+          <code>{renderChildren(node.children, key, ctx)}</code>
         </pre>
       )
 
@@ -127,8 +167,9 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
           href={url}
           target={external && fields?.newTab ? '_blank' : undefined}
           rel={external ? 'noopener noreferrer' : undefined}
+          className="no-pop"
         >
-          {renderChildren(node.children, key)}
+          {renderChildren(node.children, key, ctx)}
         </a>
       )
     }
@@ -142,8 +183,11 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
         const media = (fields.media ?? (node as { value?: { url?: string; alt?: string } }).value) as
           | { url?: string; alt?: string }
           | undefined
-        if (!media?.url) return null
-        const src = media.url.startsWith('http') ? media.url : `${BLOGGZ_URL}${media.url}`
+        if (!media) return null
+        const src = resolveMediaUrl(media.url)
+        if (!src) return null
+        const isFirstMedia = ctx.mediaCount === 0
+        ctx.mediaCount++
         return (
           <figure key={key} style={{ margin: '2.5rem 0' }}>
             <Image
@@ -153,6 +197,8 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
               height={900}
               style={{ width: '100%', height: 'auto', borderRadius: '4px' }}
               unoptimized
+              priority={isFirstMedia}
+              loading={isFirstMedia ? 'eager' : 'lazy'}
             />
           </figure>
         )
@@ -179,7 +225,7 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
               borderRadius: '0 4px 4px 0',
             }}
           >
-            {content && renderChildren(content.root.children, `${key}.banner`)}
+            {content && renderChildren(content.root.children, `${key}.banner`, ctx)}
           </div>
         )
       }
@@ -214,14 +260,15 @@ function renderNode(node: LexicalNode, key: string): React.ReactNode {
     }
 
     case 'root':
-      return <>{renderChildren(node.children, key)}</>
+      return <>{renderChildren(node.children, key, ctx)}</>
 
     default:
-      if (node.children) return <>{renderChildren(node.children, key)}</>
+      if (node.children) return <>{renderChildren(node.children, key, ctx)}</>
       return null
   }
 }
 
 export function PostBody({ value }: { value: LexicalContent }) {
-  return <>{renderNode(value.root, 'root')}</>
+  const ctx: RenderCtx = { mediaCount: 0 }
+  return <>{renderNode(value.root, 'root', ctx)}</>
 }

@@ -25,7 +25,7 @@ const EXTRAS: WorkRow[] = [
     order: 10,
   },
   {
-    status: "archived",
+    status: "dead",
     tag: "tool",
     name: "arch-install",
     blurb: "scripted my Arch setup. now it breaks less. I think.",
@@ -59,7 +59,18 @@ export async function listWorkRows(): Promise<WorkRow[]> {
         } satisfies WorkRow;
       }),
   );
-  return [...fromCaseStudies, ...EXTRAS].sort((a, b) => a.order - b.order);
+  // Bucket order: active → wip → archived → dead (outcome-forward).
+  // Within each bucket: by `order` field (manual curation, roughly date-ordered).
+  const STATUS_RANK: Record<WorkStatus, number> = {
+    active: 0,
+    wip: 1,
+    archived: 2,
+    dead: 3,
+  };
+  return [...fromCaseStudies, ...EXTRAS].sort((a, b) => {
+    const r = STATUS_RANK[a.status] - STATUS_RANK[b.status];
+    return r !== 0 ? r : a.order - b.order;
+  });
 }
 
 export const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;

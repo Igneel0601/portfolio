@@ -52,6 +52,9 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   overflow: hidden;
+  /* Padding lives on the window (non-scrolling parent) so the inset
+     gutter persists at top/bottom while .body scrolls inside it. */
+  padding: clamp(2rem, 4vw, 3rem);
 }
 .window::before {
   content: '';
@@ -77,7 +80,6 @@
   display: grid;
   grid-template-columns: 18.75rem minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 2.5rem);
-  padding: 1.5rem 0 1rem;
   align-items: start;
   flex-shrink: 0;
 }
@@ -219,11 +221,13 @@
   flex-direction: column;
   gap: 0.25rem;
   color: var(--ink);
-  padding: 2rem clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2rem);
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.body::-webkit-scrollbar { display: none; }
 
 .line {
   display: flex;

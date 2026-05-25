@@ -72,6 +72,7 @@ export type Post = PostListItem & {
   heroImage: Media | null
   metaTitle: string | null
   metaImage: Media | null
+  dropCap: boolean
 }
 
 type PostRow = {
@@ -85,6 +86,7 @@ type PostRow = {
   meta_description: string | null
   hero_image_id: number | null
   meta_image_id: number | null
+  drop_cap: boolean | null
 }
 
 type MediaRow = {
@@ -125,6 +127,68 @@ async function fetchCategoriesForPosts(postIds: number[]): Promise<Map<number, C
     map.set(r.parent_id, list)
   }
   return map
+}
+
+// Walks a lexical tree and collects every upload-node's media id. The raw DB
+// stores upload nodes as `{type:'upload', value:<id>, relationTo:'media'}` —
+// no expansion. We collect ids here, then `expandUploads` mutates the tree to
+// inline the resolved media objects so the renderer can access `value.url`.
+//
+// Three shapes hold media references:
+//   1. top-level upload nodes (`type:'upload'`, `value:<id>`)
+//   2. mediaBlock custom blocks (`type:'block'`, `fields.blockType:'mediaBlock'`,
+//      `fields.media:<id>`) — Payload stores the ref as a numeric id in the
+//      raw content JSONB
+//   3. nested rich text inside any other `block` (banner callouts etc.) where
+//      `fields.content.root.children` holds another lexical tree
+// We walk all three plus the standard `children` array.
+type BlockNode = {
+  type?: string
+  value?: unknown
+  children?: unknown[]
+  fields?: {
+    blockType?: string
+    media?: unknown
+    content?: { root?: { children?: unknown[] } }
+    [k: string]: unknown
+  }
+}
+
+function walkLexical(node: unknown, visit: (n: BlockNode) => void) {
+  if (!node || typeof node !== 'object') return
+  const n = node as BlockNode
+  visit(n)
+  if (n.type === 'block' && n.fields?.content?.root?.children) {
+    for (const c of n.fields.content.root.children) walkLexical(c, visit)
+  }
+  if (Array.isArray(n.children)) for (const c of n.children) walkLexical(c, visit)
+}
+
+function collectUploadIds(node: unknown, into: number[]) {
+  walkLexical(node, (n) => {
+    if (n.type === 'upload' && typeof n.value === 'number') into.push(n.value)
+    if (
+      n.type === 'block' &&
+      n.fields?.blockType === 'mediaBlock' &&
+      typeof n.fields.media === 'number'
+    ) {
+      into.push(n.fields.media)
+    }
+  })
+}
+
+function expandUploads(node: unknown, mediaById: Map<number, Media>) {
+  walkLexical(node, (n) => {
+    if (n.type === 'upload' && typeof n.value === 'number') {
+      const m = mediaById.get(n.value)
+      if (m) n.value = m as unknown as typeof n.value
+    }
+    const f = n.fields
+    if (n.type === 'block' && f?.blockType === 'mediaBlock' && typeof f.media === 'number') {
+      const m = mediaById.get(f.media)
+      if (m) f.media = m as unknown as typeof f.media
+    }
+  })
 }
 
 async function fetchMediaByIds(ids: number[]): Promise<Map<number, Media>> {
@@ -176,7 +240,7 @@ export async function getPostSlugs(): Promise<string[]> {
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
   const { rows } = await pool.query<PostRow>(
-    `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id
+    `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id, drop_cap
      FROM posts
      WHERE ${PUBLISHED} AND slug = $1
      LIMIT 1`,
@@ -184,10 +248,19 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   )
   const row = rows[0]
   if (!row) return null
+  const uploadIds: number[] = []
+  collectUploadIds(row.content?.root, uploadIds)
   const [cats, media] = await Promise.all([
     fetchCategoriesForPosts([row.id]),
-    fetchMediaByIds([row.hero_image_id, row.meta_image_id].filter((v): v is number => v != null)),
+    fetchMediaByIds(
+      [row.hero_image_id, row.meta_image_id, ...uploadIds].filter(
+        (v): v is number => v != null,
+      ),
+    ),
   ])
+  // Mutate the lexical tree in-place: replace each upload node's numeric id
+  // value with its resolved Media object so PostBody can read value.url.
+  expandUploads(row.content?.root, media)
   const wordCount = countWords(row.content)
   return {
     id: row.id,
@@ -201,6 +274,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     categories: cats.get(row.id) ?? [],
     heroImage: row.hero_image_id ? media.get(row.hero_image_id) ?? null : null,
     metaImage: row.meta_image_id ? media.get(row.meta_image_id) ?? null : null,
+    dropCap: row.drop_cap === true,
     wordCount,
     readMinutes: Math.max(1, Math.round(wordCount / 220)),
   }
