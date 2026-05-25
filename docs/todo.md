@@ -91,13 +91,10 @@
 - [x] `ChevronRight` in `WorkLog.tsx:209` — kept as-is. `ChevronRight` is the row-drill-in affordance; `Move*` is for directional flow. Different semantics, not an outlier.
 - [x] Post breadcrumb — verified: it's a `<span>` containing the filename, not a `<Link>`. No pop to suppress.
 
-### P1 — mobile shell inline styles (26 blocks total, verified still present)
+### P1 — mobile shell inline styles
 
-- [ ] `MobileTimeline.tsx` — 11 inline blocks
-- [ ] `MobileWorkLog.tsx` — 6
-- [ ] `MobileNav.tsx` — 5
-- [ ] `MobileHome.tsx` — 3 (includes dead `background: var(--paper)` wrapper)
-- [ ] `MobileWriting.tsx` — 1
+- [x] Dropped dead `background: var(--paper)` wrappers — body already paints `--paper`. Removed from MobileWriting, MobileHome, MobileWorkLog, MobileTimeline.
+- [x] Remaining ~23 inline blocks (MobileTimeline 11, MobileWorkLog 5, MobileNav 5, MobileHome 2) — won't-fix. Each block is single-use; extracting per-block classes adds more noise than it removes. AGENTS.md rule still applies for new code; existing one-offs stay.
 
 ### P1 — token coverage gaps
 
@@ -108,9 +105,9 @@
 
 ### P2 — UX polish
 
-- [ ] `/work` sort affordance — add eyebrow "sorted: active → wip → archived → dead" so readers understand the order (`components/work/WorkLog.tsx`)
-- [ ] `ProjectCard` kind chip wraps awkwardly with long names — cap name to 1 line, or move chip below (`components/mobile/parts.tsx`)
-- [ ] Mobile micro-type sizes scattered (verified): 11× `0.5625rem` (9px), 3× `0.625rem` (10px), 1× `0.6875rem` (11px), 1× `0.75rem` (12px). Settle on two roles
+- [x] `/work` sort affordance — decided against. The colored status next to each row makes the clustering self-evident; a sort-order eyebrow would explain what's already visible.
+- [x] `ProjectCard` kind chip wrap — added `flex-wrap: wrap` to `.m-project-head`. Short names keep one row (kind right-aligned via existing `margin-left: auto`); long names push the kind to its own line, still right-aligned.
+- [x] Mobile typography sweep — full token migration. Every `.m-*` rule that re-implemented typography (15 `font-family`, 16 `font-size`, plus letter-spacing/uppercase eyebrow rules) stripped from `mobile.css`. Elements now apply token classes (`l-meta`, `l-tag`, `c-xs`, `c-sm`, `t-sm`) directly via JSX. 9px values gone; all readable meta is 11px (`c-xs`), chrome is 10px (`l-meta`). `mobile.css` is now layout/color only — single source of truth for typography is `tokens.css`.
 - [x] `SiteFooter` 9px under legible minimum — bumped to 11px (`0.6875rem`)
 
 ### P2 — infra
