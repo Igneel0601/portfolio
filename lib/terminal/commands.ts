@@ -240,12 +240,23 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
     case 'fullscreen':
     case 'fs': {
       if (typeof document === 'undefined') return
+      // Safari (desktop + iPadOS) only exposes the webkit-prefixed API.
+      type FsDoc = Document & {
+        webkitFullscreenElement?: Element | null
+        webkitExitFullscreen?: () => Promise<void> | void
+      }
+      type FsEl = HTMLElement & {
+        webkitRequestFullscreen?: () => Promise<void> | void
+      }
+      const doc = document as FsDoc
+      const root = document.documentElement as FsEl
+      const active = doc.fullscreenElement ?? doc.webkitFullscreenElement ?? null
       try {
-        if (document.fullscreenElement) {
-          await document.exitFullscreen()
+        if (active) {
+          await (doc.exitFullscreen?.() ?? doc.webkitExitFullscreen?.())
           ctx.push({ kind: 'mute', text: '(exited fullscreen)' })
         } else {
-          await document.documentElement.requestFullscreen()
+          await (root.requestFullscreen?.() ?? root.webkitRequestFullscreen?.())
           ctx.push({ kind: 'mute', text: '(fullscreen on. press Esc or run `fullscreen` again to exit.)' })
         }
       } catch (err) {
