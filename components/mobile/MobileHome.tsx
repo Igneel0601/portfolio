@@ -6,7 +6,6 @@ import {
   HeroSection,
   ProjectCard,
   SectionHeader,
-  SiteFooter,
 } from "./parts";
 
 export function MobileHome() {
@@ -24,7 +23,6 @@ export function MobileHome() {
       ))}
       <MobileTimeline />
       <CTASection />
-      <SiteFooter />
     </div>
   );
 }

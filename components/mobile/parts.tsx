@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Project, TimelineStop } from "@/lib/content";
@@ -192,6 +193,18 @@ export function CTASection() {
 }
 
 export function SiteFooter() {
+  const rawPathname = usePathname();
+  // Strip /d or /m prefix so suppression works on deep-links/share URLs that
+  // bypass proxy.ts rewrites. Mirrors components/Footer.tsx.
+  const pathname = rawPathname?.replace(/^\/[dm](?=\/|$)/, "") ?? "";
+
+  const hasOwnFooter =
+    pathname.startsWith("/writing/") ||
+    pathname === "/experiments/writing-exploration" ||
+    /^\/work\/[^/]+/.test(pathname);
+
+  if (hasOwnFooter) return null;
+
   return (
     <div className="m-site-footer">
       <span>$ exit 0 · too much coffee</span>
