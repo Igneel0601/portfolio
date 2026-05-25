@@ -30,7 +30,16 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
+    // Lenis caches max-scroll at init. On pages with lazy-loaded images
+    // (writing posts, case studies), the document grows taller after init
+    // and Lenis's cached value goes stale — wheel events past the stale
+    // max get silently eaten (trackpad/keyboard bypass via native scroll,
+    // which is why they keep working). Resize on every body height change.
+    const ro = new ResizeObserver(() => instance.resize());
+    ro.observe(document.body);
+
     return () => {
+      ro.disconnect();
       gsap.ticker.remove(tick);
       instance.destroy();
       setLenis(null);
