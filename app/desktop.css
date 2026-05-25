@@ -107,6 +107,12 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 }
 @keyframes blink { 50% { opacity: 0; } }
 
+/* FOUC guard: nav ships hidden until useGSAP flips data-nav-revealed via
+   setAttribute (not via JSX, so React rerenders from hidden/open state
+   don't reset it). GSAP's gsap.set(nav, {autoAlpha: ...}) then takes over
+   the inline style and drives the intro/scroll animations. */
+[data-nav]:not([data-nav-revealed]) { visibility: hidden; }
+
 /* nav link styling */
 [data-nav][data-stuck]             { background: color-mix(in oklab, var(--paper-2) 80%, transparent); backdrop-filter: blur(12px); border-bottom-color: color-mix(in oklab, var(--ink) 15%, transparent); }
 

@@ -45,11 +45,20 @@ export function Nav() {
       let tl: gsap.core.Timeline | null = null;
       if (isMobile) {
         gsap.set(nav, { autoAlpha: 1, y: 0 });
+        // Disengage the FOUC guard CSS rule (desktop.css). Set via DOM
+        // (not JSX) so subsequent React rerenders from useState don't
+        // remove it and reintroduce the flicker.
+        nav.setAttribute("data-nav-revealed", "");
         enteredRef.current = true;
       } else {
         // Initial state — nav hidden + slightly above. After delay, snap
         // visibility on and slide down into place.
         gsap.set(nav, { autoAlpha: 0, y: -12 });
+        // Flip the FOUC guard now that GSAP's inline visibility:hidden
+        // has taken over — CSS rule no longer needed and would only
+        // conflict with the autoAlpha animation. See desktop.css for why
+        // this is set via DOM rather than JSX.
+        nav.setAttribute("data-nav-revealed", "");
 
         tl = gsap.timeline({
           delay: isHome ? 2.8 : 0.1,
