@@ -68,7 +68,10 @@ export async function PostPage({
     <>
       {shell === 'd' && <ReadingProgress />}
       <main className="flex-1">
-        <section className="wp-shell">
+        <section
+          className="page-shell"
+          style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
+        >
           <div className="cs-crumb-line c-sm">
             <span>{filename}</span>
           </div>

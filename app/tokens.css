@@ -289,6 +289,13 @@ body {
 @media (max-width: 60rem) {
   .cs-doc { grid-template-columns: minmax(0, 1fr); }
   .cs-doc > .cs-toc { display: none; }
+  /* Collapse the inner prose+slack sub-grid too. Without this, the slack
+     column + column-gap overflow the right edge of the page-shell on
+     narrow viewports. */
+  .cs-doc > .cs-content {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+  }
 }
 
 /* TOC sidebar */
@@ -741,8 +748,10 @@ body {
 @media (max-width: 45rem) {
   .cs-pager { grid-template-columns: 1fr; }
   .cs-pager-card:nth-child(2) { align-items: flex-start; text-align: left; }
-  .cs-footer { grid-template-columns: 1fr; gap: 0.5rem; }
-  .cs-footer-middle, .cs-footer-right { text-align: left; }
+  /* 2-col footer: left status + right copyright. Filename hides — it's
+     decorative and stacks the footer 3-rows-tall otherwise. */
+  .cs-footer { grid-template-columns: 1fr auto; gap: 1rem; }
+  .cs-footer-middle { display: none; }
 }
 
 /* ─── /experiments — case-study v2 trial layout ──────────────────
@@ -819,12 +828,6 @@ body {
 
 /* ─── /writing layout ─────────────────────────────────────────── */
 
-.w-shell {
-  width: min(92%, 88rem);
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
 /* Drop cap on first paragraph — opt-in per post via `.dropcap` on the
    article. Add the class in post.tsx based on a Bloggz `dropCap` flag once
    the field exists (default off for now).
@@ -899,23 +902,13 @@ body {
   pointer-events: none;
 }
 
-/* Header chrome (title, lead, meta, hero) gets the gutter width (page-shell
-   max 80rem); only the prose body falls back to --w-reading (≈65ch).
+/* Header chrome (title, lead, meta, hero) inherits the page-shell gutter
+   (80rem max); the prose column falls back to --w-reading (≈65ch).
    Editorial pattern: wide masthead → narrow column → wide related strip. */
-.wp-shell {
-  width: 100%;
-  max-width: 80rem;
-  margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
-  padding-top: clamp(1.25rem, 2.5vw, 1.75rem);
-}
-.wp-shell > .wp-prose-wrap {
+.wp-prose-wrap {
   width: min(100%, var(--w-reading));
   margin-inline: auto;
 }
-/* Similar reads bleeds to full gutter width — hairline becomes a real
-   section break, cards get more breathing room than the 63ch column. */
-.wp-shell > .wp-related { width: 100%; }
 
 .wp-title {
   margin: 0.5rem 0 0;
@@ -961,7 +954,7 @@ body {
 }
 
 /* Related posts — Medium-style 2-up cards: category, title, dek, read-time.
-   Stacks on narrow viewports. Bleeds to gutter width via .wp-shell rule. */
+   Stacks on narrow viewports. Renders inside the page-shell gutter. */
 .wp-related {
   margin-top: 3.5rem;
   padding-top: 1.75rem;
