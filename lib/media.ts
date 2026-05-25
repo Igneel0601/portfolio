@@ -38,6 +38,10 @@ export function resolveMediaUrl(url: string | null | undefined): string | null {
   // so legacy/non-media bloggz endpoints still work in local dev.
   if (url.startsWith('/')) return `${BLOGGZ_URL}${url}`
 
-  // Bare relative like 'media/x.png' — next/image would throw. Drop it.
+  // Bare relative like 'media/x.png' — next/image would throw. Drop it,
+  // but warn in dev so misconfigured Bloggz records don't silently disappear.
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(`[resolveMediaUrl] dropping unresolvable media url: ${JSON.stringify(url)}`)
+  }
   return null
 }
