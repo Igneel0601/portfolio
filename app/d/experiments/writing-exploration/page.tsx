@@ -2,6 +2,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 import { getAdjacentPosts, getPostBySlug } from '@/lib/posts'
+import { resolveMediaUrl } from '@/lib/media'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
 import { WritingFooter } from '@/components/writing/WritingFooter'
@@ -17,13 +18,6 @@ const SLUG = 'i-used-git-wrong-for-years'
 export const metadata = {
   title: 'Writing exploration — Experiments',
   description: 'Reading-mode layout trial on a real post.',
-}
-
-function resolveMediaUrl(url: string | undefined | null): string | null {
-  if (!url) return null
-  if (url.startsWith('http')) return url
-  const base = process.env.BLOGGZ_URL ?? 'http://localhost:3001'
-  return `${base}${url}`
 }
 
 function formatDate(iso: string | null) {

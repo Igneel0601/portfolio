@@ -1,9 +1,9 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
-import { MoveLeft, MoveRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import { getAdjacentPosts, getPostBySlug, getPostSlugs } from '@/lib/posts'
+import { resolveMediaUrl } from '@/lib/media'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
 import { WritingFooter } from '@/components/writing/WritingFooter'
@@ -15,13 +15,6 @@ export async function generateStaticParams() {
   } catch {
     return []
   }
-}
-
-function resolveMediaUrl(url: string | undefined | null): string | null {
-  if (!url) return null
-  if (url.startsWith('http')) return url
-  const base = process.env.BLOGGZ_URL ?? 'http://localhost:3001'
-  return `${base}${url}`
 }
 
 function formatDate(iso: string | null) {
@@ -65,6 +58,7 @@ export default async function PostPage({
   if (!post) notFound()
 
   const { prev, next } = await getAdjacentPosts(slug)
+  const related = [prev, next].filter(Boolean) as NonNullable<typeof prev>[]
   const heroUrl = resolveMediaUrl(post.heroImage?.url)
   const filename = `${slug}.md`
 
@@ -120,31 +114,32 @@ export default async function PostPage({
             </article>
           )}
 
-          {(prev || next) && (
-            <nav className="wp-pager" aria-label="post navigation">
-              {prev ? (
-                <Link href={`/writing/${prev.slug}`} className="wp-pager-card no-pop">
-                  <span className="wp-pager-lbl l-eyebrow">
-                    <MoveLeft className="i-md" aria-hidden />
-                    <span>previous</span>
-                  </span>
-                  <span className="wp-pager-ttl t-h5">{prev.title}</span>
-                </Link>
-              ) : (
-                <span />
-              )}
-              {next ? (
-                <Link href={`/writing/${next.slug}`} className="wp-pager-card next no-pop">
-                  <span className="wp-pager-lbl l-eyebrow">
-                    <span>next</span>
-                    <MoveRight className="i-md" aria-hidden />
-                  </span>
-                  <span className="wp-pager-ttl t-h5">{next.title}</span>
-                </Link>
-              ) : (
-                <span />
-              )}
-            </nav>
+          {related.length > 0 && (
+            <section className="wp-related" aria-label="similar reads">
+              <h2 className="wp-related-h t-h4">Similar reads</h2>
+              <div className="wp-related-grid">
+                {related.map((r) => (
+                  <Link
+                    key={r.id}
+                    href={`/writing/${r.slug}`}
+                    className="wp-rel-card no-pop"
+                  >
+                    {r.categories[0] && (
+                      <div className="wp-rel-cat l-eyebrow">
+                        {r.categories[0].title.toLowerCase()}
+                      </div>
+                    )}
+                    <h3 className="wp-rel-title t-h5">{r.title}</h3>
+                    {r.metaDescription && (
+                      <p className="wp-rel-dek t-body">{r.metaDescription}</p>
+                    )}
+                    <div className="wp-rel-meta c-xs">
+                      <b>{r.readMinutes}</b> min · {r.wordCount.toLocaleString()} words
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
           )}
         </section>
       </main>
