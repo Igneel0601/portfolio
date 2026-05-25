@@ -905,7 +905,7 @@ body {
 /* Header chrome (title, lead, meta, hero) inherits the page-shell gutter
    (80rem max); the prose column falls back to --w-reading (≈65ch).
    Editorial pattern: wide masthead → narrow column → wide related strip. */
-.wp-prose-wrap {
+.page-shell > .wp-prose-wrap {
   width: min(100%, var(--w-reading));
   margin-top: 2.5rem;
   margin-inline: auto;

@@ -109,7 +109,11 @@ export function HeroSection() {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <Link href={`/work/${project.id}`} className="m-project-card">
+    <Link
+      href={`/work/${project.id}`}
+      aria-label={`${project.name} — ${project.blurb}`}
+      className="m-project-card"
+    >
       <div className="m-project-thumb">
         <Image
           src={project.image}
