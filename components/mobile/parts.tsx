@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Project, TimelineStop } from "@/lib/content";
@@ -19,7 +20,7 @@ export function DashedRule() {
 export function SectionHeader({ eyebrow, title }: { eyebrow: string; title: ReactNode }) {
   return (
     <div className="m-section-header">
-      <div className="l-eyebrow m-section-eyebrow">{eyebrow}</div>
+      <div className="l-tag m-section-eyebrow">{eyebrow}</div>
       <h2 className="t-h1 m-section-title">{title}</h2>
     </div>
   );
@@ -66,7 +67,7 @@ function Btn({
 /* ── home ──────────────────────────────────────────────── */
 export function BootBlock() {
   return (
-    <div className="m-boot">
+    <div className="c-xs m-boot">
       <div>
         <span className="m-boot-prompt">{BOOT_LINES[0].prompt}</span>
         <span className="m-boot-text"> {BOOT_LINES[0].text}</span>
@@ -108,7 +109,11 @@ export function HeroSection() {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <Link href={`/work/${project.id}`} className="m-project-card">
+    <Link
+      href={`/work/${project.id}`}
+      aria-label={`${project.name} — ${project.blurb}`}
+      className="m-project-card"
+    >
       <div className="m-project-thumb">
         <Image
           src={project.image}
@@ -119,24 +124,23 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <div className="m-project-body">
         <div className="m-project-head">
-          <span className="m-project-idx">{project.index}</span>
+          <span className="c-xs m-project-idx">{project.index}</span>
           <span className="t-h4 m-project-name">{project.name}</span>
-          <span className="l-meta m-project-kind">{project.kind}</span>
+          <span className="l-tag m-project-kind">{project.kind}</span>
         </div>
-        <p className="t-sm m-project-blurb">{project.blurb}</p>
         <div className="m-project-stack">
           {project.stack.map((s) => (
-            <span key={s} className="m-project-chip">
+            <span key={s} className="c-xs m-project-chip">
               {s}
             </span>
           ))}
         </div>
         <div className="m-project-foot">
-          <span className="m-project-cta">
-            cat CASE_STUDY.md{" "}
+          <span className="l-tag m-project-cta">
+            cat {project.id}.mdx{" "}
             <MoveRight aria-hidden className="i-xs m-project-cta-icon" />
           </span>
-          <span className="m-project-meta">{project.meta}</span>
+          <span className="c-xs m-project-meta">{project.meta}</span>
         </div>
       </div>
     </Link>
@@ -153,7 +157,7 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
           return (
             <div key={i} className="m-timeline-row">
               {i < stops.length - 1 && <div className="m-timeline-rail" />}
-              <div className="m-timeline-when" data-now={now}>
+              <div className="c-xs m-timeline-when" data-now={now}>
                 {s.when}
               </div>
               <div className="m-timeline-dot-wrap">
@@ -163,7 +167,7 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
                 <div className="t-sm m-timeline-title" data-now={now}>
                   {s.title}
                 </div>
-                <div className="m-timeline-blurb">{s.blurb}</div>
+                <div className="c-xs m-timeline-blurb">{s.blurb}</div>
               </div>
             </div>
           );
@@ -192,8 +196,20 @@ export function CTASection() {
 }
 
 export function SiteFooter() {
+  const rawPathname = usePathname();
+  // Strip /d or /m prefix so suppression works on deep-links/share URLs that
+  // bypass proxy.ts rewrites. Mirrors components/Footer.tsx.
+  const pathname = rawPathname?.replace(/^\/[dm](?=\/|$)/, "") ?? "";
+
+  const hasOwnFooter =
+    pathname.startsWith("/writing/") ||
+    pathname === "/experiments/writing-exploration" ||
+    /^\/work\/[^/]+/.test(pathname);
+
+  if (hasOwnFooter) return null;
+
   return (
-    <div className="m-site-footer">
+    <div className="c-xs m-site-footer">
       <span>$ exit 0 · too much coffee</span>
       <span>© {new Date().getFullYear()}</span>
     </div>
@@ -217,12 +233,12 @@ export function WorkPageRow({ row }: { row: WorkRowLike }) {
       data-status={row.status}
       data-dead={row.status === "dead" ? "true" : undefined}
     >
-      <span className="m-work-name" data-linked={linked ? "true" : undefined}>
+      <span className="c-sm m-work-name" data-linked={linked ? "true" : undefined}>
         {row.name}
       </span>
-      <p className="m-work-blurb">{row.blurb}</p>
-      <span className="m-work-tag">{row.tag}</span>
-      <span className="m-work-status">[{row.status}]</span>
+      <p className="t-sm m-work-blurb">{row.blurb}</p>
+      <span className="l-meta m-work-tag">{row.tag}</span>
+      <span className="c-xs m-work-status">[{row.status}]</span>
     </div>
   );
   if (linked) {
@@ -249,10 +265,10 @@ export function WritingRow({
 }) {
   return (
     <Link href={href} className="m-writing-row">
-      <span className="m-writing-date">{date}</span>
+      <span className="c-xs m-writing-date">{date}</span>
       <div>
         <div className="t-h5 m-writing-title">{title}</div>
-        <div className="m-writing-meta">{meta}</div>
+        <div className="c-xs m-writing-meta">{meta}</div>
       </div>
     </Link>
   );
@@ -267,7 +283,7 @@ export function PageHeader({
 }) {
   return (
     <div className="m-page-header">
-      {eyebrow && <div className="l-eyebrow m-page-eyebrow">{eyebrow}</div>}
+      {eyebrow && <div className="l-tag m-page-eyebrow">{eyebrow}</div>}
       <h1
         className="t-display m-page-title"
         data-eyebrow={eyebrow ? "true" : "false"}

@@ -116,7 +116,7 @@ export function SceneExperimentsStatic() {
                     className="flex items-center gap-1 no-pop"
                     style={{ color: "var(--accent)" }}
                   >
-                    open <ExternalLink size={12} strokeWidth={1.75} />
+                    open <ExternalLink className="i-xs i-bold" />
                   </a>
                 )}
               </div>

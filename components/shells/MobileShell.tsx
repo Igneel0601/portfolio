@@ -1,12 +1,12 @@
 import { MobileNav } from "@/components/mobile/MobileNav";
-import { Footer } from "@/components/Footer";
+import { SiteFooter } from "@/components/mobile/parts";
 
 export function MobileShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <MobileNav />
       {children}
-      <Footer />
+      <SiteFooter />
     </>
   );
 }

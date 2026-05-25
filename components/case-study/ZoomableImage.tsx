@@ -90,7 +90,7 @@ export function ZoomableImage({
       >
         <img src={src} alt={alt} />
         <span className="cs-arch-expand-hint c-xs">
-          <Maximize2 size={14} aria-hidden /> click to explore
+          <Maximize2 className="i-sm i-bold" aria-hidden /> click to explore
         </span>
       </button>
 
@@ -107,13 +107,13 @@ export function ZoomableImage({
           <div className="cs-arch-modal-inner" onClick={(e) => e.stopPropagation()}>
             <div className="cs-arch-toolbar">
               <button type="button" className="no-pop" onClick={zoomIn} aria-label="zoom in">
-                <ZoomIn size={14} />
+                <ZoomIn className="i-sm i-bold" />
               </button>
               <button type="button" className="no-pop" onClick={zoomOut} aria-label="zoom out">
-                <ZoomOut size={14} />
+                <ZoomOut className="i-sm i-bold" />
               </button>
               <button type="button" className="no-pop" onClick={reset} aria-label="reset">
-                <RotateCcw size={14} />
+                <RotateCcw className="i-sm i-bold" />
               </button>
               <button
                 type="button"
@@ -121,7 +121,7 @@ export function ZoomableImage({
                 onClick={() => setOpen(false)}
                 aria-label="close"
               >
-                <X size={14} />
+                <X className="i-sm i-bold" />
               </button>
             </div>
             <div className="cs-arch-canvas">

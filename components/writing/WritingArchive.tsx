@@ -136,7 +136,7 @@ export function WritingArchive({ posts }: Props) {
       <div className="wa-foot l-meta">
         <span>// end of log</span>
         <a href="/rss.xml" className="wa-rss" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-          <CornerDownRight size={14} strokeWidth={1.5} aria-hidden /> rss
+          <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>
     </>

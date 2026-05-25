@@ -42,10 +42,14 @@ escape hatch. Use this map before touching files.
   `components/mobile/`).
 
 ## Components
-- Mobile shell components — `components/mobile/*`. Rule: no inline
-  `style={{}}`; use `.m-*` classes, token classes, or Tailwind utils.
-  Dynamic state flows through `data-*` attrs that CSS selectors target
-  (`data-status`, `data-dead`, `data-linked`, `data-now`).
+- Mobile shell components — `components/mobile/*`. Rule: prefer `.m-*`
+  classes, token classes, or Tailwind utils over inline `style={{}}`.
+  Extract to a class when the same style appears 2+ times, when it
+  needs state (hover, `[data-*]`, media query), or when it would be
+  dead/redundant. Single-use one-offs may stay inline — extracting
+  every one-off adds more noise than it removes. Dynamic state flows
+  through `data-*` attrs that CSS selectors target (`data-status`,
+  `data-dead`, `data-linked`, `data-now`).
 - Desktop shell components — `components/{Nav,scenes,terminal,work,
   writing,case-study}/*`.
 - Shared (used by both shells via `_impl`) — `components/case-study/*`,
@@ -76,4 +80,4 @@ Skipping this and going straight to edits wastes the user's time when the diagno
 
 # Mobile shell
 
-Files under `components/mobile/*` must not contain inline `style={{ }}` blocks. Use classes from `app/mobile.css` (`.m-*` prefix), token classes from `app/tokens.css` (`t-*`, `c-*`, `l-*`, `i-*`), or Tailwind utilities. Dynamic state flows through `data-*` attributes that CSS selectors target.
+Files under `components/mobile/*` prefer classes from `app/mobile.css` (`.m-*` prefix), token classes from `app/tokens.css` (`t-*`, `c-*`, `l-*`, `i-*`), or Tailwind utilities over inline `style={{}}`. Extract to a class when the same style appears 2+ times, when it needs state (hover, `[data-*]`, media query), or when it would otherwise be dead/redundant. Single-use one-offs may stay inline. Dynamic state flows through `data-*` attributes that CSS selectors target.

@@ -71,7 +71,7 @@ export async function CaseStudyPage({
 
   return (
     <>
-      <main className={shell === "d" ? "page-shell" : undefined}>
+      <main className="page-shell">
         <div className="cs-doc">
           <article className="cs-content">
             <div className="cs-crumb-line c-sm">

@@ -198,8 +198,8 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
               style={{ padding: "0.25rem 0.375rem 0.375rem 0.25rem" }}
             >
               <Btn href={`/work/${project.id}`} variant="term">
-                cat ~/projects/{project.id}/CASE_STUDY.md
-                <ExternalLink size={14} strokeWidth={2} aria-hidden />
+                cat {project.id}.mdx
+                <ExternalLink className="i-sm i-bold" aria-hidden />
               </Btn>
             </div>
           </div>
