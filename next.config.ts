@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { STATIC_EXTENSIONS_PATTERN } from "./lib/static-extensions";
 
 const nextConfig: NextConfig = {
   images: {
@@ -15,14 +16,14 @@ const nextConfig: NextConfig = {
   // the immutable header on /api/bloggz-media and ballooning the per-asset
   // cache footprint for /_next/static and /public/*).
   //
-  // Asset list mirrors the skip regex in proxy.ts. A generic `.[a-z0-9]+$`
-  // rule would strip Vary from legitimate slugs containing dots (e.g.
-  // /writing/lessons-from-v1.0), causing CDNs to serve one shell to both UAs.
+  // Asset list lives in lib/static-extensions.ts (shared with proxy.ts).
+  // A generic `.[a-z0-9]+$` rule would strip Vary from legitimate slugs
+  // containing dots (e.g. /writing/lessons-from-v1.0), causing CDNs to serve
+  // one shell to both UAs.
   async headers() {
     return [
       {
-        source:
-          "/:path((?!api/|_next/)(?!.*\\.(?:png|jpe?g|webp|avif|gif|svg|ico|bmp|tiff?|css|js|mjs|map|woff2?|ttf|otf|eot|txt|xml|json|pdf|mp4|webm|mov|mp3|ogg|wav|zip)$).*)",
+        source: `/:path((?!api/|_next/)(?!.*\\.(?:${STATIC_EXTENSIONS_PATTERN})$).*)`,
         headers: [{ key: "Vary", value: "User-Agent" }],
       },
     ];

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { isMobileUA } from "@/lib/device";
+import { STATIC_EXTENSIONS_RE } from "@/lib/static-extensions";
 
 // Paths that should NOT be UA-routed (assets, API, RSS, robots).
 const SKIP_PREFIXES = [
@@ -31,7 +32,8 @@ export function proxy(req: NextRequest) {
 
   // Skip known static-asset extensions only. Bare `\.[a-z0-9]+$` would also
   // skip legitimate slugs like /writing/lessons-from-v1.0 or /work/api-v2.0.
-  if (/\.(png|jpe?g|webp|avif|gif|svg|ico|bmp|tiff?|css|js|mjs|map|woff2?|ttf|otf|eot|txt|xml|json|pdf|mp4|webm|mov|mp3|ogg|wav|zip)$/i.test(pathname)) {
+  // The list lives in lib/static-extensions.ts (shared with next.config.ts).
+  if (STATIC_EXTENSIONS_RE.test(pathname)) {
     return NextResponse.next();
   }
 
