@@ -47,8 +47,6 @@
 /* ── home: boot + hero ────────────────────────────────── */
 .m-boot {
   padding: 0.625rem 1.375rem 0.5625rem;
-  font-family: var(--mono);
-  font-size: 0.6875rem;
   line-height: 1.75;
 }
 .m-boot-prompt { color: var(--accent); }
@@ -105,23 +103,18 @@
 .m-project-head {
   display: flex;
   align-items: baseline;
+  flex-wrap: wrap;
   gap: 0.375rem;
   margin-bottom: 0.25rem;
 }
-.m-project-idx {
-  font-family: var(--mono);
-  font-size: 0.5625rem;
-  color: var(--ink-dim);
-}
+.m-project-idx { color: var(--ink-dim); }
 .m-project-name { color: var(--ink); }
 .m-project-kind {
   margin-left: auto;
-  font-size: 0.5625rem;
   color: var(--accent);
 }
 .m-project-blurb {
   margin: 0 0 0.5625rem;
-  font-size: 0.8125rem;
   color: var(--ink-soft);
 }
 .m-project-stack {
@@ -132,8 +125,6 @@
 }
 .m-project-chip {
   padding: 0.125rem 0.4375rem;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
   color: var(--ink-dim);
   border: 1px solid color-mix(in oklab, var(--accent) 16%, transparent);
   border-radius: 999px;
@@ -143,21 +134,12 @@
   justify-content: space-between;
   align-items: center;
 }
-.m-project-cta {
-  font-family: var(--mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.04em;
-  color: var(--accent-2);
-}
+.m-project-cta { color: var(--accent-2); }
 .m-project-cta-icon {
   display: inline-block;
   vertical-align: -0.125rem;
 }
-.m-project-meta {
-  font-family: var(--mono);
-  font-size: 0.5625rem;
-  color: var(--ink-dim);
-}
+.m-project-meta { color: var(--ink-dim); }
 
 /* ── timeline ─────────────────────────────────────────── */
 .m-timeline { padding: 0.5rem 1.375rem 0.75rem; }
@@ -178,8 +160,6 @@
 .m-timeline-when {
   margin-top: 0.125rem;
   padding-right: 0.4375rem;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
   font-weight: 400;
   color: var(--ink-dim);
   text-align: right;
@@ -217,9 +197,6 @@
 .m-timeline-title[data-now="true"] { color: var(--ink); }
 .m-timeline-blurb {
   margin-top: 0.0625rem;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
-  line-height: 1.4;
   color: var(--ink-dim);
 }
 
@@ -252,8 +229,6 @@
   justify-content: space-between;
   margin-top: 0.5rem;
   padding: 0.75rem 1.375rem 1.5rem;
-  font-family: var(--mono);
-  font-size: 0.6875rem;
   color: var(--ink-dim);
   border-top: 1px solid var(--hair);
 }
@@ -279,8 +254,6 @@
 
 .m-work-name {
   grid-area: name;
-  font-family: var(--mono);
-  font-size: 0.75rem;
   font-weight: 600;
   color: var(--ink);
   transition: color 120ms ease;
@@ -292,24 +265,15 @@
 .m-work-blurb {
   grid-area: blurb;
   margin: 0.125rem 0 0.25rem;
-  font-family: var(--font-serif);
-  font-size: 0.8125rem;
-  line-height: 1.45;
   color: var(--ink-soft);
 }
 .m-work-tag {
   grid-area: tag;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
   color: var(--ink-dim);
 }
 .m-work-status {
   grid-area: status;
   justify-self: end;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
 }
 .m-work-row-inner[data-status="active"]   .m-work-status { color: var(--status-active); }
 .m-work-row-inner[data-status="wip"]      .m-work-status { color: var(--status-wip); }
@@ -334,33 +298,19 @@
 .m-writing-date {
   min-width: 2.75rem;
   margin-top: 0.125rem;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
   color: var(--ink-dim);
 }
 .m-writing-title { line-height: 1.3; color: var(--ink); }
 .m-writing-meta {
   margin-top: 0.125rem;
-  font-family: var(--mono);
-  font-size: 0.5625rem;
   color: var(--ink-dim);
 }
 
 /* ── page header (used by work/writing pages) ─────────── */
 .m-page-header { padding: 1.125rem 1.375rem; }
-.m-page-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-family: var(--mono);
-  font-size: 0.625rem;
-  color: var(--accent-2);
-  text-decoration: none;
-}
 .m-page-eyebrow {
   margin-top: 1.5rem;
   margin-bottom: 0.25rem;
-  font-size: 0.625rem;
   color: var(--ink-dim);
 }
 .m-page-title {

@@ -5,7 +5,6 @@ export function MobileTimeline() {
     <section
       style={{
         padding: "32px 22px 28px",
-        background: "var(--paper)",
       }}
     >
       <div

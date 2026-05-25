@@ -10,7 +10,7 @@ import {
 
 export function MobileHome() {
   return (
-    <div style={{ background: "var(--paper)" }}>
+    <>
       <div style={{ height: "120svh", position: "relative" }}>
         <div style={{ position: "sticky", top: 0 }}>
           <BootBlock />
@@ -23,6 +23,6 @@ export function MobileHome() {
       ))}
       <MobileTimeline />
       <CTASection />
-    </div>
+    </>
   );
 }

@@ -67,7 +67,7 @@ function Btn({
 /* ── home ──────────────────────────────────────────────── */
 export function BootBlock() {
   return (
-    <div className="m-boot">
+    <div className="c-xs m-boot">
       <div>
         <span className="m-boot-prompt">{BOOT_LINES[0].prompt}</span>
         <span className="m-boot-text"> {BOOT_LINES[0].text}</span>
@@ -120,24 +120,24 @@ export function ProjectCard({ project }: { project: Project }) {
       </div>
       <div className="m-project-body">
         <div className="m-project-head">
-          <span className="m-project-idx">{project.index}</span>
+          <span className="c-xs m-project-idx">{project.index}</span>
           <span className="t-h4 m-project-name">{project.name}</span>
           <span className="l-meta m-project-kind">{project.kind}</span>
         </div>
         <p className="t-sm m-project-blurb">{project.blurb}</p>
         <div className="m-project-stack">
           {project.stack.map((s) => (
-            <span key={s} className="m-project-chip">
+            <span key={s} className="c-xs m-project-chip">
               {s}
             </span>
           ))}
         </div>
         <div className="m-project-foot">
-          <span className="m-project-cta">
+          <span className="l-tag m-project-cta">
             cat CASE_STUDY.md{" "}
             <MoveRight aria-hidden className="i-xs m-project-cta-icon" />
           </span>
-          <span className="m-project-meta">{project.meta}</span>
+          <span className="c-xs m-project-meta">{project.meta}</span>
         </div>
       </div>
     </Link>
@@ -154,7 +154,7 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
           return (
             <div key={i} className="m-timeline-row">
               {i < stops.length - 1 && <div className="m-timeline-rail" />}
-              <div className="m-timeline-when" data-now={now}>
+              <div className="c-xs m-timeline-when" data-now={now}>
                 {s.when}
               </div>
               <div className="m-timeline-dot-wrap">
@@ -164,7 +164,7 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
                 <div className="t-sm m-timeline-title" data-now={now}>
                   {s.title}
                 </div>
-                <div className="m-timeline-blurb">{s.blurb}</div>
+                <div className="c-xs m-timeline-blurb">{s.blurb}</div>
               </div>
             </div>
           );
@@ -206,7 +206,7 @@ export function SiteFooter() {
   if (hasOwnFooter) return null;
 
   return (
-    <div className="m-site-footer">
+    <div className="c-xs m-site-footer">
       <span>$ exit 0 · too much coffee</span>
       <span>© {new Date().getFullYear()}</span>
     </div>
@@ -230,12 +230,12 @@ export function WorkPageRow({ row }: { row: WorkRowLike }) {
       data-status={row.status}
       data-dead={row.status === "dead" ? "true" : undefined}
     >
-      <span className="m-work-name" data-linked={linked ? "true" : undefined}>
+      <span className="c-sm m-work-name" data-linked={linked ? "true" : undefined}>
         {row.name}
       </span>
-      <p className="m-work-blurb">{row.blurb}</p>
-      <span className="m-work-tag">{row.tag}</span>
-      <span className="m-work-status">[{row.status}]</span>
+      <p className="t-sm m-work-blurb">{row.blurb}</p>
+      <span className="l-meta m-work-tag">{row.tag}</span>
+      <span className="c-xs m-work-status">[{row.status}]</span>
     </div>
   );
   if (linked) {
@@ -262,10 +262,10 @@ export function WritingRow({
 }) {
   return (
     <Link href={href} className="m-writing-row">
-      <span className="m-writing-date">{date}</span>
+      <span className="c-xs m-writing-date">{date}</span>
       <div>
         <div className="t-h5 m-writing-title">{title}</div>
-        <div className="m-writing-meta">{meta}</div>
+        <div className="c-xs m-writing-meta">{meta}</div>
       </div>
     </Link>
   );
@@ -280,7 +280,7 @@ export function PageHeader({
 }) {
   return (
     <div className="m-page-header">
-      {eyebrow && <div className="l-eyebrow m-page-eyebrow">{eyebrow}</div>}
+      {eyebrow && <div className="l-meta m-page-eyebrow">{eyebrow}</div>}
       <h1
         className="t-display m-page-title"
         data-eyebrow={eyebrow ? "true" : "false"}
