@@ -80,6 +80,10 @@
 
 - [x] `MobileHome` 120dvh + sticky child — swapped `dvh` → `svh` so container height is stable when Android Chrome URL bar collapses
 - [x] Layout jump `/work` → `/work/[slug]` — resolved by the page-shell gutters refactor; both routes now share the same outer container, so nav/max-width no longer jump on navigation
+- [x] Mobile case-study padding bug — `app/_impl/case-study.tsx:74` was gating `.page-shell` to `shell === "d"`, so mobile case-study had no horizontal padding source. Dropped the gate. Now matches mobile writing posts.
+- [x] Shell consolidation — deleted dead `.w-shell`, merged `.wp-shell` into `.page-shell` (with standalone `.wp-prose-wrap` and inline padding-top on the post section). `.xp-shell` kept intentionally isolated as a sandbox per its comment.
+- [x] Case-study `.cs-content` sub-grid overflow on mobile — added `.cs-doc > .cs-content { grid-template-columns: minmax(0, 1fr); column-gap: 0 }` inside the `@media (max-width: 60rem)` block. The slack column was overflowing the page-shell's right edge.
+- [x] Case-study + writing footers stacked 3-rows-tall on mobile — switched to 2-col `1fr auto` on <45rem and hid the decorative filename middle span. Now reads `$ exit 0 · end of file` left, `© Vaibhav Verma · 2026` right, matching SiteFooter.
 - [x] Desktop `* { cursor: none }` leaks to iPad-with-trackpad — gate switched from `(hover: none), (pointer: coarse)` to `(any-pointer: coarse)`, which matches any device with touch capability
 - [x] `a::after` icon-pop on link hover — verified all icon-in-Link sites under `desktop.css` already carry `.no-pop` (Pager, WorkLog row, NotFoundView). Post breadcrumb is a `<span>`, terminal mobile back is `/m`-only. No new edits required.
 
@@ -112,5 +116,5 @@
 
 ### P2 — infra
 
-- [ ] JSX `style={{}}` not lint-enforced — stylelint only sees CSS files. Optional ESLint rule on `JSXAttribute[name.name='style']` with px / unitless number detection
-- [ ] `/d` at <1024px loses TOC (resized desktop browser edge case) — acceptable, or fall back to a `# contents` disclosure on `/d` narrow viewports
+- [x] JSX `style={{}}` lint rule — decided against. After relaxing the inline-style rule to "single-use one-offs may stay inline," most legit inline styles would need disable-comments. Cost of a custom ESLint rule + maintenance + disable noise exceeds the bug (rare px sneaking in). Code review handles it.
+- [x] `/d` at <1024px loses TOC — kept as-is. iPad and below already route to `/m` with inline TOC; the failing case is a desktop user actively narrowing the window to <1024px, which is rare. A third TOC variant (disclosure fallback) isn't worth it.
