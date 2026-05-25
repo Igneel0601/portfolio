@@ -1,8 +1,10 @@
+import { PostPage } from "@/app/_impl/post";
+
 export const revalidate = 60;
 export const dynamicParams = true;
 
-export {
-  default,
-  generateStaticParams,
-  generateMetadata,
-} from "@/app/_impl/post";
+export { generateStaticParams, generateMetadata } from "@/app/_impl/post";
+
+export default function Page(props: { params: Promise<{ slug: string }> }) {
+  return <PostPage {...props} shell="d" />;
+}

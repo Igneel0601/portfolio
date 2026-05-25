@@ -48,10 +48,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function PostPage({
+export async function PostPage({
   params,
+  shell,
 }: {
   params: Promise<{ slug: string }>
+  shell: 'd' | 'm'
 }) {
   const { slug } = await params
   const post = await getPostBySlug(slug)
@@ -64,7 +66,7 @@ export default async function PostPage({
 
   return (
     <>
-      <ReadingProgress />
+      {shell === 'd' && <ReadingProgress />}
       <main className="flex-1">
         <section
           className="wp-shell"
