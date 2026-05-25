@@ -106,9 +106,13 @@ function ProjectBody({ project, priority = false }: { project: Project; priority
       raf = requestAnimationFrame(fit);
     };
     schedule();
+    // Only observe the right column — its height is driven by the left
+    // column's image (synced in the useEffect above). Observing each
+    // paragraph's parent feeds the loop: fit() mutates fontSize → row
+    // reflows → ResizeObserver re-fires → "ResizeObserver loop limit
+    // exceeded" + layout oscillation.
     const ro = new ResizeObserver(schedule);
     ro.observe(right);
-    paras.forEach((p) => p.parentElement && ro.observe(p.parentElement));
     window.addEventListener("resize", schedule);
     return () => {
       cancelAnimationFrame(raf);
