@@ -3,16 +3,21 @@
 import { usePathname } from "next/navigation";
 
 export function Footer() {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+
+  // Direct visits to /d/* or /m/* (deep-links, share URLs, previews) bypass
+  // proxy.ts rewrites, so usePathname() can return either shape. Strip the
+  // shell prefix before matching so suppression works regardless.
+  const pathname = rawPathname?.replace(/^\/[dm](?=\/|$)/, "") ?? "";
 
   // Suppress global footer on routes that ship their own status-bar style
   // footer (WritingFooter for /writing/*, StudyFooter for case studies under
   // /work/[slug], and the writing-exploration experiment that reuses
   // WritingFooter). Those reinforce the editor/filesystem metaphor.
   const hasOwnFooter =
-    pathname?.startsWith("/writing") ||
+    pathname.startsWith("/writing/") ||
     pathname === "/experiments/writing-exploration" ||
-    /^\/work\/[^/]+/.test(pathname ?? "");
+    /^\/work\/[^/]+/.test(pathname);
 
   if (hasOwnFooter) return null;
 

@@ -29,8 +29,11 @@ export function proxy(req: NextRequest) {
   if (SKIP_EXACT.has(pathname)) return NextResponse.next();
   if (SKIP_PREFIXES.some((p) => pathname.startsWith(p))) return NextResponse.next();
 
-  // Skip files with extensions (images, fonts, etc).
-  if (/\.[a-zA-Z0-9]+$/.test(pathname)) return NextResponse.next();
+  // Skip known static-asset extensions only. Bare `\.[a-z0-9]+$` would also
+  // skip legitimate slugs like /writing/lessons-from-v1.0 or /work/api-v2.0.
+  if (/\.(png|jpe?g|webp|avif|gif|svg|ico|bmp|tiff?|css|js|mjs|map|woff2?|ttf|otf|eot|txt|xml|json|pdf|mp4|webm|mov|mp3|ogg|wav|zip)$/i.test(pathname)) {
+    return NextResponse.next();
+  }
 
   const ua = req.headers.get("user-agent") ?? "";
   const prefix = isMobileUA(ua) ? "/m" : "/d";
