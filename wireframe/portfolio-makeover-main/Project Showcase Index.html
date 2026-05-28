@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vaibhav Verma — Work</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --paper:    #0e1116;
+  --paper-2:  #161b22;
+  --paper-3:  #1c2330;
+  --ink:      #e6edf3;
+  --ink-soft: #8b949e;
+  --ink-dim:  #5b6573;
+  --hair:     rgba(230,237,243,.10);
+  --hair-2:   rgba(230,237,243,.18);
+  --accent:   #6ee7a7;
+  --accent-2: #5eead4;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+
+/* ── RESET ──────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(.875rem, .7vw + .5625rem, 1.125rem);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) color-mix(in oklab, var(--accent) 14%, transparent);
+}
+body { overflow-x: hidden; }
+a { color: inherit; text-decoration: none; }
+* { cursor: none !important; }
+@media (any-pointer: coarse) { * { cursor: auto !important; } }
+
+/* ── CUSTOM CURSOR ──────────────────────────── */
+#cur {
+  position: fixed; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, background .2s, opacity .2s;
+  mix-blend-mode: exclusion;
+}
+#cur.h { width: 48px; height: 48px; opacity: .35; }
+#cur.link { background: var(--accent-2); }
+@media (any-pointer: coarse) { #cur { display: none; } }
+
+/* ── PAGE SHELL ─────────────────────────────── */
+.shell {
+  max-width: 1440px; margin: 0 auto;
+  padding-inline: clamp(1.75rem, 7vw, 7rem);
+}
+
+/* ── SECTION HEADER ─────────────────────────── */
+.wl-head {
+  padding: clamp(3.5rem, 6vh, 5.5rem) 0 clamp(2rem, 3.5vh, 3rem);
+  display: grid; grid-template-columns: 1fr auto;
+  align-items: end; gap: 1rem;
+  border-bottom: 1px solid var(--hair);
+}
+.wl-head__title {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(2rem, 4.5vw, 3.75rem);
+  letter-spacing: -.03em; line-height: .9;
+  overflow: hidden;
+}
+.wl-head__title span {
+  display: inline-block;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: transform .75s cubic-bezier(.16,1,.3,1), opacity .15s ease;
+}
+.wl-head__title span.in { transform: translateY(0); opacity: 1; }
+.wl-head__title em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+
+.wl-head__cmd {
+  font-family: var(--mono); font-size: .62rem; letter-spacing: .06em;
+  color: var(--accent); text-align: right; line-height: 1.9;
+  opacity: 0; transition: opacity .5s ease .5s;
+  white-space: nowrap;
+}
+.wl-head__cmd.in { opacity: 1; }
+
+/* ── ROW ────────────────────────────────────── */
+.wl-row {
+  display: flex; align-items: center;
+  padding: clamp(1.5rem, 2.8vh, 2.5rem) 0;
+  border-bottom: 1px solid var(--hair);
+  position: relative;
+  cursor: none !important;
+  text-decoration: none;
+  /* Left edge accent */
+  padding-left: 0;
+  transition: padding-left .4s cubic-bezier(.16,1,.3,1);
+}
+.wl-row::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 2.5px; background: var(--accent);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform .45s cubic-bezier(.16,1,.3,1);
+}
+.wl-row:hover::before { transform: scaleY(1); }
+.wl-row:hover { padding-left: 1.25rem; }
+
+/* Row entrance */
+.wl-row {
+  opacity: 0; transform: translateX(-20px);
+}
+.wl-row.in { opacity: 1; transform: none; transition-property: opacity, transform, padding-left; }
+
+/* Number */
+.rn {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .18em;
+  color: var(--accent); width: 3.25rem; flex-shrink: 0;
+  transition: color .3s;
+}
+
+/* Title */
+.rt {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(2.75rem, 6vw, 5.5rem);
+  letter-spacing: -.03em; line-height: 1;
+  color: var(--ink); flex-shrink: 0;
+  transition: color .25s ease, letter-spacing .4s cubic-bezier(.16,1,.3,1);
+  position: relative;
+}
+.wl-row:hover .rt {
+  letter-spacing: -.015em;
+  color: var(--ink);
+}
+
+/* Rule filler */
+.rr {
+  flex: 1; height: 1px;
+  background: var(--hair);
+  margin: 0 clamp(1.25rem, 3vw, 2.5rem);
+  transition: background .4s ease, transform .4s ease;
+  transform-origin: left;
+}
+.wl-row:hover .rr { background: color-mix(in oklab, var(--accent) 30%, transparent); }
+
+/* Meta block */
+.rm {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .09em;
+  color: var(--ink-dim); text-align: right; flex-shrink: 0;
+  line-height: 1.8; transition: color .3s;
+}
+.wl-row:hover .rm { color: var(--ink-soft); }
+.rm .st {
+  display: inline-flex; align-items: center; gap: .375rem;
+  font-size: .58rem;
+}
+.bdot { width: 4px; height: 4px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+.bdot-a { background: var(--accent); animation: pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: #f5a524; }
+@keyframes pdot {
+  0%,100% { box-shadow: 0 0 2px var(--accent); }
+  50% { box-shadow: 0 0 8px var(--accent), 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+
+/* Arrow */
+.ra {
+  font-size: 1.1rem; color: var(--ink-dim);
+  margin-left: clamp(1rem, 2.5vw, 2rem); flex-shrink: 0;
+  transition: color .25s, transform .45s cubic-bezier(.16,1,.3,1);
+}
+.wl-row:hover .ra { color: var(--accent-2); transform: translate(5px,-5px); }
+
+/* ── FLOATING PREVIEW ───────────────────────── */
+#wp {
+  position: fixed; top: 0; left: 0;
+  width: 420px;
+  z-index: 9998;
+  pointer-events: none;
+  will-change: transform;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(230,237,243,.15);
+  box-shadow: 0 28px 80px rgba(0,0,0,.75), 0 4px 20px rgba(0,0,0,.45);
+  /* visible state toggled by clip-path + opacity */
+  opacity: 0;
+  clip-path: inset(0 0 100% 0 round 10px);
+  transition: opacity .28s ease, clip-path .5s cubic-bezier(.16,1,.3,1);
+}
+#wp.is-on {
+  opacity: 1;
+  clip-path: inset(0 0 0% 0 round 10px);
+}
+
+/* Mac browser bar */
+.wp-bar {
+  display: flex; align-items: center; gap: .75rem;
+  padding: .55rem 1rem; background: var(--paper-3);
+  border-bottom: 1px solid var(--hair); flex-shrink: 0;
+}
+.wp-dots { display: flex; gap: .375rem; }
+.wp-dot  { width: .575rem; height: .575rem; border-radius: 50%; }
+.wp-dot:nth-child(1) { background: #ff5f57; }
+.wp-dot:nth-child(2) { background: #febc2e; }
+.wp-dot:nth-child(3) { background: #28c840; }
+.wp-url {
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .04em;
+  color: var(--ink-dim); flex: 1; text-align: center;
+}
+
+/* Screenshot — natural 16:9 ratio */
+#wp-img {
+  width: 100%; display: block;
+  filter: saturate(.84) brightness(.86);
+}
+
+/* ── PROJECT DETAIL STRIP ───────────────────── */
+/* Expands when row is hovered — optional; controlled by js */
+.wl-detail {
+  display: grid; grid-template-rows: 0fr;
+  transition: grid-template-rows .55s cubic-bezier(.16,1,.3,1);
+  border-bottom: 1px solid var(--hair);
+  margin-top: -1px;
+}
+.wl-detail.open { grid-template-rows: 1fr; }
+.wl-detail__inner {
+  overflow: hidden;
+  font-family: var(--mono); font-size: .68rem; line-height: 1.9;
+  color: var(--ink-soft);
+}
+.wl-detail__pad {
+  padding: 1.25rem 0 1.75rem;
+  padding-left: calc(3.25rem + 1.25rem);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 1.5rem;
+}
+.wl-detail__blurb { max-width: 60ch; }
+.wl-detail__blurb .hl { color: var(--accent-2); }
+.wl-detail__stack { color: var(--ink-dim); text-align: right; }
+.wl-detail__cta {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: .75rem;
+  color: var(--accent-2); font-size: .68rem;
+  border: 1px solid color-mix(in oklab, var(--accent-2) 35%, transparent);
+  padding: .4rem .9rem; border-radius: 5px;
+  cursor: pointer !important;
+  transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+}
+.wl-detail__cta:hover {
+  background: var(--accent-2); color: var(--paper);
+  box-shadow: 0 0 20px rgba(94,234,212,.28);
+}
+
+/* ── FOOTER ─────────────────────────────────── */
+.wl-foot {
+  padding: 2.5rem 0 4.5rem;
+  font-family: var(--mono); font-size: .64rem;
+  color: var(--ink-dim); line-height: 2.1;
+  opacity: 0; transition: opacity .5s ease .7s;
+}
+.wl-foot.in { opacity: 1; }
+.wl-foot__cmd { color: var(--accent); margin-bottom: .5rem; }
+.wl-foot__line { padding-left: 1.25rem; }
+.wl-foot__line .sha { color: var(--ink-soft); }
+.wl-foot__gh {
+  display: inline-flex; align-items: center; gap: .5rem;
+  margin-top: 1rem; color: var(--ink-dim); letter-spacing: .1em;
+  text-transform: uppercase; font-size: .6rem;
+  transition: color .2s; cursor: pointer !important;
+}
+.wl-foot__gh:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 640px) {
+  .rr { display: none; }
+  .rm { display: none; }
+  .rt { font-size: clamp(2rem, 10vw, 3rem); }
+  #wp { display: none; }
+  .wl-detail__pad { grid-template-columns: 1fr; }
+  .wl-detail__stack { text-align: left; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="cur"></div>
+
+<!-- ── FLOATING PREVIEW ───────────────────── -->
+<div id="wp">
+  <div class="wp-bar">
+    <div class="wp-dots">
+      <span class="wp-dot"></span>
+      <span class="wp-dot"></span>
+      <span class="wp-dot"></span>
+    </div>
+    <span class="wp-url" id="wp-url"></span>
+  </div>
+  <img id="wp-img" alt="" />
+</div>
+
+<!-- ── LIST ──────────────────────────────── -->
+<div class="shell">
+
+  <!-- Header -->
+  <div class="wl-head">
+    <div class="wl-head__title">
+      <span>Work.</span> <span style="transition-delay:.08s"><em>Selected</em></span>
+    </div>
+    <div class="wl-head__cmd" id="cmd">
+      $ ls ~/projects/ --sort=date<br />
+      3 entries found
+    </div>
+  </div>
+
+  <!-- 01 · CODEFLOW -->
+  <a class="wl-row"
+     href="/d/codeflow"
+     data-img="projects/codeflow.png"
+     data-url="code-flow.vercel.app"
+     data-idx="0"
+     id="row-0">
+    <span class="rn">01 ·</span>
+    <span class="rt" data-text="CODEFLOW">CODEFLOW</span>
+    <span class="rr" aria-hidden="true"></span>
+    <span class="rm">
+      product &nbsp;·&nbsp; solo<br />
+      Feb → May 2026<br />
+      <span class="st"><span class="bdot bdot-a"></span> <span style="color:var(--accent)">live · v0.4</span></span>
+    </span>
+    <span class="ra">↗</span>
+  </a>
+  <div class="wl-detail" id="det-0">
+    <div class="wl-detail__inner">
+      <div class="wl-detail__pad">
+        <div class="wl-detail__blurb">
+          Chat with agents, get a working Next.js app. They generate and execute code inside a real E2B sandbox.
+          <em class="hl">Inngest</em> runs agent tasks as durable background steps —
+          long jobs never freeze the UI. <em class="hl">E2B sandboxes</em> execute the output.
+          What you see is what works.
+          <br /><br />
+          <a href="/d/codeflow" class="wl-detail__cta">$ cat codeflow.mdx ↗</a>
+        </div>
+        <div class="wl-detail__stack">
+          next.js<br />trpc<br />prisma<br />inngest<br />e2b<br />openai / gemini<br />clerk
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 · TASKFORGE -->
+  <a class="wl-row"
+     href="/d/taskforge"
+     data-img="projects/taskforge.png"
+     data-url="task-forge.vercel.app"
+     data-idx="1"
+     id="row-1">
+    <span class="rn">02 ·</span>
+    <span class="rt" data-text="TASKFORGE">TASKFORGE</span>
+    <span class="rr" aria-hidden="true"></span>
+    <span class="rm">
+      product &nbsp;·&nbsp; duo<br />
+      Sep → Nov 2025<br />
+      <span class="st"><span class="bdot bdot-s"></span> <span style="color:var(--accent-2)">shipped · live</span></span>
+    </span>
+    <span class="ra">↗</span>
+  </a>
+  <div class="wl-detail" id="det-1">
+    <div class="wl-detail__inner">
+      <div class="wl-detail__pad">
+        <div class="wl-detail__blurb">
+          Real-time collaborative kanban — live cursors, live drags, comments landing now, not eventually.
+          <em class="hl">Liveblocks</em> runs the entire real-time layer: presence, shared storage, conflict resolution.
+          Zero websocket code written by hand.
+          <br /><br />
+          <a href="/d/taskforge" class="wl-detail__cta">$ cat taskforge.mdx ↗</a>
+        </div>
+        <div class="wl-detail__stack">
+          next.js<br />liveblocks<br />mongodb<br />tailwind<br />nextauth
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 · TRAVELOOP -->
+  <a class="wl-row"
+     href="/d/traveloop"
+     data-img="projects/traveloop.png"
+     data-url="traveloop.vercel.app"
+     data-idx="2"
+     id="row-2">
+    <span class="rn">03 ·</span>
+    <span class="rt" data-text="TRAVELOOP">TRAVELOOP</span>
+    <span class="rr" aria-hidden="true"></span>
+    <span class="rm">
+      event &nbsp;·&nbsp; team of 4<br />
+      Odoo Hackathon<br />
+      <span class="st"><span class="bdot bdot-e"></span> <span style="color:#f5a524">2nd place</span></span>
+    </span>
+    <span class="ra">↗</span>
+  </a>
+  <div class="wl-detail" id="det-2">
+    <div class="wl-detail__inner">
+      <div class="wl-detail__pad">
+        <div class="wl-detail__blurb">
+          Multi-city itineraries, budgets, and packing — shipped at 4am, demoed at 9. We got second.
+          Trips → stops → days → activities → budgets: <em class="hl">nested document model</em> maps to the domain cleanly.
+          Four people. One weekend. One real app.
+          <br /><br />
+          <a href="/d/traveloop" class="wl-detail__cta">$ cat traveloop.mdx ↗</a>
+        </div>
+        <div class="wl-detail__stack">
+          next.js<br />prisma<br />postgres<br />tailwind<br />nextauth<br />neondb
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="wl-foot" id="foot">
+    <div class="wl-foot__cmd">$ git log --oneline | head -3</div>
+    <div class="wl-foot__line"><span class="sha">a3f2c1b</span> feat: stream agent messages to client via Inngest event</div>
+    <div class="wl-foot__line"><span class="sha">7d0e4a2</span> fix: liveblocks presence not clearing on tab close</div>
+    <div class="wl-foot__line"><span class="sha">2b9f831</span> chore: bump e2b sdk, fix sandbox timeout on cold boot</div>
+    <a href="https://github.com/Igneel0601" target="_blank" rel="noopener" class="wl-foot__gh">
+      full log on github.com/Igneel0601 ↗
+    </a>
+  </footer>
+
+</div><!-- /shell -->
+
+<!-- Tweaks -->
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "expand": true,
+  "preview": true,
+  "titlesize": "large"
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    document.body.dataset.expand  = t.expand  ? "on" : "off";
+    document.body.dataset.preview = t.preview ? "on" : "off";
+
+    const sz = t.titlesize === "xl" ? "clamp(3.5rem,8vw,7.5rem)"
+             : t.titlesize === "sm" ? "clamp(1.75rem,3.5vw,3rem)"
+             : "clamp(2.75rem,6vw,5.5rem)";
+    document.querySelectorAll(".rt").forEach(el => { el.style.fontSize = sz; });
+  }, [t.expand, t.preview, t.titlesize]);
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Interaction" />
+      <TweakToggle
+        label="Click to expand detail"
+        value={t.expand}
+        onChange={v => setTweak("expand", v)}
+      />
+      <TweakToggle
+        label="Hover preview card"
+        value={t.preview}
+        onChange={v => setTweak("preview", v)}
+      />
+      <TweakSection label="Title size" />
+      <TweakRadio
+        label="Size"
+        value={t.titlesize}
+        options={["sm", "large", "xl"]}
+        onChange={v => setTweak("titlesize", v)}
+      />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<TweaksApp />);
+</script>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ── CURSOR ──────────────────────────────── */
+  const cur = document.getElementById("cur");
+  if (window.matchMedia("(any-pointer: fine)").matches) {
+    document.addEventListener("mousemove", e => {
+      cur.style.left = e.clientX + "px";
+      cur.style.top  = e.clientY + "px";
+    }, { passive: true });
+    document.querySelectorAll(".wl-row").forEach(el => {
+      el.addEventListener("mouseenter", () => cur.classList.add("h"));
+      el.addEventListener("mouseleave", () => cur.classList.remove("h"));
+    });
+    document.querySelectorAll("a:not(.wl-row), button").forEach(el => {
+      el.addEventListener("mouseenter", () => cur.classList.add("link"));
+      el.addEventListener("mouseleave", () => cur.classList.remove("link"));
+    });
+  }
+
+  /* ── ENTRANCE ANIMATION ──────────────────── */
+  const titleSpans = document.querySelectorAll(".wl-head__title span");
+  titleSpans.forEach(s => s.classList.add("in"));
+
+  document.getElementById("cmd").classList.add("in");
+  document.getElementById("foot").classList.add("in");
+
+  const rows = Array.from(document.querySelectorAll(".wl-row"));
+  rows.forEach((row, i) => {
+    row.style.transition = `opacity .5s ease ${.15 + i * .1}s, transform .55s cubic-bezier(.16,1,.3,1) ${.15 + i * .1}s, padding-left .4s cubic-bezier(.16,1,.3,1)`;
+    requestAnimationFrame(() => requestAnimationFrame(() => row.classList.add("in")));
+  });
+
+  /* ── TEXT SCRAMBLE ───────────────────────── */
+  const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·→↗#$";
+
+  function scramble(el, dur) {
+    const text = el.dataset.text || el.textContent.trim();
+    el.style.opacity = "1";
+    dur = dur || 700;
+    let start = null;
+    (function tick(ts) {
+      if (!start) start = ts;
+      const t = Math.min((ts - start) / dur, 1);
+      const fixed = Math.floor(t * text.length);
+      let out = "";
+      for (let i = 0; i < text.length; i++) {
+        if (i < fixed) out += text[i];
+        else out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      }
+      el.textContent = out;
+      if (t < 1) requestAnimationFrame(tick);
+      else el.textContent = text;
+    })(performance.now());
+  }
+
+  rows.forEach(row => {
+    const title = row.querySelector(".rt");
+    let scrambled = false;
+    row.addEventListener("mouseenter", () => {
+      if (!scrambled) { scramble(title, 600); scrambled = true; }
+    });
+  });
+
+  /* ── EXPAND ON CLICK ─────────────────────── */
+  rows.forEach(row => {
+    row.addEventListener("click", e => {
+      if (document.body.dataset.expand !== "on") return;
+      const idx = row.dataset.idx;
+      const det = document.getElementById("det-" + idx);
+      if (!det) return;
+
+      e.preventDefault();
+      const open = det.classList.contains("open");
+
+      // Close all
+      document.querySelectorAll(".wl-detail.open").forEach(d => d.classList.remove("open"));
+      document.querySelectorAll(".wl-row.active").forEach(r => r.classList.remove("active"));
+
+      if (!open) {
+        det.classList.add("open");
+        row.classList.add("active");
+      }
+    });
+  });
+
+  /* ── FLOATING PREVIEW ────────────────────── */
+  const wp     = document.getElementById("wp");
+  const wpImg  = document.getElementById("wp-img");
+  const wpUrl  = document.getElementById("wp-url");
+  const CARD_W = 420;
+
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  let rafId = null, wpActive = false;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function raf() {
+    cx = lerp(cx, tx, 0.1);
+    cy = lerp(cy, ty, 0.1);
+    wp.style.transform = `translate(${cx}px,${cy}px)`;
+    rafId = requestAnimationFrame(raf);
+  }
+
+  document.addEventListener("mousemove", e => {
+    if (!wpActive) return;
+    const pad  = 24;
+    const imgH = CARD_W * (9/16) + 32; // 32 = bar height approx
+    let x = e.clientX + pad;
+    let y = e.clientY - imgH / 2;
+    x = Math.min(x, window.innerWidth  - CARD_W - pad);
+    y = Math.max(pad, Math.min(y, window.innerHeight - imgH - pad));
+    tx = x; ty = y;
+  }, { passive: true });
+
+  rows.forEach(row => {
+    row.addEventListener("mouseenter", () => {
+      if (document.body.dataset.preview !== "on") return;
+      wpImg.src    = row.dataset.img;
+      wpUrl.textContent = row.dataset.url;
+      wp.classList.add("is-on");
+      wpActive = true;
+      if (!rafId) raf();
+    });
+    row.addEventListener("mouseleave", () => {
+      wp.classList.remove("is-on");
+      wpActive = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+    });
+  });
+
+})();
+</script>
+
+</body>
+</html>

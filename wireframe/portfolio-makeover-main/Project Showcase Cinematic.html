@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vaibhav Verma — Work</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --paper:    #0e1116;
+  --paper-2:  #161b22;
+  --paper-3:  #1c2330;
+  --bar-bg:   #0a0d12;
+  --ink:      #e6edf3;
+  --ink-soft: #8b949e;
+  --ink-dim:  #5b6573;
+  --hair:     rgba(230,237,243,.10);
+  --hair-2:   rgba(230,237,243,.18);
+  --accent:   #6ee7a7;
+  --accent-2: #5eead4;
+  --accent-3: #a3e7c4;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(.875rem, .7vw + .5625rem, 1.125rem);
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar { display: none; }
+body { overflow-x: hidden; }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+* { cursor: none !important; }
+@media (any-pointer: coarse) { * { cursor: auto !important; } }
+
+/* ── CURSOR ─────────────────────────────────── */
+#cur {
+  position: fixed; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s;
+  mix-blend-mode: exclusion;
+}
+#cur.h { width: 36px; height: 36px; opacity: .4; }
+@media (any-pointer: coarse) { #cur { display: none; } }
+
+/* ── OUTER + STICKY STAGE ────────────────────── */
+/* height = (transitions + 3) × 100vh = 5 × 100vh = 500vh */
+#outer {
+  height: 500vh;
+  position: relative;
+}
+#stage {
+  position: sticky; top: 0;
+  height: 100vh; width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ── TOP BAR ─────────────────────────────────── */
+#top-bar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+  height: 44px;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--bar-bg);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .04em;
+  will-change: transform, opacity;
+}
+#top-bar-cmd { flex: 1; }
+
+/* ── PANELS ──────────────────────────────────── */
+.panel {
+  position: absolute; inset: 0;
+  padding-top: 44px;
+  will-change: clip-path, transform;
+}
+
+/* Atmospheric background — right zone */
+.p-bg {
+  position: absolute; right: 0; top: 44px; bottom: 0; width: 52%;
+  pointer-events: none; z-index: 0;
+}
+.p-bg::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right, var(--paper) 0%, color-mix(in oklab, var(--paper) 55%, transparent) 48%, transparent 75%);
+}
+.p-bg::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to bottom, var(--paper) 0%, transparent 12%, transparent 88%, var(--paper) 100%);
+}
+.p-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: saturate(.1) brightness(.18) blur(1px);
+  display: block;
+}
+
+/* Panel content */
+.p-body {
+  position: relative; z-index: 1;
+  height: 100%;
+  padding: clamp(2.5rem, 5vh, 4.5rem) clamp(2.5rem, 6vw, 6rem);
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(.9rem, 2vh, 1.75rem);
+}
+
+/* Meta row */
+.p-meta {
+  display: flex; align-items: center; gap: 1.25rem; flex-wrap: wrap;
+  font-family: var(--mono); font-size: .62rem;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim);
+}
+.p-meta .ni { color: var(--ca, var(--accent)); }
+.p-meta .sep { opacity: .3; }
+.p-badge {
+  margin-left: auto; display: inline-flex; align-items: center; gap: .35rem;
+  padding: .22rem .65rem; border-radius: 999px;
+  border: 1px solid var(--hair-2); background: var(--paper-2);
+  font-size: .58rem;
+}
+.bdot { width: 4px; height: 4px; border-radius: 50%; }
+.bdot-a { background: var(--accent); animation: pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: #f5a524; }
+@keyframes pdot {
+  0%,100% { box-shadow: 0 0 2px var(--accent); }
+  50% { box-shadow: 0 0 8px var(--accent), 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+
+/* Title */
+.p-title-wrap { overflow: hidden; max-width: 70%; }
+.p-title {
+  display: block;
+  font-family: var(--serif); font-weight: 900;
+  letter-spacing: -.035em; line-height: .87;
+  color: var(--ink); white-space: nowrap;
+}
+
+/* Accent line */
+.p-line {
+  height: 1.5px;
+  background: linear-gradient(to right, var(--ca, var(--accent)), color-mix(in oklab, var(--ca, var(--accent)) 35%, transparent));
+  max-width: 70%;
+}
+
+/* Tagline */
+.p-tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(.95rem, 1.65vw, 1.3rem); line-height: 1.55;
+  color: var(--ink); max-width: 52ch;
+}
+
+/* Insight */
+.p-insight {
+  font-family: var(--mono); font-size: .7rem; line-height: 1.85;
+  color: var(--ink-soft); max-width: 52ch;
+  padding-left: .875rem; border-left: 1.5px solid var(--hair-2);
+}
+.p-insight .hl { color: var(--ca, var(--accent-2)); }
+
+/* Foot */
+.p-foot { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.p-stack { display: flex; flex-wrap: wrap; gap: .35rem; }
+.p-stag {
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .08em;
+  padding: .28rem .65rem; border-radius: 4px;
+  border: 1px solid var(--hair-2); color: var(--ink-dim); background: var(--paper-2);
+}
+/* btn.term — matches portfolio tokens.css */
+.p-cta {
+  display: inline-flex; align-items: center; gap: .5rem; flex-shrink: 0;
+  font-family: var(--mono); font-size: .72rem;
+  text-transform: none;
+  color: var(--ca, var(--accent-2));
+  padding: .625rem 1rem;
+  border: 1.5px solid var(--ca, var(--accent-2));
+  border-radius: .5rem;
+  background: var(--paper);
+  box-shadow: 3px 3px 0 var(--ca, var(--accent-2));
+  transition: transform .15s ease, box-shadow .15s ease;
+  cursor: pointer !important;
+}
+.p-cta:hover { transform: translate(-1px,-1px); box-shadow: 4px 4px 0 var(--ca, var(--accent-2)); }
+.p-cta:active { transform: translate(3px,3px); box-shadow: 0 0 0 var(--ca, var(--accent-2)); }
+
+/* ── SEAM BAR ─────────────────────────────────── */
+/* Rises from bottom; shows incoming project's command */
+#seam-bar {
+  position: absolute; left: 0; right: 0; top: 100%;
+  z-index: 60;
+  height: 44px;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--bar-bg);
+  border-top:    1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  font-family: var(--mono); font-size: .7rem; letter-spacing: .04em;
+  opacity: 0;
+  pointer-events: none;
+  will-change: top, opacity;
+}
+
+/* ── INTRO OVERLAY ───────────────────────────── */
+#intro-overlay {
+  position: absolute; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  container-type: inline-size;
+}
+#intro-title {
+  margin: 0;
+  font-family: var(--mono); font-weight: 500;
+  font-size: min(20.83cqw, 16rem);
+  line-height: .9; letter-spacing: -.01em;
+  color: var(--ink);
+  transform-origin: 100% 50%;
+  will-change: transform, opacity;
+  white-space: nowrap;
+  position: relative;
+}
+
+
+</style>
+</head>
+
+<body>
+<div id="cur"></div>
+
+<!-- ── OUTER SCROLL CONTAINER ────────────── -->
+<div id="outer">
+  <div id="stage">
+
+    <!-- Top bar -->
+    <div id="top-bar" style="color:var(--accent)">
+      <span id="top-bar-cmd">$ cat ~/projects/codeflow/README.md &nbsp; # ai</span>
+    </div>
+
+    <!-- ═══ PANEL 0 · CODEFLOW ═══ -->
+    <div class="panel" data-panel="0" style="z-index:1; --ca:var(--accent)">
+      <div class="p-bg">
+        <img src="projects/codeflow.png" alt="" aria-hidden="true" loading="eager" />
+      </div>
+      <div class="p-body">
+        <div class="p-meta">
+          <span class="ni">01</span><span class="sep">/</span>
+          <span>product · solo</span><span class="sep">·</span>
+          <span>Feb → May 2026</span>
+          <span class="p-badge"><span class="bdot bdot-a"></span><span style="color:var(--accent)">live · v0.4</span></span>
+        </div>
+        <div class="p-title-wrap">
+          <h2 class="p-title" id="pt0">CODEFLOW</h2>
+        </div>
+        <div class="p-line"></div>
+        <p class="p-tagline">Chat with agents, get a working Next.js app running inside a real E2B sandbox.</p>
+        <div class="p-insight">
+          <em class="hl">Inngest</em> runs each agent step as a durable background job —<br />
+          long chains never freeze the UI or time out mid-stream.<br />
+          <em class="hl">E2B sandboxes</em> execute the output. What you see is what runs.
+        </div>
+        <div class="p-foot">
+          <div class="p-stack">
+            <span class="p-stag">next.js</span><span class="p-stag">trpc</span>
+            <span class="p-stag">prisma</span><span class="p-stag">inngest</span>
+            <span class="p-stag">e2b</span><span class="p-stag">openai</span><span class="p-stag">clerk</span>
+          </div>
+          <a href="/d/codeflow" class="p-cta">$ cat codeflow.mdx &nbsp;↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL 1 · TASKFORGE ═══ -->
+    <div class="panel" data-panel="1" style="z-index:2; --ca:var(--accent-2)">
+      <div class="p-bg">
+        <img src="projects/taskforge.png" alt="" aria-hidden="true" loading="lazy" />
+      </div>
+      <div class="p-body">
+        <div class="p-meta">
+          <span class="ni">02</span><span class="sep">/</span>
+          <span>product · duo</span><span class="sep">·</span>
+          <span>Sep → Nov 2025</span>
+          <span class="p-badge"><span class="bdot bdot-s"></span><span style="color:var(--accent-2)">shipped · live</span></span>
+        </div>
+        <div class="p-title-wrap">
+          <h2 class="p-title" id="pt1">TASKFORGE</h2>
+        </div>
+        <div class="p-line"></div>
+        <p class="p-tagline">Real-time collaborative kanban — live cursors, live drags, comments landing now, not eventually.</p>
+        <div class="p-insight">
+          <em class="hl">Liveblocks</em> runs the entire real-time layer:<br />
+          presence, shared storage, conflict resolution — zero websocket code.<br />
+          Drag a card — your collaborator sees it move <em class="hl">before you let go</em>.
+        </div>
+        <div class="p-foot">
+          <div class="p-stack">
+            <span class="p-stag">next.js</span><span class="p-stag">liveblocks</span>
+            <span class="p-stag">mongodb</span><span class="p-stag">tailwind</span><span class="p-stag">nextauth</span>
+          </div>
+          <a href="/d/taskforge" class="p-cta">$ cat taskforge.mdx &nbsp;↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PANEL 2 · TRAVELOOP ═══ -->
+    <div class="panel" data-panel="2" style="z-index:3; --ca:#f5a524">
+      <div class="p-bg">
+        <img src="projects/traveloop.png" alt="" aria-hidden="true" loading="lazy" />
+      </div>
+      <div class="p-body">
+        <div class="p-meta">
+          <span class="ni">03</span><span class="sep">/</span>
+          <span>event · team of 4</span><span class="sep">·</span>
+          <span>Odoo Hackathon</span>
+          <span class="p-badge"><span class="bdot bdot-e"></span><span style="color:#f5a524">2nd place</span></span>
+        </div>
+        <div class="p-title-wrap">
+          <h2 class="p-title" id="pt2">TRAVELOOP</h2>
+        </div>
+        <div class="p-line"></div>
+        <p class="p-tagline">Multi-city itineraries, budgets, packing — shipped at 4am, demoed at 9. We got second.</p>
+        <div class="p-insight">
+          Trips → stops → days → activities → budgets:<br />
+          the <em class="hl">nested document model</em> maps the domain perfectly.<br />
+          Four people. One weekend. One real, working, demoed app.
+        </div>
+        <div class="p-foot">
+          <div class="p-stack">
+            <span class="p-stag">next.js</span><span class="p-stag">prisma</span>
+            <span class="p-stag">postgres</span><span class="p-stag">tailwind</span><span class="p-stag">neondb</span>
+          </div>
+          <a href="/d/traveloop" class="p-cta">$ cat traveloop.mdx &nbsp;↗</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seam bar -->
+    <div id="seam-bar"><span id="seam-cmd"></span></div>
+
+    <!-- Intro overlay -->
+    <div id="intro-overlay">
+      <h2 id="intro-title">projects</h2>
+    </div>
+
+  </div><!-- /stage -->
+</div><!-- /outer -->
+
+
+
+<script>
+(function(){
+"use strict";
+
+/* ── CONFIG ──────────────────────────────── */
+const PROJECTS = [
+  { id: "codeflow",  kind: "ai",       color: "#6ee7a7" },
+  { id: "taskforge", kind: "realtime", color: "#5eead4" },
+  { id: "traveloop", kind: "hackathon",color: "#a3e7c4" },
+];
+const N           = PROJECTS.length;
+const transitions = N - 1; // 2
+const totalPhases = transitions + 2; // 4
+const introFrac   = 1 / totalPhases; // 0.25
+const restFrac    = (transitions + 1) / totalPhases; // 0.75
+
+/* ── ELEMENTS ────────────────────────────── */
+const outer      = document.getElementById("outer");
+const stage      = document.getElementById("stage");
+const topBar     = document.getElementById("top-bar");
+const topBarCmd  = document.getElementById("top-bar-cmd");
+const seamBar    = document.getElementById("seam-bar");
+const seamCmd    = document.getElementById("seam-cmd");
+const introOverlay = document.getElementById("intro-overlay");
+const introTitle = document.getElementById("intro-title");
+const panels     = Array.from(document.querySelectorAll(".panel"))
+                       .sort((a, b) => +a.dataset.panel - +b.dataset.panel);
+
+/* ── CURSOR ──────────────────────────────── */
+if (window.matchMedia("(any-pointer: fine)").matches) {
+  const cur = document.getElementById("cur");
+  document.addEventListener("mousemove", e => {
+    cur.style.left = e.clientX + "px";
+    cur.style.top  = e.clientY + "px";
+  }, { passive: true });
+  document.querySelectorAll("a, button").forEach(el => {
+    el.addEventListener("mouseenter", () => cur.classList.add("h"));
+    el.addEventListener("mouseleave", () => cur.classList.remove("h"));
+  });
+}
+
+/* ── FIT TITLES ──────────────────────────── */
+function fitTitles() {
+  document.querySelectorAll(".p-title-wrap").forEach(wrap => {
+    const el = wrap.querySelector(".p-title");
+    if (!el) return;
+    const avail = wrap.clientWidth;
+    let lo = 12, hi = 900, mid;
+    el.style.whiteSpace = "nowrap";
+    for (let i = 0; i < 24; i++) {
+      mid = (lo + hi) / 2;
+      el.style.fontSize = mid + "px";
+      if (el.scrollWidth <= avail) lo = mid; else hi = mid;
+    }
+    el.style.fontSize = (lo * .975) + "px";
+  });
+}
+fitTitles();
+window.addEventListener("resize", () => { fitTitles(); measureTitle(); });
+
+/* ── TITLE SETTLE MATH ───────────────────── */
+let titleTx = 0, titleTy = 0, titleScale = 0.04;
+
+function measureTitle() {
+  // Reset transforms so we measure natural positions
+  const prevIntroT = introTitle.style.transform;
+  const prevBarT   = topBar.style.transform;
+  const prevBarO   = topBar.style.opacity;
+  introTitle.style.transform = "";
+  topBar.style.transform = "";
+  topBar.style.opacity = "1";
+
+  const fromRect = introTitle.getBoundingClientRect();
+  const toEl     = topBarCmd;
+  const toRect   = toEl.getBoundingClientRect();
+
+  const fromFs = parseFloat(getComputedStyle(introTitle).fontSize);
+  const toFs   = parseFloat(getComputedStyle(toEl).fontSize);
+
+  titleScale = toFs / fromFs;
+  // Align: right edges horizontally, vertical centers vertically
+  titleTx = toRect.right  - fromRect.right;
+  titleTy = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2);
+
+  introTitle.style.transform = prevIntroT;
+  topBar.style.transform     = prevBarT;
+  topBar.style.opacity       = prevBarO;
+}
+
+/* ── PANEL HELPERS ───────────────────────── */
+function applyPanels(seg, local) {
+  panels.forEach((p, j) => {
+    let clip;
+    if (j < seg)       clip = "inset(100% 0 0 0)";       // fully hidden above
+    else if (j === seg) clip = `inset(0 0 ${(local * 100).toFixed(2)}% 0)`; // exits from bottom
+    else if (j === seg + 1) clip = `inset(${((1 - local) * 100).toFixed(2)}% 0 0 0)`; // enters from top
+    else                clip = "inset(100% 0 0 0)";
+    p.style.clipPath  = clip;
+    p.style.transform = "";
+  });
+}
+
+function applySeam(seg, local) {
+  if (local <= 0 || local >= 1 || seg >= N - 1) {
+    seamBar.style.opacity = "0";
+    return;
+  }
+  const incoming = PROJECTS[seg + 1];
+  seamBar.style.opacity = "1";
+  seamBar.style.top     = `${((1 - local) * 100).toFixed(2)}%`;
+  seamBar.style.color   = incoming.color;
+  seamCmd.textContent   = `$ cat ~/projects/${incoming.id}/README.md  # ${incoming.kind}`;
+}
+
+function applyTopBar(seg, local) {
+  const idx = local >= 0.999 ? Math.min(seg + 1, N - 1) : seg;
+  const p   = PROJECTS[idx];
+  topBarCmd.textContent = `$ cat ~/projects/${p.id}/README.md  # ${p.kind}`;
+  topBar.style.color    = p.color;
+}
+
+function applyIntroChrome(e) {
+  topBar.style.opacity   = e.toString();
+  topBar.style.transform = `translateY(${((1 - e) * 100).toFixed(2)}vh)`;
+}
+
+function applyIntroTitle(e) {
+  const tx = titleTx * e;
+  const ty = titleTy * e;
+  const s  = 1 + (titleScale - 1) * e;
+  introTitle.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})`;
+  introTitle.style.opacity   = "1";
+}
+
+/* ── INIT STATE ──────────────────────────── */
+function initState() {
+  // Panel 0: full clip, translated below stage; others hidden
+  panels.forEach((p, j) => {
+    if (j === 0) {
+      p.style.clipPath  = "inset(0 0 0 0)";
+      p.style.transform = "translateY(100%)";
+    } else {
+      p.style.clipPath  = "inset(100% 0 0 0)";
+      p.style.transform = "";
+    }
+  });
+  applySeam(0, 0);
+  applyTopBar(0, 0);
+  applyIntroTitle(0);
+  applyIntroChrome(0);
+}
+
+/* ── SCROLL UPDATE ───────────────────────── */
+function update() {
+  const rect      = outer.getBoundingClientRect();
+  const scrollable = outer.offsetHeight - window.innerHeight;
+  const p          = Math.max(0, Math.min(1, -rect.top / scrollable));
+
+  if (p < introFrac) {
+    // ── INTRO PHASE: title settle + panel 0 rises ──
+    const e = p / introFrac;
+    applyIntroTitle(e);
+    applyIntroChrome(e);
+    // Panel 0 slides up from below
+    panels.forEach((panel, j) => {
+      if (j === 0) {
+        panel.style.clipPath  = "inset(0 0 0 0)";
+        panel.style.transform = `translateY(${((1 - e) * 100).toFixed(2)}%)`;
+      } else {
+        panel.style.clipPath  = "inset(100% 0 0 0)";
+        panel.style.transform = "";
+      }
+    });
+    applySeam(0, 0);
+    applyTopBar(0, 0);
+    stage.style.transform = "";
+  } else {
+    // ── TRANSITION + REST PHASES ──
+    applyIntroTitle(1);
+    applyIntroChrome(1);
+    panels.forEach(panel => { panel.style.transform = ""; });
+
+    if (p > restFrac) {
+      // Rest: stage drifts upward (happly-style exit)
+      const rp = (p - restFrac) / (1 - restFrac);
+      stage.style.transform = `translateY(${(-rp * 65).toFixed(2)}vh)`;
+    } else {
+      stage.style.transform = "";
+    }
+
+    const clampedP = Math.min(p, restFrac);
+    const np = (clampedP - introFrac) / (restFrac - introFrac); // 0→1 across transitions
+    const f  = np * transitions;
+    const seg   = Math.min(transitions - 1, Math.floor(f * 0.9999));
+    const local = Math.max(0, Math.min(1, f - seg));
+
+    applyPanels(seg, local);
+    applySeam(seg, local);
+    applyTopBar(seg, local);
+  }
+}
+
+/* ── MAGNETIC CTA ────────────────────────── */
+document.querySelectorAll(".p-cta").forEach(btn => {
+  btn.addEventListener("mousemove", e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.transform = `translate(${(e.clientX-(r.left+r.width/2))*.2}px,${(e.clientY-(r.top+r.height/2))*.2}px)`;
+  });
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transition = "transform .5s cubic-bezier(.16,1,.3,1), color .2s, background .2s, border-color .2s, box-shadow .2s";
+    btn.style.transform = "";
+    setTimeout(() => { btn.style.transition = ""; }, 500);
+  });
+});
+
+/* ── BOOT ────────────────────────────────── */
+initState();
+measureTitle();
+update();
+window.addEventListener("scroll", update, { passive: true });
+// Re-measure after fonts load
+if (document.fonts) {
+  document.fonts.ready.then(() => { measureTitle(); update(); }).catch(() => {});
+}
+
+})();
+</script>
+</body>
+</html>

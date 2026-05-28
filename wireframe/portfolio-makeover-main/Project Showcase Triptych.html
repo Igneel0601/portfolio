@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vaibhav Verma — Work</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --paper:    #0e1116;
+  --paper-2:  #161b22;
+  --paper-3:  #1c2330;
+  --ink:      #e6edf3;
+  --ink-soft: #8b949e;
+  --ink-dim:  #5b6573;
+  --hair:     rgba(230,237,243,.10);
+  --hair-2:   rgba(230,237,243,.18);
+  --accent:   #6ee7a7;
+  --accent-2: #5eead4;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(.875rem, .7vw + .5625rem, 1.125rem);
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) color-mix(in oklab, var(--accent) 14%, transparent);
+}
+body { overflow-x: hidden; }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+* { cursor: none !important; }
+@media (any-pointer: coarse) { * { cursor: auto !important; } }
+
+/* ── CURSOR ─────────────────────────────────── */
+#cur {
+  position: fixed; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s;
+  mix-blend-mode: exclusion;
+}
+#cur.h { width: 36px; height: 36px; opacity: .4; }
+@media (any-pointer: coarse) { #cur { display: none; } }
+
+/* ── PAGE HEADER ────────────────────────────── */
+.pg-head {
+  padding: clamp(1.75rem, 3vh, 2.75rem) clamp(2rem, 4vw, 4rem);
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+  border-bottom: 1px solid var(--hair);
+}
+.pgh-l { display: flex; align-items: baseline; gap: 1.25rem; flex-wrap: wrap; }
+.pgh-title {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(1.5rem, 2.25vw, 2rem);
+  letter-spacing: -.03em; line-height: 1;
+}
+.pgh-title em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.pgh-cmd { font-family: var(--mono); font-size: .62rem; letter-spacing: .06em; color: var(--accent); }
+.pgh-r {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+  color: var(--ink-dim); white-space: nowrap;
+}
+
+/* ── TRIPTYCH GRID ──────────────────────────── */
+.triptych {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: calc(100vh - 80px);
+  border-bottom: 1px solid var(--hair);
+}
+
+/* ── COLUMN ─────────────────────────────────── */
+.col {
+  /* Per-column accent color */
+  --ca: var(--accent);    /* default: green */
+  display: flex; flex-direction: column;
+  border-top: 1px solid var(--hair);
+  border-right: 1px solid var(--hair);
+  position: relative;
+  /* Alternating backgrounds */
+  background: var(--paper);
+}
+.col:nth-child(2) {
+  --ca: var(--accent-2);
+  background: var(--paper-2);
+}
+.col:nth-child(3) {
+  --ca: #f5a524;
+}
+.col:last-child { border-right: none; }
+
+/* Thin colored top border — unique per column */
+.col::before {
+  content: ''; position: absolute; top: -1px; left: 0; right: 0;
+  height: 2px; background: var(--ca);
+  transform: scaleX(0); transform-origin: left;
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+}
+.col.is-on::before { transform: scaleX(1); transition-delay: var(--cd, 0ms); }
+
+/* ── COLUMN INNER ───────────────────────────── */
+.col-inner {
+  padding: clamp(2.5rem, 5vh, 4rem) clamp(1.5rem, 3.5vw, 3rem);
+  display: flex; flex-direction: column;
+  gap: clamp(.875rem, 1.8vh, 1.6rem);
+  flex: 1;
+}
+
+/* ── META ROW ───────────────────────────────── */
+.col-meta {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  font-family: var(--mono); font-size: .58rem;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--ink-dim);
+  opacity: 0; transform: translateY(-10px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.col.is-on .col-meta { opacity: 1; transform: none; transition-delay: var(--cd, 0ms); }
+.col-meta .ni { color: var(--ca); }
+.col-meta .sep { opacity: .3; }
+.col-badge {
+  margin-left: auto; display: inline-flex; align-items: center; gap: .35rem;
+  padding: .2rem .6rem; border-radius: 999px;
+  border: 1px solid var(--hair-2); background: var(--paper-3);
+  font-size: .54rem;
+}
+.bdot { width: 4px; height: 4px; border-radius: 50%; }
+.bdot-a { background: var(--accent); animation: pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: #f5a524; }
+@keyframes pdot {
+  0%,100% { box-shadow: 0 0 2px var(--accent); }
+  50% { box-shadow: 0 0 8px var(--accent), 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+
+/* ── TITLE ───────────────────────────────────── */
+.col-title-wrap { overflow: hidden; }
+.col-title {
+  display: block;
+  font-family: var(--serif); font-weight: 900;
+  letter-spacing: -.035em; line-height: .87;
+  color: var(--ink); white-space: nowrap;
+}
+/* Per-char spans — stagger set by JS */
+.pc {
+  display: inline-block;
+  opacity: 0; transform: translateY(-55%) scale(.88);
+  transition: opacity .25s ease var(--d), transform .65s cubic-bezier(.16,1,.3,1) var(--d);
+}
+.col.is-on .pc { opacity: 1; transform: none; }
+
+/* ── ACCENT LINE — scales from left ─────────── */
+.col-line {
+  height: 1.5px;
+  background: var(--ca);
+  width: 0;
+  transition: width .9s cubic-bezier(.16,1,.3,1);
+}
+.col.is-on .col-line { width: 100%; transition-delay: calc(var(--cd, 0ms) + 200ms); }
+
+/* ── TAGLINE, INSIGHT, FOOT — scroll-revealed ─ */
+.col-tag, .col-ins, .col-foot {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .55s ease, transform .6s cubic-bezier(.16,1,.3,1);
+}
+.col-tag.in, .col-ins.in, .col-foot.in { opacity: 1; transform: none; }
+
+.col-tag {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(.875rem, 1.4vw, 1.1rem); line-height: 1.55;
+  color: var(--ink);
+}
+
+.col-ins {
+  font-family: var(--mono); font-size: .66rem; line-height: 1.85;
+  color: var(--ink-soft);
+  padding-left: .75rem; border-left: 1.5px solid var(--hair-2);
+}
+.col-ins .hl { color: var(--ca); }
+
+.col-foot {
+  display: flex; flex-direction: column; gap: .875rem;
+  margin-top: auto; padding-top: .5rem;
+}
+.col-stack { display: flex; flex-wrap: wrap; gap: .35rem; }
+.col-stag {
+  font-family: var(--mono); font-size: .56rem; letter-spacing: .08em;
+  padding: .25rem .6rem; border-radius: 4px;
+  border: 1px solid var(--hair-2); color: var(--ink-dim); background: var(--paper-3);
+}
+.col-cta {
+  display: inline-flex; align-items: center; gap: .4rem; align-self: flex-start;
+  font-family: var(--mono); font-size: .65rem; color: var(--ca);
+  padding: .475rem 1rem; border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--ca) 35%, transparent);
+  transition: color .2s, background .2s, border-color .2s, box-shadow .2s, transform .5s cubic-bezier(.16,1,.3,1);
+  cursor: pointer !important;
+}
+.col-cta:hover {
+  color: var(--paper);
+  background: var(--ca); border-color: var(--ca);
+  box-shadow: 0 0 22px color-mix(in oklab, var(--ca) 28%, transparent);
+}
+
+/* ── SCREENSHOT ──────────────────────────────── */
+.col-shot {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity .7s ease, transform .75s cubic-bezier(.16,1,.3,1);
+}
+.col-shot.in { opacity: 1; transform: none; }
+
+.col-shot-frame {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--hair-2);
+  box-shadow: 0 12px 40px rgba(0,0,0,.55), 0 3px 8px rgba(0,0,0,.25);
+  transition: box-shadow .4s ease, transform .5s cubic-bezier(.16,1,.3,1);
+}
+.col-shot-frame:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 56px rgba(0,0,0,.7),
+    0 0 0 1px color-mix(in oklab, var(--ca) 35%, transparent),
+    0 0 32px color-mix(in oklab, var(--ca) 8%, transparent);
+}
+.col-shot-bar {
+  display: flex; align-items: center; gap: .55rem;
+  padding: .45rem .75rem; background: var(--paper-3);
+  border-bottom: 1px solid var(--hair);
+}
+.col-shot-dots { display: flex; gap: .32rem; }
+.col-shot-dot { width: .5rem; height: .5rem; border-radius: 50%; }
+.col-shot-dot:nth-child(1) { background: #ff5f57; }
+.col-shot-dot:nth-child(2) { background: #febc2e; }
+.col-shot-dot:nth-child(3) { background: #28c840; }
+.col-shot-url {
+  font-family: var(--mono); font-size: .52rem; color: var(--ink-dim);
+  flex: 1; text-align: center;
+}
+.col-shot-img {
+  width: 100%; display: block;
+  filter: saturate(.82) brightness(.85);
+  transition: filter .4s ease;
+}
+.col-shot-frame:hover .col-shot-img { filter: saturate(.92) brightness(.92); }
+
+/* ── FOOTER ─────────────────────────────────── */
+.pg-foot {
+  padding: 2rem clamp(2rem, 4vw, 4rem) 4rem;
+  font-family: var(--mono); font-size: .62rem; color: var(--ink-dim); line-height: 2.1;
+}
+.pg-foot .c { color: var(--accent); }
+.pg-foot .sha { color: var(--ink-soft); }
+.pg-foot a {
+  display: inline-flex; align-items: center; gap: .5rem; margin-top: 1rem;
+  text-transform: uppercase; letter-spacing: .1em; font-size: .58rem;
+  color: var(--ink-dim); transition: color .2s; cursor: pointer !important;
+}
+.pg-foot a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 860px) {
+  .triptych { grid-template-columns: 1fr; }
+  .col { border-right: none; }
+  .col:nth-child(n) { border-top: 1px solid var(--hair); }
+  .pgh-r { display: none; }
+}
+</style>
+</head>
+
+<body>
+<div id="cur"></div>
+
+<!-- ── HEADER ────────────────────────────── -->
+<header class="pg-head">
+  <div class="pgh-l">
+    <h1 class="pgh-title">Work. <em>Selected.</em></h1>
+    <span class="pgh-cmd">$ ls ~/projects/ --sort=date</span>
+  </div>
+  <div class="pgh-r">3 shipped products &nbsp;·&nbsp; scroll to read</div>
+</header>
+
+<!-- ── TRIPTYCH ──────────────────────────── -->
+<div class="triptych">
+
+  <!-- ── COL 01: CODEFLOW ─── -->
+  <div class="col is-on" style="--cd:0ms" id="col0">
+    <div class="col-inner">
+      <div class="col-meta">
+        <span class="ni">01</span>
+        <span class="sep">/</span>
+        <span>product · solo</span>
+        <span class="sep">·</span>
+        <span>Feb → May 2026</span>
+        <span class="col-badge"><span class="bdot bdot-a"></span><span style="color:var(--accent)">live</span></span>
+      </div>
+
+      <div class="col-title-wrap">
+        <h2 class="col-title" data-word="CODEFLOW">CODEFLOW</h2>
+      </div>
+
+      <div class="col-line"></div>
+
+      <p class="col-tag">Chat with agents, get a working Next.js app running inside a real E2B sandbox.</p>
+
+      <div class="col-ins">
+        <em class="hl">Inngest</em> runs each agent step as a durable<br />
+        background job — long chains never freeze the UI.<br />
+        <em class="hl">E2B sandboxes</em> execute the output.<br />
+        What you see is what runs.
+      </div>
+
+      <div class="col-foot">
+        <div class="col-stack">
+          <span class="col-stag">next.js</span><span class="col-stag">trpc</span>
+          <span class="col-stag">prisma</span><span class="col-stag">inngest</span>
+          <span class="col-stag">e2b</span><span class="col-stag">openai</span>
+          <span class="col-stag">clerk</span>
+        </div>
+        <a href="/d/codeflow" class="col-cta">$ cat codeflow.mdx &nbsp;↗</a>
+      </div>
+
+      <div class="col-shot">
+        <div class="col-shot-frame">
+          <div class="col-shot-bar">
+            <div class="col-shot-dots"><span class="col-shot-dot"></span><span class="col-shot-dot"></span><span class="col-shot-dot"></span></div>
+            <span class="col-shot-url">code-flow.vercel.app</span>
+          </div>
+          <img class="col-shot-img" src="projects/codeflow.png" alt="CodeFlow" loading="eager" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COL 02: TASKFORGE ─── -->
+  <div class="col is-on" style="--cd:130ms" id="col1">
+    <div class="col-inner">
+      <div class="col-meta">
+        <span class="ni">02</span>
+        <span class="sep">/</span>
+        <span>product · duo</span>
+        <span class="sep">·</span>
+        <span>Sep → Nov 2025</span>
+        <span class="col-badge"><span class="bdot bdot-s"></span><span style="color:var(--accent-2)">shipped</span></span>
+      </div>
+
+      <div class="col-title-wrap">
+        <h2 class="col-title" data-word="TASKFORGE">TASKFORGE</h2>
+      </div>
+
+      <div class="col-line"></div>
+
+      <p class="col-tag">Real-time kanban — live cursors, live drags, comments landing now, not eventually.</p>
+
+      <div class="col-ins">
+        <em class="hl">Liveblocks</em> runs the entire real-time layer:<br />
+        presence, shared storage, conflict resolution.<br />
+        Zero websocket code. Drag a card —<br />
+        your collaborator sees it <em class="hl">before you let go</em>.
+      </div>
+
+      <div class="col-foot">
+        <div class="col-stack">
+          <span class="col-stag">next.js</span><span class="col-stag">liveblocks</span>
+          <span class="col-stag">mongodb</span><span class="col-stag">tailwind</span>
+          <span class="col-stag">nextauth</span>
+        </div>
+        <a href="/d/taskforge" class="col-cta">$ cat taskforge.mdx &nbsp;↗</a>
+      </div>
+
+      <div class="col-shot">
+        <div class="col-shot-frame">
+          <div class="col-shot-bar">
+            <div class="col-shot-dots"><span class="col-shot-dot"></span><span class="col-shot-dot"></span><span class="col-shot-dot"></span></div>
+            <span class="col-shot-url">task-forge.vercel.app</span>
+          </div>
+          <img class="col-shot-img" src="projects/taskforge.png" alt="TaskForge" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COL 03: TRAVELOOP ─── -->
+  <div class="col is-on" style="--cd:260ms" id="col2">
+    <div class="col-inner">
+      <div class="col-meta">
+        <span class="ni">03</span>
+        <span class="sep">/</span>
+        <span>event · team of 4</span>
+        <span class="sep">·</span>
+        <span>Odoo Hackathon</span>
+        <span class="col-badge"><span class="bdot bdot-e"></span><span style="color:#f5a524">2nd place</span></span>
+      </div>
+
+      <div class="col-title-wrap">
+        <h2 class="col-title" data-word="TRAVELOOP">TRAVELOOP</h2>
+      </div>
+
+      <div class="col-line"></div>
+
+      <p class="col-tag">Multi-city itineraries, budgets, packing — shipped at 4am, demoed at 9. We got second.</p>
+
+      <div class="col-ins">
+        Trips → stops → days → activities → budgets:<br />
+        the <em class="hl">nested document model</em> maps<br />
+        the domain perfectly. Four people.<br />
+        One weekend. One real app.
+      </div>
+
+      <div class="col-foot">
+        <div class="col-stack">
+          <span class="col-stag">next.js</span><span class="col-stag">prisma</span>
+          <span class="col-stag">postgres</span><span class="col-stag">tailwind</span>
+          <span class="col-stag">neondb</span>
+        </div>
+        <a href="/d/traveloop" class="col-cta">$ cat traveloop.mdx &nbsp;↗</a>
+      </div>
+
+      <div class="col-shot">
+        <div class="col-shot-frame">
+          <div class="col-shot-bar">
+            <div class="col-shot-dots"><span class="col-shot-dot"></span><span class="col-shot-dot"></span><span class="col-shot-dot"></span></div>
+            <span class="col-shot-url">traveloop.vercel.app</span>
+          </div>
+          <img class="col-shot-img" src="projects/traveloop.png" alt="Traveloop" loading="lazy" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /triptych -->
+
+<!-- ── FOOTER ────────────────────────────── -->
+<footer class="pg-foot">
+  <div><span class="c">$</span> git log --oneline | head -3</div>
+  <div style="padding-left:1.25rem;margin-top:.3rem;display:flex;flex-direction:column;gap:.15rem">
+    <div><span class="sha">a3f2c1b</span> feat: stream agent messages to client via Inngest event</div>
+    <div><span class="sha">7d0e4a2</span> fix: liveblocks presence not clearing on tab close</div>
+    <div><span class="sha">2b9f831</span> chore: bump e2b sdk, fix sandbox timeout on cold boot</div>
+  </div>
+  <a href="https://github.com/Igneel0601" target="_blank" rel="noopener">full log on github.com/Igneel0601 ↗</a>
+</footer>
+
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "bg": "alt",
+  "topbar": "color"
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  React.useEffect(() => {
+    document.querySelectorAll(".col").forEach((el, i) => {
+      el.style.background = t.bg === "alt"
+        ? ["var(--paper)", "var(--paper-2)", "var(--paper)"][i]
+        : "var(--paper)";
+    });
+  }, [t.bg, t.topbar]);
+  return (
+    <TweaksPanel>
+      <TweakSection label="Columns" />
+      <TweakRadio label="Backgrounds" value={t.bg} options={["alt", "flat"]} onChange={v => setTweak("bg", v)} />
+    </TweaksPanel>
+  );
+}
+ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<TweaksApp />);
+</script>
+
+<script>
+(function(){
+"use strict";
+
+/* ── CURSOR ──────────────────────────────── */
+if (window.matchMedia("(any-pointer: fine)").matches) {
+  const cur = document.getElementById("cur");
+  document.addEventListener("mousemove", e => {
+    cur.style.left = e.clientX + "px";
+    cur.style.top  = e.clientY + "px";
+  }, { passive: true });
+  document.querySelectorAll("a, button, .col-shot-frame").forEach(el => {
+    el.addEventListener("mouseenter", () => cur.classList.add("h"));
+    el.addEventListener("mouseleave", () => cur.classList.remove("h"));
+  });
+}
+
+/* ── WRAP CHARS + FIT TITLES ─────────────── */
+const cols = Array.from(document.querySelectorAll(".col"));
+
+document.querySelectorAll(".col-title").forEach((el, ci) => {
+  const word     = el.dataset.word || el.textContent.trim();
+  const colDelay = ci * 130; // 0ms, 130ms, 260ms per column
+
+  el.innerHTML = [...word].map((ch, i) => {
+    const d = colDelay + i * 42;
+    return `<span class="pc" style="--d:${d}ms">${ch}</span>`;
+  }).join("");
+});
+
+function fitTitles() {
+  document.querySelectorAll(".col-title-wrap").forEach(wrap => {
+    const el = wrap.querySelector(".col-title");
+    if (!el) return;
+    const avail = wrap.clientWidth;
+    let lo = 12, hi = 800, mid;
+    el.style.whiteSpace = "nowrap";
+    for (let i = 0; i < 24; i++) {
+      mid = (lo + hi) / 2;
+      el.style.fontSize = mid + "px";
+      if (el.scrollWidth <= avail) lo = mid; else hi = mid;
+    }
+    el.style.fontSize = (lo * .97) + "px";
+  });
+}
+fitTitles();
+window.addEventListener("resize", fitTitles);
+
+/* ── SCROLL REVEAL (below-fold elements) ─── */
+const revealEls = Array.from(document.querySelectorAll(".col-tag, .col-ins, .col-foot, .col-shot"));
+
+// Stagger within each column by element order
+revealEls.forEach(el => {
+  const col = el.closest(".col");
+  const ci  = cols.indexOf(col);
+  const els = Array.from(col.querySelectorAll(".col-tag, .col-ins, .col-foot, .col-shot"));
+  const ri  = els.indexOf(el);
+  // Column delay + row stagger
+  el.style.transitionDelay = (ci * 80 + ri * 100) + "ms";
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("in");
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+
+revealEls.forEach(el => io.observe(el));
+
+/* ── MAGNETIC CTA ────────────────────────── */
+document.querySelectorAll(".col-cta").forEach(btn => {
+  btn.addEventListener("mousemove", e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.transform = `translate(${(e.clientX-(r.left+r.width/2))*.2}px,${(e.clientY-(r.top+r.height/2))*.2}px)`;
+  });
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transition = "transform .5s cubic-bezier(.16,1,.3,1), color .2s, background .2s, border-color .2s, box-shadow .2s";
+    btn.style.transform = "";
+    setTimeout(() => { btn.style.transition = ""; }, 500);
+  });
+});
+
+})();
+</script>
+</body>
+</html>

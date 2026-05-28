@@ -58,6 +58,33 @@
 - [ ] Delete unused `components/scenes/TerminalBar.tsx` — or wire it in
 - [ ] Lighthouse pass on `/d` and `/m` — verify `next/image` priority hints, CWV scores
 
+## SEO push
+
+Brand search `igneel portfolio` already lands #1 (own-domain wins easily). Goal: rank for own-name standalone queries (`vaibhav verma`, `vaibhav verma developer`) and earn topical traffic for posts. Currently nothing optimized beyond `metadataBase` + RSS alternate.
+
+### Portfolio-wide
+- [ ] **Per-page metadata** — every route needs its own `generateMetadata` with `title` (templated as `<page> — Vaibhav Verma`), `description`, `alternates.canonical`. `/work/<slug>`, `/writing/<slug>`, `/experiments`, `/terminal`, `/about` (when built), `/now`, `/uses`.
+- [ ] **JSON-LD `Person` schema** on home (`name`, `url`, `sameAs: [github, linkedin, x]`, `jobTitle`, `worksFor`). Helps Google build the knowledge panel.
+- [ ] **`alternates.canonical`** site-wide — UA-routed `/d` and `/m` shells must canonical to the unprefixed URL or Google indexes both as duplicates.
+- [ ] **OG image generation** — `app/opengraph-image.tsx` (or per-route) using next/og. Right now nothing renders in link previews. (Critical-section item already tracks the static OG; this is the dynamic per-page variant.)
+- [ ] **`robots.txt`** + verify `sitemap.xml` lists every writing post, case study, and experiment subroute with `lastmod` + `changefreq`.
+
+### Writing posts
+- [ ] **JSON-LD `Article` schema** on `/writing/<slug>` — `headline`, `datePublished`, `dateModified`, `author`, `image`, `wordCount`. Article rich-result eligibility.
+- [ ] **`<meta property="article:published_time">` + `<meta property="article:author">`** in `generateMetadata.openGraph`.
+- [ ] **Internal linking** — every post should link to ≥2 other posts and ≥1 case study. Currently only "Similar reads" card does this.
+- [ ] **Image alt text audit** — every `<Image>` in PostBody must have meaningful alt. Verify Lexical media nodes carry `alt` from Bloggz; default empty alt is invisible to search.
+- [ ] **Heading hierarchy** — one `<h1>` per post (the title), descending `<h2>`/`<h3>`. Audit a few posts for skip-level headings.
+- [ ] **URL with `.md`** (deferred decision earlier) — if pursued, makes the dev-vibe URL more memorable + slightly more distinctive in SERPs.
+
+### Case studies
+- [ ] Same `Article` schema treatment with `CreativeWork` / `SoftwareApplication` mix where appropriate.
+- [ ] Each study should have a 1-paragraph TL;DR above the fold — searchable summary that crawlers index as the description if `metaDescription` is missing.
+
+### Distribution
+- [ ] **Backlinks** — submit posts to Hacker News, lobste.rs, dev.to mirrors with canonical pointing back to igneel.dev. Single biggest ranking lever.
+- [ ] **Personal name authority** — link from GitHub README + Twitter/LinkedIn bio to igneel.dev with the name "Vaibhav Verma" as anchor text.
+
 ## Nice-to-have
 
 - [ ] Real git log from GH API on `/work` footer (deferred)
