@@ -9,8 +9,9 @@
   --ink-dim: #5b6573;
   --hair: rgba(230, 237, 243, 0.10);
   --hair-2: rgba(230, 237, 243, 0.18);
-  --accent: #6ee7a7;
+  --accent: #6ee7a7;   
   --accent-2: #5eead4;
+  --accent-3: #f9e2af;
   /* status palette — single source of truth for work-row state colors.
      Used by both desktop.css (.work-row[data-status-row="..."]) and
      mobile parts.tsx (WorkPageRow STATUS_COLOR map). */
@@ -52,6 +53,7 @@ body::-webkit-scrollbar-thumb,
   --color-ink-soft: var(--ink-soft);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
   --color-highlight: var(--highlight);
   --font-serif: var(--font-fraunces);
   --font-mono: var(--font-plex-mono);
@@ -155,7 +157,14 @@ body {
   background: var(--paper);
   color: var(--ink);
 }
-.pill.sm { padding: 0.125rem 0.5rem; }
+.pill.sm {
+  font-family: var(--mono);
+  font-size: 0.6rem;
+  padding: 0.2rem 0.55rem;
+  border: 1px solid var(--hair-2);
+  background: color-mix(in oklab, var(--paper-2) 70%, transparent);
+  color: var(--ink-soft);
+}
 
 .link {
   color: var(--accent);

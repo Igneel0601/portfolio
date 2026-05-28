@@ -559,7 +559,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 .bdot   { width: 0.25rem; height: 0.25rem; border-radius: 50%; display: inline-block; }
 .bdot-a { background: var(--accent);     animation: psc-pdot 2s ease-in-out infinite; }
 .bdot-s { background: var(--accent-2); }
-.bdot-e { background: var(--status-wip); }
+.bdot-e { background: var(--accent-3); }
 @keyframes psc-pdot {
   0%,100% { box-shadow: 0 0 0.125rem var(--accent); }
   50%     { box-shadow: 0 0 0.5rem var(--accent), 0 0 1.125rem color-mix(in oklab, var(--accent) 40%, transparent); }
