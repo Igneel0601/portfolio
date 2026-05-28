@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Writing — Directions</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,800;1,9..144,400;1,9..144,500&family=IBM+Plex+Mono:wght@300;400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="shared.css">
+<style>
+  .shell{width:min(92%,72rem);margin:0 auto;padding:clamp(28px,3vw,40px) 2rem 64px;flex:1;}
+  .head{margin:0 0 40px;}
+  .title{font-family:var(--font-serif);font-size:clamp(48px,5vw,80px);font-weight:800;letter-spacing:-.02em;margin:8px 0 0;}
+  .title .dot{color:var(--accent);}
+  .sub{font-family:var(--font-mono);font-size:.75rem;color:var(--ink-soft);letter-spacing:.04em;margin:14px 0 0;max-width:60ch;line-height:1.7;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+  @media (max-width:880px){.grid{grid-template-columns:1fr;}}
+
+  .col-head{display:flex;align-items:baseline;gap:12px;padding:18px 22px;border:1px solid var(--hair-2);border-radius:10px 10px 0 0;background:var(--paper-2);}
+  .col-head .badge{font-family:var(--font-mono);font-size:.625rem;color:var(--accent);border:1px solid color-mix(in oklab,var(--accent) 50%,transparent);padding:3px 8px;border-radius:3px;letter-spacing:.18em;text-transform:uppercase;}
+  .col-head h2{font-family:var(--font-serif);font-size:22px;font-weight:700;margin:0;letter-spacing:-.01em;}
+  .col-head .pill{margin-left:auto;font-family:var(--font-mono);font-size:.625rem;color:var(--ink-dim);letter-spacing:.14em;text-transform:uppercase;}
+
+  .card-link{display:block;text-decoration:none;color:inherit;padding:22px;border:1px solid var(--hair-2);border-top:none;background:var(--paper);transition:border-color .2s ease,background .2s ease;}
+  .card-link:hover{border-color:var(--accent);background:color-mix(in oklab,var(--accent) 4%,var(--paper));}
+  .card-link + .card-link{border-radius:0;}
+  .card-link:last-child{border-radius:0 0 10px 10px;}
+
+  .card-row{display:flex;align-items:baseline;gap:12px;}
+  .card-row .kind{font-family:var(--font-mono);font-size:.625rem;color:var(--ink-dim);letter-spacing:.18em;text-transform:uppercase;}
+  .card-row .file{font-family:var(--font-mono);font-size:.6875rem;color:var(--accent);letter-spacing:.04em;margin-left:auto;}
+  .card-h{font-family:var(--font-serif);font-size:1.5rem;font-weight:700;margin:8px 0 0;letter-spacing:-.005em;}
+  .card-link:hover .card-h{color:var(--accent);}
+  .card-desc{font-family:var(--font-body);font-size:.875rem;color:var(--ink-soft);line-height:1.5;margin:8px 0 0;}
+
+  .notes{margin-top:48px;padding:20px 24px;border:1px dashed var(--hair-2);border-radius:8px;background:color-mix(in oklab,var(--paper-2) 50%,transparent);font-family:var(--font-mono);font-size:.75rem;color:var(--ink-soft);line-height:1.7;}
+  .notes b{color:var(--accent);font-weight:500;}
+  .notes ul{margin:8px 0 0;padding-left:18px;}
+</style>
+</head>
+<body>
+  <div class="parallax-bg"></div>
+
+  <main class="shell">
+    <div class="head">
+      <div class="l-eyebrow" style="color:var(--ink-dim);">directions · /writing</div>
+      <h1 class="title">writing pages<span class="dot">.</span></h1>
+      <p class="sub">Two directions for the index, two for the post. Same tokens as your <code style="background:var(--paper-2);padding:1px 6px;border-radius:3px;color:var(--accent);">app/globals.css</code> — Fraunces, IBM Plex Sans / Mono, #6ee7a7 accent. Pick any combination.</p>
+    </div>
+
+    <div class="grid">
+      <!-- A column -->
+      <div>
+        <div class="col-head">
+          <span class="badge">A</span>
+          <h2>Engineer's logbook</h2>
+          <span class="pill">terminal · dense</span>
+        </div>
+        <a class="card-link" href="writing-A.html" target="_blank">
+          <div class="card-row">
+            <span class="kind">index</span>
+            <span class="file">writing-A.html</span>
+          </div>
+          <h3 class="card-h">/writing</h3>
+          <p class="card-desc">$ ls prompt, filter chips, columnar rows: date · read-time · title · tag · arrow. Year breaks; subtle green hair on hover.</p>
+        </a>
+        <a class="card-link" href="post-A.html" target="_blank">
+          <div class="card-row">
+            <span class="kind">post</span>
+            <span class="file">post-A.html</span>
+          </div>
+          <h3 class="card-h">/writing/[slug]</h3>
+          <p class="card-desc">Your current layout, refined. Sidebar metadata, dropcap, accent pull-quote, prev/next pager, top progress sliver.</p>
+        </a>
+      </div>
+
+      <!-- B column -->
+      <div>
+        <div class="col-head">
+          <span class="badge">B</span>
+          <h2>Commonplace book</h2>
+          <span class="pill">editorial · year-grouped</span>
+        </div>
+        <a class="card-link" href="writing-B.html" target="_blank">
+          <div class="card-row">
+            <span class="kind">index</span>
+            <span class="file">writing-B.html</span>
+          </div>
+          <h3 class="card-h">/writing</h3>
+          <p class="card-desc">Year groups (2026.), serif date stamps, italic-serif deks, · · · ornaments between entries.</p>
+        </a>
+        <a class="card-link" href="post-B.html" target="_blank">
+          <div class="card-row">
+            <span class="kind">post</span>
+            <span class="file">post-B.html</span>
+          </div>
+          <h3 class="card-h">/writing/[slug]</h3>
+          <p class="card-desc">No sidebar — 4-col metadata strip below title. Italic-serif lead instead of dropcap. § 01 numbered sections, centered pull-quote with hair rules.</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="notes">
+      <b>// notes</b>
+      <ul>
+        <li>shared styles live in <code style="color:var(--accent);">shared.css</code> — tokens, fonts, nav, footer, progress sliver</li>
+        <li>no per-entry numbering (post counts grow) — A uses date columns, B uses big serif day + month</li>
+        <li>all metadata (filed · read · words · under · file) renders in <b>both</b> post directions</li>
+        <li>direction A's index can be paired with direction B's post (or vice-versa) — they share the same chrome</li>
+      </ul>
+    </div>
+  </main>
+
+  <footer class="foot">
+    <span>directions · /writing</span>
+    <span class="spacer">build · 2026·05·20</span>
+  </footer>
+</body>
+</html>

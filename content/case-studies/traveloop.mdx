@@ -1,0 +1,126 @@
+---
+slug: traveloop
+title: Traveloop
+tagline: Multi-city itineraries, budgets, and packing — shipped on a hackathon clock.
+blurb: trip planner. shipped at 4am, demo at 9. we got 2nd.
+tag: event
+indexStatus: archived
+role: hackathon · group of 4 · The Knights
+status: shipped
+timeline: Odoo Hackathon · weekend
+commits: 38
+order: 3
+stack: [Next.js 16, React 19, TypeScript, Prisma, PostgreSQL, Tailwind, shadcn, NextAuth]
+infra: [NeonDB / Postgres 16, Auth.js v5, Vercel]
+links:
+  repo: https://github.com/Rajatb631/Odoo-Hackathon-The-Knights
+cover: /projects/traveloop.png
+---
+
+## tl;dr
+
+Traveloop is a **full-stack travel-planning workspace** — multi-city itineraries, day-grouped activities, per-stop budgets with charts, packing checklists, journals, and a public community feed. Built end-to-end during the **Odoo Hackathon** with three teammates.
+
+<TLDR>
+- **What:** plan a trip end-to-end — stops, dates, budget, packing, notes — and share it
+- **Hard part:** shipping a real multi-domain app in a weekend with four people in flight
+- **Why it matters:** proves the team can carve a Next.js app cleanly and ship under pressure
+</TLDR>
+
+## the problem
+
+Existing trip planners pick one lane. Itinerary apps don't track money. Budget apps don't know your trip has stops. Notes apps don't care about any of it. By the time you've stitched together three tools, you've stopped planning and started doing data entry.
+
+Traveloop puts the lanes in one workspace, with a single trip object that owns its stops, activities, budget, packing, and journal. Same source of truth for the dashboard pie chart and the day-by-day itinerary view.
+
+## architecture
+
+Server Components first, Server Actions for mutations. No separate `/api/v1/*` REST surface to maintain — every mutation is a typed `'use server'` function with Zod validation and a `safeAction()` error envelope. RBAC enforced at the layout level so non-admins literally 404 on `/admin`.
+
+<figure className="cs-arch-figure">
+  <div className="cs-arch-box">
+    <ZoomableImage src="/projects/traveloop-diagram.svg" alt="Traveloop architecture" />
+  </div>
+  <figcaption>fig. <span className="acc">01</span> · App Router · RSC pages · Server Actions · Prisma · Postgres</figcaption>
+</figure>
+
+## key decisions
+
+<Decision n="01" picked="Server Actions" rejected="separate REST API">
+  Every mutation lives in `src/server/actions/*` as a typed `'use server'` function.
+  No REST surface to keep in sync with the client, no parallel auth checks. Saved
+  us probably a day of plumbing in a weekend build.
+</Decision>
+
+<Decision n="02" picked="Zod schemas as single source of truth" rejected="duplicate client + server validation">
+  Schemas in `src/lib/validations/*` are reused by React Hook Form on the client
+  AND by `safeAction()` on the server. One file defines the shape; the form and
+  the mutation can't drift apart.
+</Decision>
+
+<Decision n="03" picked="safeAction() error envelope" rejected="throwing exceptions across boundaries">
+  Server actions return `{ ok: true, data } | { ok: false, error }`. The UI is
+  `if (!res.ok) toast.error(res.error)` everywhere — one pattern, no try/catch
+  forests in components.
+</Decision>
+
+<Decision n="04" picked="RBAC at layout, not middleware">
+  `(app)/layout.tsx` runs `auth()` once for the protected group. `(app)/admin/page.tsx`
+  calls `notFound()` for non-admins so the route's existence is hidden. No
+  middleware to debug, no edge-runtime gotchas.
+</Decision>
+
+## walkthrough
+
+<Steps>
+  <Step n="01" label="landing">
+    <Figure
+      src="/case-studies/traveloop/01-landing.png"
+      alt="Traveloop landing page — full-bleed beach hero with handwritten headline"
+      placeholder="full-bleed hero with cta into the app"
+    />
+  </Step>
+  <Step n="02" label="sign in">
+    <Figure
+      src="/case-studies/traveloop/02-sign-in.png"
+      alt="Traveloop sign-in screen with feature highlights on the left and login card on the right"
+      placeholder="welcome back, feature highlights + login card"
+    />
+  </Step>
+  <Step n="03" label="dashboard">
+    <Figure
+      src="/case-studies/traveloop/03-dashboard.png"
+      alt="Traveloop dashboard — welcome stats and recent trips"
+      placeholder="welcome stats and recent trips"
+    />
+  </Step>
+  <Step n="04" label="budget breakdown">
+    <Figure
+      src="/case-studies/traveloop/04-budget.png"
+      alt="Trip budget view with per-stop pie and spend-vs-budget bar showing over-budget warning"
+      placeholder="per-category pie + bar with over-budget warning"
+    />
+  </Step>
+</Steps>
+
+## the stack
+
+<Bullets>
+- **frontend:** Next.js 16, React 19, TS, Tailwind 4, shadcn/ui, Radix, lucide
+- **forms + charts:** React Hook Form + Zod, Recharts, sonner toasts
+- **api:** Server Actions + Route Handlers (image streaming + Auth.js callbacks)
+- **auth:** Auth.js v5 credentials provider, JWT sessions, Prisma adapter
+- **data:** Prisma 7 + PostgreSQL 16 — 12 tables, `User > Trip > Stop > Activity`
+- **infra:** Vercel + NeonDB serverless Postgres
+</Bullets>
+
+## what's next
+
+<Bullets>
+- AI-assisted itinerary generation <Tag>roadmap</Tag>
+- map view with Leaflet + OpenStreetMap
+- currency conversion in the expense ledger
+- offline-capable PWA shell
+- real-time collaboration on trips (Liveblocks or CRDT)
+- export trip as PDF
+</Bullets>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Vaibhav Verma — Work</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,800;0,9..144,900;1,9..144,400;1,9..144,600&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+
+<style>
+/* ── TOKENS ─────────────────────────────────── */
+:root {
+  --paper:    #0e1116;
+  --paper-2:  #161b22;
+  --paper-3:  #1c2330;
+  --ink:      #e6edf3;
+  --ink-soft: #8b949e;
+  --ink-dim:  #5b6573;
+  --hair:     rgba(230,237,243,.10);
+  --hair-2:   rgba(230,237,243,.18);
+  --accent:   #6ee7a7;
+  --accent-2: #5eead4;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --serif: 'Fraunces', Georgia, serif;
+  /* content width: leaves room for screenshot */
+  --cw: 72%;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html {
+  background: var(--paper); color: var(--ink);
+  font-family: var(--serif);
+  font-size: clamp(.875rem, .7vw + .5625rem, 1.125rem);
+  -webkit-font-smoothing: antialiased;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) color-mix(in oklab, var(--accent) 14%, transparent);
+}
+body { overflow-x: hidden; }
+img { display: block; }
+a { color: inherit; text-decoration: none; }
+* { cursor: none !important; }
+@media (any-pointer: coarse) { * { cursor: auto !important; } }
+
+/* ── CURSOR ─────────────────────────────────── */
+#cur {
+  position: fixed; width: 10px; height: 10px; border-radius: 50%;
+  background: var(--accent); pointer-events: none; z-index: 10000;
+  transform: translate(-50%,-50%);
+  transition: width .2s, height .2s, opacity .2s;
+  mix-blend-mode: exclusion;
+}
+#cur.h { width: 36px; height: 36px; opacity: .4; }
+@media (any-pointer: coarse) { #cur { display: none; } }
+
+/* ── TOP PROGRESS ───────────────────────────── */
+#tpb { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 200; pointer-events: none; }
+#tpb-f { height: 100%; width: 0%; background: var(--accent); box-shadow: 0 0 8px var(--accent); transition: width .06s linear; }
+
+/* ── PAGE HEADER ────────────────────────────── */
+.pg-head {
+  padding: clamp(2.5rem, 4.5vh, 4rem) clamp(2rem, 5.5vw, 5rem);
+  border-bottom: 1px solid var(--hair);
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+}
+.pgh-l { display: flex; flex-direction: column; gap: .5rem; }
+.pgh-cmd {
+  font-family: var(--mono); font-size: .64rem; letter-spacing: .06em; color: var(--accent);
+  clip-path: inset(0 0 100% 0); transition: clip-path .5s ease .05s;
+}
+.pgh-cmd.in { clip-path: inset(0 0 0% 0); }
+.pgh-title {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  letter-spacing: -.03em; line-height: .9;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path .8s cubic-bezier(.16,1,.3,1) .15s;
+}
+.pgh-title.in { clip-path: inset(0 0 0% 0); }
+.pgh-title em { font-style: italic; color: var(--ink-soft); font-weight: 400; }
+.pgh-r {
+  font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+  color: var(--ink-dim); text-align: right; line-height: 2;
+  opacity: 0; transition: opacity .5s ease .4s;
+}
+.pgh-r.in { opacity: 1; }
+
+/* ── PROJECT SECTION ────────────────────────── */
+.proj {
+  position: relative; overflow: hidden;
+  min-height: 100vh;
+  border-top: 1px solid var(--hair);
+  padding: clamp(2.5rem, 5vh, 4.5rem) clamp(2rem, 5.5vw, 5rem);
+  display: flex; flex-direction: column;
+  justify-content: center;
+  gap: clamp(1rem, 2vh, 1.75rem);
+}
+.proj:last-of-type { border-bottom: 1px solid var(--hair); }
+
+/* Per-section texture */
+.proj::after {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  opacity: .6;
+}
+.proj[data-p="01"]::after {
+  background: radial-gradient(circle at 1px 1px, rgba(110,231,167,.055) 1px, transparent 2px);
+  background-size: 28px 28px;
+}
+.proj[data-p="02"]::after {
+  background-image:
+    linear-gradient(rgba(94,234,212,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(94,234,212,.04) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+.proj[data-p="03"]::after {
+  background: radial-gradient(ellipse 80% 100% at 110% 50%, rgba(245,165,36,.045) 0%, transparent 60%);
+}
+
+/* All direct children are above texture */
+.proj > * { position: relative; z-index: 1; }
+
+/* ── META ROW ───────────────────────────────── */
+.p-meta {
+  display: flex; align-items: center; gap: 1.25rem;
+  font-family: var(--mono); font-size: .6rem;
+  letter-spacing: .15em; text-transform: uppercase; color: var(--ink-dim);
+  width: var(--cw);
+  opacity: 0; transform: translateY(-12px);
+  transition: opacity .4s ease, transform .4s ease;
+}
+.proj.is-on .p-meta { opacity: 1; transform: none; transition-delay: .04s; }
+.p-meta .ni { color: var(--accent); }
+.p-meta .sep { opacity: .3; }
+.p-badge {
+  margin-left: auto; display: inline-flex; align-items: center; gap: .35rem;
+  padding: .2rem .6rem; border-radius: 999px;
+  border: 1px solid var(--hair-2); background: var(--paper-2);
+}
+.bdot { width: 4px; height: 4px; border-radius: 50%; }
+.bdot-a { background: var(--accent); animation: pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: #f5a524; }
+@keyframes pdot {
+  0%,100% { box-shadow: 0 0 2px var(--accent); }
+  50% { box-shadow: 0 0 8px var(--accent), 0 0 18px color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+
+/* ── TITLE ──────────────────────────────────── */
+.p-title-wrap {
+  overflow: hidden;
+  width: var(--cw);
+  /* height set by JS after fitText */
+  line-height: 1;
+}
+.p-title {
+  display: block;
+  font-family: var(--serif); font-weight: 900;
+  letter-spacing: -.035em; line-height: .9;
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+/* Per-character spans — injected by JS */
+.pc {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(-55%) scale(.88);
+  transition:
+    opacity .25s ease var(--d),
+    transform .65s cubic-bezier(.16,1,.3,1) var(--d);
+}
+.proj.is-on .pc {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ── ACCENT LINE ─────────────────────────────── */
+.p-line {
+  height: 1.5px; background: var(--accent); width: 0;
+  /* full viewport width edge-to-edge, break out of padding */
+  margin-left: calc(-1 * clamp(2rem, 5.5vw, 5rem));
+  margin-right: calc(-1 * clamp(2rem, 5.5vw, 5rem));
+  transition: width 1.1s cubic-bezier(.16,1,.3,1);
+  /* needs to animate to full viewport width */
+}
+.proj.is-on .p-line { width: calc(100% + clamp(4rem, 11vw, 10rem)); transition-delay: .18s; }
+
+/* ── BODY ───────────────────────────────────── */
+.p-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  width: var(--cw);
+  align-items: start;
+}
+
+.p-tagline {
+  font-family: var(--serif); font-style: italic;
+  font-size: clamp(.95rem, 1.55vw, 1.25rem); line-height: 1.55;
+  color: var(--ink); grid-column: 1 / -1;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .55s ease, transform .6s cubic-bezier(.16,1,.3,1);
+}
+.proj.is-on .p-tagline { opacity: 1; transform: none; transition-delay: .52s; }
+
+.p-insight {
+  font-family: var(--mono); font-size: .7rem; line-height: 1.85;
+  color: var(--ink-soft);
+  padding-left: .875rem; border-left: 1.5px solid var(--hair-2);
+  opacity: 0; transform: translateY(18px);
+  transition: opacity .55s ease, transform .6s cubic-bezier(.16,1,.3,1);
+}
+.proj.is-on .p-insight { opacity: 1; transform: none; transition-delay: .64s; }
+.hl { color: var(--accent-2); }
+
+.p-r {
+  display: flex; flex-direction: column; gap: 1rem; align-items: flex-start;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity .5s ease, transform .55s cubic-bezier(.16,1,.3,1);
+}
+.proj.is-on .p-r { opacity: 1; transform: none; transition-delay: .72s; }
+
+.p-stack { display: flex; flex-wrap: wrap; gap: .375rem; }
+.p-stag {
+  font-family: var(--mono); font-size: .58rem; letter-spacing: .09em;
+  padding: .28rem .65rem; border-radius: 4px;
+  border: 1px solid var(--hair-2); color: var(--ink-dim); background: var(--paper-2);
+}
+.p-cta {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-family: var(--mono); font-size: .68rem; color: var(--accent-2);
+  padding: .5rem 1.1rem; border-radius: 6px;
+  border: 1px solid color-mix(in oklab, var(--accent-2) 35%, transparent);
+  transition: color .2s, background .2s, border-color .2s, box-shadow .2s, transform .5s cubic-bezier(.16,1,.3,1);
+  cursor: pointer !important;
+}
+.p-cta:hover { color: var(--paper); background: var(--accent-2); border-color: var(--accent-2); box-shadow: 0 0 22px rgba(94,234,212,.28); }
+
+/* ── SCREENSHOT — absolutely positioned ──────── */
+.p-shot {
+  position: absolute;
+  /* right edge: same as section padding */
+  right: clamp(2rem, 5.5vw, 5rem);
+  /* vertically: center of the title zone */
+  top: 50%; transform: translateY(-54%);
+  width: clamp(200px, 20vw, 300px);
+  z-index: 2;
+
+  opacity: 0;
+  /* individual rotation per project set via data attr */
+  transition: opacity .6s ease, transform .7s cubic-bezier(.16,1,.3,1);
+}
+.proj[data-p="01"] .p-shot { transform: translateY(-54%) rotate(-2.5deg); }
+.proj[data-p="02"] .p-shot { transform: translateY(-54%) rotate(1.75deg); }
+.proj[data-p="03"] .p-shot { transform: translateY(-54%) rotate(-1.25deg); }
+
+.proj.is-on .p-shot { opacity: 1; transition-delay: .8s; }
+.proj[data-p="01"].is-on .p-shot { transform: translateY(-54%) rotate(-2.5deg); }
+.proj[data-p="02"].is-on .p-shot { transform: translateY(-54%) rotate(1.75deg); }
+.proj[data-p="03"].is-on .p-shot { transform: translateY(-54%) rotate(-1.25deg); }
+
+/* Hover: straighten + lift + glow */
+.p-shot:hover {
+  transform: translateY(-58%) rotate(0deg) scale(1.04) !important;
+  z-index: 10;
+  transition: transform .4s cubic-bezier(.16,1,.3,1), opacity .2s !important;
+}
+
+.p-shot-frame {
+  border-radius: 8px; overflow: hidden;
+  border: 1px solid var(--hair-2);
+  box-shadow: 0 18px 55px rgba(0,0,0,.65), 0 4px 12px rgba(0,0,0,.3);
+  transition: box-shadow .4s ease;
+}
+.p-shot:hover .p-shot-frame {
+  box-shadow: 0 24px 72px rgba(0,0,0,.8),
+    0 0 0 1px color-mix(in oklab, var(--accent) 40%, transparent),
+    0 0 40px rgba(110,231,167,.1);
+}
+.p-shot-bar {
+  display: flex; align-items: center; gap: .625rem;
+  padding: .5rem .875rem; background: var(--paper-3);
+  border-bottom: 1px solid var(--hair);
+}
+.p-shot-dots { display: flex; gap: .35rem; }
+.p-shot-dot { width: .525rem; height: .525rem; border-radius: 50%; }
+.p-shot-dot:nth-child(1) { background: #ff5f57; }
+.p-shot-dot:nth-child(2) { background: #febc2e; }
+.p-shot-dot:nth-child(3) { background: #28c840; }
+.p-shot-url { font-family: var(--mono); font-size: .54rem; color: var(--ink-dim); flex: 1; text-align: center; }
+.p-shot-img {
+  width: 100%; display: block;
+  filter: saturate(.78) brightness(.82);
+  transition: filter .4s ease;
+}
+.p-shot:hover .p-shot-img { filter: saturate(.9) brightness(.9); }
+
+/* Subtle scanline overlay */
+.p-shot-frame::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(0,0,0,.045) 3px 4px);
+  mix-blend-mode: multiply;
+}
+
+/* ── FOOTER ─────────────────────────────────── */
+.pg-foot {
+  padding: 2.5rem clamp(2rem, 5.5vw, 5rem) 5rem;
+  border-top: 1px solid var(--hair);
+  font-family: var(--mono); font-size: .64rem; color: var(--ink-dim); line-height: 2.1;
+}
+.pg-foot .c { color: var(--accent); }
+.pg-foot .sha { color: var(--ink-soft); }
+.pg-foot a {
+  display: inline-flex; align-items: center; gap: .5rem; margin-top: 1rem;
+  text-transform: uppercase; letter-spacing: .1em; font-size: .6rem;
+  color: var(--ink-dim); transition: color .2s; cursor: pointer !important;
+}
+.pg-foot a:hover { color: var(--accent); }
+
+/* ── RESPONSIVE ─────────────────────────────── */
+@media (max-width: 720px) {
+  :root { --cw: 100%; }
+  .p-shot { position: relative; top: auto; right: auto; transform: none !important;
+    width: 100%; transition-delay: .5s !important; }
+  .proj[data-p] .p-shot { transform: none !important; }
+  .p-body { grid-template-columns: 1fr; }
+  .pg-head { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+
+<body>
+<div id="cur"></div>
+<div id="tpb"><div id="tpb-f"></div></div>
+
+<!-- ── PAGE HEADER ────────────────────────── -->
+<header class="pg-head">
+  <div class="pgh-l">
+    <div class="pgh-cmd" id="pgh-cmd">$ ls ~/projects/ --sort=date</div>
+    <h1 class="pgh-title" id="pgh-title">Work.<br /><em>selected.</em></h1>
+  </div>
+  <div class="pgh-r" id="pgh-r">3 entries &nbsp;·&nbsp; scroll to read</div>
+</header>
+
+<!-- ══ 01 · CODEFLOW ══════════════════════════ -->
+<section class="proj" data-p="01" id="p01">
+  <div class="p-meta">
+    <span class="ni">01</span>
+    <span class="sep">/</span>
+    <span>product</span>
+    <span class="sep">·</span>
+    <span>solo</span>
+    <span class="sep">·</span>
+    <span>Feb → May 2026</span>
+    <span class="p-badge">
+      <span class="bdot bdot-a"></span>
+      <span style="color:var(--accent)">live · v0.4</span>
+    </span>
+  </div>
+
+  <div class="p-title-wrap">
+    <h2 class="p-title" data-word="CODEFLOW">CODEFLOW</h2>
+  </div>
+
+  <div class="p-line"></div>
+
+  <div class="p-body">
+    <p class="p-tagline">Chat with agents, get a working Next.js app running inside a real E2B sandbox.</p>
+    <div class="p-insight">
+      <em class="hl">Inngest</em> runs each agent step as a durable background job —<br />
+      long chains never freeze the UI or timeout mid-stream.<br />
+      <em class="hl">E2B sandboxes</em> execute the output. What you see is what runs.
+    </div>
+    <div class="p-r">
+      <div class="p-stack">
+        <span class="p-stag">next.js</span><span class="p-stag">trpc</span>
+        <span class="p-stag">prisma</span><span class="p-stag">inngest</span>
+        <span class="p-stag">e2b</span><span class="p-stag">openai/gemini</span>
+        <span class="p-stag">clerk</span>
+      </div>
+      <a href="/d/codeflow" class="p-cta">$ cat codeflow.mdx &nbsp;↗</a>
+    </div>
+  </div>
+
+  <div class="p-shot">
+    <div class="p-shot-frame">
+      <div class="p-shot-bar">
+        <div class="p-shot-dots"><span class="p-shot-dot"></span><span class="p-shot-dot"></span><span class="p-shot-dot"></span></div>
+        <span class="p-shot-url">code-flow.vercel.app</span>
+      </div>
+      <img class="p-shot-img" src="projects/codeflow.png" alt="CodeFlow" loading="eager" />
+    </div>
+  </div>
+</section>
+
+<!-- ══ 02 · TASKFORGE ══════════════════════════ -->
+<section class="proj" data-p="02" id="p02">
+  <div class="p-meta">
+    <span class="ni">02</span>
+    <span class="sep">/</span>
+    <span>product</span>
+    <span class="sep">·</span>
+    <span>duo</span>
+    <span class="sep">·</span>
+    <span>Sep → Nov 2025</span>
+    <span class="p-badge">
+      <span class="bdot bdot-s"></span>
+      <span style="color:var(--accent-2)">shipped · live</span>
+    </span>
+  </div>
+
+  <div class="p-title-wrap">
+    <h2 class="p-title" data-word="TASKFORGE">TASKFORGE</h2>
+  </div>
+
+  <div class="p-line"></div>
+
+  <div class="p-body">
+    <p class="p-tagline">Real-time collaborative kanban — live cursors, live drags, comments landing now, not eventually.</p>
+    <div class="p-insight">
+      <em class="hl">Liveblocks</em> runs the entire real-time layer:<br />
+      presence, shared storage, conflict resolution.<br />
+      Zero websocket code written by hand. Drag a card —<br />
+      your collaborator sees it move <em class="hl">before you let go</em>.
+    </div>
+    <div class="p-r">
+      <div class="p-stack">
+        <span class="p-stag">next.js</span><span class="p-stag">liveblocks</span>
+        <span class="p-stag">mongodb</span><span class="p-stag">tailwind</span>
+        <span class="p-stag">nextauth</span>
+      </div>
+      <a href="/d/taskforge" class="p-cta">$ cat taskforge.mdx &nbsp;↗</a>
+    </div>
+  </div>
+
+  <div class="p-shot">
+    <div class="p-shot-frame">
+      <div class="p-shot-bar">
+        <div class="p-shot-dots"><span class="p-shot-dot"></span><span class="p-shot-dot"></span><span class="p-shot-dot"></span></div>
+        <span class="p-shot-url">task-forge.vercel.app</span>
+      </div>
+      <img class="p-shot-img" src="projects/taskforge.png" alt="TaskForge" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- ══ 03 · TRAVELOOP ══════════════════════════ -->
+<section class="proj" data-p="03" id="p03">
+  <div class="p-meta">
+    <span class="ni">03</span>
+    <span class="sep">/</span>
+    <span>event</span>
+    <span class="sep">·</span>
+    <span>team of 4</span>
+    <span class="sep">·</span>
+    <span>Odoo Hackathon</span>
+    <span class="p-badge">
+      <span class="bdot bdot-e"></span>
+      <span style="color:#f5a524">2nd place</span>
+    </span>
+  </div>
+
+  <div class="p-title-wrap">
+    <h2 class="p-title" data-word="TRAVELOOP">TRAVELOOP</h2>
+  </div>
+
+  <div class="p-line"></div>
+
+  <div class="p-body">
+    <p class="p-tagline">Multi-city itineraries, budgets, and packing — shipped at 4am, demoed at 9. We got second.</p>
+    <div class="p-insight">
+      Trips → stops → days → activities → budgets:<br />
+      the <em class="hl">nested document model</em> maps the domain perfectly.<br />
+      Four people. One weekend. One real, working, demoed app.
+    </div>
+    <div class="p-r">
+      <div class="p-stack">
+        <span class="p-stag">next.js</span><span class="p-stag">prisma</span>
+        <span class="p-stag">postgres</span><span class="p-stag">tailwind</span>
+        <span class="p-stag">nextauth</span><span class="p-stag">neondb</span>
+      </div>
+      <a href="/d/traveloop" class="p-cta">$ cat traveloop.mdx &nbsp;↗</a>
+    </div>
+  </div>
+
+  <div class="p-shot">
+    <div class="p-shot-frame">
+      <div class="p-shot-bar">
+        <div class="p-shot-dots"><span class="p-shot-dot"></span><span class="p-shot-dot"></span><span class="p-shot-dot"></span></div>
+        <span class="p-shot-url">traveloop.vercel.app</span>
+      </div>
+      <img class="p-shot-img" src="projects/traveloop.png" alt="Traveloop" loading="lazy" />
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ────────────────────────────── -->
+<footer class="pg-foot">
+  <div><span class="c">$</span> git log --oneline | head -3</div>
+  <div style="padding-left:1.25rem;margin-top:.3rem;display:flex;flex-direction:column;gap:.15rem">
+    <div><span class="sha">a3f2c1b</span> feat: stream agent messages to client via Inngest event</div>
+    <div><span class="sha">7d0e4a2</span> fix: liveblocks presence not clearing on tab close</div>
+    <div><span class="sha">2b9f831</span> chore: bump e2b sdk, fix sandbox timeout on cold boot</div>
+  </div>
+  <a href="https://github.com/Igneel0601" target="_blank" rel="noopener">full log on github.com/Igneel0601 ↗</a>
+</footer>
+
+<div id="tweaks-root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" src="tweaks-panel.jsx"></script>
+
+<script type="text/babel">
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "shotsize": "medium",
+  "texture": true,
+  "repeatEntry": false
+}/*EDITMODE-END*/;
+
+function TweaksApp() {
+  const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
+
+  React.useEffect(() => {
+    const w = t.shotsize === "small"  ? "clamp(160px,14vw,220px)"
+            : t.shotsize === "large"  ? "clamp(260px,27vw,420px)"
+            : "clamp(200px,20vw,300px)";
+    document.querySelectorAll(".p-shot").forEach(el => { el.style.width = w; });
+
+    document.querySelectorAll(".proj").forEach(el => {
+      el.querySelectorAll("[class^='proj']::after").forEach(a => {
+        a.style.opacity = t.texture ? ".6" : "0";
+      });
+    });
+
+    document.body.dataset.repeatEntry = t.repeatEntry ? "1" : "0";
+  }, [t.shotsize, t.texture, t.repeatEntry]);
+
+  return (
+    <TweaksPanel>
+      <TweakSection label="Screenshot" />
+      <TweakRadio
+        label="Card size"
+        value={t.shotsize}
+        options={["small","medium","large"]}
+        onChange={v => setTweak("shotsize", v)}
+      />
+      <TweakSection label="Animation" />
+      <TweakToggle
+        label="Re-animate on re-entry"
+        value={t.repeatEntry}
+        onChange={v => setTweak("repeatEntry", v)}
+      />
+    </TweaksPanel>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("tweaks-root")).render(<TweaksApp />);
+</script>
+
+<script>
+(function(){
+"use strict";
+
+/* ── CURSOR ──────────────────────────────── */
+if (window.matchMedia("(any-pointer: fine)").matches) {
+  const cur = document.getElementById("cur");
+  document.addEventListener("mousemove", e => {
+    cur.style.left = e.clientX + "px";
+    cur.style.top  = e.clientY + "px";
+  }, { passive: true });
+  document.querySelectorAll("a, button, .p-shot").forEach(el => {
+    el.addEventListener("mouseenter", () => cur.classList.add("h"));
+    el.addEventListener("mouseleave", () => cur.classList.remove("h"));
+  });
+}
+
+/* ── SCROLL PROGRESS ─────────────────────── */
+const tpbf = document.getElementById("tpb-f");
+window.addEventListener("scroll", () => {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  tpbf.style.width = (window.scrollY / max * 100) + "%";
+}, { passive: true });
+
+/* ── HEADER ENTRANCE ─────────────────────── */
+document.getElementById("pgh-cmd").classList.add("in");
+document.getElementById("pgh-title").classList.add("in");
+document.getElementById("pgh-r").classList.add("in");
+
+/* ── WRAP TITLE CHARACTERS ───────────────── */
+document.querySelectorAll(".p-title").forEach(el => {
+  const word = el.dataset.word || el.textContent.trim();
+  const STAGGER = 55; // ms per character
+  el.innerHTML = [...word].map((ch, i) => {
+    const d = (i * STAGGER).toFixed(0) + "ms";
+    return `<span class="pc" style="--d:${d}">${ch}</span>`;
+  }).join("");
+});
+
+/* ── FIT TEXT ────────────────────────────── */
+function fitTitles() {
+  const sidepadding = parseFloat(getComputedStyle(document.querySelector(".proj")).paddingLeft) || 80;
+  const shotWidth   = parseFloat(getComputedStyle(document.querySelector(".p-shot")).width) || 260;
+  const gap         = 32;
+  const available   = window.innerWidth - sidepadding * 2 - shotWidth - gap;
+
+  document.querySelectorAll(".p-title").forEach(el => {
+    el.style.fontSize = "100px";
+    el.style.whiteSpace = "nowrap";
+    let lo = 16, hi = 700, mid;
+    for (let i = 0; i < 22; i++) {
+      mid = (lo + hi) / 2;
+      el.style.fontSize = mid + "px";
+      if (el.scrollWidth <= available) lo = mid; else hi = mid;
+    }
+    el.style.fontSize = (lo * .97) + "px";
+  });
+}
+fitTitles();
+window.addEventListener("resize", fitTitles);
+
+/* ── SCROLL REVEAL ───────────────────────── */
+const sections = Array.from(document.querySelectorAll(".proj"));
+
+function activate(sec) { sec.classList.add("is-on"); }
+function deactivate(sec) {
+  if (document.body.dataset.repeatEntry === "1") sec.classList.remove("is-on");
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) activate(e.target);
+    else deactivate(e.target);
+  });
+}, { threshold: 0 });
+
+function checkVisible() {
+  sections.forEach(sec => {
+    const r = sec.getBoundingClientRect();
+    if (r.top < window.innerHeight * 0.92 && r.bottom > 0) activate(sec);
+  });
+}
+
+// Check immediately, after first paint, and after fonts/layout settle
+checkVisible();
+requestAnimationFrame(() => { checkVisible(); requestAnimationFrame(checkVisible); });
+setTimeout(checkVisible, 150);
+setTimeout(checkVisible, 500);
+
+sections.forEach(sec => io.observe(sec));
+
+/* ── 3D TILT ON SCREENSHOT CARD ──────────── */
+document.querySelectorAll(".p-shot").forEach(card => {
+  const frame = card.querySelector(".p-shot-frame");
+  if (!frame) return;
+  card.addEventListener("mousemove", e => {
+    const r = card.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width  - .5;
+    const y = (e.clientY - r.top)  / r.height - .5;
+    frame.style.transform = `perspective(900px) rotateX(${-y*9}deg) rotateY(${x*9}deg) translateZ(10px)`;
+    frame.style.transition = "transform .08s ease-out, box-shadow .4s ease";
+  });
+  card.addEventListener("mouseleave", () => {
+    frame.style.transition = "transform .6s cubic-bezier(.16,1,.3,1), box-shadow .35s ease";
+    frame.style.transform  = "";
+  });
+});
+
+/* ── MAGNETIC CTA ────────────────────────── */
+document.querySelectorAll(".p-cta").forEach(btn => {
+  btn.addEventListener("mousemove", e => {
+    const r = btn.getBoundingClientRect();
+    btn.style.transform = `translate(${(e.clientX-(r.left+r.width/2))*.2}px,${(e.clientY-(r.top+r.height/2))*.2}px)`;
+  });
+  btn.addEventListener("mouseleave", () => {
+    btn.style.transition = "transform .5s cubic-bezier(.16,1,.3,1), color .2s, background .2s, border-color .2s, box-shadow .2s";
+    btn.style.transform = "";
+    setTimeout(() => { btn.style.transition = ""; }, 500);
+  });
+});
+
+})();
+</script>
+</body>
+</html>

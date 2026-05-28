@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
 import { useLenis } from "@/lib/lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
@@ -9,6 +10,8 @@ import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
 export function Nav() {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const navRef = useRef<HTMLElement | null>(null);
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const [open, setOpen] = useState(false);
@@ -33,25 +36,43 @@ export function Nav() {
       const nav = navRef.current!;
       const links = gsap.utils.toArray<HTMLElement>("[data-nav-link]", nav);
 
-      if (isReduce) {
+      // Delay applies regardless of reduced-motion preference.
+      // Reduced-motion only skips the slide easing, not the delay.
+      const skipSlide = isReduce;
+
+
+      // Mobile: no intro animation — show immediately. Scroll hide/show still applies.
+      let tl: gsap.core.Timeline | null = null;
+      if (isMobile) {
         gsap.set(nav, { autoAlpha: 1, y: 0 });
-        gsap.set(links, { autoAlpha: 1, y: 0 });
-        return;
+        // Disengage the FOUC guard CSS rule (desktop.css). Set via DOM
+        // (not JSX) so subsequent React rerenders from useState don't
+        // remove it and reintroduce the flicker.
+        nav.setAttribute("data-nav-revealed", "");
+        enteredRef.current = true;
+      } else {
+        // Initial state — nav hidden + slightly above. After delay, snap
+        // visibility on and slide down into place.
+        gsap.set(nav, { autoAlpha: 0, y: -12 });
+        // Flip the FOUC guard now that GSAP's inline visibility:hidden
+        // has taken over — CSS rule no longer needed and would only
+        // conflict with the autoAlpha animation. See desktop.css for why
+        // this is set via DOM rather than JSX.
+        nav.setAttribute("data-nav-revealed", "");
+
+        tl = gsap.timeline({
+          delay: isHome ? 2.8 : 0.1,
+          defaults: { ease: E.precise },
+          onComplete: () => {
+            enteredRef.current = true;
+          },
+        });
+        if (skipSlide) {
+          tl.set(nav, { autoAlpha: 1, y: 0 });
+        } else {
+          tl.set(nav, { autoAlpha: 1 }).to(nav, { y: 0, duration: D.md });
+        }
       }
-
-      // Initial state — hidden, drops in after boot finishes
-      gsap.set(nav, { autoAlpha: 0, y: -12 });
-      gsap.set(links, { autoAlpha: 0, y: -8 });
-
-      const tl = gsap.timeline({
-        delay: 1.8,
-        defaults: { ease: E.precise },
-        onComplete: () => {
-          enteredRef.current = true;
-        },
-      });
-      tl.to(nav, { autoAlpha: 1, y: 0, duration: D.md })
-        .to(links, { autoAlpha: 1, y: 0, duration: D.sm, stagger: 0.04 }, "-=0.30");
 
       // Sticky chrome toggle — set [data-stuck] when tabbar leaves viewport
       const tabbar = document.querySelector<HTMLElement>("[data-tabbar]");
@@ -87,7 +108,7 @@ export function Nav() {
       }
 
       return () => {
-        tl.kill();
+        tl?.kill();
         stickyST?.kill();
         sectionTriggers.forEach((t) => t.kill());
       };
@@ -139,9 +160,12 @@ export function Nav() {
     };
   }, [lenis]);
 
-  // animate the nav in/out when hidden state flips
+  // animate the nav in/out when hidden state flips.
+  // Skip until boot animation has completed (enteredRef.current === true),
+  // otherwise this fires on mount and overrides the boot delay.
   useEffect(() => {
     if (!navRef.current) return;
+    if (!enteredRef.current) return;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduced) {
       gsap.set(navRef.current, { yPercent: 0, autoAlpha: 1 });
@@ -199,14 +223,20 @@ export function Nav() {
       <nav
         ref={navRef}
         data-nav
-        className="sticky top-0 z-50 px-6 md:px-10 transition-colors duration-200"
+        style={{
+          background: 'color-mix(in oklab, var(--paper) 15%, transparent)',
+          backdropFilter: 'blur(24px) saturate(140%)',
+          WebkitBackdropFilter: 'blur(24px) saturate(140%)',
+        }}
+        className="sticky top-0 z-50"
       >
-        <div className="hidden md:flex items-center gap-5 py-3 c-md">
+        <div className="page-shell hidden md:flex items-center gap-5 py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"
             href="/"
-            className="font-semibold nav-link"
+            className="font-semibold nav-link no-pop"
+            style={{ color: "var(--accent)" }}
           >
             igneel.dev
           </Link>
@@ -224,14 +254,24 @@ export function Nav() {
                     {l.label}
                   </a>
                 ) : (
-                  <Link
-                    data-nav-link
-                    data-nav-kind={l.kind}
-                    href={l.href}
-                    className="nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
-                  >
-                    {l.label}
-                  </Link>
+                  (() => {
+                    const isActive =
+                      l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(`${l.href}/`)
+                    return (
+                      <Link
+                        data-nav-link
+                        data-nav-kind={l.kind}
+                        data-active={isActive ? "true" : undefined}
+                        href={l.href}
+                        aria-current={isActive ? "page" : undefined}
+                        className={`nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full${
+                          isActive ? " after:w-full" : ""
+                        }`}
+                      >
+                        {l.label}
+                      </Link>
+                    )
+                  })()
                 )}
               </li>
             ))}
@@ -246,12 +286,13 @@ export function Nav() {
           </a>
         </div>
 
-        <div className="md:hidden flex items-center justify-between py-3 c-md">
+        <div className="page-shell md:hidden flex items-center justify-between py-3 c-md">
           <Link
             data-nav-link
             data-nav-kind="route"
             href="/"
-            className="font-semibold nav-link"
+            className="font-semibold nav-link no-pop"
+            style={{ color: "var(--accent)" }}
           >
             igneel.dev
           </Link>
@@ -259,7 +300,7 @@ export function Nav() {
             data-nav-toggle
             aria-label="Open menu"
             onClick={() => setOpen(true)}
-            className="text-lg leading-none px-2 py-1 border rounded"
+            className="c-md leading-none px-2 py-1 border rounded"
             style={{ borderColor: "var(--ink)" }}
           >
             ☰
@@ -277,7 +318,7 @@ export function Nav() {
           <button
             aria-label="Close menu"
             onClick={() => setOpen(false)}
-            className="absolute top-4 right-5 text-2xl leading-none"
+            className="absolute top-4 right-5 t-h4 leading-none"
           >
             ×
           </button>
@@ -294,16 +335,24 @@ export function Nav() {
                 {l.label}
               </a>
             ) : (
-              <Link
-                key={l.href}
-                data-nav-link
-                data-nav-kind={l.kind}
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="t-h2"
-              >
-                {l.label}
-              </Link>
+              (() => {
+                const isActive =
+                  l.href === "/" ? pathname === "/" : pathname === l.href || pathname.startsWith(`${l.href}/`)
+                return (
+                  <Link
+                    key={l.href}
+                    data-nav-link
+                    data-nav-kind={l.kind}
+                    data-active={isActive ? "true" : undefined}
+                    href={l.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className="t-h2"
+                  >
+                    {l.label}
+                  </Link>
+                )
+              })()
             ),
           )}
         </div>

@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
-import { Fraunces, IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
-import "./globals.css";
-import { MotionProvider } from "@/components/MotionProvider";
-import { Nav } from "@/components/Nav";
-import CustomCursor from "@/components/CustomCursor";
-import { Background } from "@/components/Background";
+import { Fraunces, IBM_Plex_Mono } from "next/font/google";
+import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+
+// Root layout intentionally has NO shell. Proxy (proxy.ts) rewrites
+// every UA-routable URL into /d/* or /m/* per User-Agent; the matching subtree
+// layout (app/d/layout.tsx or app/m/layout.tsx) provides chrome + per-tree CSS.
+// Routes outside the subtrees (api, rss, sitemap, robots, not-found) render
+// here without chrome — they're either machine-readable or full-bleed.
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -22,18 +24,16 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-plex-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap",
-});
-
 export const metadata: Metadata = {
   metadataBase: new URL("https://igneel.dev"),
   title: "Vaibhav Verma — software engineer",
   description:
     "I build software that teaches itself to write more software. CSE grad, Noida. Open to full-time + freelance.",
+  alternates: {
+    types: {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
   openGraph: {
     title: "Vaibhav Verma — software engineer",
     description:
@@ -56,15 +56,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${plexMono.variable} ${plexSans.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${plexMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className="min-h-full flex flex-col">
-        <MotionProvider>
-          <Background />
-          <CustomCursor />
-          <Nav />
-          {children}
-        </MotionProvider>
+        {children}
         <Analytics />
         <SpeedInsights />
       </body>

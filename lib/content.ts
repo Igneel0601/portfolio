@@ -38,7 +38,7 @@ export const PROJECTS: Project[] = [
     name: "CodeFlow",
     blurb:
       "AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.",
-    stack: ["next.js", "react", "tRPC", "prisma", "inngest", "e2b", "openai/gemini"],
+    stack: ["next.js", "tRPC", "prisma", "inngest", "e2b", "openai/gemini"],
     url: "code-flow-hazel.vercel.app",
     meta: "61 commits · solo",
     image: "/projects/codeflow.png",
@@ -59,11 +59,11 @@ export const PROJECTS: Project[] = [
     ],
     details: {
       what:
-        "CodeFlow is an AI-powered development platform where you build a working web app by chatting with agents. You describe what you want, the agents generate and execute Next.js code inside a real E2B sandbox, and the result shows up in a split-pane live preview you can keep iterating on — file tree, message history, the works.",
+        "Chat with agents, get a working Next.js app. They generate and execute code inside a real E2B sandbox, and the result lands in a split-pane live preview you can keep iterating on.",
       why:
-        "Most AI builders either spit out static mockups or hand you a zip and wish you luck. Neither survives contact with real engineering. CodeFlow runs actual code in an actual sandbox, so the thing you see is the thing that works — and you can keep talking to it until it's right, instead of restarting from scratch every time you change your mind.",
+        "Most AI builders spit out static mockups or hand you a zip. CodeFlow runs actual code in an actual sandbox, so what you see is what works — and you can keep talking to it until it's right.",
       how:
-        "Next.js + React + TypeScript on the frontend, Tailwind + Shadcn for the UI. tRPC fronts the agent calls; Inngest runs them as background jobs so a single message can take minutes without blocking the UI. Code generation and execution live inside E2B Code Interpreter sandboxes, with OpenAI and Gemini interchangeable as the underlying model. Prisma + Postgres back the persistence layer, Clerk handles auth, and there's usage tracking + Pro subscription for rate limiting.",
+        "Next.js + Tailwind on the front. tRPC fronts agent calls; Inngest runs them as background jobs so long generations don't block the UI. E2B sandboxes execute the code; OpenAI/Gemini are interchangeable models. Prisma + Postgres for persistence, Clerk for auth.",
     },
   },
   {
@@ -92,11 +92,11 @@ export const PROJECTS: Project[] = [
     ],
     details: {
       what:
-        "TaskForge is a real-time collaborative Kanban board — Trello meets Notion, with multiplayer baked in. Customizable boards and columns, drag-and-drop cards, threaded comments on each task, and Google OAuth so a whole team can sign in and start moving tickets around together within seconds of opening the dashboard.",
+        "Real-time collaborative Kanban — Trello meets Notion with multiplayer baked in. Customizable boards, drag-and-drop cards, threaded comments, Google OAuth, and a whole team moving tickets around in seconds.",
       why:
-        "Most Kanban tools either feel slow and bureaucratic or quietly fall apart the moment more than one person opens the same board. I wanted presence to be a first-class citizen — you can literally see other cursors moving, cards getting dragged, and comments landing in real time — without giving up the persistence and structure of a proper task tracker you can actually run a sprint on.",
+        "Most Kanban tools feel slow or quietly fall apart once two people open the same board. I wanted presence as a first-class citizen — live cursors, live drags, comments landing in real time — without losing the structure of a real sprint tracker.",
       how:
-        "Next.js handles SSR and routing, Tailwind drives the UI, and the entire realtime layer rides on Liveblocks — it broadcasts board state, cursors, and edits to every connected client without me writing a single line of websocket code. NextAuth gates access via Google OAuth, and MongoDB persists boards, columns, cards, and comment threads. Drag-and-drop is wired straight into Liveblocks so reorderings sync instantly across every collaborator on the board.",
+        "Next.js + Tailwind for the shell. Liveblocks runs the entire realtime layer — board state, cursors, edits — so I never wrote a line of websocket code. NextAuth + Google OAuth for access, MongoDB for persistence. Drag-and-drop wires straight into Liveblocks.",
     },
   },
   {
@@ -106,7 +106,7 @@ export const PROJECTS: Project[] = [
     name: "Traveloop",
     blurb:
       "Odoo Hackathon · The Knights · group build, shipped on the clock. Itinerary planner with collaborative edits.",
-    stack: ["next.js", "react", "prisma", "postgres", "tailwind", "shadcn", "nextauth"],
+    stack: ["next.js", "prisma", "postgres", "tailwind", "shadcn", "nextauth"],
     meta: "hackathon · group of 4",
     image: "/projects/traveloop.png",
     date: "2026-02",
@@ -125,11 +125,11 @@ export const PROJECTS: Project[] = [
     ],
     details: {
       what:
-        "Traveloop is a full-stack travel-planning workspace built at the Odoo Hackathon by The Knights. It stitches multi-city itineraries, day-grouped activities, per-stop budgets with Recharts visualizations, packing checklists, markdown notes, and a community feed of shared trips into one integrated app you can run a whole vacation out of.",
+        "Full-stack travel-planning workspace from the Odoo Hackathon. Multi-city itineraries, day-grouped activities, per-stop budgets with Recharts, packing checklists, markdown notes, and a community feed of shared trips — all in one app.",
       why:
-        "Planning a trip usually means juggling a dozen browser tabs — one for the itinerary, one for budget math, one for restaurants, one for notes — and none of them talk to each other. We wanted a single workspace where the trip, the money, the gear list, and the journal all live in the same place, with the structure of a proper tool and the speed of something we'd actually open every day.",
+        "Planning a trip usually means a dozen disconnected tabs: itinerary, budget, restaurants, notes. We wanted one workspace where the trip, the money, the gear list, and the journal live together — fast enough to open every day.",
       how:
-        "Next.js with App Router and server components everywhere by default; client islands only where there's real interaction. All mutations are Server Actions sharing Zod schemas with React Hook Form, so the same validation runs on both sides. Prisma + PostgreSQL handle a 12-table schema (users, trips, stops, activities, expenses, packing items). NextAuth.js v5 with the credentials provider handles auth, gating the app route group at the layout level.",
+        "Next.js App Router with server components by default, client islands only where needed. Server Actions share Zod schemas with React Hook Form so the same validation runs on both sides. Prisma + Postgres back a 12-table schema; NextAuth v5 gates the app at the layout level.",
     },
   },
 ];
@@ -141,12 +141,13 @@ export type NavLink = {
 };
 
 export const NAV_LINKS: NavLink[] = [
-  { label: "work", href: "#work", kind: "scroll" },
+  { label: "work", href: "/work", kind: "route" },
   { label: "writing", href: "/writing", kind: "route" },
   { label: "experiments", href: "/experiments", kind: "route" },
+  { label: "/terminal", href: "/terminal", kind: "route" },
   { label: "about", href: "#about", kind: "scroll" },
-  { label: "/now", href: "/now", kind: "route" },
-  { label: "/uses", href: "/uses", kind: "route" },
+  // { label: "/now", href: "/now", kind: "route" },   // route not built yet
+  // { label: "/uses", href: "/uses", kind: "route" }, // route not built yet
   { label: "hi@igneel.dev", href: "mailto:hi@igneel.dev", kind: "mailto" },
 ];
 
@@ -236,40 +237,6 @@ export const LOGS: string[][] = [
     "off-keyboard: arch ricing, sci-fi, filter coffee",
   ],
 ];
-
-export type FutureModule = {
-  label: string;
-  blurb: string;
-  route: string;
-};
-
-export const FUTURE: FutureModule[] = [
-  { label: "experiments", blurb: "tiny demos, shaders, half-finished ideas", route: "/experiments" },
-  { label: "writing", blurb: "notes from building in public", route: "/writing" },
-  { label: "/now", blurb: "what I'm doing this month", route: "/now" },
-  { label: "/dev/letters", blurb: "one email a month, no spam", route: "/letters" },
-];
-
-export type WorkLogRow = {
-  status: "ok" | "wip";
-  tag: string;
-  name: string;
-  blurb: string;
-  stack: string;
-  year: string;
-  notes: string;
-};
-
-export const WORK_LOG_ROWS: WorkLogRow[] = [
-  { status: "ok",  tag: "flagship",  name: "codeflow",     blurb: "An AI-powered website builder.",          stack: "TS · Next 16 · tRPC · Inngest",      year: "2026", notes: "61" },
-  { status: "ok",  tag: "collab",    name: "taskforge",    blurb: "Real-time kanban + AI task elaboration.", stack: "TS · Next · Liveblocks · Mongo",     year: "2025", notes: "21" },
-  { status: "ok",  tag: "hackathon", name: "traveloop",    blurb: "Trip planner — Odoo Hackathon.",          stack: "React · Firebase",                    year: "2026", notes: "group" },
-  { status: "ok",  tag: "oss",       name: "wall-engine",  blurb: "Dynamic wallpaper switcher for Hyprland.",stack: "Shell · SDDM",                        year: "2025", notes: "3★ 1 fork" },
-  { status: "ok",  tag: "dotfiles",  name: "arch-install", blurb: "My Arch setup, scripted top-to-bottom.",  stack: "Shell · Linux",                       year: "2024", notes: "—" },
-  { status: "wip", tag: "next",      name: "…",            blurb: "writing the README first.",                stack: "tbd",                                 year: "2026", notes: "early" },
-];
-
-export const WORK_FILTERS = ["all", "flagship", "oss", "hackathon", "collab", "dotfiles", "wip"] as const;
 
 export const GIT_LOG_PREVIEW: string[] = [
   "a3f01b2 · docs(traveloop): wrote case study draft",

@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>404 — page not found · igneel.dev</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;0,9..144,800;1,9..144,400;1,9..144,600;1,9..144,700&family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --paper:   #0a0d12;
+    --paper-2: #11161d;
+    --paper-3: #161c25;
+    --ink:     #e6edf3;
+    --ink-soft:#8b949e;
+    --ink-dim: #5b6573;
+    --hair:    rgba(230,237,243,.10);
+    --hair-2:  rgba(230,237,243,.18);
+    --accent:  #6ee7a7;
+    --accent-2:#7fb3ff;
+    --warn:    #f0b73a;
+    --bad:     #ff7a55;
+    --hilite:  rgba(110,231,167,.20);
+
+    --pad-x: clamp(20px, 4vw, 56px);
+    --maxw: 1180px;
+
+    --serif: "Fraunces", "Times New Roman", serif;
+    --mono:  "IBM Plex Mono", ui-monospace, monospace;
+  }
+
+  *,*::before,*::after{ box-sizing:border-box; }
+  html,body{ margin:0; padding:0; background:var(--paper); color:var(--ink); font-family:var(--mono); font-size:16px; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; }
+  body{ overflow-x:hidden; min-height:100vh; display:flex; flex-direction:column; }
+  a{ color:inherit; text-decoration:none; }
+  ::selection{ background:var(--accent); color:#0a0d12; }
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:var(--paper); }
+  ::-webkit-scrollbar-thumb{ background:#222933; border-radius:6px; }
+  ::-webkit-scrollbar-thumb:hover{ background:#2d3540; }
+
+  /* terminal tab bar across very top of page */
+  .term-bar{
+    display:flex; align-items:center; gap:10px;
+    padding:10px var(--pad-x);
+    border-bottom:1px solid var(--hair);
+    background:rgba(10,13,18,.7);
+    backdrop-filter:blur(10px);
+  }
+  .mac-dot{ width:11px; height:11px; border-radius:50%; background:#3a4250; }
+  .mac-dot.r{ background:#ff5f57; }
+  .mac-dot.y{ background:#febc2e; }
+  .mac-dot.g{ background:#28c840; }
+  .term-bar .prompt{ font-family:var(--mono); font-size:12px; color:var(--ink-soft); margin-left:6px; }
+  .term-bar .right{ margin-left:auto; font-family:var(--mono); font-size:11px; color:var(--ink-dim); letter-spacing:.04em; }
+
+  /* hybrid nav */
+  .nav{
+    display:flex; align-items:center; gap:24px;
+    padding:14px var(--pad-x);
+    background:rgba(10,13,18,.62);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--hair);
+  }
+  .nav .brand{ font-family:var(--mono); font-weight:600; font-size:13.5px; letter-spacing:.02em; }
+  .nav .brand .dot{ color:var(--accent); }
+  .nav .links{ display:flex; gap:22px; margin-left:8px; }
+  .nav-link{
+    position:relative; font-family:var(--mono); font-size:13px; color:var(--ink-soft);
+    transition:color .18s ease;
+    padding:4px 0;
+  }
+  .nav-link:hover{ color:var(--ink); }
+  .nav .mail{
+    margin-left:auto; display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--mono); font-size:12.5px; color:var(--ink);
+    padding:7px 12px; border:1px solid var(--hair-2); border-radius:10px;
+    transition:border-color .18s ease, color .18s ease;
+  }
+  .nav .mail:hover{ border-color:var(--accent); color:var(--accent); }
+  .nav .mail .at{ color:var(--accent); }
+
+  /* container */
+  .container{ max-width:var(--maxw); margin:0 auto; padding: clamp(36px, 6vw, 64px) var(--pad-x); width:100%; flex:1; display:flex; flex-direction:column; gap: clamp(32px, 5vw, 56px); }
+
+  /* ── headline split ───────────────────────────────────── */
+  .head{
+    display:grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(28px, 5vw, 64px);
+    align-items: end;
+  }
+  .head .left .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom: 14px;
+  }
+  .head .left .eyebrow::before{
+    content:""; width:14px; height:1px; background:var(--bad); display:inline-block;
+  }
+  .head .left .eyebrow .stat{ color:var(--bad); }
+
+  .num{
+    font-family:var(--serif);
+    font-size:clamp(160px, 26vw, 320px);
+    line-height:.82;
+    letter-spacing:-.04em;
+    font-weight:700;
+    color:var(--ink);
+    position:relative;
+    display:inline-block;
+  }
+  .num em{
+    font-style:italic;
+    color:var(--bad);
+  }
+  .num .slash{
+    color:var(--ink-dim);
+    font-style:normal;
+    margin: 0 -.04em;
+  }
+  .head .left h1.tag{
+    font-family:var(--serif);
+    font-size:clamp(28px, 3.6vw, 44px);
+    line-height:1.05;
+    font-weight:700;
+    letter-spacing:-.012em;
+    margin: 18px 0 0;
+    max-width: 16ch;
+  }
+  .head .left h1.tag em{ font-style:italic; color:var(--accent); }
+  .head .left .sub{
+    margin-top:14px; max-width: 50ch;
+    font-family:var(--mono); font-size:14.5px; line-height:1.65; color:var(--ink-soft);
+  }
+  .head .left .sub code{
+    color:var(--ink); background:rgba(255,122,85,.10);
+    border:1px solid rgba(255,122,85,.30);
+    padding: 1px 6px; border-radius:4px; font-size:13px;
+  }
+
+  /* boot/stack lines on the right */
+  .stacklog{
+    font-family:var(--mono); font-size:13px; line-height:1.85;
+    border:1px solid var(--hair-2);
+    background:linear-gradient(180deg, #0d121a 0%, #0b1017 100%);
+    border-radius:14px;
+    overflow:hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.03) inset,
+      0 30px 60px -30px rgba(0,0,0,.6);
+  }
+  .stacklog .bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 14px;
+    border-bottom:1px solid var(--hair);
+    background:linear-gradient(180deg, #11161e 0%, #0d1219 100%);
+  }
+  .stacklog .bar .title{ font-family:var(--mono); font-size:11.5px; color:var(--ink-dim); margin-left:auto; padding-right:6px; }
+  .stacklog .body{ padding: 16px 18px 18px; color:var(--ink-soft); }
+  .stacklog .line{ display:flex; gap:8px; align-items:baseline; }
+  .stacklog .line .p{ color:var(--accent); flex-shrink:0; }
+  .stacklog .err .p{ color:var(--bad); }
+  .stacklog .warn .p{ color:var(--warn); }
+  .stacklog .ok .p{ color:var(--accent); }
+  .stacklog .ind{ padding-left:18px; color:var(--ink-dim); }
+  .stacklog .bad{ color:var(--bad); }
+  .stacklog .ok-t{ color:var(--accent); }
+  .stacklog .blu{ color:var(--accent-2); }
+  .stacklog .dim{ color:var(--ink-dim); }
+  .stacklog .hl{ background:rgba(255,122,85,.10); padding: 0 .12em; border-radius:3px; color:var(--ink); }
+
+  /* ── routes that DO exist ─────────────────────────────── */
+  .routes-head{
+    display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+    margin-bottom: 18px;
+  }
+  .scene-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--mono); font-size:11px; letter-spacing:.18em; text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .scene-eyebrow::before{
+    content:""; width:14px; height:1px; background:var(--accent); display:inline-block;
+  }
+  .routes-head h2{
+    font-family:var(--serif); font-size:clamp(24px, 2.6vw, 32px); line-height:1.12; font-weight:700; letter-spacing:-.005em;
+    margin: 6px 0 0;
+  }
+  .routes-head .meta{ font-family:var(--mono); font-size:11px; color:var(--ink-dim); letter-spacing:.14em; text-transform:uppercase; }
+
+  .routes{
+    display:grid; grid-template-columns: repeat(4, 1fr); gap:14px;
+  }
+  .route-card{
+    background:var(--paper-2);
+    border:1px solid var(--hair);
+    border-radius:14px;
+    padding: 18px 18px 20px;
+    display:flex; flex-direction:column; gap:8px;
+    min-height: 150px;
+    position:relative;
+    transition: border-color .25s ease, transform .25s ease;
+  }
+  .route-card:hover{ border-color:var(--accent); transform:translateY(-2px); }
+  .route-card .glyph{
+    font-family:var(--mono); font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim);
+  }
+  .route-card .path{
+    font-family:var(--mono); font-size:13.5px; color:var(--ink);
+  }
+  .route-card .path .acc{ color:var(--accent); }
+  .route-card h3{
+    font-family:var(--serif); font-size:22px; font-weight:700; margin: 4px 0 0; letter-spacing:-.005em;
+  }
+  .route-card p{ font-family:var(--mono); font-size:12px; color:var(--ink-soft); margin: 6px 0 0; line-height:1.55; }
+  .route-card .arr{ position:absolute; right:16px; bottom:16px; font-family:var(--mono); font-size:13px; color:var(--accent-2); }
+
+  /* ── interactive shell ────────────────────────────────── */
+  .shell-wrap{ display:flex; flex-direction:column; gap:14px; }
+  .shell{
+    border:1px solid var(--hair-2);
+    border-radius:14px;
+    background:linear-gradient(180deg, #0d121a 0%, #0a0e15 100%);
+    overflow:hidden;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.03) inset,
+      0 40px 80px -40px rgba(0,0,0,.6);
+  }
+  .shell .bar{
+    display:flex; align-items:center; gap:8px;
+    padding:11px 14px;
+    border-bottom:1px solid var(--hair);
+    background:linear-gradient(180deg, #11161e 0%, #0d1219 100%);
+  }
+  .shell .bar .title{ font-family:var(--mono); font-size:11.5px; color:var(--ink-dim); margin-left:auto; padding-right:6px; }
+  .shell .body{
+    padding: 16px 18px 14px;
+    font-family:var(--mono); font-size:13px; line-height:1.7;
+    color:var(--ink-soft);
+    max-height: 280px;
+    overflow-y:auto;
+  }
+  .shell .ln{ display:flex; gap:10px; align-items:baseline; }
+  .shell .ln .p{ color:var(--accent); flex-shrink:0; }
+  .shell .ln .cmd{ color:var(--ink); }
+  .shell .out{ color:var(--ink-soft); white-space:pre-wrap; padding-left: 26px; }
+  .shell .out .ok{ color:var(--accent); }
+  .shell .out .err{ color:var(--bad); }
+  .shell .out .blu{ color:var(--accent-2); }
+  .shell .out .warn{ color:var(--warn); }
+  .shell .out .dim{ color:var(--ink-dim); }
+  .shell .out a{ color:var(--accent-2); border-bottom:1px dashed rgba(127,179,255,.4); }
+  .shell .out a:hover{ color:var(--accent); border-color:var(--accent); }
+
+  .shell .input-row{
+    display:flex; align-items:center; gap:10px;
+    padding: 10px 18px 14px;
+    border-top:1px solid var(--hair);
+    background:rgba(0,0,0,.15);
+  }
+  .shell .input-row .p{ color:var(--accent); font-family:var(--mono); font-size:13px; }
+  .shell input{
+    flex:1;
+    background:transparent; border:none; outline:none;
+    color:var(--ink);
+    font-family:var(--mono); font-size:13px; line-height:1.4;
+    padding: 4px 0;
+    caret-color: var(--accent);
+  }
+  .shell .hint{
+    font-family:var(--mono); font-size:11px; color:var(--ink-dim); letter-spacing:.10em; text-transform:uppercase;
+    flex-shrink:0;
+  }
+  .shell .hint kbd{
+    border:1px solid var(--hair-2); border-radius:4px; padding: 1px 5px; font-size:10px;
+    color:var(--ink-soft); background:rgba(255,255,255,.02);
+    letter-spacing:.02em;
+  }
+
+  /* blinking cursor for empty input state */
+  @keyframes blink { 50%{ opacity:0; } }
+  .cursor{ display:inline-block; width:8px; height:1em; background:var(--ink); margin-left:1px; vertical-align:-2px; animation:blink 1.06s steps(2) infinite; }
+
+  /* footer git log + footer */
+  .gitlog{
+    padding: 0 var(--pad-x); max-width:var(--maxw); margin: 0 auto; width:100%;
+    font-family:var(--mono); font-size:12px; line-height:1.7; color:var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .gitlog .hash{ color:var(--accent-2); }
+  .gitlog .ttl{ font-family:var(--mono); font-size:11px; letter-spacing:.18em; color:var(--ink-dim); text-transform:uppercase; margin-bottom:8px; }
+
+  footer{
+    padding: 22px var(--pad-x) 30px;
+    border-top:1px solid var(--hair);
+    display:flex; justify-content:space-between; align-items:center; gap:20px;
+    font-family:var(--mono); font-size:11.5px; color:var(--ink-dim);
+    flex-wrap:wrap;
+  }
+  footer a{ color:var(--ink-soft); transition:color .18s ease; }
+  footer a:hover{ color:var(--accent); }
+  footer .socials{ display:flex; gap:18px; }
+
+  /* responsive */
+  @media (max-width: 900px){
+    .head{ grid-template-columns: 1fr; }
+    .routes{ grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px){
+    .nav .links{ display:none; }
+    .routes{ grid-template-columns: 1fr; }
+    .num{ font-size: 38vw; }
+    .shell .hint{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- terminal tab bar -->
+<div class="term-bar">
+  <span class="mac-dot r"></span>
+  <span class="mac-dot y"></span>
+  <span class="mac-dot g"></span>
+  <span class="prompt">vaibhav@noida:~/igneel.dev$ open /404</span>
+  <span class="right">exit 0xA4 · http 404</span>
+</div>
+
+<!-- nav (static — no React on this page) -->
+<nav class="nav">
+  <a class="brand" href="/">igneel<span class="dot">.</span>dev</a>
+  <div class="links">
+    <a class="nav-link" href="/#work">work</a>
+    <a class="nav-link" href="/#about">about</a>
+    <a class="nav-link" href="/writing">writing</a>
+    <a class="nav-link" href="/experiments">experiments</a>
+    <a class="nav-link" href="/now">/now</a>
+    <a class="nav-link" href="/uses">/uses</a>
+  </div>
+  <a class="mail" href="mailto:hi@igneel.dev">hi<span class="at">@</span>igneel.dev</a>
+</nav>
+
+<main class="container">
+
+  <!-- ── headline + stack trace ───────────────────────────── -->
+  <section class="head">
+    <div class="left">
+      <div class="eyebrow"><span class="stat">ERROR 404</span> · route not found · scene_05.5</div>
+      <div class="num"><em>4</em><span class="slash">0</span><em>4</em></div>
+      <h1 class="tag">Looks like you wandered <em>off the path.</em></h1>
+      <p class="sub">
+        I checked the routes table. <code id="missing-path">/whatever-you-typed</code> isn't in there.
+        Could be a typo, a stale bookmark, or a page I haven't built yet (there are a few of those).
+        Either way — the terminal below works, try <code>help</code>.
+      </p>
+    </div>
+
+    <aside class="stacklog" aria-label="stack trace">
+      <div class="bar">
+        <span class="mac-dot r"></span>
+        <span class="mac-dot y"></span>
+        <span class="mac-dot g"></span>
+        <span class="title">stderr · router.log</span>
+      </div>
+      <div class="body">
+        <div class="line"><span class="p">$</span><span>./resolve.sh <span class="hl" id="missing-path-2">/whatever-you-typed</span></span></div>
+        <div class="line ind">[ <span class="ok-t">boot</span> ] looking up route in manifest…</div>
+        <div class="line ind">[ <span class="ok-t">boot</span> ] checking <span class="blu">/pages</span> · <span class="dim">3 matches scanned</span></div>
+        <div class="line ind">[ <span class="ok-t">boot</span> ] checking <span class="blu">/api</span>    · <span class="dim">0 matches</span></div>
+        <div class="line ind">[ <span class="ok-t">boot</span> ] checking <span class="blu">/static</span> · <span class="dim">0 matches</span></div>
+        <div class="line err"><span class="p">!!</span><span><span class="bad">RouteNotFoundError</span>: cannot GET <span class="hl">that path</span></span></div>
+        <div class="line ind">  at <span class="blu">Router.resolve</span> (router.ts:42)</div>
+        <div class="line ind">  at <span class="blu">App.render</span>     (app.jsx:18)</div>
+        <div class="line ind">  at <span class="dim">&lt;anonymous&gt;</span></div>
+        <div class="line warn"><span class="p">??</span><span>did you mean one of: <span class="ok-t">/</span>, <span class="ok-t">/#work</span>, <span class="ok-t">/#about</span>?</span></div>
+        <div class="line ok"><span class="p">›</span><span>scroll down — i listed the real routes for you</span></div>
+        <div class="line dim ind">[exit 1 · 0.04s]</div>
+      </div>
+    </aside>
+  </section>
+
+  <!-- ── routes that exist ────────────────────────────────── -->
+  <section>
+    <div class="routes-head">
+      <div>
+        <div class="scene-eyebrow">SCENE 05.5 — Routes that actually resolve</div>
+        <h2>Try one of these instead.</h2>
+      </div>
+      <span class="meta">$ ls -la /</span>
+    </div>
+    <div class="routes">
+      <a class="route-card" href="/">
+        <span class="glyph">drwx · home</span>
+        <div class="path"><span class="acc">~/</span>index</div>
+        <h3>Start here.</h3>
+        <p>The whole site, top of the scroll.</p>
+        <span class="arr">→</span>
+      </a>
+      <a class="route-card" href="/#work">
+        <span class="glyph">-rw- · pinned</span>
+        <div class="path"><span class="acc">~/</span>work</div>
+        <h3>The three I shipped.</h3>
+        <p>CodeFlow, TaskForge, Traveloop.</p>
+        <span class="arr">→</span>
+      </a>
+      <a class="route-card" href="/#about">
+        <span class="glyph">-rw- · readme</span>
+        <div class="path"><span class="acc">~/</span>about</div>
+        <h3>The short version.</h3>
+        <p>CSE, Noida, currently shipping AI tooling.</p>
+        <span class="arr">→</span>
+      </a>
+      <a class="route-card" href="mailto:hi@igneel.dev">
+        <span class="glyph">exec · mail</span>
+        <div class="path"><span class="acc">$</span> contact</div>
+        <h3>Just say hi.</h3>
+        <p>hi@igneel.dev — fastest path to a reply.</p>
+        <span class="arr">↗</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- ── interactive shell ────────────────────────────────── -->
+  <section class="shell-wrap">
+    <div class="scene-eyebrow">SCENE 05.6 — Or poke around in here</div>
+
+    <div class="shell">
+      <div class="bar">
+        <span class="mac-dot r"></span>
+        <span class="mac-dot y"></span>
+        <span class="mac-dot g"></span>
+        <span class="title">bash · 80×24 · pid 4042</span>
+      </div>
+      <div class="body" id="shell-body">
+        <div class="ln"><span class="p">$</span><span class="cmd">help</span></div>
+<div class="out">commands:
+  <span class="ok">help</span>      list commands
+  <span class="ok">ls</span>        show pages on this site
+  <span class="ok">cd ~</span>      go home (/)
+  <span class="ok">whoami</span>    short bio
+  <span class="ok">cat</span> &lt;file&gt; show file contents (try <span class="blu">about.ts</span>, <span class="blu">resume</span>, <span class="blu">contact</span>)
+  <span class="ok">find</span> /page locate the page you were after
+  <span class="ok">sudo</span> &lt;cmd&gt; with great power…
+  <span class="ok">clear</span>     clear the screen
+  <span class="dim">try <kbd style="border:1px solid #2a3340;border-radius:3px;padding:0 4px;color:#8b949e">↑</kbd> for history</span>
+</div>
+      </div>
+      <form class="input-row" id="shell-form" autocomplete="off">
+        <span class="p">vaibhav@noida:~/404 $</span>
+        <input id="shell-input" type="text" spellcheck="false" autocapitalize="off" autocorrect="off" aria-label="terminal input" />
+        <span class="hint"><kbd>↵</kbd> run · <kbd>↑</kbd> history</span>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<!-- footer git log -->
+<div class="gitlog">
+  <div class="ttl">$ git blame 404.html | tail -3</div>
+  <div><span class="hash">b40404e</span> · feat(404): added playable shell · 2026-05-12</div>
+  <div><span class="hash">a3f01b2</span> · fix(router): catch-all handler · 2026-04-30</div>
+  <div><span class="hash">7c01d8a</span> · chore(404): bumped attitude to 100% · 2026-04-12</div>
+</div>
+
+<footer>
+  <span>$ exit 1 · page not found, vibes intact</span>
+  <div class="socials">
+    <a href="/">home</a>
+    <a href="https://github.com/igneel0601" target="_blank" rel="noopener">github</a>
+    <a href="#">linkedin</a>
+    <a href="mailto:hi@igneel.dev">email</a>
+  </div>
+  <span>© Vaibhav Verma · 2026</span>
+</footer>
+
+<script>
+(function(){
+  // ── pull the requested path from the URL (or a ?from= param) ──
+  const params = new URLSearchParams(location.search);
+  let asked = params.get("from") || location.pathname || "/?";
+  if (asked === "/" || asked === "/404.html" || asked === "/404") asked = "/whatever-you-typed";
+  // truncate ugly long paths
+  if (asked.length > 40) asked = asked.slice(0, 37) + "…";
+  document.querySelectorAll("#missing-path, #missing-path-2").forEach(el => el.textContent = asked);
+
+  // ── interactive shell ────────────────────────────────────
+  const body  = document.getElementById("shell-body");
+  const form  = document.getElementById("shell-form");
+  const input = document.getElementById("shell-input");
+  const history = [];
+  let hIdx = -1;
+
+  function esc(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+  function print(html, cls){
+    const div = document.createElement("div");
+    div.className = "out" + (cls?" "+cls:"");
+    div.innerHTML = html;
+    body.appendChild(div);
+  }
+  function printCmd(cmd){
+    const ln = document.createElement("div");
+    ln.className = "ln";
+    ln.innerHTML = '<span class="p">$</span><span class="cmd">'+esc(cmd)+'</span>';
+    body.appendChild(ln);
+  }
+  function scrollEnd(){
+    body.scrollTop = body.scrollHeight;
+  }
+
+  const commands = {
+    help(){
+      print(
+`commands:
+  <span class="ok">help</span>      list commands
+  <span class="ok">ls</span>        show pages on this site
+  <span class="ok">cd ~</span>      go home (/)
+  <span class="ok">whoami</span>    short bio
+  <span class="ok">cat</span> &lt;file&gt; about.ts · resume · contact
+  <span class="ok">find</span> /page locate the page you were after
+  <span class="ok">sudo</span> &lt;cmd&gt; with great power…
+  <span class="ok">date</span>      current time
+  <span class="ok">echo</span> &lt;txt&gt; print text
+  <span class="ok">clear</span>     wipe screen`);
+    },
+    ls(){
+      print(
+`drwxr-xr-x  <a href="/">/                </a> <span class="dim">// home</span>
+drwxr-xr-x  <a href="/#work">/work            </a> <span class="dim">// 3 projects</span>
+drwxr-xr-x  <a href="/#about">/about           </a> <span class="dim">// readme</span>
+-rw-r--r--  <a href="mailto:hi@igneel.dev">/contact         </a> <span class="dim">// mailto</span>
+-rw-r--r--  <span class="warn">/writing         </span> <span class="dim">// 404 (planned)</span>
+-rw-r--r--  <span class="warn">/experiments     </span> <span class="dim">// 404 (planned)</span>
+-rw-r--r--  <span class="warn">/now             </span> <span class="dim">// 404 (planned)</span>
+-rw-r--r--  <span class="warn">/uses            </span> <span class="dim">// 404 (planned)</span>`);
+    },
+    "cd"(args){
+      const target = (args[0]||"~");
+      if (target === "~" || target === "/" || target === "/home"){
+        print('<span class="ok">→ taking you home in 0.8s…</span>');
+        setTimeout(() => { window.location.href = "/"; }, 800);
+      } else {
+        print('<span class="err">cd: no such directory:</span> '+esc(target));
+      }
+    },
+    whoami(){
+      print(
+`<span class="ok">vaibhav verma</span> · software engineer
+based in noida · CSE @ gautam buddha university
+shipping ai-powered web apps and the tooling around them
+open to: full-time, freelance
+contact: <a href="mailto:hi@igneel.dev">hi@igneel.dev</a>`);
+    },
+    cat(args){
+      const file = (args[0]||"").toLowerCase();
+      if (!file){ print('<span class="err">cat: missing operand</span>'); return; }
+      if (file === "about.ts" || file === "about"){
+        print(
+`<span class="blu">const</span> vaibhav = {
+  name: <span class="ok">"Vaibhav Verma"</span>,
+  role: <span class="ok">"software engineer"</span>,
+  based: <span class="ok">"Noida, IN"</span>,
+  open_to: [<span class="ok">"full-time"</span>, <span class="ok">"freelance"</span>],
+  currently: <span class="ok">"shipping ai tooling"</span>,
+  coffee: <span class="ok">"more than is reasonable"</span>
+};`);
+      } else if (file === "resume" || file === "resume.pdf" || file === "résumé.pdf"){
+        print('<span class="warn">resume:</span> binary file. <a href="/">→ go home and click "download résumé.pdf"</a>');
+      } else if (file === "contact" || file === "contact.txt"){
+        print('email · <a href="mailto:hi@igneel.dev">hi@igneel.dev</a>\ngithub · <a href="https://github.com/igneel0601" target="_blank" rel="noopener">github.com/igneel0601</a>');
+      } else if (file === "/etc/passwd" || file === "etc/passwd"){
+        print('<span class="err">cat: permission denied · nice try</span>');
+      } else {
+        print('<span class="err">cat:</span> '+esc(file)+': no such file');
+      }
+    },
+    find(args){
+      const what = (args.join(" ")||"/page");
+      print(
+`searching filesystem for <span class="warn">${esc(what)}</span>…
+  scanning /pages …………………… <span class="err">not found</span>
+  scanning /api ………………………… <span class="err">not found</span>
+  scanning /static ……………………… <span class="err">not found</span>
+  scanning ~/dreams ………………… <span class="warn">3 todos, 0 files</span>
+<span class="ok">→ try <a href="/">/</a> · the page you wanted may not exist yet.</span>`);
+    },
+    sudo(args){
+      if (!args.length){ print('<span class="err">sudo: missing command</span>'); return; }
+      const sub = args[0];
+      if (sub === "rm" || sub === "rm-rf" || (args[0]==="rm" && args[1]==="-rf")){
+        print('<span class="err">[sudo] no.</span>');
+        return;
+      }
+      if (sub === "find"){
+        commands.find(args.slice(1));
+        return;
+      }
+      print('<span class="err">[sudo] vaibhav is not in the sudoers file.</span>\n<span class="dim">this incident will be reported.</span>');
+    },
+    date(){
+      const d = new Date();
+      print(d.toString());
+    },
+    echo(args){ print(esc(args.join(" "))); },
+    clear(){
+      body.innerHTML = "";
+    },
+    exit(){
+      print('<span class="ok">→ goodbye.</span>');
+      setTimeout(() => { window.location.href = "/"; }, 600);
+    },
+    rm(){ print('<span class="err">rm: operation not permitted (this is a website, friend)</span>'); },
+    hello(){ print('<span class="ok">hi 👋</span>'); },
+    hi(){ print('<span class="ok">hello.</span>'); },
+    pwd(){ print('/var/www/igneel.dev/404'); },
+    history(){
+      if (!history.length){ print('<span class="dim">(empty)</span>'); return; }
+      print(history.map((h,i)=>String(i+1).padStart(3,' ')+'  '+esc(h)).join('\n'));
+    },
+  };
+
+  function run(raw){
+    const cmd = raw.trim();
+    printCmd(cmd || "");
+    if (!cmd){ scrollEnd(); return; }
+    history.push(cmd);
+    hIdx = history.length;
+
+    const parts = cmd.split(/\s+/);
+    const head = parts[0].toLowerCase();
+    const args = parts.slice(1);
+
+    if (commands[head]){
+      commands[head](args);
+    } else if (head === "ls" || head === "dir"){
+      commands.ls();
+    } else {
+      print('<span class="err">'+esc(head)+': command not found</span>\n<span class="dim">try </span><span class="ok">help</span>');
+    }
+    scrollEnd();
+  }
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const v = input.value;
+    input.value = "";
+    run(v);
+  });
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowUp"){
+      if (!history.length) return;
+      e.preventDefault();
+      hIdx = Math.max(0, hIdx - 1);
+      input.value = history[hIdx] || "";
+      setTimeout(()=> input.setSelectionRange(input.value.length, input.value.length), 0);
+    } else if (e.key === "ArrowDown"){
+      if (!history.length) return;
+      e.preventDefault();
+      hIdx = Math.min(history.length, hIdx + 1);
+      input.value = history[hIdx] || "";
+    }
+  });
+
+  // focus input when user clicks anywhere in the shell
+  document.querySelector(".shell").addEventListener("click", () => {
+    if (window.getSelection().toString()) return;
+    input.focus();
+  });
+
+  // autofocus after a beat
+  setTimeout(() => input.focus({ preventScroll:true }), 400);
+})();
+</script>
+
+</body>
+</html>

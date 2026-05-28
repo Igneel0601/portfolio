@@ -1,0 +1,566 @@
+/* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
+.parallax-bg {
+  position: fixed;
+  inset: -64px 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    color-mix(in oklab, var(--ink) 5%, transparent) 1px,
+    transparent 2px
+  );
+  background-size: 32px 32px;
+  background-repeat: repeat;
+  transform: translate3d(0, var(--bg-y, 0), 0);
+  filter: blur(var(--bg-blur, 0));
+  will-change: transform, filter;
+}
+
+/* apple-ish custom cursor (ported from mr-main) */
+* { cursor: none !important; }
+
+#custom-cursor {
+  position: fixed;
+  width: 1.25rem;
+  height: 1.25rem;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 1;
+  transition:
+    transform 0.18s ease,
+    opacity 0.18s ease,
+    width 0.18s ease,
+    height 0.18s ease,
+    border-radius 0.18s ease,
+    background-color 0.18s ease;
+  transform: translate(-50%, -50%);
+  will-change: transform, opacity, width, height, border-radius;
+}
+
+#custom-cursor.text {
+  width: 0.375rem;
+  height: 1.875rem;
+  border-radius: 0.375rem;
+  background-color: var(--accent);
+  opacity: 0.95;
+  transform: translate(-50%, -50%) scale(1);
+  box-shadow: 0 0 0 1px color-mix(in oklab, var(--accent) 20%, transparent);
+}
+
+#custom-cursor.hover {
+  transform: translate(-50%, -50%) scale(1.25);
+  opacity: 0.6 !important;
+}
+
+/* Disable the custom cursor on anything with touch capability, including
+   iPad-with-trackpad (reports both any-pointer: fine AND any-pointer: coarse).
+   The previous (hover: none), (pointer: coarse) gate matched only pure-touch
+   devices, leaving iPad-with-trackpad with no visible cursor anywhere. */
+@media (any-pointer: coarse) {
+  * { cursor: auto !important; }
+  #custom-cursor { display: none !important; }
+}
+
+a, button {
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
+}
+
+/* every link pops + recolors + grows underline on hover.
+   exclude .btn, .logo-link, .no-pop, and anything obviously structural */
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex),
+button:not(.btn):not(.no-pop):not(.grid):not(.flex) {
+  display: inline-block;
+  position: relative;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex)::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex)::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  width: 0;
+  height: 0.09375rem; /* 1.5px hairline underline (scales with root font) */
+  background: currentColor;
+  transition: width 0.3s ease;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered {
+  transform: scale(1.08) !important;
+  color: var(--accent) !important;
+}
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover::after,
+a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover::after,
+button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
+  width: 100%;
+}
+
+/* identity cursor blink — only CSS animation allowed by motion spec */
+[data-cursor] {
+  display: inline-block;
+  width: 0.5625rem;
+  height: 1.125rem;
+  background: var(--accent);
+  vertical-align: -0.18em;
+  margin-left: 0.125rem;
+  animation: blink 1.06s steps(2) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* FOUC guard: nav ships hidden until useGSAP flips data-nav-revealed via
+   setAttribute (not via JSX, so React rerenders from hidden/open state
+   don't reset it). GSAP's gsap.set(nav, {autoAlpha: ...}) then takes over
+   the inline style and drives the intro/scroll animations. */
+[data-nav]:not([data-nav-revealed]) { visibility: hidden; }
+
+/* nav link styling */
+[data-nav][data-stuck]             { background: color-mix(in oklab, var(--paper-2) 80%, transparent); backdrop-filter: blur(12px); border-bottom-color: color-mix(in oklab, var(--ink) 15%, transparent); }
+
+[data-nav-link]                    { color: var(--ink); transition: color 0.18s ease; }
+[data-nav-link][data-active]       { color: var(--accent); }
+[data-nav-link][data-nav-kind="route"]:hover  { color: var(--accent-2); }
+[data-nav-link][data-nav-kind="scroll"]:hover { color: var(--accent); }
+
+/* /work — build log table */
+.work-row { position: relative; transition: background-color .15s ease; }
+.work-row[data-link="true"] { cursor: pointer; }
+
+/* Default state for linked rows: name in accent-2 (teal) to signal tappable,
+   mirroring the mobile WorkPageRow treatment. Non-linked rows inherit ink. */
+.work-row[data-link="true"] .work-name,
+.work-row[data-link="true"] .font-bold {
+  color: var(--accent-2);
+}
+
+.work-row[data-link="true"]:hover .work-name,
+.work-row[data-link="true"]:hover .font-bold {
+  color: var(--accent);
+}
+.work-row[data-link="true"] .work-chev { opacity: 0; transition: opacity .15s ease; color: var(--accent); justify-self: end; }
+.work-row[data-link="true"]:hover .work-chev { opacity: 1; }
+.work-row[data-hidden="true"] { display: none; }
+
+/* .work-status — color comes from --status-* tokens in tokens.css. */
+.work-row[data-status-row="active"]   .work-status { color: var(--status-active); }
+.work-row[data-status-row="wip"]      .work-status { color: var(--status-wip); }
+.work-row[data-status-row="archived"] .work-status { color: var(--status-archived); }
+.work-row[data-status-row="dead"]     .work-status {
+  color: var(--status-dead);
+  text-decoration: line-through;
+}
+
+/* Whole-row treatment: dead rows fade out; wip no longer dims (the amber
+   pill is signal enough). */
+.work-row[data-status-row="dead"] { opacity: .5; }
+
+.work-blurb { min-width: 0; }
+
+.work-back-link { color: var(--accent-2); transition: color .15s ease; }
+.work-back-link:hover { color: var(--accent); }
+
+/* /writing archive (writing-A) */
+.wa-prompt {
+  margin-top: 3rem;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+.wa-prompt .wa-cmd { color: var(--accent); }
+.wa-prompt .wa-sep, .wa-row-top .wa-sep { opacity: 0.5; }
+/* Terminal-flavored filter: hairline-bordered trigger sized to content,
+   sits on prompt line like a shell flag. Built on <details> so the OS
+   popup never appears and the custom cursor stays in control. */
+.wa-filter {
+  margin-left: auto;
+  position: relative;
+}
+.wa-filter-summary {
+  list-style: none;
+  user-select: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.125rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--hair);
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  line-height: 1.5;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.wa-filter-summary::-webkit-details-marker { display: none; }
+.wa-filter-summary::marker { content: ''; }
+.wa-filter-summary:hover { border-color: var(--accent); color: var(--ink); }
+.wa-filter[open] .wa-filter-summary { border-color: var(--accent); color: var(--ink); }
+.wa-filter-label { color: var(--ink-dim); }
+.wa-filter-label::after { content: ':'; }
+.wa-filter-current { color: var(--accent); }
+.wa-filter-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% - 1px);
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-1, var(--paper-2));
+  border: 1px solid var(--accent);
+  padding: 0.125rem;
+  z-index: 20;
+  white-space: nowrap;
+}
+.wa-filter-opt {
+  text-align: left;
+  background: transparent;
+  border: 0;
+  color: var(--ink-soft);
+  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  transition: background 0.12s ease, color 0.12s ease;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+.wa-filter-opt:hover { background: color-mix(in oklab, var(--accent) 12%, transparent); color: var(--accent); }
+.wa-filter-opt.on { color: var(--accent); background: color-mix(in oklab, var(--accent) 6%, transparent); }
+.wa-filter-opt .wa-ct { color: var(--ink-dim); }
+
+.wa-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+.wa-chip {
+  color: var(--ink-soft);
+  padding: 0.3125rem 0.75rem;
+  border: 1px solid var(--hair-2, var(--hair));
+  border-radius: 999px;
+  cursor: pointer;
+  background: transparent;
+  transition: border-color 0.18s ease, color 0.18s ease;
+  text-transform: lowercase;
+}
+.wa-chip:hover { border-color: var(--accent); color: var(--accent); }
+.wa-chip.on { border-color: var(--accent); color: var(--accent); }
+.wa-chip .wa-ct { color: var(--ink-dim); margin-left: 0.375rem; }
+
+.wa-table { margin-top: 1.5rem; display: grid; gap: 0; }
+.wa-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--hair);
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+.wa-row:first-child { border-top: 1px solid var(--hair); }
+.wa-row:hover { background: color-mix(in oklab, var(--accent) 4%, transparent); }
+.wa-row:hover .wa-title { color: var(--accent); }
+
+.wa-row-top {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+  color: var(--ink-dim);
+  margin-bottom: 0.45rem;
+}
+.wa-row-top .wa-acc { color: var(--accent); }
+
+.wa-title {
+  color: var(--ink);
+  transition: color 0.25s ease;
+  margin: 0;
+}
+.wa-dek {
+  margin-top: 0.4rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  max-width: 72ch;
+}
+.wa-row-bot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  color: var(--ink-dim);
+  text-align: right;
+  white-space: nowrap;
+}
+.wa-row-bot b { color: var(--ink-soft); font-weight: 500; }
+
+.wa-empty {
+  color: var(--ink-dim);
+  padding: 2rem 0;
+}
+
+.wa-foot {
+  margin-top: 1.8rem;
+  display: flex;
+  justify-content: space-between;
+  color: var(--ink-dim);
+}
+.wa-foot .wa-rss { color: var(--accent); text-decoration: none; }
+.wa-foot .wa-rss:hover { text-decoration: underline; }
+
+/* /experiments/writing-exploration — sandbox copy of the post layout.
+   .xp-* mirrors .wp-* so tweaks here never leak to /writing/[slug]. Start
+   point: same as canonical but header (.xp-head) is also clamped to
+   --w-reading. Edit freely. */
+.xp-shell {
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+.xp-shell > .xp-head,
+.xp-shell > .xp-prose-wrap {
+  width: min(100%, var(--w-reading));
+  margin-inline: auto;
+}
+.xp-shell > .xp-pager {
+  width: min(100%, var(--w-reading));
+  margin-inline: auto;
+}
+/* Similar reads bleeds to full gutter width — hairline becomes a real
+   section break, cards get more breathing room than the 63ch column. */
+.xp-shell > .xp-related { width: 100%; }
+
+/* Related posts — Medium-style 2-up cards: thumb, category, title, dek,
+   read-time meta. Stacks on narrow viewports. */
+.xp-related {
+  margin-top: 3.5rem;
+  padding-top: 1.75rem;
+  border-top: 1px solid var(--hair);
+}
+.xp-related-h {
+  margin: 0 0 1.25rem;
+  color: var(--ink);
+}
+.xp-related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.xp-rel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.25rem;
+  background: transparent;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.xp-rel-card:hover {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 4%, transparent);
+}
+.xp-rel-cat { color: var(--accent); }
+.xp-rel-title {
+  margin: 0;
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+.xp-rel-card:hover .xp-rel-title { color: var(--accent); }
+.xp-rel-dek {
+  margin: 0;
+  color: var(--ink-soft);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.xp-rel-meta {
+  margin-top: 0.25rem;
+  color: var(--ink-dim);
+}
+.xp-rel-meta b { color: var(--ink-soft); font-weight: 500; }
+
+@media (max-width: 36rem) {
+  .xp-related-grid { grid-template-columns: 1fr; }
+}
+
+.xp-title {
+  margin: 0.5rem 0 0;
+  text-wrap: balance;
+  font-size: clamp(1.5rem, 3.5vw, 2.333rem);
+  line-height: 1.05;
+}
+.xp-lead {
+  margin-top: 1rem;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.xp-meta-strip {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink-dim);
+}
+.xp-meta-strip b { color: var(--ink-soft); font-weight: 500; }
+.xp-meta-strip .xp-sep { opacity: 0.45; }
+.xp-meta-strip .xp-tag { color: var(--accent); text-transform: uppercase; }
+.xp-meta-strip .xp-file { margin-left: auto; color: var(--accent); }
+
+.xp-hero {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin: 2.5rem 0 0;
+}
+
+.xp-prose-wrap {
+  margin-top: 2.5rem;
+  color: var(--ink);
+}
+
+.xp-pager {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* ─── projects-showcase-cinematic — sticky-stage scrollytelling showcase.
+   Used by /experiments/projects-showcase-cinematic and the desktop home
+   SceneExperiments. Reusable typography classes (.c-md, .mono, .pill,
+   .btn term) are applied in JSX; the .psc-* rules below cover only the
+   bespoke chrome (sticky stage, atmospheric bg, panel wipes, seam bar,
+   title-settle overlay). One-off --psc-bar-bg lives on #psc-stage. */
+#psc-outer { height: 500vh; position: relative; }
+#psc-stage {
+  position: sticky; top: 0;
+  height: 100vh; width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  --psc-bar-bg: #0a0d12;
+}
+
+#psc-top-bar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+  height: 2.25rem;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--psc-bar-bg);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+  letter-spacing: .04em;
+  will-change: transform, opacity;
+}
+#psc-top-bar-cmd { flex: 1; }
+
+#psc-seam-bar {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 60;
+  height: 2.25rem;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--psc-bar-bg);
+  border-top:    1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  letter-spacing: .04em;
+  opacity: 0;
+  pointer-events: none;
+  will-change: top, opacity;
+}
+
+#psc-intro-overlay {
+  position: absolute; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  container-type: inline-size;
+}
+#psc-intro-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: min(20.83cqw, 16rem);
+  line-height: .9; letter-spacing: -.01em;
+  color: var(--ink);
+  transform-origin: 100% 50%;
+  will-change: transform, opacity;
+  white-space: nowrap;
+  position: relative;
+}
+
+.psc-panel {
+  position: absolute; inset: 0;
+  padding-top: 2.25rem;
+  will-change: clip-path, transform;
+}
+.psc-bg {
+  position: absolute; right: 0; top: 2.25rem; bottom: 0; width: 52%;
+  pointer-events: none; z-index: 0;
+}
+.psc-bg::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right,
+    transparent 0%,
+    color-mix(in oklab, var(--paper) 85%, transparent) 18%,
+    color-mix(in oklab, var(--paper) 55%, transparent) 50%,
+    transparent 85%
+  );
+}
+.psc-bg::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to bottom, var(--paper) 0%, transparent 12%, transparent 88%, var(--paper) 100%);
+}
+.psc-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: saturate(.1) brightness(0.4) blur(1px);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 0%, black 100%);
+          mask-image: linear-gradient(to right, transparent 0%, transparent 0%, black 100%);
+}
+
+.psc-body {
+  position: relative; z-index: 1;
+  height: 100%;
+  padding: clamp(2.5rem, 5vh, 4.5rem) clamp(2.5rem, 6vw, 6rem);
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(.9rem, 2vh, 1.75rem);
+}
+
+/* psc-title-wrap caps the JS-fitted title to 70% of the panel width.
+   .psc-title keeps a marker class so the binary-fit loop in JS can target it;
+   typography flows from .t-display (applied alongside in JSX). */
+.psc-title-wrap { overflow: hidden; max-width: 70%; }
+.psc-title      { white-space: nowrap; letter-spacing: -.035em; line-height: .87; font-weight: 900; margin: 0; }
+
+/* Accent hairline under the title, tinted per-project via --ca */
+.psc-line {
+  height: 1.5px;
+  background: linear-gradient(to right, var(--ca, var(--accent)), color-mix(in oklab, var(--ca, var(--accent)) 35%, transparent));
+  max-width: 70%;
+}
+
+/* Pulsing/static dots for the status badge. .hl carries the per-project
+   accent inside .psc-insight via inheritance from the panel's --ca. */
+.bdot   { width: 0.25rem; height: 0.25rem; border-radius: 50%; display: inline-block; }
+.bdot-a { background: var(--accent);     animation: psc-pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: var(--status-wip); }
+@keyframes psc-pdot {
+  0%,100% { box-shadow: 0 0 0.125rem var(--accent); }
+  50%     { box-shadow: 0 0 0.5rem var(--accent), 0 0 1.125rem color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+.psc-body .hl { color: var(--ca, var(--accent-2)); font-style: italic; }
