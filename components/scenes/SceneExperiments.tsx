@@ -1,1 +1,1 @@
-export { ExperimentsClient as SceneExperiments } from "@/components/experiments/ExperimentsClient";
+export { ProjectsShowcaseCinematic as SceneExperiments } from "@/components/experiments/ProjectsShowcaseCinematic";

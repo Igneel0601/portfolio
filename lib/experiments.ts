@@ -22,6 +22,13 @@ export const EXPERIMENTS: Experiment[] = [
     date: "2026-05",
   },
   {
+    slug: "projects-showcase-cinematic",
+    title: "projects showcase — cinematic",
+    blurb:
+      "Wireframe port: terminal top-bar, atmospheric right-zone background, seam-bar rise between panels, and a title settle into the bar.",
+    date: "2026-05",
+  },
+  {
     slug: "case-study-v2",
     title: "case study v2 — 65ch + breakout figures",
     blurb:

@@ -442,3 +442,125 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
 }
+
+/* ─── projects-showcase-cinematic — sticky-stage scrollytelling showcase.
+   Used by /experiments/projects-showcase-cinematic and the desktop home
+   SceneExperiments. Reusable typography classes (.c-md, .mono, .pill,
+   .btn term) are applied in JSX; the .psc-* rules below cover only the
+   bespoke chrome (sticky stage, atmospheric bg, panel wipes, seam bar,
+   title-settle overlay). One-off --psc-bar-bg lives on #psc-stage. */
+#psc-outer { height: 500vh; position: relative; }
+#psc-stage {
+  position: sticky; top: 0;
+  height: 100vh; width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  --psc-bar-bg: #0a0d12;
+}
+
+#psc-top-bar {
+  position: absolute; top: 0; left: 0; right: 0; z-index: 50;
+  height: 2.25rem;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--psc-bar-bg);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 22%, transparent);
+  letter-spacing: .04em;
+  will-change: transform, opacity;
+}
+#psc-top-bar-cmd { flex: 1; }
+
+#psc-seam-bar {
+  position: absolute; left: 0; right: 0; top: 100%; z-index: 60;
+  height: 2.25rem;
+  display: flex; align-items: center;
+  padding: 0 clamp(2rem, 6vw, 6rem);
+  background: var(--psc-bar-bg);
+  border-top:    1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  border-bottom: 1px solid color-mix(in oklab, var(--accent) 28%, transparent);
+  letter-spacing: .04em;
+  opacity: 0;
+  pointer-events: none;
+  will-change: top, opacity;
+}
+
+#psc-intro-overlay {
+  position: absolute; inset: 0; z-index: 90;
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  container-type: inline-size;
+}
+#psc-intro-title {
+  margin: 0;
+  font-weight: 500;
+  font-size: min(20.83cqw, 16rem);
+  line-height: .9; letter-spacing: -.01em;
+  color: var(--ink);
+  transform-origin: 100% 50%;
+  will-change: transform, opacity;
+  white-space: nowrap;
+  position: relative;
+}
+
+.psc-panel {
+  position: absolute; inset: 0;
+  padding-top: 2.25rem;
+  will-change: clip-path, transform;
+}
+.psc-bg {
+  position: absolute; right: 0; top: 2.25rem; bottom: 0; width: 52%;
+  pointer-events: none; z-index: 0;
+}
+.psc-bg::before {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to right,
+    transparent 0%,
+    color-mix(in oklab, var(--paper) 85%, transparent) 18%,
+    color-mix(in oklab, var(--paper) 55%, transparent) 50%,
+    transparent 85%
+  );
+}
+.psc-bg::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to bottom, var(--paper) 0%, transparent 12%, transparent 88%, var(--paper) 100%);
+}
+.psc-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top center;
+  filter: saturate(.1) brightness(.18) blur(1px);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 35%, black 100%);
+          mask-image: linear-gradient(to right, transparent 0%, black 35%, black 100%);
+}
+
+.psc-body {
+  position: relative; z-index: 1;
+  height: 100%;
+  padding: clamp(2.5rem, 5vh, 4.5rem) clamp(2.5rem, 6vw, 6rem);
+  display: flex; flex-direction: column; justify-content: center;
+  gap: clamp(.9rem, 2vh, 1.75rem);
+}
+
+/* psc-title-wrap caps the JS-fitted title to 70% of the panel width.
+   .psc-title keeps a marker class so the binary-fit loop in JS can target it;
+   typography flows from .t-display (applied alongside in JSX). */
+.psc-title-wrap { overflow: hidden; max-width: 70%; }
+.psc-title      { white-space: nowrap; letter-spacing: -.035em; line-height: .87; font-weight: 900; margin: 0; }
+
+/* Accent hairline under the title, tinted per-project via --ca */
+.psc-line {
+  height: 1.5px;
+  background: linear-gradient(to right, var(--ca, var(--accent)), color-mix(in oklab, var(--ca, var(--accent)) 35%, transparent));
+  max-width: 70%;
+}
+
+/* Pulsing/static dots for the status badge. .hl carries the per-project
+   accent inside .psc-insight via inheritance from the panel's --ca. */
+.bdot   { width: 0.25rem; height: 0.25rem; border-radius: 50%; display: inline-block; }
+.bdot-a { background: var(--accent);     animation: psc-pdot 2s ease-in-out infinite; }
+.bdot-s { background: var(--accent-2); }
+.bdot-e { background: var(--status-wip); }
+@keyframes psc-pdot {
+  0%,100% { box-shadow: 0 0 0.125rem var(--accent); }
+  50%     { box-shadow: 0 0 0.5rem var(--accent), 0 0 1.125rem color-mix(in oklab, var(--accent) 40%, transparent); }
+}
+.psc-body .hl { color: var(--ca, var(--accent-2)); font-style: italic; }

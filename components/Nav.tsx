@@ -235,7 +235,8 @@ export function Nav() {
             data-nav-link
             data-nav-kind="route"
             href="/"
-            className="font-semibold nav-link"
+            className="font-semibold nav-link no-pop"
+            style={{ color: "var(--accent)" }}
           >
             igneel.dev
           </Link>
@@ -290,7 +291,8 @@ export function Nav() {
             data-nav-link
             data-nav-kind="route"
             href="/"
-            className="font-semibold nav-link"
+            className="font-semibold nav-link no-pop"
+            style={{ color: "var(--accent)" }}
           >
             igneel.dev
           </Link>
