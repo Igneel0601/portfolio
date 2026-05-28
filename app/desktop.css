@@ -384,6 +384,7 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   color: var(--ink-soft);
   display: -webkit-box;
   -webkit-line-clamp: 2;
+          line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
