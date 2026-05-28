@@ -26,7 +26,7 @@ const PROJECTS: Project[] = [
   {
     id: "codeflow",
     kind: "ai",
-    color: "#6ee7a7",
+    color: "var(--accent)",
     num: "01",
     meta: "product · solo",
     date: "Feb → May 2026",
@@ -51,7 +51,7 @@ const PROJECTS: Project[] = [
   {
     id: "taskforge",
     kind: "realtime",
-    color: "#5eead4",
+    color: "var(--accent-2)",
     num: "02",
     meta: "product · duo",
     date: "Sep → Nov 2025",
@@ -76,7 +76,7 @@ const PROJECTS: Project[] = [
   {
     id: "traveloop",
     kind: "hackathon",
-    color: "var(--status-wip)",
+    color: "var(--accent-3)",
     num: "03",
     meta: "event · team of 4",
     date: "Odoo Hackathon",
@@ -108,6 +108,7 @@ export function ProjectsShowcaseCinematic() {
   const seamBarRef = useRef<HTMLDivElement>(null);
   const seamCmdRef = useRef<HTMLSpanElement>(null);
   const introTitleRef = useRef<HTMLHeadingElement>(null);
+  const introIconRef = useRef<HTMLSpanElement>(null);
   const panelsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -156,6 +157,8 @@ export function ProjectsShowcaseCinematic() {
     }
 
     function measureTitle() {
+      const target = topBar!.querySelector<HTMLElement>("[data-projects-target]");
+      if (!target) return;
       const prevIntroT = introTitle!.style.transform;
       const prevBarT = topBar!.style.transform;
       const prevBarO = topBar!.style.opacity;
@@ -164,10 +167,9 @@ export function ProjectsShowcaseCinematic() {
       topBar!.style.opacity = "1";
 
       const fromRect = introTitle!.getBoundingClientRect();
-      const toEl = topBarCmd!;
-      const toRect = toEl.getBoundingClientRect();
+      const toRect = target.getBoundingClientRect();
       const fromFs = parseFloat(getComputedStyle(introTitle!).fontSize);
-      const toFs = parseFloat(getComputedStyle(toEl).fontSize);
+      const toFs = parseFloat(getComputedStyle(target).fontSize);
 
       titleScale = toFs / fromFs;
       titleTx = toRect.right - fromRect.right;
@@ -212,6 +214,10 @@ export function ProjectsShowcaseCinematic() {
     function applyIntroChrome(e: number) {
       topBar!.style.opacity = e.toString();
       topBar!.style.transform = `translateY(${((1 - e) * 100).toFixed(2)}vh)`;
+      // Link stays invisible — the intro overlay h2 is the visible "projects"
+      // label sitting on top. Anchor underneath remains clickable.
+      const link = topBar!.querySelector<HTMLElement>("[data-bar-projects]");
+      if (link) link.style.opacity = "0";
     }
 
     function applyIntroTitle(e: number) {
@@ -220,6 +226,8 @@ export function ProjectsShowcaseCinematic() {
       const s = 1 + (titleScale - 1) * e;
       introTitle!.style.transform = `translate(${tx.toFixed(2)}px, ${ty.toFixed(2)}px) scale(${s.toFixed(4)})`;
       introTitle!.style.opacity = "1";
+      const icon = introIconRef.current;
+      if (icon) icon.style.opacity = String(Math.max(0, Math.min(1, (e - 0.85) / 0.15)));
     }
 
     function initState() {
@@ -320,6 +328,18 @@ export function ProjectsShowcaseCinematic() {
             <span id="psc-top-bar-cmd" ref={topBarCmdRef}>
               $ cat ~/projects/codeflow/README.md &nbsp; # ai
             </span>
+            <a
+              href="/work"
+              data-bar-projects
+              className="c-md no-pop"
+              style={{
+                marginLeft: "auto",
+                color: "var(--accent-2)",
+                textDecoration: "none",
+              }}
+            >
+              <span data-projects-target>projects</span>
+            </a>
           </div>
 
           <div ref={panelsContainerRef} style={{ position: "absolute", inset: 0 }}>
@@ -412,6 +432,21 @@ export function ProjectsShowcaseCinematic() {
           <div id="psc-intro-overlay">
             <h2 id="psc-intro-title" className="mono" ref={introTitleRef}>
               projects
+              <span
+                ref={introIconRef}
+                aria-hidden
+                style={{
+                  position: "absolute",
+                  left: "calc(100% + 0.4em)",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                  display: "inline-flex",
+                  opacity: 0,
+                  willChange: "opacity",
+                }}
+              >
+                <ExternalLink size="0.9em" strokeWidth={2} />
+              </span>
             </h2>
           </div>
         </div>
