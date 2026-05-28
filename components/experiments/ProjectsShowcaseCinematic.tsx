@@ -45,7 +45,7 @@ const PROJECTS: Project[] = [
       </>
     ),
     stack: ["next.js", "trpc", "prisma", "inngest", "e2b", "openai", "clerk"],
-    href: "/d/codeflow",
+    href: "/work/codeflow",
     img: "/projects/codeflow.png",
   },
   {
@@ -70,7 +70,7 @@ const PROJECTS: Project[] = [
       </>
     ),
     stack: ["next.js", "liveblocks", "mongodb", "tailwind", "nextauth"],
-    href: "/d/taskforge",
+    href: "/work/taskforge",
     img: "/projects/taskforge.png",
   },
   {
@@ -95,7 +95,7 @@ const PROJECTS: Project[] = [
       </>
     ),
     stack: ["next.js", "prisma", "postgres", "tailwind", "neondb"],
-    href: "/d/traveloop",
+    href: "/work/traveloop",
     img: "/projects/traveloop.png",
   },
 ];
