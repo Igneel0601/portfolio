@@ -1,15 +1,19 @@
-// Browser-side client for /api/ollama/run.
+// Browser-side client for /api/aria.
 // Streams tokens from Groq via our serverless route (key stays server-side).
+
+export type ChatMsg = { role: 'user' | 'assistant'; content: string }
 
 export function modelLabel(): string {
   return 'llama-3.1-8b'
 }
 
-export async function* streamChat(prompt: string): AsyncGenerator<string, void, void> {
-  const res = await fetch('/api/ollama/run', {
+// Streams Aria's reply for a full conversation (multi-turn). Pass the running
+// message history; the server prepends Aria's system persona.
+export async function* streamChat(messages: ChatMsg[]): AsyncGenerator<string, void, void> {
+  const res = await fetch('/api/aria', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ prompt }),
+    body: JSON.stringify({ messages }),
   })
 
   if (!res.ok) {

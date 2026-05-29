@@ -26,7 +26,7 @@ export function TerminalLine({ entry }: { entry: HistoryEntry }) {
       return (
         <div className={styles.line}>
           <span className={styles.linePrompt}>
-            {PROMPT_PREFIX}:{entry.cwd === '/' ? '~' : `~${entry.cwd}`}$
+            {entry.promptLabel ?? `${PROMPT_PREFIX}:${entry.cwd === '/' ? '~' : `~${entry.cwd}`}$`}
           </span>
           <span className={styles.lineOutput}>{entry.value}</span>
         </div>

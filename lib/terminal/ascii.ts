@@ -54,6 +54,6 @@ export const FORTUNES = [
 
 export const MOTD = [
   '$ welcome to vaibhav\'s portfolio terminal.',
-  '$ try `help` or `ollama run qwen "who are you"`.',
+  '$ try `help`, or `aria` to chat with vaibhav\'s assistant.',
   '$ tip: run `fullscreen` (or press F11) for the full experience.',
 ]

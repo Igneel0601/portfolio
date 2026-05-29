@@ -3,7 +3,7 @@ import { COFFEE, COW, FORTUNES } from './ascii'
 
 export type HistoryEntry =
   | { kind: 'boot' }
-  | { kind: 'input'; cwd: string; value: string }
+  | { kind: 'input'; cwd: string; value: string; promptLabel?: string }
   | { kind: 'output'; text: string }
   | { kind: 'ok'; text: string }
   | { kind: 'error'; text: string }
@@ -30,11 +30,11 @@ export type DispatchCtx = {
   setTheme: (t: Theme) => void
   theme: Theme
   vim: { open: (file: string) => void; close: () => void; isOpen: boolean }
-  llm: {
-    pull: () => Promise<void>
-    run: (prompt: string) => Promise<void>
-    status: () => string
-    available: boolean
+  aria: {
+    isOpen: boolean
+    start: () => void
+    send: (text: string) => Promise<void>
+    quit: () => void
   }
 }
 
@@ -58,11 +58,8 @@ const HELP = `available commands:
   fullscreen              toggle browser fullscreen (alias: fs)
   exit                    leave terminal (route to /)
 
-llm:
-  ollama list             show available models
-  ollama status           model status
-  ollama pull qwen        download qwen2.5-0.5b (one-time, ~280mb)
-  ollama run qwen "<q>"   ask qwen anything
+assistant:
+  aria                    chat with aria — vaibhav's assistant (ctrl+c to quit)
 
 easter eggs hidden. happy hunting.`
 
@@ -107,6 +104,18 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
       return
     }
     ctx.push({ kind: 'mute', text: `vim: unknown command. try :wq` })
+    return
+  }
+
+  // aria chat modal hijacks input — every line is a chat turn until you quit
+  if (ctx.aria.isOpen) {
+    const t = input.trim()
+    if (t === 'exit' || t === 'quit' || t === ':q') {
+      ctx.aria.quit()
+      return
+    }
+    if (!t) return
+    await ctx.aria.send(input)
     return
   }
 
@@ -300,32 +309,13 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
       return
     }
 
+    case 'aria': {
+      ctx.aria.start()
+      return
+    }
+
     case 'ollama': {
-      const sub = args[0]
-      if (sub === 'list') {
-        ctx.push({ kind: 'output', text: 'NAME                   STATUS\nllama-3.1-8b (groq)    ' + ctx.llm.status() })
-        return
-      }
-      if (sub === 'status') {
-        ctx.push({ kind: 'output', text: ctx.llm.status() })
-        return
-      }
-      if (sub === 'pull') {
-        await ctx.llm.pull()
-        return
-      }
-      if (sub === 'run') {
-        const MODEL_TOKENS = new Set(['qwen', 'qwen2.5', 'qwen2.5:0.5b', 'llama', 'llama3', 'llama-3.1', 'llama-3.1-8b'])
-        const rest1 = args.slice(1)
-        const promptText = MODEL_TOKENS.has(rest1[0] ?? '') ? rest1.slice(1).join(' ') : rest1.join(' ')
-        if (!promptText.trim()) {
-          ctx.push({ kind: 'error', text: 'ollama run: missing prompt. try: ollama run qwen "who are you"' })
-          return
-        }
-        await ctx.llm.run(promptText)
-        return
-      }
-      ctx.push({ kind: 'error', text: `ollama: unknown subcommand "${sub ?? ''}". try: list, status, pull, run` })
+      ctx.push({ kind: 'mute', text: "(this box runs `aria` now — vaibhav's assistant. just type `aria`.)" })
       return
     }
 

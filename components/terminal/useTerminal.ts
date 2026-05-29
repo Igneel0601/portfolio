@@ -1,10 +1,10 @@
 'use client'
 
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { buildFs } from '@/lib/terminal/fs'
 import { dispatch, HistoryEntry, Theme, THEME_VARS } from '@/lib/terminal/commands'
-import { modelLabel, streamChat } from '@/lib/terminal/groq'
+import { ChatMsg, modelLabel, streamChat } from '@/lib/terminal/groq'
 import { MOTD } from '@/lib/terminal/ascii'
 
 const LS = {
@@ -34,6 +34,8 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
   const [histIdx, setHistIdx] = useState<number>(-1)
   const [theme, setThemeState] = useState<Theme>('mint')
   const [vimOpen, setVimOpen] = useState<string | null>(null)
+  const [ariaOpen, setAriaOpen] = useState(false)
+  const ariaMsgs = useRef<ChatMsg[]>([])
   const [busy, setBusy] = useState(false)
 
   // load persisted state
@@ -91,41 +93,55 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
     close: () => setVimOpen(null),
   }), [vimOpen])
 
-  const llmStatusText = useCallback(() => `ready · ${modelLabel()} via groq`, [])
+  const quitAria = useCallback(() => {
+    setAriaOpen(false)
+    ariaMsgs.current = []
+    push({ kind: 'mute', text: '(left aria. back to the shell.)' })
+  }, [push])
 
-  const llm = useMemo(() => ({
-    available: true,
-    status: llmStatusText,
-    pull: async () => {
-      push({ kind: 'ok', text: `${modelLabel()} hosted on groq · no download needed. just run.` })
+  const aria = useMemo(() => ({
+    isOpen: ariaOpen,
+    start: () => {
+      ariaMsgs.current = []
+      setAriaOpen(true)
+      push(
+        { kind: 'ok', text: `aria · vaibhav's assistant · ${modelLabel()} via groq` },
+        {
+          kind: 'mute',
+          text: "hey, i'm aria — ask me about vaibhav's work, projects, or stack.\ntype a message and hit enter. ctrl+c to quit.",
+        },
+      )
     },
-    run: async (prompt: string) => {
+    send: async (text: string) => {
+      ariaMsgs.current = [...ariaMsgs.current, { role: 'user', content: text }]
       let acc = ''
-      setHistory((prev) => [...prev, { kind: 'output', text: '> ' }])
-      const updateLast = (text: string) => {
+      setHistory((prev) => [...prev, { kind: 'output', text: 'aria: …' }])
+      const updateLast = (out: string) => {
         setHistory((prev) => {
           const copy = prev.slice()
-          copy[copy.length - 1] = { kind: 'output', text }
+          copy[copy.length - 1] = { kind: 'output', text: out }
           return copy
         })
       }
       try {
-        for await (const chunk of streamChat(prompt)) {
+        for await (const chunk of streamChat(ariaMsgs.current)) {
           acc += chunk
-          updateLast(`> ${acc}`)
+          updateLast(`aria: ${acc}`)
         }
+        ariaMsgs.current = [...ariaMsgs.current, { role: 'assistant', content: acc }]
       } catch (e: unknown) {
         const msg = e instanceof Error ? e.message : String(e)
-        push({ kind: 'error', text: `ollama run: ${msg}` })
+        updateLast(`aria: (${msg})`)
       }
     },
-  }), [llmStatusText, push])
+    quit: quitAria,
+  }), [ariaOpen, push, quitAria])
 
   const submit = useCallback(async (raw: string) => {
     const value = raw
     setInput('')
     setHistIdx(-1)
-    push({ kind: 'input', cwd, value })
+    push({ kind: 'input', cwd, value, promptLabel: ariaOpen ? 'you ›' : undefined })
     if (value.trim()) {
       setInputHistory((prev) => [...prev.filter((v) => v !== value), value].slice(-MAX_INPUT_HISTORY))
     }
@@ -143,7 +159,7 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
         setTheme,
         theme,
         vim,
-        llm,
+        aria,
       })
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : String(e)
@@ -151,7 +167,7 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
     } finally {
       setBusy(false)
     }
-  }, [cwd, fs, push, patchProgress, clearScreen, router, inputHistory, setTheme, theme, vim, llm])
+  }, [cwd, fs, push, patchProgress, clearScreen, router, inputHistory, setTheme, theme, vim, aria, ariaOpen])
 
   const recallPrev = useCallback(() => {
     if (inputHistory.length === 0) return
@@ -186,5 +202,7 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
     styleVar,
     theme,
     vimFile: vimOpen,
+    ariaOpen,
+    quitAria,
   }
 }

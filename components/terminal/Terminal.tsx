@@ -29,7 +29,7 @@ const HARDWARE_ROWS: { icon: string; k: string; v: string }[] = [
   { icon: '⬢', k: 'Memory',   v: '8gb-ish · leaks sometimes' },
   { icon: '✎', k: 'Editor',   v: 'nvim (lazyvim)' },
   { icon: 'A', k: 'Font',     v: 'ibm plex mono' },
-  { icon: '⌛', k: 'Uptime',  v: '~3 years coding' },
+  { icon: '⌛︎', k: 'Uptime',  v: '~3 years coding' },
 ]
 
 const PALETTE = [
@@ -86,7 +86,7 @@ function Wallpaper() {
     <>
       <div
         className={styles.wallpaper}
-        style={{ backgroundImage: `url(/term/wallpaper.jpg)` }}
+        style={{ backgroundImage: `url(/term/wallpaper.webp)` }}
         aria-hidden
       />
       <div className={styles.wallpaperOverlay} aria-hidden />
@@ -124,7 +124,7 @@ function FastfetchBlock({
 function Portrait() {
   return (
     <img
-      src="/term/portrait.png"
+      src="/term/portrait.webp"
       alt="vaibhav verma portrait"
       className={styles.portraitImg}
     />
@@ -168,6 +168,8 @@ function DesktopTerminal({ postSlugs }: Props) {
     busy,
     styleVar,
     vimFile,
+    ariaOpen,
+    quitAria,
   } = useTerminal(postSlugs)
 
   const inputRef = useRef<HTMLInputElement | null>(null)
@@ -265,6 +267,12 @@ function DesktopTerminal({ postSlugs }: Props) {
     }
     if (e.key === 'c' && e.ctrlKey) {
       e.preventDefault()
+      // In an aria chat, ^C leaves the session instead of clearing a line.
+      if (ariaOpen && !busy) {
+        setInput('')
+        quitAria()
+        return
+      }
       setInput('')
       submit('')
       return
@@ -288,7 +296,7 @@ function DesktopTerminal({ postSlugs }: Props) {
 
             <div className={styles.activeLine}>
               <span className={styles.linePrompt}>
-                {vimFile ? `:` : `${PROMPT_PREFIX}:${cwd === '/' ? '~' : `~${cwd}`}$`}
+                {vimFile ? `:` : ariaOpen ? `you ›` : `${PROMPT_PREFIX}:${cwd === '/' ? '~' : `~${cwd}`}$`}
               </span>
               <input
                 ref={inputRef}
