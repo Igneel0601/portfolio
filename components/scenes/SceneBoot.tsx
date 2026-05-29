@@ -39,7 +39,10 @@ function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
         }
         return (
           <span key={i} data-headline-word className="inline-block will-change-transform">
-            <em className="italic" style={{ color: "var(--accent)" }}>{t.em}</em>
+            {/* padding-right: italic glyphs (e.g. Fraunces "f") overhang their
+                box; the per-word composited layer (will-change) clips that ink
+                on iPad WebKit. The pad keeps the swash inside the layer. */}
+            <em className="italic" style={{ color: "var(--accent)", paddingRight: "0.12em" }}>{t.em}</em>
             {i < tokens.length - 1 ? " " : ""}
           </span>
         );
