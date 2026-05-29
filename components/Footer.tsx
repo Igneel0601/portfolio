@@ -15,6 +15,7 @@ export function Footer() {
   // /work/[slug], and the writing-exploration experiment that reuses
   // WritingFooter). Those reinforce the editor/filesystem metaphor.
   const hasOwnFooter =
+    pathname === "/writing" ||
     pathname.startsWith("/writing/") ||
     pathname === "/experiments/writing-exploration" ||
     /^\/work\/[^/]+/.test(pathname);
