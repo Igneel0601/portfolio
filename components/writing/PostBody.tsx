@@ -89,15 +89,17 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
     }
 
     case 'list': {
-      const Tag = node.listType === 'number' ? 'ol' : 'ul'
+      const listType = node.listType as string | undefined
+      const isCheck = listType === 'check'
+      const Tag = listType === 'number' ? 'ol' : 'ul'
       return (
         <Tag
           key={key}
           className="t-lead"
           style={{
-            paddingLeft: '1.5rem',
+            paddingLeft: isCheck ? '0' : '1.5rem',
             margin: '1rem 0 1.4rem',
-            listStyleType: node.listType === 'number' ? 'decimal' : 'disc',
+            listStyleType: isCheck ? 'none' : listType === 'number' ? 'decimal' : 'disc',
           }}
         >
           {renderChildren(node.children, key, ctx)}
@@ -105,12 +107,48 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
       )
     }
 
-    case 'listitem':
+    case 'listitem': {
+      const checked = (node as { checked?: boolean }).checked
+      if (typeof checked === 'boolean') {
+        return (
+          <li
+            key={key}
+            style={{ marginBottom: '0.35rem', listStyle: 'none', display: 'flex', gap: '0.55rem', alignItems: 'baseline' }}
+          >
+            <span
+              aria-hidden
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flex: '0 0 auto',
+                width: '1em',
+                height: '1em',
+                marginTop: '0.2rem',
+                border: '1.5px solid var(--ink-soft, rgba(125,125,125,0.6))',
+                borderRadius: '3px',
+                background: checked ? 'var(--accent, #3ba776)' : 'transparent',
+                color: '#fff',
+                fontSize: '0.75em',
+                lineHeight: 1,
+                userSelect: 'none',
+                pointerEvents: 'none',
+              }}
+            >
+              {checked ? '✓' : ''}
+            </span>
+            <span style={checked ? { opacity: 0.6, textDecoration: 'line-through' } : undefined}>
+              {renderChildren(node.children, key, ctx)}
+            </span>
+          </li>
+        )
+      }
       return (
         <li key={key} style={{ marginBottom: '0.35rem' }}>
           {renderChildren(node.children, key, ctx)}
         </li>
       )
+    }
 
     case 'quote':
       return (
@@ -131,10 +169,49 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
 
     case 'horizontalrule':
       return (
-        <div key={key} className="w-ornament" aria-hidden>
-          · · ·
+        <hr
+          key={key}
+          style={{
+            border: 'none',
+            borderTop: '1px solid var(--ink-soft, rgba(125,125,125,0.3))',
+            margin: '2rem 0',
+          }}
+        />
+      )
+
+    case 'table':
+      return (
+        <div key={key} style={{ overflowX: 'auto', margin: '1.5rem 0' }}>
+          <table style={{ borderCollapse: 'collapse', width: '100%', fontSize: '0.95em' }}>
+            <tbody>{renderChildren(node.children, key, ctx)}</tbody>
+          </table>
         </div>
       )
+
+    case 'tablerow':
+      return <tr key={key}>{renderChildren(node.children, key, ctx)}</tr>
+
+    case 'tablecell': {
+      const isHeader = ((node as { headerState?: number }).headerState ?? 0) !== 0
+      const Tag = isHeader ? 'th' : 'td'
+      return (
+        <Tag
+          key={key}
+          style={{
+            border: '1px solid var(--ink-soft, rgba(125,125,125,0.3))',
+            padding: '0.45rem 0.75rem',
+            textAlign: 'left',
+            fontWeight: isHeader ? 600 : 400,
+            background: isHeader
+              ? 'color-mix(in oklab, var(--accent) 12%, transparent)'
+              : 'transparent',
+            verticalAlign: 'top',
+          }}
+        >
+          {renderChildren(node.children, key, ctx)}
+        </Tag>
+      )
+    }
 
     case 'code':
       return (
