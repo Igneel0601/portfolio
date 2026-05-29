@@ -59,6 +59,7 @@ const HELP = `available commands:
   exit                    leave terminal (route to /)
 
 assistant:
+
   aria                    chat with aria — vaibhav's assistant (ctrl+c to quit)
 
 easter eggs hidden. happy hunting.`
