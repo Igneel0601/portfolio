@@ -42,7 +42,7 @@ function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
             {/* padding-right: italic glyphs (e.g. Fraunces "f") overhang their
                 box; the per-word composited layer (will-change) clips that ink
                 on iPad WebKit. The pad keeps the swash inside the layer. */}
-            <em className="italic" style={{ color: "var(--accent)", paddingRight: "0.12em" }}>{t.em}</em>
+            <em className="italic" style={{ color: "var(--accent)", paddingRight: "0.22em" }}>{t.em}</em>
             {i < tokens.length - 1 ? " " : ""}
           </span>
         );
