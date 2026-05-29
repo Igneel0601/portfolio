@@ -7,6 +7,10 @@ const SKIP_PREFIXES = [
   "/api",
   "/_next",
   "/_static",
+  // Generated metadata image routes (no file extension, so they'd otherwise
+  // be rewritten to /d|/m and 404). These live only at the app root.
+  "/opengraph-image",
+  "/twitter-image",
 ];
 
 const SKIP_EXACT = new Set([
