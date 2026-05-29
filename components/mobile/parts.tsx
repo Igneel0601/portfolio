@@ -203,7 +203,6 @@ export function SiteFooter() {
 
   const hasOwnFooter =
     pathname.startsWith("/writing/") ||
-    pathname === "/experiments/writing-exploration" ||
     /^\/work\/[^/]+/.test(pathname);
 
   if (hasOwnFooter) return null;
