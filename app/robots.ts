@@ -1,6 +1,5 @@
 import type { MetadataRoute } from 'next'
-
-const SITE = 'https://igneel.dev'
+import { SITE_URL as SITE } from '@/lib/site'
 
 export default function robots(): MetadataRoute.Robots {
   return {

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
+import { SITE_URL } from "@/lib/site";
 import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -25,7 +26,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://igneel.dev"),
+  metadataBase: new URL(SITE_URL),
   title: "Vaibhav Verma — software engineer",
   description:
     "I build software that teaches itself to write more software. CSE grad, Noida. Open to full-time + freelance.",
@@ -38,7 +39,7 @@ export const metadata: Metadata = {
     title: "Vaibhav Verma — software engineer",
     description:
       "I build software that teaches itself to write more software.",
-    url: "https://igneel.dev",
+    url: SITE_URL,
     siteName: "Vaibhav Verma",
     type: "website",
   },

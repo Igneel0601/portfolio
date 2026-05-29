@@ -1,7 +1,6 @@
 import type { MetadataRoute } from 'next'
 import { getAllPosts } from '@/lib/posts'
-
-const SITE = 'https://igneel.dev'
+import { SITE_URL as SITE } from '@/lib/site'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getAllPosts().catch(() => [])

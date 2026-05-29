@@ -9,7 +9,7 @@ const SITE_DESC = 'Notes, essays, build logs.'
 async function resolveSiteUrl(): Promise<string> {
   if (process.env.SITE_URL) return process.env.SITE_URL
   const h = await headers()
-  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'igneel.dev'
+  const host = h.get('x-forwarded-host') ?? h.get('host') ?? 'portfolio.igneel.cloud'
   const proto = h.get('x-forwarded-proto') ?? (host.startsWith('localhost') ? 'http' : 'https')
   return `${proto}://${host}`
 }
