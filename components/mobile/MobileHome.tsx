@@ -6,9 +6,7 @@ import { MobileBoot } from "./MobileBoot";
 export function MobileHome() {
   return (
     <>
-      <div style={{ height: "120svh", position: "relative" }}>
-        <MobileBoot />
-      </div>
+      <MobileBoot />
       <MobileProjects />
       <MobileTimeline />
       <CTASection />

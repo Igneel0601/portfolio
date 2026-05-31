@@ -90,6 +90,12 @@
   gap: 0.4375rem;
 }
 
+/* Boot/hero fills the first screen so the projects section sits below the
+   fold; MobileBoot fades + lifts it away on scroll (not sticky). Content is
+   vertically centered so the leftover space reads as balanced breathing room
+   rather than one big gap above the projects. */
+.m-boot-scene { min-height: 100svh; }
+
 /* ── project panels (home) ────────────────────────────────
    Typography comes from token classes in MobileProjects.tsx (l-meta on the
    meta row, t-lead tagline, c-xs insight/chips, c-md CTA); these rules own
