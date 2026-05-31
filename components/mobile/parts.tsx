@@ -117,6 +117,10 @@ export function SiteFooter() {
   const pathname = rawPathname?.replace(/^\/[dm](?=\/|$)/, "") ?? "";
 
   const hasOwnFooter =
+    // Home is a locked scroll-snap deck (body overflow hidden) — a trailing
+    // footer would be clipped, and the CTA slide already closes the deck.
+    pathname === "" ||
+    pathname === "/" ||
     pathname.startsWith("/writing/") ||
     /^\/work\/[^/]+/.test(pathname);
 

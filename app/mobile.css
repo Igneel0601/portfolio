@@ -19,13 +19,21 @@
   );
 }
 
-/* ── scroll-reveal stagger (RevealGroup + GSAP ScrollTrigger) ──────────
+/* ── scroll-reveal (RevealGroup + IntersectionObserver) ───────────────
    The group adds no layout box; the hidden state is SSR-painted (no flash)
    and scoped to no-preference so reduced-motion shows content immediately.
-   GSAP animates opacity/y in as each .m-reveal scrolls into view. */
+   IO (viewport root) adds .in as each .m-reveal scrolls into view — viewport-
+   based so it works whether the page or the inner snap-scroller is scrolling.
+   GSAP's ScrollTrigger can't track the inner scroller, which is why this is
+   IO, not ScrollTrigger. */
 .m-reveal-group { display: contents; }
 @media (prefers-reduced-motion: no-preference) {
-  .m-reveal { opacity: 0; transform: translateY(0.875rem); }
+  .m-reveal {
+    opacity: 0;
+    transform: translateY(0.875rem);
+    transition: opacity 0.55s ease, transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .m-reveal.in { opacity: 1; transform: none; }
 }
 
 .m-dashed-rule {
@@ -94,16 +102,32 @@
    Applied only on the home route via .m-snap-root (toggled by MobileBoot).
    Every section fills the screen and centres its content like a deck slide;
    snap-stop:always makes each swipe lock to the next section. */
-html.m-snap-root { scroll-snap-type: y mandatory; }
+/* The page body is locked and an inner .m-snap-scroller does the scrolling.
+   iOS only collapses its address bar on *document* scroll, so scrolling an
+   inner container keeps the toolbar (and the viewport) stable — which is what
+   makes mandatory full-page snap behave (no peek, no resize jump). */
+html.m-snap-root,
+html.m-snap-root body {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+.m-snap-scroller {
+  height: 100dvh;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.m-snap-scroller::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
+/* nav overlays (fixed) so it doesn't consume a slide's height; slide content
+   is centred, so it sits clear of the nav. */
+html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0; }
+
 .m-snap-section,
 .m-boot-scene,
 .m-panel-screen {
-  /* lvh (large viewport height): constant — the bar-hidden height. svh made
-     slides too short (next section peeked); dvh fixed the peek but resizes as
-     the address bar shows/hides, so a slide would settle then jump as the
-     snap point moved. lvh never resizes and is always ≥ viewport, so it
-     neither peeks nor re-snaps. */
-  min-height: 100lvh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;

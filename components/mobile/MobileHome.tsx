@@ -5,7 +5,7 @@ import { MobileBoot } from "./MobileBoot";
 
 export function MobileHome() {
   return (
-    <>
+    <div className="m-snap-scroller">
       <MobileBoot />
       <MobileProjects />
       <div className="m-snap-section">
@@ -14,6 +14,6 @@ export function MobileHome() {
       <div className="m-snap-section">
         <CTASection />
       </div>
-    </>
+    </div>
   );
 }
