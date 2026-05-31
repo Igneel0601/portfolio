@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
@@ -35,20 +35,22 @@ function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
   return (
     <span className="block overflow-hidden">
       {tokens.map((t, i) => {
-        const space = i < tokens.length - 1 ? " " : "";
-        if (typeof t === "string") return <Word key={i}>{t}{space}</Word>;
-        if ("hilite" in t)
-          return (
-            <Word key={i}>
-              <span className="m-hero-highlight">{t.hilite}</span>
-              {space}
-            </Word>
+        const inner =
+          typeof t === "string" ? (
+            t
+          ) : "hilite" in t ? (
+            <span className="m-hero-highlight">{t.hilite}</span>
+          ) : (
+            <em className="m-hero-em">{t.em}</em>
           );
         return (
-          <Word key={i}>
-            <em className="m-hero-em">{t.em}</em>
-            {space}
-          </Word>
+          // The space sits BETWEEN word spans as its own text node — a trailing
+          // space inside an inline-block gets trimmed at its edge, which is why
+          // the words ran together ("I'mVaibhav").
+          <Fragment key={i}>
+            <Word>{inner}</Word>
+            {i < tokens.length - 1 ? " " : null}
+          </Fragment>
         );
       })}
     </span>
