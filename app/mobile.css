@@ -98,10 +98,12 @@ html.m-snap-root { scroll-snap-type: y mandatory; }
 .m-snap-section,
 .m-boot-scene,
 .m-panel-screen {
-  /* dvh (not svh): each slide must fill the *current* viewport, else when the
-     mobile address bar hides (larger viewport) the slide comes up short and
-     the next section peeks. */
-  min-height: 100dvh;
+  /* lvh (large viewport height): constant — the bar-hidden height. svh made
+     slides too short (next section peeked); dvh fixed the peek but resizes as
+     the address bar shows/hides, so a slide would settle then jump as the
+     snap point moved. lvh never resizes and is always ≥ viewport, so it
+     neither peeks nor re-snaps. */
+  min-height: 100lvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
