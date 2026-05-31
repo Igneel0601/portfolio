@@ -98,7 +98,10 @@ html.m-snap-root { scroll-snap-type: y mandatory; }
 .m-snap-section,
 .m-boot-scene,
 .m-panel-screen {
-  min-height: 100svh;
+  /* dvh (not svh): each slide must fill the *current* viewport, else when the
+     mobile address bar hides (larger viewport) the slide comes up short and
+     the next section peeks. */
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
