@@ -17,7 +17,7 @@
 export default {
   rules: {
     "declaration-property-unit-allowed-list": {
-      "font-size":     ["rem", "em", "vw"],
+      "font-size":     ["rem", "em", "vw", "cqw"],
       "/^padding/":    ["rem", "em", "%", "vw", "ch"],
       "/^margin/":     ["rem", "em", "%", "vw", "ch"],
       "gap":           ["rem", "em", "%"],

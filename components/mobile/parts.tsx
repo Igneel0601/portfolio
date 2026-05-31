@@ -1,11 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
-import type { Project, TimelineStop } from "@/lib/content";
+import type { TimelineStop } from "@/lib/content";
 import { BOOT_LINES, CONTACT } from "@/lib/content";
 
 /* ── shared ────────────────────────────────────────────── */
@@ -107,46 +106,6 @@ export function HeroSection() {
   );
 }
 
-export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <Link
-      href={`/work/${project.id}`}
-      aria-label={`${project.name} — ${project.blurb}`}
-      className="m-project-card"
-    >
-      <div className="m-project-thumb">
-        <Image
-          src={project.image}
-          alt={`${project.name} screenshot`}
-          fill
-          sizes="100vw"
-        />
-      </div>
-      <div className="m-project-body">
-        <div className="m-project-head">
-          <span className="c-xs m-project-idx">{project.index}</span>
-          <span className="t-h4 m-project-name">{project.name}</span>
-          <span className="l-tag m-project-kind">{project.kind}</span>
-        </div>
-        <div className="m-project-stack">
-          {project.stack.map((s) => (
-            <span key={s} className="c-xs m-project-chip">
-              {s}
-            </span>
-          ))}
-        </div>
-        <div className="m-project-foot">
-          <span className="l-tag m-project-cta">
-            cat {project.id}.mdx{" "}
-            <MoveRight aria-hidden className="i-xs m-project-cta-icon" />
-          </span>
-          <span className="c-xs m-project-meta">{project.meta}</span>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
 export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
   return (
     <>
@@ -212,64 +171,6 @@ export function SiteFooter() {
       <span>$ exit 0 · too much coffee</span>
       <span>© {new Date().getFullYear()}</span>
     </div>
-  );
-}
-
-/* ── work ──────────────────────────────────────────────── */
-type WorkRowLike = {
-  status: string;
-  tag: string;
-  name: string;
-  blurb: string;
-  slug?: string;
-};
-
-export function WorkPageRow({ row }: { row: WorkRowLike }) {
-  const linked = !!row.slug;
-  const inner = (
-    <div
-      className="m-work-row-inner"
-      data-status={row.status}
-      data-dead={row.status === "dead" ? "true" : undefined}
-    >
-      <span className="c-sm m-work-name" data-linked={linked ? "true" : undefined}>
-        {row.name}
-      </span>
-      <p className="t-sm m-work-blurb">{row.blurb}</p>
-      <span className="l-meta m-work-tag">{row.tag}</span>
-      <span className="c-xs m-work-status">[{row.status}]</span>
-    </div>
-  );
-  if (linked) {
-    return (
-      <Link href={`/work/${row.slug}`} className="m-work-row">
-        {inner}
-      </Link>
-    );
-  }
-  return inner;
-}
-
-/* ── writing ───────────────────────────────────────────── */
-export function WritingRow({
-  date,
-  title,
-  meta,
-  href,
-}: {
-  date: string;
-  title: string;
-  meta: string;
-  href: string;
-}) {
-  return (
-    <Link href={href} className="m-writing-row">
-      <span className="c-xs m-writing-date">{date}</span>
-      <div>
-        <div className="t-h5 m-writing-title">{title}</div>
-        <div className="c-xs m-writing-meta">{meta}</div>
-      </div>
-    </Link>
   );
 }
 

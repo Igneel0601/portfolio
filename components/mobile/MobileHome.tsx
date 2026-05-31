@@ -1,12 +1,6 @@
-import { PROJECTS } from "@/lib/content";
 import { MobileTimeline } from "./MobileTimeline";
-import {
-  BootBlock,
-  CTASection,
-  HeroSection,
-  ProjectCard,
-  SectionHeader,
-} from "./parts";
+import { BootBlock, CTASection, HeroSection } from "./parts";
+import { MobileProjects } from "./MobileProjects";
 
 export function MobileHome() {
   return (
@@ -17,10 +11,7 @@ export function MobileHome() {
           <HeroSection />
         </div>
       </div>
-      <SectionHeader eyebrow="$ ls ~/projects" title="three things I shipped." />
-      {PROJECTS.map((p) => (
-        <ProjectCard key={p.id} project={p} />
-      ))}
+      <MobileProjects />
       <MobileTimeline />
       <CTASection />
     </>
