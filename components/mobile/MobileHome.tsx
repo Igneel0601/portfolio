@@ -8,8 +8,12 @@ export function MobileHome() {
     <>
       <MobileBoot />
       <MobileProjects />
-      <MobileTimeline />
-      <CTASection />
+      <div className="m-snap-section">
+        <MobileTimeline />
+      </div>
+      <div className="m-snap-section">
+        <CTASection />
+      </div>
     </>
   );
 }

@@ -50,14 +50,18 @@ const FALLBACK: PanelExtra = { accent: 1, badge: "shipped", insight: null };
 
 export function MobileProjects() {
   return (
-    <>
-      <SectionHeader eyebrow="$ ls ~/projects" title="three things I shipped." />
-      <RevealGroup>
-        <div className="m-projects">
-          {PROJECTS.map((p) => {
-            const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
-            return (
-              <article key={p.id} className="m-panel m-reveal" data-accent={x.accent}>
+    <RevealGroup>
+      {PROJECTS.map((p, i) => {
+        const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
+        return (
+          <section key={p.id} className="m-panel-screen">
+            {i === 0 && (
+              <SectionHeader
+                eyebrow="$ ls ~/projects"
+                title="three things I shipped."
+              />
+            )}
+            <article className="m-panel m-reveal" data-accent={x.accent}>
               <div className="l-meta m-panel-meta">
                 <span className="m-panel-num">{p.index}</span>
                 <span className="m-panel-sep">/</span>
@@ -87,10 +91,9 @@ export function MobileProjects() {
                 <MoveRight className="i-sm m-panel-cta-icon" aria-hidden />
               </Link>
             </article>
-            );
-          })}
-        </div>
-      </RevealGroup>
-    </>
+          </section>
+        );
+      })}
+    </RevealGroup>
   );
 }

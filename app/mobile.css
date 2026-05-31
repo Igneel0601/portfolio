@@ -90,11 +90,33 @@
   gap: 0.4375rem;
 }
 
-/* Boot/hero fills the first screen so the projects section sits below the
-   fold; MobileBoot fades + lifts it away on scroll (not sticky). Content is
-   vertically centered so the leftover space reads as balanced breathing room
-   rather than one big gap above the projects. */
-.m-boot-scene { min-height: 100svh; }
+/* ── home scroll-snap paging (one swipe per section) ──────
+   Applied only on the home route via .m-snap-root (toggled by MobileBoot).
+   Every section fills the screen and centres its content like a deck slide;
+   snap-stop:always makes each swipe lock to the next section. */
+html.m-snap-root { scroll-snap-type: y mandatory; }
+.m-snap-section,
+.m-boot-scene,
+.m-panel-screen {
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+html.m-snap-root .m-snap-section,
+html.m-snap-root .m-boot-scene,
+html.m-snap-root .m-panel-screen {
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+/* cap + centre the slide content (the panel name's cqw sizing reads from
+   .m-panel as its own inline-size container). */
+.m-panel-screen > .m-panel,
+.m-panel-screen > .m-section-header {
+  width: 100%;
+  max-width: 34rem;
+  margin-inline: auto;
+}
 
 /* ── project panels (home) ────────────────────────────────
    Typography comes from token classes in MobileProjects.tsx (l-meta on the
@@ -102,18 +124,12 @@
    layout + color only. Each <article> sets data-accent → --ca, which every
    accent-tinted rule reads, so the three panels theme to green / teal /
    yellow with no per-panel CSS. */
-.m-projects {
-  container-type: inline-size;
-  max-width: 34rem;
-  margin-inline: auto;
-}
 .m-panel {
   position: relative;
   padding: 1.9rem 1.375rem 2.1rem;
-  border-top: 1px solid var(--hair);
   overflow: hidden;
+  container-type: inline-size; /* the giant name is sized in cqw */
 }
-.m-panel:first-child { border-top: none; }
 .m-panel[data-accent="1"] { --ca: var(--accent); }
 .m-panel[data-accent="2"] { --ca: var(--accent-2); }
 .m-panel[data-accent="3"] { --ca: var(--accent-3); }

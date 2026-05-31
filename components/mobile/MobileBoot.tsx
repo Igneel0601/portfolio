@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
-import { gsap, ScrollTrigger } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { D, E } from "@/lib/motion-tokens";
 
 /* Mobile home intro — the same GSAP timeline SceneBoot runs on desktop
@@ -57,6 +57,14 @@ function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
 
 export function MobileBoot() {
   const rootRef = useRef<HTMLDivElement>(null);
+
+  // Home-only scroll-snap paging (one swipe per section). Toggled here because
+  // MobileBoot renders only on the home route; removed on unmount so other
+  // /m pages scroll normally.
+  useEffect(() => {
+    document.documentElement.classList.add("m-snap-root");
+    return () => document.documentElement.classList.remove("m-snap-root");
+  }, []);
 
   useEffect(() => {
     const root = rootRef.current;
@@ -124,29 +132,6 @@ export function MobileBoot() {
           },
           "-=0.15",
         );
-
-      // Tight pinned crossfade: hold the boot for one screen of scroll while
-      // it fades out and the next section rises over it. pinSpacing:false lets
-      // the projects overlap (instead of being pushed below a spacer), so the
-      // boot dissolves and the projects fade in within the same screen — no
-      // empty gap, and the boot's bottom whitespace is covered as they rise.
-      ScrollTrigger.create({
-        trigger: root,
-        start: "top top",
-        end: "+=100%",
-        pin: true,
-        pinSpacing: false,
-      });
-      gsap.to(root, {
-        autoAlpha: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: "+=70%",
-          scrub: true,
-        },
-      });
     }, root);
 
     return () => ctx.revert();
