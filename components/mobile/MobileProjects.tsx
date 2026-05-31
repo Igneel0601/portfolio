@@ -3,6 +3,7 @@ import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import { PROJECTS } from "@/lib/content";
 import { SectionHeader } from "./parts";
+import { RevealGroup } from "./Reveal";
 
 /* Per-project presentation extras that don't live in the content model:
    which accent each panel themes to (1/2/3 → --accent/-2/-3, set via
@@ -51,11 +52,12 @@ export function MobileProjects() {
   return (
     <>
       <SectionHeader eyebrow="$ ls ~/projects" title="three things I shipped." />
-      <div className="m-projects">
-        {PROJECTS.map((p) => {
-          const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
-          return (
-            <article key={p.id} className="m-panel" data-accent={x.accent}>
+      <RevealGroup>
+        <div className="m-projects">
+          {PROJECTS.map((p) => {
+            const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
+            return (
+              <article key={p.id} className="m-panel m-reveal" data-accent={x.accent}>
               <div className="l-meta m-panel-meta">
                 <span className="m-panel-num">{p.index}</span>
                 <span className="m-panel-sep">/</span>
@@ -85,9 +87,10 @@ export function MobileProjects() {
                 <MoveRight className="i-sm m-panel-cta-icon" aria-hidden />
               </Link>
             </article>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      </RevealGroup>
     </>
   );
 }

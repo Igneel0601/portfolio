@@ -2,10 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
 import type { TimelineStop } from "@/lib/content";
-import { BOOT_LINES, CONTACT } from "@/lib/content";
+import { CONTACT } from "@/lib/content";
 
 /* ── shared ────────────────────────────────────────────── */
 export function AccentRule() {
@@ -60,49 +59,6 @@ function Btn({
     <Link href={href} className={className}>
       {children}
     </Link>
-  );
-}
-
-/* ── home ──────────────────────────────────────────────── */
-export function BootBlock() {
-  return (
-    <div className="c-xs m-boot">
-      <div>
-        <span className="m-boot-prompt">{BOOT_LINES[0].prompt}</span>
-        <span className="m-boot-text"> {BOOT_LINES[0].text}</span>
-      </div>
-      {BOOT_LINES.slice(1).map((l, i) => (
-        <div key={i} className="m-boot-line">
-          {l.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export function HeroSection() {
-  return (
-    <div className="m-hero">
-      <h1 className="t-display m-hero-title">
-        I&apos;m <span className="m-hero-highlight">Vaibhav.</span>
-        <br />I build software
-        <br />
-        that <em className="m-hero-em">teaches itself</em>
-        <br />to write more
-        <br />software.
-      </h1>
-      <p className="c-xs m-hero-meta">
-        B.Tech CSE · GBU · Noida
-        <br />open to full-time + freelance.
-      </p>
-      <div className="m-hero-ctas">
-        <Btn variant="solid" href="/work">
-          $ cat work <MoveRight className="i-lg" aria-hidden />
-        </Btn>
-        <Btn href="/vaibhav_resume.pdf">$ download résumé.pdf</Btn>
-        <Btn href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
-      </div>
-    </div>
   );
 }
 

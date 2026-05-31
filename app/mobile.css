@@ -19,6 +19,15 @@
   );
 }
 
+/* ── scroll-reveal stagger (RevealGroup + GSAP ScrollTrigger) ──────────
+   The group adds no layout box; the hidden state is SSR-painted (no flash)
+   and scoped to no-preference so reduced-motion shows content immediately.
+   GSAP animates opacity/y in as each .m-reveal scrolls into view. */
+.m-reveal-group { display: contents; }
+@media (prefers-reduced-motion: no-preference) {
+  .m-reveal { opacity: 0; transform: translateY(0.875rem); }
+}
+
 .m-dashed-rule {
   height: 0.0625rem; /* 1px hairline divider (scales with root font) */
   margin: 1rem 1.375rem 0; /* breathing room above the rule (filter → list) */

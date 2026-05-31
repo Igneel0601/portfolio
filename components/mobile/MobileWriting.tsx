@@ -13,6 +13,7 @@ import Link from "next/link";
 import { CornerDownRight } from "lucide-react";
 import type { PostListItem } from "@/lib/posts";
 import { DashedRule } from "./parts";
+import { RevealGroup } from "./Reveal";
 
 const SUBTITLE =
   "Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.";
@@ -100,9 +101,10 @@ export function MobileWriting({ posts }: { posts: PostListItem[] }) {
 
       <DashedRule />
 
-      <div className="m-writing-list">
-        {shown.map((p) => (
-          <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow">
+      <RevealGroup replayKey={active}>
+        <div className="m-writing-list">
+          {shown.map((p) => (
+            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow m-reveal">
             <div className="m-wrow-top">
               <span className="l-meta m-wrow-cat">{catOf(p)}</span>
               <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
@@ -114,9 +116,10 @@ export function MobileWriting({ posts }: { posts: PostListItem[] }) {
               <span className="m-wrow-sep">·</span>
               {p.wordCount.toLocaleString()} words
             </div>
-          </Link>
-        ))}
-      </div>
+            </Link>
+          ))}
+        </div>
+      </RevealGroup>
 
       <div className="l-meta m-wfoot">
         <span>// end of log</span>

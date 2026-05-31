@@ -13,6 +13,7 @@ import { MoveUpRight } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 import { GIT_LOG_PREVIEW } from "@/lib/content";
 import { DashedRule } from "./parts";
+import { RevealGroup } from "./Reveal";
 
 export function MobileWorkLog({
   rows,
@@ -90,7 +91,8 @@ export function MobileWorkLog({
 
       <DashedRule />
 
-      <div className="m-worklist">
+      <RevealGroup replayKey={active}>
+        <div className="m-worklist">
         {shown.map((r, i) => {
           const dim = r.status === "archived" || r.status === "dead";
           const body = (
@@ -109,7 +111,7 @@ export function MobileWorkLog({
             <Link
               key={`${r.name}-${i}`}
               href={`/work/${r.slug}`}
-              className="m-wkrow"
+              className="m-wkrow m-reveal"
               data-status={r.status}
               data-dim={dim ? "true" : undefined}
             >
@@ -118,7 +120,7 @@ export function MobileWorkLog({
           ) : (
             <div
               key={`${r.name}-${i}`}
-              className="m-wkrow"
+              className="m-wkrow m-reveal"
               data-status={r.status}
               data-dim={dim ? "true" : undefined}
             >
@@ -126,10 +128,10 @@ export function MobileWorkLog({
             </div>
           );
         })}
-      </div>
+        </div>
 
-      <div className="m-wklog">
-        <div className="c-xs m-wklog-h">$ git log --oneline | head -3</div>
+        <div className="m-wklog m-reveal">
+          <div className="c-xs m-wklog-h">$ git log --oneline | head -3</div>
         {GIT_LOG_PREVIEW.map((l, i) => {
           const [hash, ...rest] = l.split(" · ");
           return (
@@ -147,7 +149,8 @@ export function MobileWorkLog({
           full log on github
           <MoveUpRight aria-hidden className="i-xs" />
         </a>
-      </div>
+        </div>
+      </RevealGroup>
     </>
   );
 }

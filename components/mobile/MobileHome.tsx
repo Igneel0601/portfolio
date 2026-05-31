@@ -1,15 +1,13 @@
 import { MobileTimeline } from "./MobileTimeline";
-import { BootBlock, CTASection, HeroSection } from "./parts";
+import { CTASection } from "./parts";
 import { MobileProjects } from "./MobileProjects";
+import { MobileBoot } from "./MobileBoot";
 
 export function MobileHome() {
   return (
     <>
       <div style={{ height: "120svh", position: "relative" }}>
-        <div style={{ position: "sticky", top: 0 }}>
-          <BootBlock />
-          <HeroSection />
-        </div>
+        <MobileBoot />
       </div>
       <MobileProjects />
       <MobileTimeline />
