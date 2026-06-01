@@ -89,6 +89,14 @@ Goal: change taglines easily now, and clone this into a reusable template later.
 - [ ] **Persistent rate limit on `/api/aria`** — Upstash free tier; the current
       in-memory map resets per edge instance.
 - [ ] Delete unused `components/scenes/TerminalBar.tsx` — or wire it in.
+- [ ] **Unify section spacing** — inter-scene gaps are defined in three idioms
+      with no shared token: Tailwind padding (`SceneBoot` `pt-8 pb-12`,
+      `SceneTimeline` `py-10`), Tailwind margin (`SceneCTA` wrapper `my-12`),
+      and inline (`SceneTimeline` `marginTop: -100dvh`). The timeline↔contact
+      gap alone is split across two files (`py-10` + `my-12`). Desktop uses
+      Tailwind utils; mobile uses hand-written rem padding in `.m-*` classes —
+      two unrelated systems. Pick one rhythm token. NOTE: timeline is pinned,
+      so changing its margins risks the scroll choreography — verify after.
 - [ ] Lighthouse pass on `/d` and `/m` — `next/image` priority hints, CWV.
 - [ ] Dynamic-import `lib/terminal/groq.ts` (lazy-load the chat client).
 
