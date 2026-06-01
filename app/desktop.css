@@ -1,3 +1,12 @@
+/* Home only: reserve the vertical scrollbar gutter from first paint. The home
+   is a GSAP-pinned scrollytelling page that's always tall (the scrollbar is
+   there regardless), but if it appears a frame late the pinned scene is briefly
+   wider than the content and shifts right on mount. Scoped via :has() so other
+   routes never get a forced scrollbar. */
+html:has([data-scene="about"]) {
+  overflow-y: scroll;
+}
+
 /* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
 .parallax-bg {
   position: fixed;
