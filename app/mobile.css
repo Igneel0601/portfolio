@@ -306,6 +306,7 @@ html.m-snap-root .m-panel-screen {
   bottom: -1.5rem;
   transform: translateX(-0.75px);
   border-left: 1.5px dashed color-mix(in oklab, var(--ink) 50%, transparent);
+  z-index: 0;
 }
 .m-timeline-when {
   margin-top: 0.125rem;
@@ -331,6 +332,8 @@ html.m-snap-root .m-panel-screen {
   border: 1.5px solid var(--accent);
   background: var(--accent);
   flex-shrink: 0;
+  position: relative;
+  z-index: 1;
 }
 .m-timeline-dot[data-now="true"] {
   width: 0.8125rem;
