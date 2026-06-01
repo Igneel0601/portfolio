@@ -14,7 +14,6 @@ export function MobileTimeline() {
 
       <div className="m-timeline-list">
         {TIMELINE.map((stop, i) => {
-          const isLast = i === TIMELINE.length - 1;
           const now = stop.isNow ? "true" : undefined;
           return (
             <div className="m-timeline-row" key={i}>
@@ -24,7 +23,6 @@ export function MobileTimeline() {
 
               <div className="m-timeline-dot-wrap">
                 <span className="m-timeline-dot" data-now={now} />
-                {!isLast && <div aria-hidden className="m-timeline-rail" />}
               </div>
 
               <div className="m-timeline-body">
