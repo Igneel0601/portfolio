@@ -313,24 +313,25 @@ export function SceneTimeline() {
               data-track
               aria-hidden
               className="absolute top-2 bottom-2 border-l-2 border-dashed"
-              style={{ left: 97, borderColor: "var(--ink)", zIndex: 0 }}
+              style={{ left: "6.0625rem", borderColor: "var(--ink)", zIndex: 0 }}
             />
             {TIMELINE.map((stop, i) => (
               <div
                 key={i}
                 data-stop
                 className="grid gap-0 items-start flex-1 min-h-0"
-                style={{ gridTemplateColumns: "86px 24px 1fr" }}
+                style={{ gridTemplateColumns: "5.375rem 1.5rem 1fr" }}
               >
                 <div className="t-h5 pr-4 text-right mt-1">{stop.when}</div>
                 <div className="flex justify-center relative" style={{ zIndex: 1 }}>
                   <span
                     data-stop-dot
                     data-now={stop.isNow ? "true" : undefined}
-                    className="block rounded-full mt-1.5"
+                    className="block rounded-full"
                     style={{
-                      width: 12,
-                      height: 12,
+                      width: "0.75rem",
+                      height: "0.75rem",
+                      marginTop: "0.5625rem",
                       border: "2px solid var(--ink)",
                       background: "var(--paper)",
                     }}
