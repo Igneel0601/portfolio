@@ -60,14 +60,6 @@ function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
 export function MobileBoot() {
   const rootRef = useRef<HTMLDivElement>(null);
 
-  // Home-only scroll-snap paging (one swipe per section). Toggled here because
-  // MobileBoot renders only on the home route; removed on unmount so other
-  // /m pages scroll normally.
-  useEffect(() => {
-    document.documentElement.classList.add("m-snap-root");
-    return () => document.documentElement.classList.remove("m-snap-root");
-  }, []);
-
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;

@@ -48,52 +48,52 @@ const PANEL_EXTRAS: Record<string, PanelExtra> = {
 
 const FALLBACK: PanelExtra = { accent: 1, badge: "shipped", insight: null };
 
+/* Each panel is its own full-screen page (a direct child of the deck track),
+   so the pager treats them as separate swipes. Reveal is scoped per panel. */
 export function MobileProjects() {
-  return (
-    <RevealGroup>
-      {PROJECTS.map((p, i) => {
-        const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
-        return (
-          <section key={p.id} className="m-panel-screen">
-            {i === 0 && (
-              <SectionHeader
-                eyebrow="$ ls ~/projects"
-                title="three things I shipped."
-              />
-            )}
-            <article className="m-panel m-reveal" data-accent={x.accent}>
-              <div className="l-meta m-panel-meta">
-                <span className="m-panel-num">{p.index}</span>
-                <span className="m-panel-sep">/</span>
-                <span>{p.meta}</span>
-                <span className="m-panel-badge">
-                  <i className="m-panel-dot" aria-hidden />
-                  {x.badge}
+  return PROJECTS.map((p, i) => {
+    const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
+    return (
+      <section key={p.id} className="m-panel-screen">
+        {i === 0 && (
+          <SectionHeader
+            eyebrow="$ ls ~/projects"
+            title="three things I shipped."
+          />
+        )}
+        <RevealGroup>
+          <article className="m-panel m-reveal" data-accent={x.accent}>
+            <div className="l-meta m-panel-meta">
+              <span className="m-panel-num">{p.index}</span>
+              <span className="m-panel-sep">/</span>
+              <span>{p.meta}</span>
+              <span className="m-panel-badge">
+                <i className="m-panel-dot" aria-hidden />
+                {x.badge}
+              </span>
+            </div>
+
+            <h3 className="m-panel-name">{p.name}</h3>
+            <div className="m-panel-rule" />
+
+            <p className="t-lead m-panel-tagline">{p.blurb}</p>
+            {x.insight && <p className="c-xs m-panel-insight">{x.insight}</p>}
+
+            <div className="m-panel-stack">
+              {p.stack.map((s) => (
+                <span key={s} className="c-xs m-panel-chip">
+                  {s}
                 </span>
-              </div>
+              ))}
+            </div>
 
-              <h3 className="m-panel-name">{p.name}</h3>
-              <div className="m-panel-rule" />
-
-              <p className="t-lead m-panel-tagline">{p.blurb}</p>
-              {x.insight && <p className="c-xs m-panel-insight">{x.insight}</p>}
-
-              <div className="m-panel-stack">
-                {p.stack.map((s) => (
-                  <span key={s} className="c-xs m-panel-chip">
-                    {s}
-                  </span>
-                ))}
-              </div>
-
-              <Link href={`/work/${p.id}`} className="c-md m-panel-cta">
-                cat {p.id}.mdx
-                <MoveRight className="i-sm m-panel-cta-icon" aria-hidden />
-              </Link>
-            </article>
-          </section>
-        );
-      })}
-    </RevealGroup>
-  );
+            <Link href={`/work/${p.id}`} className="c-md m-panel-cta">
+              cat {p.id}.mdx
+              <MoveRight className="i-sm m-panel-cta-icon" aria-hidden />
+            </Link>
+          </article>
+        </RevealGroup>
+      </section>
+    );
+  });
 }

@@ -98,33 +98,35 @@
   gap: 0.4375rem;
 }
 
-/* ── home scroll-snap paging (one swipe per section) ──────
-   Applied only on the home route via .m-snap-root (toggled by MobileBoot).
-   Every section fills the screen and centres its content like a deck slide;
-   snap-stop:always makes each swipe lock to the next section. */
-/* The page body is locked and an inner .m-snap-scroller does the scrolling.
-   iOS only collapses its address bar on *document* scroll, so scrolling an
-   inner container keeps the toolbar (and the viewport) stable — which is what
-   makes mandatory full-page snap behave (no peek, no resize jump). */
+/* ── home deck: GSAP transform pager (one swipe = one full-screen page) ──
+   The body is locked and the deck owns the viewport; a track inside is
+   translated by gsap (see MobileHome). No native scroll, so the iOS address
+   bar can't make the next page peek or the slide "settle then jump".
+   overflow:hidden means only the active page is ever visible. */
 html.m-snap-root,
 html.m-snap-root body {
   height: 100%;
   overflow: hidden;
   overscroll-behavior: none;
 }
-.m-snap-scroller {
-  height: 100dvh;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
-}
-.m-snap-scroller::-webkit-scrollbar { width: 0 !important; height: 0 !important; }
-/* nav overlays (fixed) so it doesn't consume a slide's height; slide content
-   is centred, so it sits clear of the nav. */
+/* nav overlays (fixed) so it doesn't consume a page's height; page content is
+   centred, so it sits clear of the nav. */
 html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0; }
 
-.m-snap-section,
+.m-deck {
+  height: 100dvh;
+  overflow: hidden;
+  position: relative;
+}
+.m-deck-track {
+  will-change: transform;
+}
+/* each direct child of the track is one full-screen page … */
+.m-deck-track > * {
+  height: 100dvh;
+  overflow: hidden;
+}
+/* boot + project panels centre their content within a page */
 .m-boot-scene,
 .m-panel-screen {
   min-height: 100dvh;
@@ -132,11 +134,31 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   flex-direction: column;
   justify-content: center;
 }
-html.m-snap-root .m-snap-section,
-html.m-snap-root .m-boot-scene,
-html.m-snap-root .m-panel-screen {
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
+
+/* … except the tail, which is taller than one screen: the timeline centres in
+   the first viewport, then the CTA + footer follow. The pager gives it two
+   stops (timeline alone → timeline tail + contact + footer in full view). */
+.m-deck-tail {
+  height: auto;
+  overflow: visible;
+}
+/* Fill the first screen with a fixed row gap (NOT flex-grow — that breaks the
+   iOS rail). The gap is tuned so 9 rows + heading roughly fill one viewport, so
+   NOW lands near the bottom and the CTA follows with a small gap. The block
+   centres any small leftover. */
+.m-deck-tail-timeline {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 3.5rem;
+  padding-bottom: 1.25rem;
+}
+.m-deck-tail-timeline > .m-timeline {
+  max-block-size: none;
+}
+.m-deck-tail-timeline .m-timeline-list {
+  gap: 2rem;
 }
 /* cap + centre the slide content (the panel name's cqw sizing reads from
    .m-panel as its own inline-size container). */
@@ -299,11 +321,14 @@ html.m-snap-root .m-panel-screen {
   grid-template-columns: 3.25rem 1.5rem 1fr;
   align-items: start;
 }
+/* Absolute rail in the (natural-height) row. Rows must stay content-sized — not
+   flex-grown — or iOS Safari won't resolve this element's height and the line
+   vanishes. bottom is negative to bridge the row gap to the next dot. */
 .m-timeline-rail {
   position: absolute;
   left: 4rem;
   top: 0.8rem;
-  bottom: -1.5rem;
+  bottom: -2.5rem;
   transform: translateX(-0.75px);
   border-left: 1.5px dashed color-mix(in oklab, var(--ink) 50%, transparent);
   z-index: 0;
@@ -356,7 +381,7 @@ html.m-snap-root .m-panel-screen {
 
 /* ── CTA section ──────────────────────────────────────── */
 .m-cta {
-  margin: 1.5rem 1.375rem;
+  margin: 3rem 1.375rem;
   padding: 1.25rem;
   display: grid;
   gap: 1rem;

@@ -23,8 +23,8 @@ export function MobileTimeline() {
               </div>
 
               <div className="m-timeline-dot-wrap">
-                {!isLast && <div aria-hidden className="m-timeline-rail" />}
                 <span className="m-timeline-dot" data-now={now} />
+                {!isLast && <div aria-hidden className="m-timeline-rail" />}
               </div>
 
               <div className="m-timeline-body">
