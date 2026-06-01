@@ -66,6 +66,13 @@ html {
   font-size: clamp(0.875rem, 0.7vw + 0.5625rem, 1.125rem);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* Always reserve the vertical scrollbar gutter so the content width never
+     changes when the page grows tall. Without this, GSAP measures/pins the
+     timeline at the no-scrollbar width, then the scrollbar appears and the
+     pinned (position:fixed) scene is wider than the content → it shifts right
+     and flashes a horizontal bar. (scrollbar-gutter:stable gets stripped by
+     Lightning CSS for the build targets, so use overflow-y:scroll.) */
+  overflow-y: scroll;
 }
 body {
   background: transparent;
