@@ -401,6 +401,10 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   margin-top: 0.125rem;
   line-height: 1.4;
   color: var(--ink-dim);
+  /* Stay one line on narrow phones: cap at the normal t-sm size (0.8125rem) on
+     wider screens, shrink toward ~10px as width drops to ~360px where the blurb
+     would otherwise wrap. Only narrows below the iPhone width — iPhone unchanged. */
+  font-size: clamp(0.62rem, 2.9vw, 0.8125rem);
 }
 
 /* ── CTA section ──────────────────────────────────────── */
