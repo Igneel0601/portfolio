@@ -23,9 +23,12 @@ const HEADLINE_LINES: readonly (readonly Token[])[] = [
   ["software."],
 ];
 
+// No will-change on the word: on iOS/WebKit it promotes the word to a
+// compositing layer that CLIPS overflowing glyph ink to the box, slicing the
+// italic f's overhang. The GSAP rise animates fine without the hint.
 function Word({ children }: { children: React.ReactNode }) {
   return (
-    <span data-headline-word className="inline-block will-change-transform">
+    <span data-headline-word className="inline-block m-hero-word">
       {children}
     </span>
   );
@@ -33,7 +36,7 @@ function Word({ children }: { children: React.ReactNode }) {
 
 function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
   return (
-    <span className="block overflow-hidden">
+    <span className="block m-hero-line">
       {tokens.map((t, i) => {
         const inner =
           typeof t === "string" ? (
@@ -73,7 +76,8 @@ export function MobileBoot() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
       gsap.set([...lines, sub, ...ctas], { autoAlpha: 1, x: 0, y: 0 });
-      gsap.set(words, { yPercent: 0, autoAlpha: 1 });
+      // No leftover transform (would clip the italic f on iOS — see below).
+      gsap.set(words, { autoAlpha: 1, clearProps: "transform" });
       return;
     }
 
@@ -105,6 +109,10 @@ export function MobileBoot() {
             duration: 0.65,
             ease: E.weighty,
             stagger: { each: 0.06, from: "start" },
+            // Drop the inline transform once risen: on iOS a leftover transform
+            // keeps the word on a compositing layer that clips the italic f's
+            // ink (the "swipe down+up fixes it" repaint). clearProps removes it.
+            clearProps: "transform",
           },
           "-=0.20",
         )

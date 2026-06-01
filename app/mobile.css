@@ -78,6 +78,11 @@
   margin: 0 0 0.625rem;
   line-height: 1.1;
   color: var(--ink);
+  /* flex column so the headline lines don't margin-collapse — lets the lines'
+     negative margin-block fully cancel their padding-block (the clip-room trick
+     in .m-hero-line), keeping line spacing exactly as before. */
+  display: flex;
+  flex-direction: column;
 }
 .m-hero-highlight {
   padding: 0 0.05em;
@@ -86,6 +91,25 @@
 .m-hero-em {
   font-style: italic;
   color: var(--accent);
+}
+/* During the GSAP rise each word sits on an iOS compositing layer (transform),
+   and WebKit clips overflowing glyph ink to that layer's box — slicing the
+   italic f's ascender/terminal mid-animation. Pad the word box so the layer
+   contains the ink; equal negative margins keep spacing identical. */
+.m-hero-word {
+  padding: 0.35em 0.2em 0.25em 0.1em;
+  margin: -0.35em -0.2em -0.25em -0.1em;
+}
+/* Headline line clips the word-rise animation (words start a full line below).
+   Plain clipping also cut the tall italic ascender of "itself"'s f on iOS
+   (line-height 1.1 is tight). Extend the clip box UPWARD via padding-top with a
+   compensating negative margin-top: layout is unchanged, the bottom (where the
+   rise comes from) still clips, and italic ascenders get room. No reliance on
+   overflow-clip-margin (not honored consistently on iOS Safari). */
+.m-hero-line {
+  overflow: hidden;
+  padding-block: 0.7em;
+  margin-block: -0.7em;
 }
 .m-hero-meta {
   margin: 0 0 1rem;
