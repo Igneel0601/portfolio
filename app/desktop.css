@@ -1,10 +1,11 @@
-/* Home only: reserve the vertical scrollbar gutter from first paint. The home
-   is a GSAP-pinned scrollytelling page that's always tall (the scrollbar is
-   there regardless), but if it appears a frame late the pinned scene is briefly
-   wider than the content and shifts right on mount. Scoped via :has() so other
-   routes never get a forced scrollbar. */
-html:has([data-scene="about"]) {
-  overflow-y: scroll;
+/* Kill the phantom ~3px horizontal overflow on desktop: something spans the
+   full window width *including* the scrollbar gutter (a position:fixed full-
+   bleed layer / pseudo — it doesn't show up as a normal overflowing child, but
+   bumps documentElement.scrollWidth to innerWidth → a thin horizontal bar).
+   Clip the X axis only — `clip` (not `hidden`) so it doesn't create a scroll
+   container or break the GSAP sticky pin (which sticks on the Y axis). */
+html {
+  overflow-x: clip;
 }
 
 /* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
