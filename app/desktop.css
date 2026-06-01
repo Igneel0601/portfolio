@@ -422,7 +422,8 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 
 /* Accent hairline under the title, tinted per-project via --ca */
 .psc-line {
-  height: 1.5px;
+  /* gradient hairline — 1.5px is the reserved hairline size (AGENTS.md) */
+  height: 1.5px; /* stylelint-disable-line declaration-property-unit-allowed-list */
   background: linear-gradient(to right, var(--ca, var(--accent)), color-mix(in oklab, var(--ca, var(--accent)) 35%, transparent));
   max-width: 70%;
 }
