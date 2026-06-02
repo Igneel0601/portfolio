@@ -107,22 +107,24 @@ topical traffic for posts.
 
 Goal: change taglines easily now, and clone this into a reusable template later.
 
-1. **Centralize identity copy into `lib/site.ts`** (today holds only `SITE_URL`):
-   name, role, tagline (as structured tokens so the hero can still highlight the
-   accent span), bio, socials, accent colour. Currently duplicated across
-   `app/layout.tsx`, `app/opengraph-image.tsx`,
-   `components/scenes/SceneBoot.tsx`, `components/mobile/parts.tsx` — change one
-   and the others drift (e.g. OG card vs hero). Projects are **already**
-   centralized (`lib/content.ts` `PROJECTS` + `content/case-studies/*.mdx`).
-2. **Derive terminal/aria flavor from `PROJECTS`** (optional) — Aria's persona
-   (`app/api/aria/route.ts`) and the fake `git log` (`lib/terminal/commands.ts`)
-   + virtual fs (`lib/terminal/fs.ts`) re-type project facts as prose. Fine as
-   flavor; for a clean template, source them.
+1. **Centralize identity copy.** ✅ Done — `lib/profile.ts` (`PROFILE`) is the
+   single source for name/role/jobTitle/brand/tagline + structured hero
+   `headlineDesktop/Mobile` tokens/subhead/résumé path/RSS. Consumed by
+   `layout`, OG card, `lib/seo/*`, `SceneBoot`/`MobileBoot`, footers, nav, rss.
+   Socials stay in `lib/content.ts:CONTACT`; projects/timeline already in
+   `content.ts`. (OG accent also fixed `#00FF41 → #6ee7a7`.)
+2. **Derive terminal/aria flavor from a config** (Tier B, optional) — Aria's
+   persona (`app/api/aria/route.ts`), terminal fastfetch rows
+   (`components/terminal/Terminal.tsx`), `whoami`/`uname`/`hire-me`
+   (`lib/terminal/commands.ts`), and the `/about`/`/now`/`/uses` markdown +
+   vCard (`lib/terminal/fs.ts`) are still hand-written persona prose. Left
+   deliberately (a cloner rewrites them anyway); documented in `docs/TEMPLATE.md`.
 3. **`/experiments` → make it real** — replace the layout/animation sandboxes
    (case-study-v2, projects-showcase, projects-showcase-cinematic) with genuine
    content, or fold the cinematic showcase into the home page.
-4. **Template README** — top-level setup + "edit your content here" guide once
-   `lib/site.ts` is the single source.
+4. **Template README.** ✅ Done — `docs/TEMPLATE.md` ("make this portfolio
+   yours": edit `lib/profile.ts` + `lib/content.ts`, swap résumé PDF, set
+   `SITE_URL`, replace icons, optional terminal/Aria flavor files).
 
 ## 4. Infra / hardening
 
