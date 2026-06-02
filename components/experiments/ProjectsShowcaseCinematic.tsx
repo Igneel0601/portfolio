@@ -1,7 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, MoveRight } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
 import { PROJECTS, type Project } from "@/lib/content";
@@ -11,6 +11,22 @@ const TINT: Record<Project["tint"], string> = {
   s: "var(--accent-2)",
   e: "var(--accent-3)",
 };
+
+// Render a date `range`: `→` in the string becomes a lucide MoveRight icon.
+function DateRange({ text }: { text: string }) {
+  const parts = text.split("→");
+  if (parts.length === 1) return <>{text}</>;
+  return (
+    <span className="inline-flex items-center gap-1.5">
+      {parts.map((part, i) => (
+        <Fragment key={i}>
+          {i > 0 && <MoveRight className="i-xs" aria-hidden />}
+          {part.trim()}
+        </Fragment>
+      ))}
+    </span>
+  );
+}
 
 // Render a project `insight`: `*word*` → accent highlight, `\n` → line break.
 function Insight({ text }: { text: string }) {
@@ -297,7 +313,7 @@ export function ProjectsShowcaseCinematic() {
                     <span style={{ opacity: 0.3 }}>/</span>
                     <span>{p.meta}</span>
                     <span style={{ opacity: 0.3 }}>·</span>
-                    <span>{p.date}</span>
+                    <DateRange text={p.date} />
                     <span
                       className="cs-pill"
                       style={{
