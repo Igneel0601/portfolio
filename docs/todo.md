@@ -157,14 +157,16 @@ Goal: change taglines easily now, and clone this into a reusable template later.
    in-memory map resets per edge instance.
 2. **Delete unused `components/scenes/TerminalBar.tsx`.** ✅ Done — confirmed zero
    imports, removed.
-3. **Unify section spacing** — inter-scene gaps live in three idioms with no
-   shared token: Tailwind padding (`SceneBoot` `pt-8 pb-12`, `SceneTimeline`
-   `py-10`), Tailwind margin (`SceneCTA` wrapper `my-12`), and inline
-   (`SceneTimeline` `marginTop: -100dvh`). The timeline↔contact gap alone is
-   split across two files (`py-10` + `my-12`). Desktop uses Tailwind utils;
-   mobile uses hand-written rem padding in `.m-*` classes — two unrelated
-   systems. Pick one rhythm token. NOTE: timeline is pinned, so changing its
-   margins risks the scroll choreography — verify after.
+3. **Unify section spacing.** ✅ Done — added a `--scene-gap` rhythm token
+   (`tokens.css`) and pointed the genuine inter-scene gaps at it (`SceneBoot`
+   bottom, `SceneCTA` margin), pixel-identical (3rem → 3rem, verified via
+   computed styles). Investigation found `SceneTimeline`'s `py-10` is NOT
+   inter-scene rhythm — it's pin-internal padding inside the fixed `height:100dvh`
+   parallax box (`marginTop:-100dvh`); folding it in would break the
+   choreography, so it's annotated "do not fold into rhythm" instead. Mobile
+   `.m-*` left as its own system (separate concern). FOLLOW-UP: the viewport-only
+   visual tests don't cover these below-the-fold gaps — a spacing-contract check
+   (assert computed `--scene-gap`/paddings) would close that.
 4. **Lighthouse pass on `/d` and `/m`** — `next/image` priority hints, CWV.
 5. ~~Dynamic-import `lib/terminal/groq.ts`~~ — **decided against.** It's a
    55-line plain-`fetch` client with zero deps, and `modelLabel()` is used

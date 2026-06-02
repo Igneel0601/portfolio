@@ -43,7 +43,7 @@ export function SceneCTA() {
   }, []);
 
   return (
-    <div className="page-shell my-12">
+    <div className="page-shell my-[var(--scene-gap)]">
     <section
       ref={rootRef}
       data-scene="cta"

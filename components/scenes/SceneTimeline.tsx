@@ -277,6 +277,9 @@ export function SceneTimeline() {
       ref={rootRef}
       data-scene="about"
       id="about"
+      // py-10 here is pin-INTERNAL padding within the fixed 100dvh box below,
+      // not inter-scene rhythm — do NOT fold it into --scene-gap (it's tied to
+      // the parallax geometry: -100dvh overlap + height:100dvh).
       className="relative py-10 overflow-hidden flex flex-col"
       style={{
         // happly-style cross-scene parallax: scene 03 starts 100vh earlier

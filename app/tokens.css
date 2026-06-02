@@ -26,6 +26,9 @@
   --scrollbar-size: 3px;
   /* layout — single source of truth for comfortable reading measure */
   --w-reading: 63ch;
+  /* vertical rhythm between home flow-scenes (SceneBoot bottom, SceneCTA).
+     NOT for the pinned timeline — its spacing is geometry, not rhythm. */
+  --scene-gap: 3rem;
 }
 
 /* accent-tinted scrollbar — webkit pseudos only (scrollbar-color disables them in Chrome 121+) */
