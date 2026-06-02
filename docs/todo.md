@@ -13,12 +13,17 @@ then the template effort, then polish.
 > Email `hi@vergnyx.dev` → Gmail via Cloudflare Email Routing. See
 > `docs/domain-search.md`.
 >
-> On `feature/templating` (2026-06-02, **not yet merged → `dev`**): centralized
+> On `feature/templating` (2026-06-02/03, **not yet merged → `dev`**): centralized
 > SEO/metadata into `lib/seo/*` + Article (`BlogPosting`) JSON-LD; identity copy
 > into `lib/profile.ts`; home work-showcase data into `lib/content.ts` `PROJECTS`
 > (no more local copy; `→` in `date` renders as a lucide `MoveRight`); mobile nav
-> links now in the initial DOM for crawlability (§2a.6); `docs/TEMPLATE.md`.
-> 9 commits ahead of `dev` — pending action: merge down.
+> links now in the initial DOM for crawlability (§2a.6); `docs/TEMPLATE.md`. Then
+> a code-review pass cleared 6 findings: mobile `PANEL_EXTRAS` drift removed (both
+> shells now read `content.ts` via a shared `components/Insight.tsx`); OG card +
+> `writingFeed.title` no longer hardcode brand/name; tint→accent single-sourced in
+> CSS (`[data-tint]`→`--ca`, `TINT` map deleted); dead PSC_CSS block removed;
+> internal `/work` CTA uses `MoveRight` not `ExternalLink`.
+> 14 commits ahead of `dev` — pending action: merge down.
 >
 > Recently shipped (2026-06-02): mobile UI polish — full-bleed filter→list
 > divider, dropped the work git-log dashed border, writing end-of-log gap now
