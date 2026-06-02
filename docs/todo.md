@@ -4,6 +4,15 @@ Forward-looking only. Shipped work lives in git history; this file is the
 roadmap. Roughly ordered: content first (the site needs more of it), then SEO,
 then the template effort, then polish.
 
+> 🚀 Domain launch (2026-06-02): migrated `portfolio.igneel.cloud` →
+> **`vergnyx.dev`** (Verma + igneel + Nyx) — Cloudflare DNS (grey-cloud) → Vercel,
+> apex-primary + www 308, valid TLS. Full `igneel → vergnyx` rebrand across the
+> codebase. SEO shipped: canonical tags (`/`, `/work`, `/writing`, slugs, both
+> shells), sitemap incl. case studies, JSON-LD `Person`. Homepage **indexed** in
+> GSC; key pages Request-Indexed. New `\/|/` logo (`app/icon.svg` + apple-icon).
+> Email `hi@vergnyx.dev` → Gmail via Cloudflare Email Routing. See
+> `docs/domain-search.md`.
+>
 > Recently shipped (2026-06-02): mobile UI polish — full-bleed filter→list
 > divider, dropped the work git-log dashed border, writing end-of-log gap now
 > matches desktop (3rem); iOS hero italic-ascender clip fix; desktop phantom
@@ -38,8 +47,12 @@ then the template effort, then polish.
 
 ## 2. SEO
 
-Brand search `igneel portfolio` already lands #1. Goal: rank for own-name
-queries (`vaibhav verma developer`) and earn topical traffic for posts.
+Now on **`vergnyx.dev`** (fresh domain, ~zero authority — the old "igneel
+portfolio #1" was a honeymoon on a different host, gone with the move). Homepage
+is **indexed**; key pages Request-Indexed and propagating. The on-page work
+(2a/2b) is largely done — **the bottleneck now is authority: backlinks (§2c) are
+the #1 lever.** Goal: own `vergnyx`, then own-name (`vaibhav verma`) queries +
+topical traffic for posts.
 
 ### 2a. Portfolio-wide
 
@@ -79,12 +92,16 @@ queries (`vaibhav verma developer`) and earn topical traffic for posts.
    empty alt is invisible to search.
 5. **Heading hierarchy** — one `<h1>` (title), descending `<h2>`/`<h3>`.
 
-### 2c. Distribution
+### 2c. Distribution  ← **TOP PRIORITY now (the bottleneck)**
 
-1. **Backlinks** — submit posts to Hacker News, lobste.rs, dev.to mirrors
-   (canonical pointing back to the site). Biggest ranking lever.
-2. **Name authority** — link from GitHub README + Twitter/LinkedIn bio to the
-   site with "Vaibhav Verma" as anchor text.
+1. **Bio backlinks (do first).** Put `vergnyx.dev` in the **GitHub profile bio +
+   README** and **X bio**. These are pages Google already trusts → fastest way to
+   give the fresh domain authority so indexed pages *stick* and rank. (Also
+   builds the `vergnyx`/`Vaibhav Verma` ↔ you entity association.)
+2. **Backlinks** — submit posts to Hacker News, lobste.rs, dev.to mirrors
+   (canonical pointing back to the site). Biggest long-term ranking lever.
+3. **`sameAs` in JSON-LD** — once LinkedIn/X profiles exist, add them to
+   `PersonJsonLd` + `CONTACT` (today: GitHub only).
 
 ## 3. Template effort
 
