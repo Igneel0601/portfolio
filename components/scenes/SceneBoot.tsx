@@ -144,7 +144,7 @@ export function SceneBoot() {
       id="hero"
       className="relative min-h-screen page-shell"
     >
-      <div data-boot-sticky className="sticky top-0 pt-8 pb-12">
+      <div data-boot-sticky className="sticky top-0 pt-8 pb-[var(--scene-gap)]">
       <div className="c-md space-y-0.5">
         <div>
           <span style={{ color: "var(--accent)" }} data-boot-prompt>
