@@ -1,17 +1,11 @@
 import { getAllPosts } from '@/lib/posts'
 import { WritingArchive } from '@/components/writing/WritingArchive'
 import { WritingFooter } from '@/components/writing/WritingFooter'
+import { pageMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 60
 
-export const metadata = {
-  title: 'Writing — Vaibhav Verma',
-  description: 'Notes, essays, build logs.',
-  alternates: {
-    canonical: '/writing',
-    types: { 'application/rss+xml': '/rss.xml' },
-  },
-}
+export const metadata = pageMetadata('writing')
 
 export default async function WritingPage() {
   const posts = await getAllPosts()

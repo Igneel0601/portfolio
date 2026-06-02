@@ -7,6 +7,9 @@ import { resolveMediaUrl } from '@/lib/media'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
 import { WritingFooter } from '@/components/writing/WritingFooter'
+import { JsonLd } from '@/components/JsonLd'
+import { postMetadata } from '@/lib/seo/metadata'
+import { articleJsonLd } from '@/lib/seo/jsonld'
 
 export async function generateStaticParams() {
   try {
@@ -30,23 +33,7 @@ export async function generateMetadata({
   const { slug } = await params
   const post = await getPostBySlug(slug)
   if (!post) return { title: 'Not found' }
-
-  const title = post.metaTitle || post.title
-  const description = post.metaDescription || undefined
-  const ogUrl = resolveMediaUrl(post.metaImage?.url ?? post.heroImage?.url) ?? undefined
-
-  return {
-    title,
-    description,
-    alternates: { canonical: `/writing/${slug}` },
-    openGraph: { title, description, images: ogUrl ? [{ url: ogUrl }] : undefined },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-      images: ogUrl ? [ogUrl] : undefined,
-    },
-  }
+  return postMetadata(post, slug)
 }
 
 export async function PostPage({
@@ -67,6 +54,7 @@ export async function PostPage({
 
   return (
     <>
+      <JsonLd data={articleJsonLd(post, slug)} />
       {shell === 'd' && <ReadingProgress />}
       <main className="flex-1">
         <section

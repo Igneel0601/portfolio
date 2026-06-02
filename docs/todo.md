@@ -13,6 +13,18 @@ then the template effort, then polish.
 > Email `hi@vergnyx.dev` → Gmail via Cloudflare Email Routing. See
 > `docs/domain-search.md`.
 >
+> On `feature/templating` (2026-06-02/03, **not yet merged → `dev`**): centralized
+> SEO/metadata into `lib/seo/*` + Article (`BlogPosting`) JSON-LD; identity copy
+> into `lib/profile.ts`; home work-showcase data into `lib/content.ts` `PROJECTS`
+> (no more local copy; `→` in `date` renders as a lucide `MoveRight`); mobile nav
+> links now in the initial DOM for crawlability (§2a.6); `docs/TEMPLATE.md`. Then
+> a code-review pass cleared 6 findings: mobile `PANEL_EXTRAS` drift removed (both
+> shells now read `content.ts` via a shared `components/Insight.tsx`); OG card +
+> `writingFeed.title` no longer hardcode brand/name; tint→accent single-sourced in
+> CSS (`[data-tint]`→`--ca`, `TINT` map deleted); dead PSC_CSS block removed;
+> internal `/work` CTA uses `MoveRight` not `ExternalLink`.
+> 14 commits ahead of `dev` — pending action: merge down.
+>
 > Recently shipped (2026-06-02): mobile UI polish — full-bleed filter→list
 > divider, dropped the work git-log dashed border, writing end-of-log gap now
 > matches desktop (3rem); iOS hero italic-ascender clip fix; desktop phantom
@@ -73,18 +85,21 @@ topical traffic for posts.
    (CONTACT placeholders today).
 5. **Per-route OG images** — `app/opengraph-image.tsx` default exists; add
    per-route variants (e.g. work/writing) via next/og if worth it.
-6. **Mobile internal links not in initial DOM.** `MobileNav.tsx` renders the
-   `/work` + `/writing` index links only inside the `{open && …}` hamburger
-   overlay, so Googlebot-Smartphone (which gets `/m`) sees no crawlable link to
-   the section indexes from the home (only `/work/<slug>` CTAs via
-   `MobileProjects.tsx`). Add crawlable `<a href>` to the mobile site footer so
-   link equity flows from the indexed home to the inner pages. (Desktop nav is
-   already crawlable.)
+6. **Mobile internal links not in initial DOM.** ✅ Done (partial) —
+   `MobileNav.tsx` no longer gates the overlay on `{open && …}`; the nav links
+   (`/work`, `/writing`, `/experiments`, `/terminal`) are now always in the
+   server-rendered DOM, hidden via `display:none` when closed, so
+   Googlebot-Smartphone can crawl them. NOTE: hidden links are still
+   **discounted** by Google (discovery/crawl, not full equity). For full equity
+   a *visible* home link is needed (e.g. wrap the `$ ls ~/projects` eyebrow in
+   `<Link href="/work">`) — deferred; sitemap already indexes both indexes.
 
 ### 2b. Writing posts
 
-1. **JSON-LD `Article` schema** on `/writing/<slug>` — `headline`,
-   `datePublished`, `dateModified`, `author`, `image`, `wordCount`. None today.
+1. **JSON-LD `Article` schema** on `/writing/<slug>`. ✅ Done —
+   `lib/seo/jsonld.ts:articleJsonLd()` emits `BlogPosting` (`headline`,
+   `datePublished`, `dateModified`, `author`, `image`, `wordCount`), rendered
+   via `<JsonLd>` from `app/_impl/post.tsx`.
 2. **`article:published_time` + `article:author`** in `openGraph`. Not set.
 3. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
    (only "Similar reads" does this today).
@@ -107,22 +122,34 @@ topical traffic for posts.
 
 Goal: change taglines easily now, and clone this into a reusable template later.
 
-1. **Centralize identity copy into `lib/site.ts`** (today holds only `SITE_URL`):
-   name, role, tagline (as structured tokens so the hero can still highlight the
-   accent span), bio, socials, accent colour. Currently duplicated across
-   `app/layout.tsx`, `app/opengraph-image.tsx`,
-   `components/scenes/SceneBoot.tsx`, `components/mobile/parts.tsx` — change one
-   and the others drift (e.g. OG card vs hero). Projects are **already**
-   centralized (`lib/content.ts` `PROJECTS` + `content/case-studies/*.mdx`).
-2. **Derive terminal/aria flavor from `PROJECTS`** (optional) — Aria's persona
-   (`app/api/aria/route.ts`) and the fake `git log` (`lib/terminal/commands.ts`)
-   + virtual fs (`lib/terminal/fs.ts`) re-type project facts as prose. Fine as
-   flavor; for a clean template, source them.
+> Centralization done so far: **identity** → `lib/profile.ts` (§3.1), **SEO/metadata**
+> → `lib/seo/*` (`pages.ts` config + `metadata.ts`/`jsonld.ts` builders, documented
+> in AGENTS.md), **work data** → `lib/content.ts` `PROJECTS` (home showcase no longer
+> keeps its own copy). Edit surface for a cloner: `lib/profile.ts` + `lib/content.ts`
+> + résumé PDF + `SITE_URL` + icons. Remaining centralization is Tier B (§3.2).
+
+1. **Centralize identity copy.** ✅ Done — `lib/profile.ts` (`PROFILE`) is the
+   single source for name/role/jobTitle/brand/tagline + structured hero
+   `headlineDesktop/Mobile` tokens/subhead/résumé path/RSS. Consumed by
+   `layout`, OG card, `lib/seo/*`, `SceneBoot`/`MobileBoot`, footers, nav, rss.
+   Socials stay in `lib/content.ts:CONTACT`; projects/timeline already in
+   `content.ts`. (OG accent also fixed `#00FF41 → #6ee7a7`.)
+2. **Derive terminal/aria flavor from a config** (Tier B, optional) — Aria's
+   persona (`app/api/aria/route.ts`), terminal fastfetch rows
+   (`components/terminal/Terminal.tsx`), `whoami`/`uname`/`hire-me`
+   (`lib/terminal/commands.ts`), and the `/about`/`/now`/`/uses` markdown +
+   vCard (`lib/terminal/fs.ts`) are still hand-written persona prose. Left
+   deliberately (a cloner rewrites them anyway); documented in `docs/TEMPLATE.md`.
 3. **`/experiments` → make it real** — replace the layout/animation sandboxes
    (case-study-v2, projects-showcase, projects-showcase-cinematic) with genuine
-   content, or fold the cinematic showcase into the home page.
-4. **Template README** — top-level setup + "edit your content here" guide once
-   `lib/site.ts` is the single source.
+   content. NOTE: the cinematic showcase is already the home work section
+   (`SceneExperiments`), and its data is now centralized — it reads `PROJECTS`
+   from `lib/content.ts` (extended with `tagline`/`insight`/`status`/`tint`;
+   `→` in `date` renders as a lucide `MoveRight`), no local hardcoded copy. User
+   plans to delete `/experiments` routes entirely later.
+4. **Template README.** ✅ Done — `docs/TEMPLATE.md` ("make this portfolio
+   yours": edit `lib/profile.ts` + `lib/content.ts`, swap résumé PDF, set
+   `SITE_URL`, replace icons, optional terminal/Aria flavor files).
 
 ## 4. Infra / hardening
 

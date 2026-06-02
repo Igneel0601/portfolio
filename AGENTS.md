@@ -72,6 +72,33 @@ escape hatch. Use this map before touching files.
 - Walkthrough image assets — `public/case-studies/<slug>/NN-name.png`,
   16:9 ratio. Wire into a Step's `<Figure src=… />`.
 
+## SEO & metadata (single source of truth → `lib/seo/`)
+All page SEO lives in `lib/seo/` — do NOT hand-write `metadata` objects in route
+files. Add/edit there:
+- `lib/seo/pages.ts` — per-page static config (`PAGE_SEO`: path, title,
+  description, rss). Add a route here, then in BOTH `app/d/<route>/page.tsx`
+  and `app/m/<route>/page.tsx` do `export const metadata = pageMetadata('<key>')`.
+  The two shells MUST share one key (that's the point — no drift).
+- `lib/seo/metadata.ts` — builders: `pageMetadata(key)`, and the dynamic
+  `caseStudyMetadata(data, slug)` / `postMetadata(post, slug)` used by
+  `app/_impl/case-study.tsx` and `app/_impl/post.tsx` `generateMetadata`.
+- `lib/seo/jsonld.ts` — structured data: `personJsonLd()` (home),
+  `articleJsonLd(post, slug)` (posts). Render via `<JsonLd data={…} />`
+  (`components/JsonLd.tsx`).
+- `lib/site.ts` — `SITE_URL` only (the canonical origin; used by sitemap/robots/
+  rss too, so it stays here, not under `seo/`). `lib/seo/*` imports it.
+
+## Identity copy (single source of truth → `lib/profile.ts`)
+All personal/brand strings — name, role, jobTitle, brand/domain label, tagline,
+the hero `headlineDesktop/Mobile` tokens, bio/subhead, `resumePath`, RSS feed
+title — live in `lib/profile.ts` (`PROFILE`). Do NOT hardcode these in
+components; import `PROFILE`. It drives `app/layout.tsx`, `app/opengraph-image.tsx`,
+`lib/seo/*`, the hero (`SceneBoot`/`MobileBoot`), all footers, the nav brand, and
+`rss`. Socials/email stay in `lib/content.ts:CONTACT`. The terminal/Aria
+"fastfetch" flavor is intentionally NOT centralized — edit those files directly
+(`components/terminal/Terminal.tsx`, `lib/terminal/{fs,commands}.ts`,
+`app/api/aria/route.ts`). Full clone-and-rebrand guide: `docs/TEMPLATE.md`.
+
 ## Enforcement
 - `stylelint.config.mjs` + `pnpm lint:css` — rem-only for spacing/sizes.
 - TypeScript: `npx tsc --noEmit`.

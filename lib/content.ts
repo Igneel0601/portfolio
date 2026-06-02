@@ -19,6 +19,11 @@ export type Project = {
   index: string;
   kind: string;
   name: string;
+  // Home showcase (ProjectsShowcaseCinematic):
+  tagline: string; // the italic "what" line
+  insight: string; // the "how" body — `*word*` = accent highlight, `\n` = line break
+  status: string; // badge label, e.g. "live · v0.4"
+  tint: "a" | "s" | "e"; // accent / accent-2 / accent-3 (also the badge dot colour)
   blurb: string;
   stack: string[];
   url?: string;
@@ -36,13 +41,19 @@ export const PROJECTS: Project[] = [
     index: "01",
     kind: "ai",
     name: "CodeFlow",
+    tagline:
+      "Chat with agents, get a working Next.js app running inside a real E2B sandbox.",
+    insight:
+      "*Inngest* runs each agent step as a durable background job —\nlong chains never freeze the UI or time out mid-stream.\n*E2B sandboxes* run the output.",
+    status: "live · v0.4",
+    tint: "a",
     blurb:
       "AI-powered website builder. Chat with agents in real-time E2B sandboxes and get a working Next.js app out the other side.",
-    stack: ["next.js", "tRPC", "prisma", "inngest", "e2b", "openai/gemini"],
+    stack: ["next.js", "trpc", "prisma", "inngest", "e2b", "openai", "clerk"],
     url: "code-flow-hazel.vercel.app",
-    meta: "61 commits · solo",
+    meta: "product · solo",
     image: "/projects/codeflow.png",
-    date: "2026-05",
+    date: "Feb → May 2026",
     stats: {
       commits: 61,
       branches: 3,
@@ -71,12 +82,18 @@ export const PROJECTS: Project[] = [
     index: "02",
     kind: "realtime",
     name: "TaskForge",
+    tagline:
+      "Real-time collaborative kanban — live cursors, live drags, comments landing now, not eventually.",
+    insight:
+      "*Liveblocks* runs the entire real-time layer:\npresence, shared storage, conflict resolution — zero websocket code.\nDrag a card — your collaborator sees it move *before you let go*.",
+    status: "shipped · live",
+    tint: "s",
     blurb:
       "Real-time Kanban with AI task elaboration. Liveblocks + Mongo, presence-aware boards that feel like Figma for tickets.",
     stack: ["next.js", "liveblocks", "mongodb", "tailwind", "nextauth"],
-    meta: "shipped · live",
+    meta: "product · duo",
     image: "/projects/taskforge.png",
-    date: "2025-11",
+    date: "Sep → Nov 2025",
     stats: {
       commits: 21,
       branches: 2,
@@ -102,14 +119,20 @@ export const PROJECTS: Project[] = [
   {
     id: "traveloop",
     index: "03",
-    kind: "experiments",
+    kind: "hackathon",
     name: "Traveloop",
+    tagline:
+      "Multi-city itineraries, budgets, packing — shipped at 4am, demoed at 9. We got second.",
+    insight:
+      "Trips → stops → days → activities → budgets:\nthe *nested document model* maps the domain perfectly.\nFour people. One weekend. One real, working, demoed app.",
+    status: "2nd place",
+    tint: "e",
     blurb:
       "Odoo Hackathon · The Knights · group build, shipped on the clock. Itinerary planner with collaborative edits.",
-    stack: ["next.js", "prisma", "postgres", "tailwind", "shadcn", "nextauth"],
-    meta: "hackathon · group of 4",
+    stack: ["next.js", "prisma", "postgres", "tailwind", "neondb"],
+    meta: "event · team of 4",
     image: "/projects/traveloop.png",
-    date: "2026-02",
+    date: "Odoo Hackathon",
     stats: {
       commits: 38,
       branches: 4,

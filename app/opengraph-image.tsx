@@ -1,12 +1,13 @@
 import { ImageResponse } from 'next/og'
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
+import { PROFILE } from '@/lib/profile'
 
 // Default social-share card (Open Graph + Twitter). Next renders this to a
 // 1200x630 PNG at build time, so links to the site unfurl with a real banner
 // instead of a blank card. Per-post pages still override with their own image.
 
-export const alt = 'Vaibhav Verma — software engineer'
+export const alt = `${PROFILE.name} — ${PROFILE.role}`
 export const size = { width: 1200, height: 630 }
 export const contentType = 'image/png'
 
@@ -16,7 +17,7 @@ const fontRegular = readFileSync(join(process.cwd(), 'app/_fonts/PlexMono-Regula
 const fontBold = readFileSync(join(process.cwd(), 'app/_fonts/PlexMono-Bold.ttf'))
 
 const BG = '#0D1117'
-const GREEN = '#00FF41'
+const GREEN = '#6ee7a7'
 const INK = '#e6edf3'
 const MUTED = '#8b949e'
 
@@ -45,17 +46,17 @@ export default function Image() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={MARK_SRC} width={132} height={132} alt="" />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <div style={{ fontSize: 60, fontWeight: 700, letterSpacing: -1 }}>Vaibhav Verma</div>
-            <div style={{ fontSize: 28, color: GREEN }}>software engineer</div>
+            <div style={{ fontSize: 60, fontWeight: 700, letterSpacing: -1 }}>{PROFILE.name}</div>
+            <div style={{ fontSize: 28, color: GREEN }}>{PROFILE.role}</div>
           </div>
         </div>
 
         {/* middle: tagline. Satori needs display:flex on any multi-child node,
             so the line is three flex items (text · accent · text) that wrap. */}
         <div style={{ display: 'flex', flexWrap: 'wrap', fontSize: 56, lineHeight: 1.2, maxWidth: 1000 }}>
-          <span>I build software that&nbsp;</span>
-          <span style={{ color: GREEN }}>teaches itself&nbsp;</span>
-          <span>to write more software.</span>
+          <span>{PROFILE.taglineParts.pre}&nbsp;</span>
+          <span style={{ color: GREEN }}>{PROFILE.taglineParts.accent}&nbsp;</span>
+          <span>{PROFILE.taglineParts.post}</span>
         </div>
 
         {/* bottom: url + sections */}
@@ -68,7 +69,7 @@ export default function Image() {
             color: MUTED,
           }}
         >
-          <span style={{ color: GREEN }}>vergnyx.dev</span>
+          <span style={{ color: GREEN }}>{PROFILE.brand}</span>
           <span>work · writing · /terminal</span>
         </div>
       </div>

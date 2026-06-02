@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { EXPERIMENTS } from "@/lib/experiments";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "Experiments — Vaibhav Verma",
-  description: "Lab notebook. Fuckups and discoveries.",
-};
+export const metadata = pageMetadata("experiments");
 
 export default function ExperimentsPage() {
   return (
