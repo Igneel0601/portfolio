@@ -1,3 +1,13 @@
+/* Kill the phantom ~3px horizontal overflow on desktop: something spans the
+   full window width *including* the scrollbar gutter (a position:fixed full-
+   bleed layer / pseudo — it doesn't show up as a normal overflowing child, but
+   bumps documentElement.scrollWidth to innerWidth → a thin horizontal bar).
+   Clip the X axis only — `clip` (not `hidden`) so it doesn't create a scroll
+   container or break the GSAP sticky pin (which sticks on the Y axis). */
+html {
+  overflow-x: clip;
+}
+
 /* parallax background — tiled wallpaper that scrolls at half-speed via --bg-y */
 .parallax-bg {
   position: fixed;
@@ -422,7 +432,8 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 
 /* Accent hairline under the title, tinted per-project via --ca */
 .psc-line {
-  height: 1.5px;
+  /* gradient hairline — 1.5px is the reserved hairline size (AGENTS.md) */
+  height: 1.5px; /* stylelint-disable-line declaration-property-unit-allowed-list */
   background: linear-gradient(to right, var(--ca, var(--accent)), color-mix(in oklab, var(--ca, var(--accent)) 35%, transparent));
   max-width: 70%;
 }

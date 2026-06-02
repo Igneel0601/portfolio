@@ -4,6 +4,14 @@
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` before writing any code. Heed deprecation notices.
 <!-- END:nextjs-agent-rules -->
 
+# Screenshots: the floating green dot is the cursor
+
+Desktop screenshots show a small green circle floating somewhere on the
+page (often mid-canvas, detached from any element). That is the **custom
+cursor** (`components/CustomCursor.tsx`, desktop-only render) parked at the
+mouse position — NOT a stray UI element, misplaced timeline dot, or layout
+bug. Do not "fix" it.
+
 # Styling units
 
 All spacing, sizing, and font-size values use **rem**. Px is reserved for:
