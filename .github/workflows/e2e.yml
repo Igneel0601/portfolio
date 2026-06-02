@@ -1,0 +1,44 @@
+name: E2E
+
+# Runs against the deployed Vercel preview/production for the commit (its URL
+# comes from the GitHub Deployment the Vercel integration creates). This avoids
+# standing up the app + Postgres inside the runner and tests the real artifact.
+on:
+  deployment_status:
+
+jobs:
+  e2e:
+    if: github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    env:
+      E2E_BASE_URL: ${{ github.event.deployment_status.target_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # Smoke — environment-independent, blocking.
+      - name: smoke
+        run: pnpm exec playwright test --grep-invert "@visual"
+
+      # Visual — non-blocking: pixel baselines are committed from a local run
+      # and font rendering differs across environments. Regenerate baselines in
+      # this runner (playwright test --grep @visual --update-snapshots) to make
+      # it strict, then drop continue-on-error.
+      - name: visual
+        continue-on-error: true
+        run: pnpm exec playwright test --grep "@visual"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7
