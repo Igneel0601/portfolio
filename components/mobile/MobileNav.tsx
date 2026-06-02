@@ -94,6 +94,7 @@ export function MobileNav() {
           <button
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls="mobile-nav-menu"
             onClick={() => setOpen((v) => !v)}
             style={{
               display: "inline-flex",
@@ -139,17 +140,23 @@ export function MobileNav() {
         </div>
       </nav>
 
-      {open && (
-        <div
-          data-mobile-nav-overlay
-          className="fixed inset-0 z-[100] flex flex-col items-center justify-center gap-5"
-          style={{
-            background: "color-mix(in oklab, var(--paper) 60%, transparent)",
-            backdropFilter: "blur(20px) saturate(140%)",
-            WebkitBackdropFilter: "blur(20px) saturate(140%)",
-          }}
-        >
-          {NAV_LINKS.map((l) => {
+      {/* Always rendered (not `{open && …}`) so the nav links sit in the
+          initial DOM and stay crawlable for mobile-first indexing — Googlebot
+          never taps the hamburger. Hidden via `display:none` when closed, which
+          also drops it from the tab order / a11y tree. */}
+      <div
+        id="mobile-nav-menu"
+        data-mobile-nav-overlay
+        aria-hidden={!open}
+        className="fixed inset-0 z-[100] flex-col items-center justify-center gap-5"
+        style={{
+          display: open ? "flex" : "none",
+          background: "color-mix(in oklab, var(--paper) 60%, transparent)",
+          backdropFilter: "blur(20px) saturate(140%)",
+          WebkitBackdropFilter: "blur(20px) saturate(140%)",
+        }}
+      >
+        {NAV_LINKS.map((l) => {
             if (l.kind === "scroll") {
               return (
                 <a
@@ -179,8 +186,7 @@ export function MobileNav() {
               </Link>
             );
           })}
-        </div>
-      )}
+      </div>
     </>
   );
 }
