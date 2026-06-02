@@ -21,9 +21,12 @@ const GREEN = '#6ee7a7'
 const INK = '#e6edf3'
 const MUTED = '#8b949e'
 
-// Same mark as the favicon (app/icon.svg), embedded so it renders crisp.
-const MARK = `<svg width="200" height="200" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 10L14 16L8 22" stroke="${GREEN}" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/><path d="M22 10L16 22" stroke="${GREEN}" stroke-width="3" stroke-linecap="square"/></svg>`
-const MARK_SRC = `data:image/svg+xml;base64,${Buffer.from(MARK).toString('base64')}`
+// The `\/|/` mark, read straight from app/icon.svg so the OG card can never
+// drift from the favicon. Its rounded tile (#0e1116) sits invisibly on the
+// card's near-identical bg (#0D1117).
+const MARK_SRC = `data:image/svg+xml;base64,${readFileSync(
+  join(process.cwd(), 'app/icon.svg'),
+).toString('base64')}`
 
 export default function Image() {
   return new ImageResponse(
