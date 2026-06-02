@@ -1,27 +1,12 @@
 "use client";
 
-import { Fragment, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ExternalLink, MoveRight } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
 import { Insight } from "@/components/Insight";
+import { DateRange } from "@/components/DateRange";
 import { PROJECTS } from "@/lib/content";
-
-// Render a date `range`: `→` in the string becomes a lucide MoveRight icon.
-function DateRange({ text }: { text: string }) {
-  const parts = text.split("→");
-  if (parts.length === 1) return <>{text}</>;
-  return (
-    <span className="inline-flex items-center gap-1.5">
-      {parts.map((part, i) => (
-        <Fragment key={i}>
-          {i > 0 && <MoveRight className="i-xs" aria-hidden />}
-          {part.trim()}
-        </Fragment>
-      ))}
-    </span>
-  );
-}
 
 export function ProjectsShowcaseCinematic() {
   const outerRef = useRef<HTMLDivElement>(null);
