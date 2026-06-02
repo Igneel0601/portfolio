@@ -8,7 +8,7 @@ const ROUTES = [
   { href: "/", path: "/", meta: "home" },
   { href: "/work", path: "/work", meta: "all projects" },
   { href: "/experiments", path: "/experiments", meta: "demos" },
-  { href: "mailto:hi@igneel.dev", path: "/contact", meta: "hi@igneel.dev" },
+  { href: "mailto:hi@vergnyx.dev", path: "/contact", meta: "hi@vergnyx.dev" },
 ];
 
 export function NotFoundView() {

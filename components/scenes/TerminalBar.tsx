@@ -8,7 +8,7 @@ export function TerminalBar() {
       <span className="w-2.5 h-2.5 rounded-full border" style={{ borderColor: "var(--ink)" }} />
       <span className="w-2.5 h-2.5 rounded-full border" style={{ borderColor: "var(--ink)" }} />
       <span className="w-2.5 h-2.5 rounded-full border" style={{ borderColor: "var(--ink)" }} />
-      <span className="c-sm ml-2">vaibhav@noida:~/igneel.dev$</span>
+      <span className="c-sm ml-2">vaibhav@noida:~/vergnyx.dev$</span>
       <span className="c-sm mute ml-auto hidden sm:inline">
         scroll = run the story
       </span>
