@@ -190,3 +190,28 @@ Goal: change taglines easily now, and clone this into a reusable template later.
    session quota indicator.
 4. `.md` URLs for posts (deferred) — more memorable, slightly distinctive in
    SERPs.
+
+## 7. Testing
+
+Shipped (2026-06-03): regression suite so new features can't silently break old
+behavior. **Vitest** unit/contract/snapshot (`pnpm test`, 45 tests: SEO builders,
+JSON-LD, `getRecentCommits`, `Insight`/`DateRange`, `resolveMediaUrl`, data
+invariants, `listWorkRows`) + **`pnpm check`** gate (tsc + stylelint + vitest),
+run by a **husky** pre-push hook. **Playwright** smoke (`pnpm test:e2e`) + visual
+(`pnpm test:visual`) across both shells. CI: `.github/workflows/ci.yml` (unit gate
++ build on PRs) and `e2e.yml` (against the Vercel preview). Follow-ups:
+
+1. **Add the `DATABASE_URI` repo secret** (+ optional `GH_READ_TOKEN`) so the CI
+   `build` job runs — static generation of `/writing/[slug]` reads Postgres.
+2. **Make CI visual blocking.** Baselines are committed from a local Linux run;
+   font rendering differs per environment. Regenerate them in the CI runner
+   (`playwright test --grep @visual --update-snapshots`), commit, then drop
+   `continue-on-error` from the `visual` step in `e2e.yml`.
+3. **ESLint debt → fold lint back into the gate.** `pnpm lint` has ~30
+   pre-existing errors (mostly React-19 `set-state-in-effect` in `lib/lenis.tsx`,
+   `MobileNav`, effect-init code, plus a few `jsx-no-comment-textnodes` /
+   `no-explicit-any`). CI runs eslint non-blocking today; clear the debt, then add
+   `eslint` to `pnpm check`. NOTE: the set-state-in-effect fixes touch animation
+   init — verify scroll/GSAP behavior after.
+4. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
+   new routes get a smoke check; `/about`/`/now`/`/uses` (§1) get visual baselines.
