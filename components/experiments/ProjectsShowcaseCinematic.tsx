@@ -1,104 +1,38 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import { ExternalLink } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
+import { PROJECTS, type Project } from "@/lib/content";
 
-type Project = {
-  id: string;
-  kind: string;
-  color: string;
-  num: string;
-  meta: string;
-  date: string;
-  badgeLabel: string;
-  badgeDot: "a" | "s" | "e";
-  title: string;
-  tagline: string;
-  insight: React.ReactNode;
-  stack: string[];
-  href: string;
-  img: string;
+const TINT: Record<Project["tint"], string> = {
+  a: "var(--accent)",
+  s: "var(--accent-2)",
+  e: "var(--accent-3)",
 };
 
-const PROJECTS: Project[] = [
-  {
-    id: "codeflow",
-    kind: "ai",
-    color: "var(--accent)",
-    num: "01",
-    meta: "product · solo",
-    date: "Feb → May 2026",
-    badgeLabel: "live · v0.4",
-    badgeDot: "a",
-    title: "CODEFLOW",
-    tagline:
-      "Chat with agents, get a working Next.js app running inside a real E2B sandbox.",
-    insight: (
-      <>
-        <em className="hl">Inngest</em> runs each agent step as a durable background job —
-        <br />
-        long chains never freeze the UI or time out mid-stream.
-        <br />
-        <em className="hl">E2B sandboxes</em> run the output.
-      </>
-    ),
-    stack: ["next.js", "trpc", "prisma", "inngest", "e2b", "openai", "clerk"],
-    href: "/work/codeflow",
-    img: "/projects/codeflow.png",
-  },
-  {
-    id: "taskforge",
-    kind: "realtime",
-    color: "var(--accent-2)",
-    num: "02",
-    meta: "product · duo",
-    date: "Sep → Nov 2025",
-    badgeLabel: "shipped · live",
-    badgeDot: "s",
-    title: "TASKFORGE",
-    tagline:
-      "Real-time collaborative kanban — live cursors, live drags, comments landing now, not eventually.",
-    insight: (
-      <>
-        <em className="hl">Liveblocks</em> runs the entire real-time layer:
-        <br />
-        presence, shared storage, conflict resolution — zero websocket code.
-        <br />
-        Drag a card — your collaborator sees it move <em className="hl">before you let go</em>.
-      </>
-    ),
-    stack: ["next.js", "liveblocks", "mongodb", "tailwind", "nextauth"],
-    href: "/work/taskforge",
-    img: "/projects/taskforge.png",
-  },
-  {
-    id: "traveloop",
-    kind: "hackathon",
-    color: "var(--accent-3)",
-    num: "03",
-    meta: "event · team of 4",
-    date: "Odoo Hackathon",
-    badgeLabel: "2nd place",
-    badgeDot: "e",
-    title: "TRAVELOOP",
-    tagline:
-      "Multi-city itineraries, budgets, packing — shipped at 4am, demoed at 9. We got second.",
-    insight: (
-      <>
-        Trips → stops → days → activities → budgets:
-        <br />
-        the <em className="hl">nested document model</em> maps the domain perfectly.
-        <br />
-        Four people. One weekend. One real, working, demoed app.
-      </>
-    ),
-    stack: ["next.js", "prisma", "postgres", "tailwind", "neondb"],
-    href: "/work/traveloop",
-    img: "/projects/traveloop.png",
-  },
-];
+// Render a project `insight`: `*word*` → accent highlight, `\n` → line break.
+function Insight({ text }: { text: string }) {
+  return (
+    <>
+      {text.split("\n").map((line, li) => (
+        <Fragment key={li}>
+          {li > 0 && <br />}
+          {line.split(/(\*[^*]+\*)/).map((seg, si) =>
+            seg.startsWith("*") && seg.endsWith("*") ? (
+              <em key={si} className="hl">
+                {seg.slice(1, -1)}
+              </em>
+            ) : (
+              seg
+            ),
+          )}
+        </Fragment>
+      ))}
+    </>
+  );
+}
 
 export function ProjectsShowcaseCinematic() {
   const outerRef = useRef<HTMLDivElement>(null);
@@ -200,7 +134,7 @@ export function ProjectsShowcaseCinematic() {
       const incoming = PROJECTS[seg + 1];
       seamBar!.style.opacity = "1";
       seamBar!.style.top = `${((1 - local) * 100).toFixed(2)}%`;
-      seamBar!.style.color = incoming.color;
+      seamBar!.style.color = TINT[incoming.tint];
       seamCmd!.textContent = `$ cat ~/projects/${incoming.id}/README.md  # ${incoming.kind}`;
     }
 
@@ -208,7 +142,7 @@ export function ProjectsShowcaseCinematic() {
       const idx = local >= 0.999 ? Math.min(seg + 1, N - 1) : seg;
       const p = PROJECTS[idx];
       topBarCmd!.textContent = `$ cat ~/projects/${p.id}/README.md  # ${p.kind}`;
-      topBar!.style.color = p.color;
+      topBar!.style.color = TINT[p.tint];
     }
 
     function applyIntroChrome(e: number) {
@@ -348,18 +282,18 @@ export function ProjectsShowcaseCinematic() {
                 key={p.id}
                 className="psc-panel"
                 data-panel={i}
-                style={{ zIndex: i + 1, ["--ca" as string]: p.color }}
+                style={{ zIndex: i + 1, ["--ca" as string]: TINT[p.tint] }}
               >
                 <div className="psc-bg">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.img} alt="" aria-hidden loading={i === 0 ? "eager" : "lazy"} />
+                  <img src={p.image} alt="" aria-hidden loading={i === 0 ? "eager" : "lazy"} />
                 </div>
                 <div className="psc-body">
                   <div
                     className="l-meta flex items-center gap-5 flex-wrap"
                     style={{ color: "var(--ink-dim)" }}
                   >
-                    <span style={{ color: "var(--ca, var(--accent))" }}>{p.num}</span>
+                    <span style={{ color: "var(--ca, var(--accent))" }}>{p.index}</span>
                     <span style={{ opacity: 0.3 }}>/</span>
                     <span>{p.meta}</span>
                     <span style={{ opacity: 0.3 }}>·</span>
@@ -373,12 +307,12 @@ export function ProjectsShowcaseCinematic() {
                         gap: "0.35rem",
                       }}
                     >
-                      <span className={`bdot bdot-${p.badgeDot}`} />
-                      <span style={{ color: p.color }}>{p.badgeLabel}</span>
+                      <span className={`bdot bdot-${p.tint}`} />
+                      <span style={{ color: TINT[p.tint] }}>{p.status}</span>
                     </span>
                   </div>
                   <div className="psc-title-wrap">
-                    <h2 className="t-display psc-title">{p.title}</h2>
+                    <h2 className="t-display psc-title">{p.name.toUpperCase()}</h2>
                   </div>
                   <div className="psc-line" />
                   <p
@@ -397,7 +331,7 @@ export function ProjectsShowcaseCinematic() {
                       borderLeft: "1.5px solid var(--hair-2)",
                     }}
                   >
-                    {p.insight}
+                    <Insight text={p.insight} />
                   </div>
                   <div className="flex flex-col items-start gap-5">
                     <div className="flex flex-wrap gap-1.5">
@@ -408,12 +342,12 @@ export function ProjectsShowcaseCinematic() {
                       ))}
                     </div>
                     <Btn
-                      href={p.href}
+                      href={`/work/${p.id}`}
                       variant="term"
                       style={{
-                        color: p.color,
-                        borderColor: p.color,
-                        ["--btn-shadow" as string]: p.color,
+                        color: TINT[p.tint],
+                        borderColor: TINT[p.tint],
+                        ["--btn-shadow" as string]: TINT[p.tint],
                       }}
                     >
                       cat {p.id}.mdx
@@ -458,7 +392,6 @@ export function ProjectsShowcaseCinematic() {
 // PSC_CSS — preserved for reference; rules now live in app/desktop.css under
 // the "projects-showcase-cinematic" section. Re-enable by uncommenting the
 // `<style>{PSC_CSS}</style>` line in the JSX above.
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 // const _PSC_CSS_DISABLED = `
 // .psc-root {
 //   --psc-paper:    #0e1116;
