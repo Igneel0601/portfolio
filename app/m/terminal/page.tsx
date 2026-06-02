@@ -1,13 +1,10 @@
-import type { Metadata } from 'next'
 import { Terminal } from '@/components/terminal/Terminal'
 import { getAllPosts } from '@/lib/posts'
+import { pageMetadata } from '@/lib/seo/metadata'
 
 export const revalidate = 300
 
-export const metadata: Metadata = {
-  title: 'terminal — Vaibhav Verma',
-  description: 'A real shell in your browser. Try `help`.',
-}
+export const metadata = pageMetadata('terminal')
 
 export default async function TerminalPage() {
   let postSlugs: { slug: string; title: string }[] = []

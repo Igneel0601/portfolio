@@ -1,17 +1,14 @@
 import { MobileHome } from "@/components/mobile/MobileHome";
-import { PersonJsonLd } from "@/components/PersonJsonLd";
+import { JsonLd } from "@/components/JsonLd";
+import { pageMetadata } from "@/lib/seo/metadata";
+import { personJsonLd } from "@/lib/seo/jsonld";
 
-export const metadata = {
-  alternates: {
-    canonical: "/",
-    types: { "application/rss+xml": "/rss.xml" },
-  },
-};
+export const metadata = pageMetadata("home");
 
 export default function Home() {
   return (
     <main className="flex-1">
-      <PersonJsonLd />
+      <JsonLd data={personJsonLd()} />
       <MobileHome />
     </main>
   );

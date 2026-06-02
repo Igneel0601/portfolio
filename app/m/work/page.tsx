@@ -1,11 +1,8 @@
 import { MobileWorkLog } from "@/components/mobile/MobileWorkLog";
 import { listWorkRows } from "@/lib/work-rows";
+import { pageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = {
-  title: "All projects — Vaibhav Verma",
-  description: "Full build log of every project I've shipped.",
-  alternates: { canonical: "/work" },
-};
+export const metadata = pageMetadata("work");
 
 export default async function WorkPage() {
   const rows = await listWorkRows();

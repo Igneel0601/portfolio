@@ -13,6 +13,7 @@ import { Pager } from "@/components/case-study/Pager";
 import { StudyFooter } from "@/components/case-study/StudyFooter";
 import { slugify } from "@/components/case-study/slug";
 import { listCaseStudies, getNeighbors } from "@/lib/case-studies";
+import { caseStudyMetadata } from "@/lib/seo/metadata";
 
 const CASE_DIR = path.join(process.cwd(), "content/case-studies");
 
@@ -39,12 +40,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const loaded = await loadCase(slug);
   if (!loaded) return { title: "Not found" };
-  const { data } = loaded;
-  return {
-    title: `${data.title} · case study`,
-    description: data.tagline,
-    alternates: { canonical: `/work/${slug}` },
-  };
+  return caseStudyMetadata(
+    loaded.data as { title: string; tagline?: string },
+    slug,
+  );
 }
 
 export async function CaseStudyPage({
