@@ -25,12 +25,16 @@ export default defineConfig({
     },
   ],
   // Locally (no E2E_BASE_URL) manage the dev server; against a preview URL, don't.
+  // reuseExistingServer means a dev server you already have on 3001 is reused
+  // instantly — the most reliable path. If Playwright has to cold-boot one, the
+  // first Turbopack compile of the whole app can be slow, so allow 240s. If you
+  // hit a stale-chunk "Unexpected end of input", clear .next and retry.
   webServer: process.env.E2E_BASE_URL
     ? undefined
     : {
         command: "next dev -p 3001",
         url: "http://localhost:3001",
         reuseExistingServer: true,
-        timeout: 120_000,
+        timeout: 240_000,
       },
 });
