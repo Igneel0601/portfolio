@@ -87,9 +87,17 @@ files. Add/edit there:
   (`components/JsonLd.tsx`).
 - `lib/site.ts` — `SITE_URL` only (the canonical origin; used by sitemap/robots/
   rss too, so it stays here, not under `seo/`). `lib/seo/*` imports it.
-- Identity copy (name/role/tagline) is still duplicated in `app/layout.tsx`,
-  `app/opengraph-image.tsx`, `components/scenes/SceneBoot.tsx` — NOT yet
-  centralized (todo §3.1).
+
+## Identity copy (single source of truth → `lib/profile.ts`)
+All personal/brand strings — name, role, jobTitle, brand/domain label, tagline,
+the hero `headlineDesktop/Mobile` tokens, bio/subhead, `resumePath`, RSS feed
+title — live in `lib/profile.ts` (`PROFILE`). Do NOT hardcode these in
+components; import `PROFILE`. It drives `app/layout.tsx`, `app/opengraph-image.tsx`,
+`lib/seo/*`, the hero (`SceneBoot`/`MobileBoot`), all footers, the nav brand, and
+`rss`. Socials/email stay in `lib/content.ts:CONTACT`. The terminal/Aria
+"fastfetch" flavor is intentionally NOT centralized — edit those files directly
+(`components/terminal/Terminal.tsx`, `lib/terminal/{fs,commands}.ts`,
+`app/api/aria/route.ts`). Full clone-and-rebrand guide: `docs/TEMPLATE.md`.
 
 ## Enforcement
 - `stylelint.config.mjs` + `pnpm lint:css` — rem-only for spacing/sizes.

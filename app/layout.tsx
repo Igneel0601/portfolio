@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, IBM_Plex_Mono } from "next/font/google";
 import { SITE_URL } from "@/lib/site";
+import { PROFILE } from "@/lib/profile";
 import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -25,29 +26,28 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const siteTitle = `${PROFILE.name} — ${PROFILE.role}`;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "Vaibhav Verma — software engineer",
-  description:
-    "I build software that teaches itself to write more software. CSE grad, Noida. Open to full-time + freelance.",
+  title: siteTitle,
+  description: PROFILE.metaDescription,
   alternates: {
     types: {
       "application/rss+xml": "/rss.xml",
     },
   },
   openGraph: {
-    title: "Vaibhav Verma — software engineer",
-    description:
-      "I build software that teaches itself to write more software.",
+    title: siteTitle,
+    description: PROFILE.tagline,
     url: SITE_URL,
-    siteName: "Vaibhav Verma",
+    siteName: PROFILE.name,
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Vaibhav Verma — software engineer",
-    description:
-      "I build software that teaches itself to write more software.",
+    title: siteTitle,
+    description: PROFILE.tagline,
   },
 };
 

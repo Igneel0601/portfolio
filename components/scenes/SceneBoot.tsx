@@ -2,22 +2,14 @@
 
 import { useEffect, useRef } from "react";
 import { MoveDown } from "lucide-react";
-import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
+import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
+import { PROFILE, type HeadlineToken } from "@/lib/profile";
 import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 import { Btn } from "@/components/Btn";
 
-const HEADLINE_LINES = [
-  ["I'm", { hilite: "Vaibhav." }],
-  ["I", "build", "software"],
-  ["that", { em: "teaches" }, { em: "itself" }],
-  ["to", "write", "more", "software."],
-] as const;
-
-type Token = string | { hilite: string } | { em: string };
-
-function HeadlineLine({ tokens }: { tokens: readonly Token[] }) {
+function HeadlineLine({ tokens }: { tokens: readonly HeadlineToken[] }) {
   return (
     <span className="block overflow-hidden">
       {tokens.map((t, i) => {
@@ -170,21 +162,21 @@ export function SceneBoot() {
         data-headline
         className="t-display mt-6 mb-2"
       >
-        {HEADLINE_LINES.map((line, i) => (
+        {PROFILE.headlineDesktop.map((line, i) => (
           <HeadlineLine key={i} tokens={line} />
         ))}
       </h1>
 
       <p data-subhead className="c-md mute max-w-xl mt-4">
-        B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance.
+        {PROFILE.subheadDesktop}
       </p>
 
       <div className="flex flex-wrap gap-3 mt-7">
         <Btn data-cta href="#work" variant="solid">
           <MoveDown className="i-md" aria-hidden /> scroll the story
         </Btn>
-        <Btn data-cta href="/vaibhav_resume.pdf" download>$ download résumé.pdf</Btn>
-        <Btn data-cta href="mailto:hi@vergnyx.dev">hi@vergnyx.dev</Btn>
+        <Btn data-cta href={PROFILE.resumePath} download>$ download résumé.pdf</Btn>
+        <Btn data-cta href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
       </div>
 
       <span data-cursor aria-hidden className="mt-3" />

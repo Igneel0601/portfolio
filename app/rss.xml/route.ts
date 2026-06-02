@@ -1,10 +1,11 @@
 import { headers } from 'next/headers'
 import { getAllPosts } from '@/lib/posts'
+import { PROFILE } from '@/lib/profile'
 
 export const revalidate = 3600
 
-const SITE_TITLE = 'Vaibhav Verma — Writing'
-const SITE_DESC = 'Notes, essays, build logs.'
+const SITE_TITLE = PROFILE.writingFeed.title
+const SITE_DESC = PROFILE.writingFeed.description
 
 async function resolveSiteUrl(): Promise<string> {
   if (process.env.SITE_URL) return process.env.SITE_URL

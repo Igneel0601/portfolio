@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
+import { PROFILE } from "@/lib/profile";
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -88,7 +89,7 @@ export function MobileNav() {
       >
         <div className="flex items-center justify-between py-3 c-md">
           <Link href="/" className="font-semibold">
-            vergnyx.dev
+            {PROFILE.brand}
           </Link>
           <button
             aria-label={open ? "Close menu" : "Open menu"}

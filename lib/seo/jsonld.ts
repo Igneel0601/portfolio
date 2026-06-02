@@ -4,8 +4,7 @@ import { SITE_URL } from "@/lib/site";
 import { CONTACT } from "@/lib/content";
 import { resolveMediaUrl } from "@/lib/media";
 import type { Post } from "@/lib/posts";
-
-const AUTHOR_NAME = "Vaibhav Verma";
+import { PROFILE } from "@/lib/profile";
 
 /** schema.org Person — feeds the knowledge panel / own-name queries. */
 export function personJsonLd() {
@@ -13,9 +12,9 @@ export function personJsonLd() {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: AUTHOR_NAME,
+    name: PROFILE.name,
     url: SITE_URL,
-    jobTitle: "Software Engineer",
+    jobTitle: PROFILE.jobTitle,
     email: CONTACT.email,
     sameAs,
   };
@@ -39,7 +38,7 @@ export function articleJsonLd(post: Post, slug: string) {
     description: post.metaDescription || undefined,
     datePublished: post.publishedAt || undefined,
     dateModified: post.updatedAt || post.publishedAt || undefined,
-    author: { "@type": "Person", name: AUTHOR_NAME, url: SITE_URL },
+    author: { "@type": "Person", name: PROFILE.name, url: SITE_URL },
     image: image ? [image] : undefined,
     wordCount: post.wordCount || undefined,
     url,

@@ -5,6 +5,7 @@
 import type { Metadata } from "next";
 import type { Post } from "@/lib/posts";
 import { resolveMediaUrl } from "@/lib/media";
+import { PROFILE } from "@/lib/profile";
 import { PAGE_SEO, type PageKey, type PageSeo } from "./pages";
 
 const RSS_TYPES = { "application/rss+xml": "/rss.xml" } as const;
@@ -18,7 +19,7 @@ export function pageMetadata(key: PageKey): Metadata {
       ...(p.rss ? { types: RSS_TYPES } : {}),
     },
   };
-  if (p.title) meta.title = p.title;
+  if (p.titleLabel) meta.title = `${p.titleLabel} — ${PROFILE.name}`;
   if (p.description) meta.description = p.description;
   return meta;
 }
