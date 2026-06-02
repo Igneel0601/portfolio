@@ -28,8 +28,10 @@ type Profile = {
   writingFeed: { title: string; description: string }; // RSS channel
 };
 
+const NAME = "Vaibhav Verma";
+
 export const PROFILE: Profile = {
-  name: "Vaibhav Verma",
+  name: NAME,
   role: "software engineer",
   jobTitle: "Software Engineer",
   brand: "vergnyx.dev",
@@ -66,7 +68,7 @@ export const PROFILE: Profile = {
   resumePath: "/vaibhav_resume.pdf",
 
   writingFeed: {
-    title: "Vaibhav Verma — Writing",
+    title: `${NAME} — Writing`,
     description: "Notes, essays, build logs.",
   },
 };
