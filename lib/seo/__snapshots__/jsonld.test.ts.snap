@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`articleJsonLd > emits a BlogPosting with absolute image + url 1`] = `
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "author": {
+    "@type": "Person",
+    "name": "Vaibhav Verma",
+    "url": "https://vergnyx.dev",
+  },
+  "dateModified": "2026-06-02T00:00:00Z",
+  "datePublished": "2026-06-01T00:00:00Z",
+  "description": "A meta description.",
+  "headline": "Meta Title",
+  "image": [
+    "https://vergnyx.dev/api/bloggz-media/hero.png",
+  ],
+  "mainEntityOfPage": "https://vergnyx.dev/writing/hello-world",
+  "url": "https://vergnyx.dev/writing/hello-world",
+  "wordCount": 1234,
+}
+`;
+
+exports[`personJsonLd > emits a schema.org Person 1`] = `
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "email": "hi@vergnyx.dev",
+  "jobTitle": "Software Engineer",
+  "name": "Vaibhav Verma",
+  "sameAs": [
+    "https://github.com/Igneel0601",
+  ],
+  "url": "https://vergnyx.dev",
+}
+`;

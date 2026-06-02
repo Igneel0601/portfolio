@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [dev, main]
+
+jobs:
+  # Hard gate — pure, deterministic, no secrets. Blocks the merge.
+  unit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: check (tsc + stylelint + vitest)
+        run: pnpm check
+      - name: eslint (non-blocking — repo has pre-existing lint debt)
+        run: pnpm lint
+        continue-on-error: true
+
+  # Build — catches RSC/route/metadata regressions. Needs DB for static
+  # generation of /writing/[slug]. Provide DATABASE_URI as a repo secret.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: build
+        run: pnpm build
+        env:
+          SITE_URL: https://vergnyx.dev
+          DATABASE_URI: ${{ secrets.DATABASE_URI }}
+          GITHUB_TOKEN: ${{ secrets.GH_READ_TOKEN }}

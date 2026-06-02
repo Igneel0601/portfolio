@@ -9,17 +9,18 @@
 
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MoveUpRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
-import { GIT_LOG_PREVIEW } from "@/lib/content";
 import { DashedRule } from "./parts";
 import { RevealGroup } from "./Reveal";
 
 export function MobileWorkLog({
   rows,
+  commits,
   lastCommit,
 }: {
   rows: WorkRow[];
+  commits: string[];
   lastCommit?: string;
 }) {
   const [active, setActive] = useState("all");
@@ -132,7 +133,7 @@ export function MobileWorkLog({
 
         <div className="m-wklog m-reveal">
           <div className="c-xs m-wklog-h">$ git log --oneline | head -3</div>
-        {GIT_LOG_PREVIEW.map((l, i) => {
+        {commits.map((l, i) => {
           const [hash, ...rest] = l.split(" · ");
           return (
             <div key={i} className="c-xs m-wklog-l">
@@ -147,7 +148,7 @@ export function MobileWorkLog({
           className="l-meta m-wklog-more"
         >
           full log on github
-          <MoveUpRight aria-hidden className="i-xs" />
+          <ExternalLink aria-hidden className="i-xs" />
         </a>
         </div>
       </RevealGroup>

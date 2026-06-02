@@ -1,0 +1,92 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`caseStudyMetadata > composes title + canonical from slug 1`] = `
+{
+  "alternates": {
+    "canonical": "/work/codeflow",
+  },
+  "description": "AI builder.",
+  "title": "CodeFlow · case study",
+}
+`;
+
+exports[`pageMetadata > builds metadata for "experiments" 1`] = `
+{
+  "alternates": {
+    "canonical": "/experiments",
+  },
+  "description": "Lab notebook. Fuckups and discoveries.",
+  "title": "Experiments — Vaibhav Verma",
+}
+`;
+
+exports[`pageMetadata > builds metadata for "home" 1`] = `
+{
+  "alternates": {
+    "canonical": "/",
+    "types": {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
+}
+`;
+
+exports[`pageMetadata > builds metadata for "terminal" 1`] = `
+{
+  "alternates": {
+    "canonical": "/terminal",
+  },
+  "description": "A real shell in your browser. Try \`help\`.",
+  "title": "terminal — Vaibhav Verma",
+}
+`;
+
+exports[`pageMetadata > builds metadata for "work" 1`] = `
+{
+  "alternates": {
+    "canonical": "/work",
+  },
+  "description": "Full build log of every project I've shipped.",
+  "title": "All projects — Vaibhav Verma",
+}
+`;
+
+exports[`pageMetadata > builds metadata for "writing" 1`] = `
+{
+  "alternates": {
+    "canonical": "/writing",
+    "types": {
+      "application/rss+xml": "/rss.xml",
+    },
+  },
+  "description": "Notes, essays, build logs.",
+  "title": "Writing — Vaibhav Verma",
+}
+`;
+
+exports[`postMetadata > builds title/description/canonical/og from a post 1`] = `
+{
+  "alternates": {
+    "canonical": "/writing/hello-world",
+  },
+  "description": "A meta description.",
+  "openGraph": {
+    "description": "A meta description.",
+    "images": [
+      {
+        "url": "/api/bloggz-media/hero.png",
+      },
+    ],
+    "title": "Meta Title",
+  },
+  "title": "Meta Title",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "A meta description.",
+    "images": [
+      "/api/bloggz-media/hero.png",
+    ],
+    "title": "Meta Title",
+  },
+}
+`;

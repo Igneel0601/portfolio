@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { PROFILE } from "@/lib/profile";
 
 export function Footer() {
   const rawPathname = usePathname();
@@ -27,7 +28,7 @@ export function Footer() {
     >
       <div className="page-shell py-5 c-xs flex justify-between mute">
         <span>$ exit 0 · built with too much GSAP &amp; coffee</span>
-        <span>© Vaibhav Verma · 2026</span>
+        <span>© {PROFILE.name} · 2026</span>
       </div>
     </footer>
   );

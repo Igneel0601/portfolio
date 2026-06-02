@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
+import { PROFILE } from "@/lib/profile";
 import { useLenis } from "@/lib/lenis";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
@@ -238,7 +239,7 @@ export function Nav() {
             className="font-semibold nav-link no-pop"
             style={{ color: "var(--accent)" }}
           >
-            vergnyx.dev
+            {PROFILE.brand}
           </Link>
           <ul className="flex items-center gap-5 ml-6">
             {NAV_LINKS.slice(0, -1).map((l) => (
@@ -294,7 +295,7 @@ export function Nav() {
             className="font-semibold nav-link no-pop"
             style={{ color: "var(--accent)" }}
           >
-            vergnyx.dev
+            {PROFILE.brand}
           </Link>
           <button
             data-nav-toggle

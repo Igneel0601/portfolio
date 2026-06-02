@@ -1,5 +1,6 @@
 import { FsDir, FsNode, normalizePath, readFile, resolve } from './fs'
 import { COFFEE, COW, FORTUNES } from './ascii'
+import { PROFILE } from '@/lib/profile'
 
 export type HistoryEntry =
   | { kind: 'boot' }
@@ -366,7 +367,7 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
 
     case 'hire-me':
     case 'hire':
-      ctx.push({ kind: 'output', text: `email   hi@vergnyx.dev\ngithub  igneel0601\nresume  /vaibhav_resume.pdf\n\nlooking: full-time SWE + interesting freelance.` })
+      ctx.push({ kind: 'output', text: `email   hi@vergnyx.dev\ngithub  igneel0601\nresume  ${PROFILE.resumePath}\n\nlooking: full-time SWE + interesting freelance.` })
       setTimeout(() => {
         if (typeof window !== 'undefined') window.location.href = 'mailto:hi@vergnyx.dev'
       }, 300)
