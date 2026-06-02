@@ -69,7 +69,7 @@ export default function Image() {
             color: MUTED,
           }}
         >
-          <span style={{ color: GREEN }}>vergnyx.dev</span>
+          <span style={{ color: GREEN }}>{PROFILE.brand}</span>
           <span>work · writing · /terminal</span>
         </div>
       </div>

@@ -1,58 +1,19 @@
 import Link from "next/link";
 import { MoveRight } from "lucide-react";
-import type { ReactNode } from "react";
-import { PROJECTS } from "@/lib/content";
+import { PROJECTS, type Project } from "@/lib/content";
+import { Insight } from "@/components/Insight";
 import { SectionHeader } from "./parts";
 import { RevealGroup } from "./Reveal";
 
-/* Per-project presentation extras that don't live in the content model:
-   which accent each panel themes to (1/2/3 → --accent/-2/-3, set via
-   data-accent so there's no inline CSS), a one-line "insight" in Vaibhav's
-   voice, and the status badge label. Keyed by project id so content.ts
-   stays the single source of truth for everything else. */
-type PanelExtra = { accent: 1 | 2 | 3; badge: string; insight: ReactNode };
-
-const PANEL_EXTRAS: Record<string, PanelExtra> = {
-  codeflow: {
-    accent: 1,
-    badge: "live",
-    insight: (
-      <>
-        <em>Inngest</em> runs each agent step as a durable job — long chains
-        never freeze the UI. <em>E2B</em> sandboxes run the output.
-      </>
-    ),
-  },
-  taskforge: {
-    accent: 2,
-    badge: "live",
-    insight: (
-      <>
-        <em>Liveblocks</em> runs the whole real-time layer — presence, shared
-        storage, conflict resolution. Zero websocket code.
-      </>
-    ),
-  },
-  traveloop: {
-    accent: 3,
-    badge: "2nd place",
-    insight: (
-      <>
-        Trips → stops → days → activities → budgets: a{" "}
-        <em>nested document model</em> that maps the domain exactly. Four
-        people, one weekend.
-      </>
-    ),
-  },
-};
-
-const FALLBACK: PanelExtra = { accent: 1, badge: "shipped", insight: null };
+/* tint (a/s/e) → data-accent (1/2/3), which mobile.css maps to --accent/-2/-3.
+   Everything else a panel shows — status badge, insight — comes straight from
+   lib/content.ts, the single source of truth shared with the desktop showcase. */
+const ACCENT: Record<Project["tint"], 1 | 2 | 3> = { a: 1, s: 2, e: 3 };
 
 /* Each panel is its own full-screen page (a direct child of the deck track),
    so the pager treats them as separate swipes. Reveal is scoped per panel. */
 export function MobileProjects() {
   return PROJECTS.map((p, i) => {
-    const x = PANEL_EXTRAS[p.id] ?? FALLBACK;
     return (
       <section key={p.id} className="m-panel-screen">
         {i === 0 && (
@@ -62,14 +23,14 @@ export function MobileProjects() {
           />
         )}
         <RevealGroup>
-          <article className="m-panel m-reveal" data-accent={x.accent}>
+          <article className="m-panel m-reveal" data-accent={ACCENT[p.tint]}>
             <div className="l-meta m-panel-meta">
               <span className="m-panel-num">{p.index}</span>
               <span className="m-panel-sep">/</span>
               <span>{p.meta}</span>
               <span className="m-panel-badge">
                 <i className="m-panel-dot" aria-hidden />
-                {x.badge}
+                {p.status}
               </span>
             </div>
 
@@ -77,7 +38,11 @@ export function MobileProjects() {
             <div className="m-panel-rule" />
 
             <p className="t-lead m-panel-tagline">{p.blurb}</p>
-            {x.insight && <p className="c-xs m-panel-insight">{x.insight}</p>}
+            {p.insight && (
+              <p className="c-xs m-panel-insight">
+                <Insight text={p.insight} breaks={false} />
+              </p>
+            )}
 
             <div className="m-panel-stack">
               {p.stack.map((s) => (

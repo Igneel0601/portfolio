@@ -4,6 +4,7 @@ import { Fragment, useEffect, useRef } from "react";
 import { ExternalLink, MoveRight } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
+import { Insight } from "@/components/Insight";
 import { PROJECTS, type Project } from "@/lib/content";
 
 const TINT: Record<Project["tint"], string> = {
@@ -25,28 +26,6 @@ function DateRange({ text }: { text: string }) {
         </Fragment>
       ))}
     </span>
-  );
-}
-
-// Render a project `insight`: `*word*` → accent highlight, `\n` → line break.
-function Insight({ text }: { text: string }) {
-  return (
-    <>
-      {text.split("\n").map((line, li) => (
-        <Fragment key={li}>
-          {li > 0 && <br />}
-          {line.split(/(\*[^*]+\*)/).map((seg, si) =>
-            seg.startsWith("*") && seg.endsWith("*") ? (
-              <em key={si} className="hl">
-                {seg.slice(1, -1)}
-              </em>
-            ) : (
-              seg
-            ),
-          )}
-        </Fragment>
-      ))}
-    </>
   );
 }
 
