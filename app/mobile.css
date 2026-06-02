@@ -38,7 +38,7 @@
 
 .m-dashed-rule {
   height: 0.0625rem; /* 1px hairline divider (scales with root font) */
-  margin: 1rem 1.375rem 0; /* breathing room above the rule (filter → list) */
+  margin: 1rem 0 0; /* breathing room above the rule (filter → list) */
   background: repeating-linear-gradient(
     90deg,
     var(--hair-2) 0 0.75rem,
@@ -547,7 +547,7 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
    site footer (.m-site-footer), which owns the border. */
 .m-wfoot {
   max-width: 34rem;
-  margin: 0.6rem auto 1.25rem;
+  margin: 0.6rem auto 3rem;
   padding: 0 1.375rem;
   display: flex;
   align-items: center;
@@ -636,7 +636,6 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   max-width: 34rem;
   margin: 0.5rem auto 0;
   padding: 1.25rem 1.375rem 1.5rem;
-  border-top: 1px dashed var(--hair);
 }
 .m-wklog-h { margin-bottom: 0.55rem; color: var(--ink-dim); }
 .m-wklog-l {
