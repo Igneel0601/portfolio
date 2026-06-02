@@ -13,6 +13,13 @@ then the template effort, then polish.
 > Email `hi@vergnyx.dev` → Gmail via Cloudflare Email Routing. See
 > `docs/domain-search.md`.
 >
+> On `feature/templating` (2026-06-02, **not yet merged → `dev`**): centralized
+> SEO/metadata into `lib/seo/*` + Article (`BlogPosting`) JSON-LD; identity copy
+> into `lib/profile.ts`; home work-showcase data into `lib/content.ts` `PROJECTS`
+> (no more local copy; `→` in `date` renders as a lucide `MoveRight`); mobile nav
+> links now in the initial DOM for crawlability (§2a.6); `docs/TEMPLATE.md`.
+> 9 commits ahead of `dev` — pending action: merge down.
+>
 > Recently shipped (2026-06-02): mobile UI polish — full-bleed filter→list
 > divider, dropped the work git-log dashed border, writing end-of-log gap now
 > matches desktop (3rem); iOS hero italic-ascender clip fix; desktop phantom
