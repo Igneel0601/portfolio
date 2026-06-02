@@ -155,7 +155,8 @@ Goal: change taglines easily now, and clone this into a reusable template later.
 
 1. **Persistent rate limit on `/api/aria`** — Upstash free tier; the current
    in-memory map resets per edge instance.
-2. **Delete unused `components/scenes/TerminalBar.tsx`** — or wire it in.
+2. **Delete unused `components/scenes/TerminalBar.tsx`.** ✅ Done — confirmed zero
+   imports, removed.
 3. **Unify section spacing** — inter-scene gaps live in three idioms with no
    shared token: Tailwind padding (`SceneBoot` `pt-8 pb-12`, `SceneTimeline`
    `py-10`), Tailwind margin (`SceneCTA` wrapper `my-12`), and inline
@@ -165,7 +166,10 @@ Goal: change taglines easily now, and clone this into a reusable template later.
    systems. Pick one rhythm token. NOTE: timeline is pinned, so changing its
    margins risks the scroll choreography — verify after.
 4. **Lighthouse pass on `/d` and `/m`** — `next/image` priority hints, CWV.
-5. **Dynamic-import `lib/terminal/groq.ts`** (lazy-load the chat client).
+5. ~~Dynamic-import `lib/terminal/groq.ts`~~ — **decided against.** It's a
+   55-line plain-`fetch` client with zero deps, and `modelLabel()` is used
+   eagerly in the terminal welcome text. Nothing heavy to defer; lazy-loading
+   would add complexity for ~0 bundle savings.
 
 ## 5. Nice-to-have
 
