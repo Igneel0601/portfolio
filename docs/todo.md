@@ -83,8 +83,10 @@ topical traffic for posts.
 
 ### 2b. Writing posts
 
-1. **JSON-LD `Article` schema** on `/writing/<slug>` — `headline`,
-   `datePublished`, `dateModified`, `author`, `image`, `wordCount`. None today.
+1. **JSON-LD `Article` schema** on `/writing/<slug>`. ✅ Done —
+   `lib/seo/jsonld.ts:articleJsonLd()` emits `BlogPosting` (`headline`,
+   `datePublished`, `dateModified`, `author`, `image`, `wordCount`), rendered
+   via `<JsonLd>` from `app/_impl/post.tsx`.
 2. **`article:published_time` + `article:author`** in `openGraph`. Not set.
 3. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
    (only "Similar reads" does this today).
@@ -107,6 +109,12 @@ topical traffic for posts.
 
 Goal: change taglines easily now, and clone this into a reusable template later.
 
+> Centralization done so far: **identity** → `lib/profile.ts` (§3.1), **SEO/metadata**
+> → `lib/seo/*` (`pages.ts` config + `metadata.ts`/`jsonld.ts` builders, documented
+> in AGENTS.md), **work data** → `lib/content.ts` `PROJECTS` (home showcase no longer
+> keeps its own copy). Edit surface for a cloner: `lib/profile.ts` + `lib/content.ts`
+> + résumé PDF + `SITE_URL` + icons. Remaining centralization is Tier B (§3.2).
+
 1. **Centralize identity copy.** ✅ Done — `lib/profile.ts` (`PROFILE`) is the
    single source for name/role/jobTitle/brand/tagline + structured hero
    `headlineDesktop/Mobile` tokens/subhead/résumé path/RSS. Consumed by
@@ -121,7 +129,11 @@ Goal: change taglines easily now, and clone this into a reusable template later.
    deliberately (a cloner rewrites them anyway); documented in `docs/TEMPLATE.md`.
 3. **`/experiments` → make it real** — replace the layout/animation sandboxes
    (case-study-v2, projects-showcase, projects-showcase-cinematic) with genuine
-   content, or fold the cinematic showcase into the home page.
+   content. NOTE: the cinematic showcase is already the home work section
+   (`SceneExperiments`), and its data is now centralized — it reads `PROJECTS`
+   from `lib/content.ts` (extended with `tagline`/`insight`/`status`/`tint`;
+   `→` in `date` renders as a lucide `MoveRight`), no local hardcoded copy. User
+   plans to delete `/experiments` routes entirely later.
 4. **Template README.** ✅ Done — `docs/TEMPLATE.md` ("make this portfolio
    yours": edit `lib/profile.ts` + `lib/content.ts`, swap résumé PDF, set
    `SITE_URL`, replace icons, optional terminal/Aria flavor files).
