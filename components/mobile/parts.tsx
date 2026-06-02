@@ -1,12 +1,10 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { MoveRight } from "lucide-react";
 import type { ReactNode } from "react";
-import type { Project, TimelineStop } from "@/lib/content";
-import { BOOT_LINES, CONTACT } from "@/lib/content";
+import type { TimelineStop } from "@/lib/content";
+import { CONTACT } from "@/lib/content";
 
 /* ── shared ────────────────────────────────────────────── */
 export function AccentRule() {
@@ -60,89 +58,6 @@ function Btn({
   return (
     <Link href={href} className={className}>
       {children}
-    </Link>
-  );
-}
-
-/* ── home ──────────────────────────────────────────────── */
-export function BootBlock() {
-  return (
-    <div className="c-xs m-boot">
-      <div>
-        <span className="m-boot-prompt">{BOOT_LINES[0].prompt}</span>
-        <span className="m-boot-text"> {BOOT_LINES[0].text}</span>
-      </div>
-      {BOOT_LINES.slice(1).map((l, i) => (
-        <div key={i} className="m-boot-line">
-          {l.text}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-export function HeroSection() {
-  return (
-    <div className="m-hero">
-      <h1 className="t-display m-hero-title">
-        I&apos;m <span className="m-hero-highlight">Vaibhav.</span>
-        <br />I build software
-        <br />
-        that <em className="m-hero-em">teaches itself</em>
-        <br />to write more
-        <br />software.
-      </h1>
-      <p className="c-xs m-hero-meta">
-        B.Tech CSE · GBU · Noida
-        <br />open to full-time + freelance.
-      </p>
-      <div className="m-hero-ctas">
-        <Btn variant="solid" href="/work">
-          $ cat work <MoveRight className="i-lg" aria-hidden />
-        </Btn>
-        <Btn href="/vaibhav_resume.pdf">$ download résumé.pdf</Btn>
-        <Btn href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
-      </div>
-    </div>
-  );
-}
-
-export function ProjectCard({ project }: { project: Project }) {
-  return (
-    <Link
-      href={`/work/${project.id}`}
-      aria-label={`${project.name} — ${project.blurb}`}
-      className="m-project-card"
-    >
-      <div className="m-project-thumb">
-        <Image
-          src={project.image}
-          alt={`${project.name} screenshot`}
-          fill
-          sizes="100vw"
-        />
-      </div>
-      <div className="m-project-body">
-        <div className="m-project-head">
-          <span className="c-xs m-project-idx">{project.index}</span>
-          <span className="t-h4 m-project-name">{project.name}</span>
-          <span className="l-tag m-project-kind">{project.kind}</span>
-        </div>
-        <div className="m-project-stack">
-          {project.stack.map((s) => (
-            <span key={s} className="c-xs m-project-chip">
-              {s}
-            </span>
-          ))}
-        </div>
-        <div className="m-project-foot">
-          <span className="l-tag m-project-cta">
-            cat {project.id}.mdx{" "}
-            <MoveRight aria-hidden className="i-xs m-project-cta-icon" />
-          </span>
-          <span className="c-xs m-project-meta">{project.meta}</span>
-        </div>
-      </div>
     </Link>
   );
 }
@@ -202,6 +117,10 @@ export function SiteFooter() {
   const pathname = rawPathname?.replace(/^\/[dm](?=\/|$)/, "") ?? "";
 
   const hasOwnFooter =
+    // Home is a locked scroll-snap deck (body overflow hidden) — a trailing
+    // footer would be clipped, and the CTA slide already closes the deck.
+    pathname === "" ||
+    pathname === "/" ||
     pathname.startsWith("/writing/") ||
     /^\/work\/[^/]+/.test(pathname);
 
@@ -212,64 +131,6 @@ export function SiteFooter() {
       <span>$ exit 0 · too much coffee</span>
       <span>© {new Date().getFullYear()}</span>
     </div>
-  );
-}
-
-/* ── work ──────────────────────────────────────────────── */
-type WorkRowLike = {
-  status: string;
-  tag: string;
-  name: string;
-  blurb: string;
-  slug?: string;
-};
-
-export function WorkPageRow({ row }: { row: WorkRowLike }) {
-  const linked = !!row.slug;
-  const inner = (
-    <div
-      className="m-work-row-inner"
-      data-status={row.status}
-      data-dead={row.status === "dead" ? "true" : undefined}
-    >
-      <span className="c-sm m-work-name" data-linked={linked ? "true" : undefined}>
-        {row.name}
-      </span>
-      <p className="t-sm m-work-blurb">{row.blurb}</p>
-      <span className="l-meta m-work-tag">{row.tag}</span>
-      <span className="c-xs m-work-status">[{row.status}]</span>
-    </div>
-  );
-  if (linked) {
-    return (
-      <Link href={`/work/${row.slug}`} className="m-work-row">
-        {inner}
-      </Link>
-    );
-  }
-  return inner;
-}
-
-/* ── writing ───────────────────────────────────────────── */
-export function WritingRow({
-  date,
-  title,
-  meta,
-  href,
-}: {
-  date: string;
-  title: string;
-  meta: string;
-  href: string;
-}) {
-  return (
-    <Link href={href} className="m-writing-row">
-      <span className="c-xs m-writing-date">{date}</span>
-      <div>
-        <div className="t-h5 m-writing-title">{title}</div>
-        <div className="c-xs m-writing-meta">{meta}</div>
-      </div>
-    </Link>
   );
 }
 

@@ -29,6 +29,13 @@ export function MobileNav() {
   // away mid-tap.
   useEffect(() => {
     if (typeof window === "undefined") return;
+    // On the paged home the nav stays put — each swipe is a scroll-down, which
+    // would otherwise auto-hide it. Keep it pinned there.
+    const clean = (pathname ?? "").replace(/^\/[dm](?=\/|$)/, "");
+    if (clean === "" || clean === "/") {
+      setHidden(false);
+      return;
+    }
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     let lastY = window.scrollY ?? 0;
@@ -45,7 +52,7 @@ export function MobileNav() {
     };
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
-  }, []);
+  }, [pathname]);
 
   // Force visible whenever the overlay is opened.
   useEffect(() => {

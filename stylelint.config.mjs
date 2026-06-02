@@ -17,10 +17,10 @@
 export default {
   rules: {
     "declaration-property-unit-allowed-list": {
-      "font-size":     ["rem", "em", "vw"],
-      "/^padding/":    ["rem", "em", "%", "vw", "ch"],
+      "font-size":     ["rem", "em", "vw", "cqw"],
+      "/^padding/":    ["rem", "em", "%", "vw", "vh", "ch"],
       "/^margin/":     ["rem", "em", "%", "vw", "ch"],
-      "gap":           ["rem", "em", "%"],
+      "gap":           ["rem", "em", "%", "vh"],
       "row-gap":       ["rem", "em", "%"],
       "column-gap":    ["rem", "em", "%", "vw"],
       "letter-spacing":["em", "rem"],

@@ -22,6 +22,9 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       smoothWheel: true,
+      // Leave touch scrolling native (syncTouch off): hijacking it breaks the
+      // browser's pull-to-refresh and URL-bar collapse. The scroll-reveal
+      // triggers ride native touch scroll fine via ScrollTrigger.
     });
     setLenis(instance);
 
