@@ -2,12 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { MoveUpRight, ChevronRight } from "lucide-react";
+import { ExternalLink, ChevronRight } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 
 const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;
 type WorkFilter = (typeof WORK_TAGS)[number];
-import { GIT_LOG_PREVIEW } from "@/lib/content";
 import { gsap, Flip, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
@@ -17,7 +16,13 @@ function matchesFilter(row: WorkRow, filter: WorkFilter) {
   return row.tag === filter;
 }
 
-export function WorkLog({ rows }: { rows: WorkRow[] }) {
+export function WorkLog({
+  rows,
+  commits,
+}: {
+  rows: WorkRow[];
+  commits: string[];
+}) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const [filter, setFilter] = useState<WorkFilter>("all");
 
@@ -252,7 +257,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
       <section className="py-6">
         <div className="c-sm mute">$ git log --oneline | head -3</div>
         <div data-git-log className="mt-1.5 space-y-1">
-          {GIT_LOG_PREVIEW.map((line, i) => (
+          {commits.map((line, i) => (
             <div
               key={i}
               data-git-line
@@ -270,7 +275,7 @@ export function WorkLog({ rows }: { rows: WorkRow[] }) {
           className="l-meta mute mt-4 inline-flex items-center gap-1.5 no-pop"
         >
           FULL LOG ON GITHUB.COM/IGNEEL0601
-          <MoveUpRight className="i-xs" aria-hidden />
+          <ExternalLink className="i-xs" aria-hidden />
         </a>
       </section>
     </div>

@@ -169,7 +169,11 @@ Goal: change taglines easily now, and clone this into a reusable template later.
 
 ## 5. Nice-to-have
 
-1. Real git log from the GitHub API on the `/work` footer.
+1. **Real git log from the GitHub API on the `/work` footer.** ✅ Done —
+   `lib/github.ts:getRecentCommits()` auto-discovers recently-pushed repos from
+   the public events feed, pulls real messages via the commits API, merges by
+   recency (merge commits filtered, max 2/repo), hourly ISR, `GIT_LOG_PREVIEW`
+   fallback. Wired into both `/work` shells. Optional `GITHUB_TOKEN` for headroom.
 2. `resolveMediaUrl` — handle protocol-relative URLs (`//host/x.png`) if Bloggz
    ever emits one.
 3. Fullscreen "not supported" feedback in the terminal (silent success today on
