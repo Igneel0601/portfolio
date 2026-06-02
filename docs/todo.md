@@ -73,13 +73,14 @@ topical traffic for posts.
    (CONTACT placeholders today).
 5. **Per-route OG images** — `app/opengraph-image.tsx` default exists; add
    per-route variants (e.g. work/writing) via next/og if worth it.
-6. **Mobile internal links not in initial DOM.** `MobileNav.tsx` renders the
-   `/work` + `/writing` index links only inside the `{open && …}` hamburger
-   overlay, so Googlebot-Smartphone (which gets `/m`) sees no crawlable link to
-   the section indexes from the home (only `/work/<slug>` CTAs via
-   `MobileProjects.tsx`). Add crawlable `<a href>` to the mobile site footer so
-   link equity flows from the indexed home to the inner pages. (Desktop nav is
-   already crawlable.)
+6. **Mobile internal links not in initial DOM.** ✅ Done (partial) —
+   `MobileNav.tsx` no longer gates the overlay on `{open && …}`; the nav links
+   (`/work`, `/writing`, `/experiments`, `/terminal`) are now always in the
+   server-rendered DOM, hidden via `display:none` when closed, so
+   Googlebot-Smartphone can crawl them. NOTE: hidden links are still
+   **discounted** by Google (discovery/crawl, not full equity). For full equity
+   a *visible* home link is needed (e.g. wrap the `$ ls ~/projects` eyebrow in
+   `<Link href="/work">`) — deferred; sitemap already indexes both indexes.
 
 ### 2b. Writing posts
 
