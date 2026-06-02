@@ -4,6 +4,7 @@ import { listWorkRows } from "@/lib/work-rows";
 export const metadata = {
   title: "All projects — Vaibhav Verma",
   description: "Full build log of every project I've shipped.",
+  alternates: { canonical: "/work" },
 };
 
 export default async function WorkPage() {

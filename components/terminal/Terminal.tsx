@@ -20,7 +20,7 @@ const SYSTEM_ROWS: { icon: string; k: string; v: string }[] = [
   { icon: '⌬', k: 'Kernel',   v: '6.13.4-arch1-1' },
   { icon: '☷', k: 'WM',       v: 'hyprland' },
   { icon: '➤', k: 'Shell',    v: 'zsh + starship' },
-  { icon: '▣', k: 'Terminal', v: 'igneel.dev/terminal' },
+  { icon: '▣', k: 'Terminal', v: 'vergnyx.dev/terminal' },
 ]
 
 const HARDWARE_ROWS: { icon: string; k: string; v: string }[] = [
@@ -72,7 +72,7 @@ export function BootBlock() {
         <div className={styles.signature}>
           <span className={styles.bootIcon} style={{ color: 'var(--accent)' }}>★</span>
           <span className={styles.bootSep}>:</span>
-          <span className={styles.bootVal}>archVaibhav @ igneel</span>
+          <span className={styles.bootVal}>archVaibhav @ vergnyx</span>
         </div>
         <FastfetchBlock rows={HARDWARE_ROWS} accent="#ff7b72" />
         <Palette />

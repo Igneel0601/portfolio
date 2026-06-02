@@ -366,9 +366,9 @@ export async function dispatch(input: string, ctx: DispatchCtx): Promise<void> {
 
     case 'hire-me':
     case 'hire':
-      ctx.push({ kind: 'output', text: `email   hi@igneel.dev\ngithub  igneel0601\nresume  /vaibhav_resume.pdf\n\nlooking: full-time SWE + interesting freelance.` })
+      ctx.push({ kind: 'output', text: `email   hi@vergnyx.dev\ngithub  igneel0601\nresume  /vaibhav_resume.pdf\n\nlooking: full-time SWE + interesting freelance.` })
       setTimeout(() => {
-        if (typeof window !== 'undefined') window.location.href = 'mailto:hi@igneel.dev'
+        if (typeof window !== 'undefined') window.location.href = 'mailto:hi@vergnyx.dev'
       }, 300)
       return
 
