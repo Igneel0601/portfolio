@@ -6,6 +6,10 @@ export const revalidate = 60;
 export const metadata = {
   title: "Writing — Vaibhav Verma",
   description: "Notes, essays, build logs.",
+  alternates: {
+    canonical: "/writing",
+    types: { "application/rss+xml": "/rss.xml" },
+  },
 };
 
 export default async function WritingPage() {

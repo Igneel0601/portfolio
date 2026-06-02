@@ -68,7 +68,7 @@ export default function Image() {
             color: MUTED,
           }}
         >
-          <span style={{ color: GREEN }}>portfolio.igneel.cloud</span>
+          <span style={{ color: GREEN }}>vergnyx.dev</span>
           <span>work · writing · /terminal</span>
         </div>
       </div>

@@ -184,7 +184,7 @@ export function SceneBoot() {
           <MoveDown className="i-md" aria-hidden /> scroll the story
         </Btn>
         <Btn data-cta href="/vaibhav_resume.pdf" download>$ download résumé.pdf</Btn>
-        <Btn data-cta href="mailto:hi@igneel.dev">hi@igneel.dev</Btn>
+        <Btn data-cta href="mailto:hi@vergnyx.dev">hi@vergnyx.dev</Btn>
       </div>
 
       <span data-cursor aria-hidden className="mt-3" />

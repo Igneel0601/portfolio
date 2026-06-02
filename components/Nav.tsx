@@ -238,7 +238,7 @@ export function Nav() {
             className="font-semibold nav-link no-pop"
             style={{ color: "var(--accent)" }}
           >
-            igneel.dev
+            vergnyx.dev
           </Link>
           <ul className="flex items-center gap-5 ml-6">
             {NAV_LINKS.slice(0, -1).map((l) => (
@@ -294,7 +294,7 @@ export function Nav() {
             className="font-semibold nav-link no-pop"
             style={{ color: "var(--accent)" }}
           >
-            igneel.dev
+            vergnyx.dev
           </Link>
           <button
             data-nav-toggle

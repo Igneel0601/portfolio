@@ -148,7 +148,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "about", href: "#about", kind: "scroll" },
   // { label: "/now", href: "/now", kind: "route" },   // route not built yet
   // { label: "/uses", href: "/uses", kind: "route" }, // route not built yet
-  { label: "hi@igneel.dev", href: "mailto:hi@igneel.dev", kind: "mailto" },
+  { label: "hi@vergnyx.dev", href: "mailto:hi@vergnyx.dev", kind: "mailto" },
 ];
 
 export type TimelineStop = {
@@ -245,7 +245,7 @@ export const GIT_LOG_PREVIEW: string[] = [
 ];
 
 export const CONTACT = {
-  email: "hi@igneel.dev",
+  email: "hi@vergnyx.dev",
   github: "https://github.com/Igneel0601",
   linkedin: "https://www.linkedin.com/in/",
   x: "https://x.com/",
