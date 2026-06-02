@@ -341,7 +341,7 @@ export function ProjectsShowcaseCinematic() {
                       }}
                     >
                       cat {p.id}.mdx
-                      <ExternalLink className="i-sm i-bold" aria-hidden />
+                      <MoveRight className="i-sm i-bold" aria-hidden />
                     </Btn>
                   </div>
                 </div>
