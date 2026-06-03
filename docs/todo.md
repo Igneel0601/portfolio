@@ -70,9 +70,8 @@ Vercel previews via the automation-bypass header, and visual is now
 1. **(optional) Add `GH_READ_TOKEN` repo secret** — `DATABASE_URI` is set (CI
    `build` now static-gens `/writing/[slug]`); the token only enriches the
    `/work` git-log footer with live GitHub commits (falls back without it).
-2. **Smoke test for `/api/og`** — new route from the per-route OG cards; per the
-   testing convention (now in AGENTS.md) it should get a loads/200/image-type
-   check. *(broaden-coverage policy itself moved to AGENTS.md.)*
+
+The broaden-coverage policy lives in AGENTS.md now.
 
 ## 6. Nice-to-have
 

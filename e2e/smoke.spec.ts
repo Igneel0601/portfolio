@@ -35,6 +35,16 @@ test("/work renders the git-log footer (3 lines)", async ({ page }) => {
   await expect(page.locator("[data-git-line], .m-wklog-l")).toHaveCount(3);
 });
 
+test("/api/og renders a PNG card", async ({ request }) => {
+  // The dynamic per-route OG generator (app/api/og). Routes point their
+  // openGraph.images here; if it 500s or stops returning an image, every
+  // share card breaks.
+  const res = await request.get("/api/og?title=Test&eyebrow=case%20study");
+  expect(res.status()).toBe(200);
+  expect(res.headers()["content-type"]).toContain("image/png");
+  expect((await res.body()).byteLength).toBeGreaterThan(1000);
+});
+
 test("home head has a canonical tag and Person JSON-LD", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
