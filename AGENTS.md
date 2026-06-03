@@ -103,6 +103,23 @@ components; import `PROFILE`. It drives `app/layout.tsx`, `app/opengraph-image.t
 - `stylelint.config.mjs` + `pnpm lint:css` — rem-only for spacing/sizes.
 - TypeScript: `npx tsc --noEmit`.
 - ESLint: `pnpm lint` (Next.js defaults).
+- Full gate: `pnpm check` (tsc + stylelint + eslint + vitest); husky runs it
+  pre-commit, CI runs it on PRs. E2E (Playwright smoke + visual) runs in
+  `e2e.yml` against the Vercel preview; visual is blocking.
+
+## Testing — what to add (and what not to)
+Grow coverage *with* the code, but only where it pays off — don't test-everything:
+- **New pure logic in `lib/*`** → add a Vitest unit test (cheap to test, easy
+  to break silently). Metadata builders use snapshot tests (`-u` to update on
+  intentional changes).
+- **New page/route** → add a Playwright smoke check (loads, 2xx, has a
+  `<title>`) + a committed visual baseline.
+- **UI changes** (styling, a filter, a component tweak) → NO dedicated unit
+  test. The **visual baselines** + manual review cover these; unit-testing React
+  UI is high-effort, low-value. Inline component logic stays uncovered unless
+  extracted to `lib/`.
+- **Spacing/computed-style contracts** the viewport-only visual snapshots can't
+  see → assert computed values in `e2e/spacing.spec.ts` (`@spacing`).
 
 # Before editing files
 
