@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const HEADING_ROUTES = ["/", "/work", "/writing"];
+const HEADING_ROUTES = ["/", "/work", "/writing", "/about", "/now", "/uses", "/contact"];
 const ALL_ROUTES = [...HEADING_ROUTES, "/terminal"];
 
 for (const path of ALL_ROUTES) {

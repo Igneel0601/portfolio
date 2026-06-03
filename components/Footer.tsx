@@ -24,7 +24,7 @@ export function Footer() {
   return (
     <footer
       className="w-full"
-      style={{ borderTop: "1px solid var(--hair)" }}
+      style={{ borderTop: "1px solid var(--hair)", marginTop: "3rem" }}
     >
       <div className="page-shell py-5 c-xs flex justify-between mute">
         <span>$ exit 0 · built with too much GSAP &amp; coffee</span>

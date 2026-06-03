@@ -24,7 +24,9 @@ test.beforeEach(async ({ page }) => {
   }, KILL_MOTION);
 });
 
-const PAGES = ["/", "/work", "/writing"];
+// /now is intentionally excluded — its live IST clock changes every second,
+// so a pixel baseline would never be stable. It's covered by the smoke check.
+const PAGES = ["/", "/work", "/writing", "/about", "/uses", "/contact"];
 
 for (const path of PAGES) {
   test(`${path} @visual`, async ({ page }) => {

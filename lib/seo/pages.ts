@@ -34,6 +34,27 @@ export const PAGE_SEO = {
     titleLabel: "Experiments",
     description: "Lab notebook. Fuckups and discoveries.",
   },
+  about: {
+    path: "/about",
+    titleLabel: "about",
+    description:
+      "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+  },
+  now: {
+    path: "/now",
+    titleLabel: "now",
+    description: "What I'm working on, learning, and reading right now.",
+  },
+  uses: {
+    path: "/uses",
+    titleLabel: "uses",
+    description: "The hardware, editor, and software I actually reach for.",
+  },
+  contact: {
+    path: "/contact",
+    titleLabel: "contact",
+    description: "The fastest ways to reach Vaibhav Verma — email and socials.",
+  },
 } satisfies Record<string, PageSeo>;
 
 export type PageKey = keyof typeof PAGE_SEO;

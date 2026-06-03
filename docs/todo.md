@@ -58,7 +58,13 @@ visual-test baselines (§5) once they exist.
 
 ## 4. Infra / hardening
 
-1. **Persistent rate limit on `/api/aria`** — Upstash free tier; the current
+1. **Verify `/contact` email delivery end-to-end.** The form POSTs to
+   `app/api/contact` → Resend (`from` = `RESEND_EMAIL`, `to` = `CONTACT.email`
+   → routes to Gmail). Not yet confirmed to actually land. To verify: ensure
+   `RESEND_API_KEY` + `RESEND_EMAIL` have real values in `.env.local`, **restart
+   the dev server** (env loads at boot), submit a test message, confirm it
+   arrives. Then add both to **Vercel env** for production and test the live form.
+2. **Persistent rate limit on `/api/aria`** — Upstash free tier; the current
    in-memory map resets per edge instance. *Needs an Upstash Redis DB +
    `UPSTASH_REDIS_REST_URL`/`_TOKEN`.*
 
