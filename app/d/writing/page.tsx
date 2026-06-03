@@ -1,4 +1,4 @@
-import { getAllPosts } from '@/lib/posts'
+import { getPosts, getCategoryCounts } from '@/lib/posts'
 import { WritingArchive } from '@/components/writing/WritingArchive'
 import { WritingFooter } from '@/components/writing/WritingFooter'
 import { pageMetadata } from '@/lib/seo/metadata'
@@ -7,8 +7,20 @@ export const revalidate = 60
 
 export const metadata = pageMetadata('writing')
 
-export default async function WritingPage() {
-  const posts = await getAllPosts()
+const PER_PAGE = 10
+
+export default async function WritingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string; tag?: string }>
+}) {
+  const sp = await searchParams
+  const tag = sp.tag ?? null
+  const requested = Number.parseInt(sp.page ?? '1', 10)
+  const [{ posts, total, page, totalPages }, counts] = await Promise.all([
+    getPosts({ page: Number.isFinite(requested) ? requested : 1, perPage: PER_PAGE, tag }),
+    getCategoryCounts(),
+  ])
 
   return (
     <>
@@ -38,7 +50,15 @@ export default async function WritingPage() {
             Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.
           </p>
 
-          <WritingArchive posts={posts} />
+          <WritingArchive
+            posts={posts}
+            counts={counts}
+            total={total}
+            tag={tag}
+            page={page}
+            totalPages={totalPages}
+            perPage={PER_PAGE}
+          />
         </section>
       </main>
       <WritingFooter slug="index" />

@@ -458,6 +458,12 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
 }
 /* !important to beat the global *::-webkit-scrollbar height rule in tokens.css */
 .m-wfilter::-webkit-scrollbar { height: 0 !important; width: 0 !important; }
+
+/* pager: just the shared .pager-* control cluster (tokens.css), right-aligned
+   to the gutter — no "showing N entries" status on the narrow shell. Vertical
+   rhythm matches desktop's .wa-pager: 2.5rem above, and 1.2rem here + the
+   footer's 0.6rem margin = 1.8rem below. */
+.m-pager { display: flex; justify-content: flex-end; padding: 2.5rem 1.375rem 1.2rem; }
 .m-chip {
   flex-shrink: 0;
   display: inline-flex;

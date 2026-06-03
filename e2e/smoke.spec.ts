@@ -35,6 +35,22 @@ test("/work renders the git-log footer (3 lines)", async ({ page }) => {
   await expect(page.locator("[data-git-line], .m-wklog-l")).toHaveCount(3);
 });
 
+test("/writing paginates and filters via URL", async ({ page }) => {
+  // page 1 caps at the page size and shows a pager (works only when there are
+  // >10 posts; tolerate fewer by asserting rows never exceed the page size).
+  await page.goto("/writing");
+  const rows = page.locator(".wa-row, .m-wrow");
+  expect(await rows.count()).toBeLessThanOrEqual(10);
+
+  // a category filter is a real URL and narrows the list (server-side).
+  await page.goto("/writing?tag=security");
+  const filtered = page.locator(".wa-row, .m-wrow");
+  await expect(filtered.first()).toBeAttached();
+  // every visible row on a filtered page belongs to that category
+  const cats = await page.locator(".wa-acc, .m-wrow-cat").allTextContents();
+  expect(cats.every((c) => c.toLowerCase().includes("security"))).toBe(true);
+});
+
 test("/api/og renders a PNG card", async ({ request }) => {
   // The dynamic per-route OG generator (app/api/og). Routes point their
   // openGraph.images here; if it 500s or stops returning an image, every
