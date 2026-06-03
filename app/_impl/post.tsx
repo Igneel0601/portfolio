@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAdjacentPosts, getPostBySlug, getPostSlugs } from '@/lib/posts'
 import { resolveMediaUrl } from '@/lib/media'
+import { Breadcrumb } from '@/components/case-study/Breadcrumb'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
 import { WritingFooter } from '@/components/writing/WritingFooter'
@@ -61,9 +62,7 @@ export async function PostPage({
           className="page-shell"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
-          <div className="cs-crumb-line c-sm">
-            <span>{filename}</span>
-          </div>
+          <Breadcrumb section="writing" file={filename} />
 
           <h1 className="wp-title t-h1">{post.title}</h1>
 
