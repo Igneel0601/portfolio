@@ -34,6 +34,8 @@ export function MobileNav() {
     // would otherwise auto-hide it. Keep it pinned there.
     const clean = (pathname ?? "").replace(/^\/[dm](?=\/|$)/, "");
     if (clean === "" || clean === "/") {
+      // Pin visible on the paged home — derived from the route, set once on mount.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setHidden(false);
       return;
     }
@@ -54,11 +56,6 @@ export function MobileNav() {
     rafId = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(rafId);
   }, [pathname]);
-
-  // Force visible whenever the overlay is opened.
-  useEffect(() => {
-    if (open) setHidden(false);
-  }, [open]);
 
   const handleScrollLink = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -95,7 +92,10 @@ export function MobileNav() {
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-nav-menu"
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => {
+              if (!open) setHidden(false); // opening forces the nav visible
+              setOpen((v) => !v);
+            }}
             style={{
               display: "inline-flex",
               flexDirection: "column",

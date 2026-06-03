@@ -26,6 +26,10 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       // browser's pull-to-refresh and URL-bar collapse. The scroll-reveal
       // triggers ride native touch scroll fine via ScrollTrigger.
     });
+    // Publish the imperatively-created instance to context so consumer effects
+    // (Background, Nav, SceneTimeline) re-run on null→instance and attach their
+    // listeners. A ref wouldn't trigger those effects, so state is required here.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLenis(instance);
 
     instance.on("scroll", ScrollTrigger.update);
