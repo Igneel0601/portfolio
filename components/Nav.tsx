@@ -29,13 +29,11 @@ export function Nav() {
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
-      const { isMotion, isMobile, isReduce } = ctx.conditions as {
-        isMotion: boolean;
+      const { isMobile, isReduce } = ctx.conditions as {
         isMobile: boolean;
         isReduce: boolean;
       };
       const nav = navRef.current!;
-      const links = gsap.utils.toArray<HTMLElement>("[data-nav-link]", nav);
 
       // Delay applies regardless of reduced-motion preference.
       // Reduced-motion only skips the slide easing, not the delay.
@@ -180,11 +178,6 @@ export function Nav() {
     });
   }, [hidden]);
 
-  // mobile menu open → force nav visible
-  useEffect(() => {
-    if (open) setHidden(false);
-  }, [open]);
-
   useEffect(() => {
     if (typeof document === "undefined") return;
     document.documentElement.style.overflow = open ? "hidden" : "";
@@ -300,7 +293,10 @@ export function Nav() {
           <button
             data-nav-toggle
             aria-label="Open menu"
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              setOpen(true);
+              setHidden(false); // opening the menu forces the nav visible
+            }}
             className="c-md leading-none px-2 py-1 border rounded"
             style={{ borderColor: "var(--ink)" }}
           >

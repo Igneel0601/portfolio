@@ -70,7 +70,9 @@
 .m-boot-text { color: var(--ink); }
 .m-boot-line {
   padding-left: 0.625rem;
-  color: var(--ink-dim);
+  /* --ink-soft (not --ink-dim) so the 9.6px boot text clears WCAG AA 4.5:1
+     on the dark bg; --ink-dim (#5b6573) was only 3.2:1. */
+  color: var(--ink-soft);
 }
 
 .m-hero { padding: 1.125rem 1.375rem 1.375rem; }

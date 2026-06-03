@@ -18,7 +18,11 @@ export function MobileProjects() {
       <section key={p.id} className="m-panel-screen">
         {i === 0 && (
           <SectionHeader
-            eyebrow="$ ls ~/projects"
+            eyebrow={
+              <Link href="/work" style={{ color: "inherit" }}>
+                $ ls /projects
+              </Link>
+            }
             title="three things I shipped."
           />
         )}

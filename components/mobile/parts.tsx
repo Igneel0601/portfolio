@@ -15,7 +15,7 @@ export function DashedRule() {
   return <div className="m-dashed-rule" />;
 }
 
-export function SectionHeader({ eyebrow, title }: { eyebrow: string; title: ReactNode }) {
+export function SectionHeader({ eyebrow, title }: { eyebrow: ReactNode; title: ReactNode }) {
   return (
     <div className="m-section-header">
       <div className="l-tag m-section-eyebrow">{eyebrow}</div>

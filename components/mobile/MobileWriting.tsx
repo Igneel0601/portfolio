@@ -122,7 +122,7 @@ export function MobileWriting({ posts }: { posts: PostListItem[] }) {
       </RevealGroup>
 
       <div className="l-meta m-wfoot">
-        <span>// end of log</span>
+        <span>{"// end of log"}</span>
         <a href="/rss.xml" className="m-wfoot-rss">
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>

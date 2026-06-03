@@ -1,15 +1,19 @@
-export function Breadcrumb({ slug, words }: { slug: string; words?: number }) {
+import Link from "next/link";
+
+/** Path-style crumb shown above the title on /work/[slug] and /writing/[slug]:
+ *  a link back to the section index, then the current file. */
+export function Breadcrumb({
+  section,
+  file,
+}: {
+  section: "work" | "writing";
+  file: string;
+}) {
   return (
-    <div className="cs-term-bar">
-      <span className="cs-mac-dot cs-mac-r" />
-      <span className="cs-mac-dot cs-mac-y" />
-      <span className="cs-mac-dot cs-mac-g" />
-      <span className="cs-prompt c-sm">$ cat case-study/{slug}.md</span>
-      {typeof words === "number" && (
-        <span className="cs-term-right c-xs">
-          {words.toLocaleString()} words · {Math.max(1, Math.round(words / 220))} min read
-        </span>
-      )}
+    <div className="cs-crumb-line c-sm">
+      <Link href={`/${section}`}>{section}</Link>
+      <span className="cs-sep">/</span>
+      <span>{file}</span>
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   Frontmatter,
 } from "@/components/case-study/mdx-components";
 import { MoveUpRight } from "lucide-react";
+import { Breadcrumb } from "@/components/case-study/Breadcrumb";
 import { Toc } from "@/components/case-study/Toc";
 import { Pager } from "@/components/case-study/Pager";
 import { StudyFooter } from "@/components/case-study/StudyFooter";
@@ -74,9 +75,7 @@ export async function CaseStudyPage({
       <main className="page-shell">
         <div className="cs-doc">
           <article className="cs-content">
-            <div className="cs-crumb-line c-sm">
-              <span>{slug}.md</span>
-            </div>
+            <Breadcrumb section="work" file={`${slug}.md`} />
 
             <h1 className="cs-hero-title t-display">
               {data.title}

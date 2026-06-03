@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { CONTACT } from "@/lib/content";
 import { gsap } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
-import { D, E } from "@/lib/motion-tokens";
+import { E } from "@/lib/motion-tokens";
 import { Btn } from "@/components/Btn";
 
 export function SceneCTA() {

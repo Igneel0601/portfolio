@@ -120,7 +120,9 @@ function projectMd(field: 'what' | 'why' | 'how', p: typeof PROJECTS[number]): s
   return `# ${p.name} · ${title}\n\n${body}`
 }
 
-function lexicalToText(node: any): string {
+type LexicalNode = { text?: string; type?: string; children?: LexicalNode[] }
+
+function lexicalToText(node: LexicalNode | null | undefined): string {
   if (node == null) return ''
   if (typeof node.text === 'string') return node.text
   if (Array.isArray(node.children)) {
@@ -142,7 +144,7 @@ async function fetchPostBody(slug: string): Promise<string> {
     const header = `# ${post.title}\n${post.publishedAt ? new Date(post.publishedAt).toISOString().slice(0, 10) : 'draft'} · ${post.readMinutes} min · ${post.wordCount} words\n\n`
     const body = post.content?.root ? lexicalToText(post.content.root).trim() : '(no body)'
     return header + body
-  } catch (e) {
+  } catch {
     return `cat: ${slug}: fetch failed`
   }
 }

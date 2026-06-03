@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { MoveDown } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
 import { PROFILE, type HeadlineToken } from "@/lib/profile";
-import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 import { Btn } from "@/components/Btn";

@@ -6,7 +6,22 @@ exports[`caseStudyMetadata > composes title + canonical from slug 1`] = `
     "canonical": "/work/codeflow",
   },
   "description": "AI builder.",
+  "openGraph": {
+    "description": "AI builder.",
+    "images": [
+      "/api/og?title=CodeFlow&subtitle=AI+builder.&eyebrow=case+study",
+    ],
+    "title": "CodeFlow · case study",
+  },
   "title": "CodeFlow · case study",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "AI builder.",
+    "images": [
+      "/api/og?title=CodeFlow&subtitle=AI+builder.&eyebrow=case+study",
+    ],
+    "title": "CodeFlow · case study",
+  },
 }
 `;
 
@@ -16,7 +31,22 @@ exports[`pageMetadata > builds metadata for "experiments" 1`] = `
     "canonical": "/experiments",
   },
   "description": "Lab notebook. Fuckups and discoveries.",
+  "openGraph": {
+    "description": "Lab notebook. Fuckups and discoveries.",
+    "images": [
+      "/api/og?title=Experiments&subtitle=Lab+notebook.+Fuckups+and+discoveries.",
+    ],
+    "title": "Experiments — Vaibhav Verma",
+  },
   "title": "Experiments — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "Lab notebook. Fuckups and discoveries.",
+    "images": [
+      "/api/og?title=Experiments&subtitle=Lab+notebook.+Fuckups+and+discoveries.",
+    ],
+    "title": "Experiments — Vaibhav Verma",
+  },
 }
 `;
 
@@ -37,7 +67,22 @@ exports[`pageMetadata > builds metadata for "terminal" 1`] = `
     "canonical": "/terminal",
   },
   "description": "A real shell in your browser. Try \`help\`.",
+  "openGraph": {
+    "description": "A real shell in your browser. Try \`help\`.",
+    "images": [
+      "/api/og?title=terminal&subtitle=A+real+shell+in+your+browser.+Try+%60help%60.",
+    ],
+    "title": "terminal — Vaibhav Verma",
+  },
   "title": "terminal — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "A real shell in your browser. Try \`help\`.",
+    "images": [
+      "/api/og?title=terminal&subtitle=A+real+shell+in+your+browser.+Try+%60help%60.",
+    ],
+    "title": "terminal — Vaibhav Verma",
+  },
 }
 `;
 
@@ -47,7 +92,22 @@ exports[`pageMetadata > builds metadata for "work" 1`] = `
     "canonical": "/work",
   },
   "description": "Full build log of every project I've shipped.",
+  "openGraph": {
+    "description": "Full build log of every project I've shipped.",
+    "images": [
+      "/api/og?title=All+projects&subtitle=Full+build+log+of+every+project+I%27ve+shipped.",
+    ],
+    "title": "All projects — Vaibhav Verma",
+  },
   "title": "All projects — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "Full build log of every project I've shipped.",
+    "images": [
+      "/api/og?title=All+projects&subtitle=Full+build+log+of+every+project+I%27ve+shipped.",
+    ],
+    "title": "All projects — Vaibhav Verma",
+  },
 }
 `;
 
@@ -60,7 +120,22 @@ exports[`pageMetadata > builds metadata for "writing" 1`] = `
     },
   },
   "description": "Notes, essays, build logs.",
+  "openGraph": {
+    "description": "Notes, essays, build logs.",
+    "images": [
+      "/api/og?title=Writing&subtitle=Notes%2C+essays%2C+build+logs.",
+    ],
+    "title": "Writing — Vaibhav Verma",
+  },
   "title": "Writing — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "Notes, essays, build logs.",
+    "images": [
+      "/api/og?title=Writing&subtitle=Notes%2C+essays%2C+build+logs.",
+    ],
+    "title": "Writing — Vaibhav Verma",
+  },
 }
 `;
 
@@ -71,13 +146,19 @@ exports[`postMetadata > builds title/description/canonical/og from a post 1`] = 
   },
   "description": "A meta description.",
   "openGraph": {
+    "authors": [
+      "Vaibhav Verma",
+    ],
     "description": "A meta description.",
     "images": [
       {
         "url": "/api/bloggz-media/hero.png",
       },
     ],
+    "modifiedTime": "2026-06-02T00:00:00.000Z",
+    "publishedTime": "2026-06-01T00:00:00.000Z",
     "title": "Meta Title",
+    "type": "article",
   },
   "title": "Meta Title",
   "twitter": {

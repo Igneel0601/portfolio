@@ -18,11 +18,8 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: check (tsc + stylelint + vitest)
+      - name: check (tsc + stylelint + eslint + vitest)
         run: pnpm check
-      - name: eslint (non-blocking — repo has pre-existing lint debt)
-        run: pnpm lint
-        continue-on-error: true
 
   # Build — catches RSC/route/metadata regressions. Needs DB for static
   # generation of /writing/[slug]. Provide DATABASE_URI as a repo secret.
