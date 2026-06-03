@@ -27,10 +27,7 @@ visual-test baselines (§5) once they exist.
 ## 2. SEO
 
 ### 2a. On-page (mostly done — remaining)
-1. **Visible, full-equity mobile home link.** The nav links are crawlable but
-   hidden (discounted). A *visible* in-content link (e.g. wrap the
-   `$ ls ~/projects` eyebrow in `<Link href="/work">`) would carry full equity.
-2. **Canonical for `/experiments`, `/terminal`** — low priority (sandbox/utility).
+1. **Canonical for `/experiments`, `/terminal`** — low priority (sandbox/utility).
 
 ### 2b. Writing posts
 1. **`article:published_time` + `article:author`** in `openGraph` — not set.
