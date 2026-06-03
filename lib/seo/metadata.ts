@@ -82,9 +82,15 @@ export function postMetadata(post: Post, slug: string): Metadata {
     description,
     alternates: { canonical: `/writing/${slug}` },
     openGraph: {
+      type: "article",
       title,
       description,
       images: [{ url: ogUrl }],
+      // pg returns timestamp columns as Date objects (despite the string
+      // typing), so normalise to ISO strings — Next needs a string here.
+      publishedTime: post.publishedAt ? new Date(post.publishedAt).toISOString() : undefined,
+      modifiedTime: new Date(post.updatedAt).toISOString(),
+      authors: [PROFILE.name],
     },
     twitter: {
       card: "summary_large_image",

@@ -146,13 +146,19 @@ exports[`postMetadata > builds title/description/canonical/og from a post 1`] = 
   },
   "description": "A meta description.",
   "openGraph": {
+    "authors": [
+      "Vaibhav Verma",
+    ],
     "description": "A meta description.",
     "images": [
       {
         "url": "/api/bloggz-media/hero.png",
       },
     ],
+    "modifiedTime": "2026-06-02T00:00:00.000Z",
+    "publishedTime": "2026-06-01T00:00:00.000Z",
     "title": "Meta Title",
+    "type": "article",
   },
   "title": "Meta Title",
   "twitter": {

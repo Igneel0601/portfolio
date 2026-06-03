@@ -30,10 +30,9 @@ visual-test baselines (§5) once they exist.
 1. **Canonical for `/experiments`, `/terminal`** — low priority (sandbox/utility).
 
 ### 2b. Writing posts
-1. **`article:published_time` + `article:author`** in `openGraph` — not set.
-2. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
+1. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
    (only "Similar reads" does this today).
-3. **Image alt-text audit** — verify Lexical media nodes carry `alt` from Bloggz.
+2. **Image alt-text audit** — verify Lexical media nodes carry `alt` from Bloggz.
 
 ### 2c. Distribution ← TOP PRIORITY (the bottleneck)
 1. **Bio backlinks (do first).** Put `vergnyx.dev` in the GitHub profile bio +
