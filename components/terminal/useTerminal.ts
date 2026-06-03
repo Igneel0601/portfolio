@@ -43,6 +43,9 @@ export function useTerminal(postSlugs: { slug: string; title: string }[]) {
     if (typeof window === 'undefined') return
     try {
       const h = JSON.parse(localStorage.getItem(LS.history) ?? '[]')
+      // Hydrate from localStorage post-mount. A lazy useState initializer would
+      // read localStorage during render and cause an SSR hydration mismatch.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (Array.isArray(h)) setInputHistory(h.slice(-MAX_INPUT_HISTORY))
       const c = localStorage.getItem(LS.cwd)
       if (c) setCwd(c)
