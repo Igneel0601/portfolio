@@ -32,7 +32,10 @@ visual-test baselines (§5) once they exist.
 ### 2b. Writing posts
 1. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
    (only "Similar reads" does this today).
-2. **Image alt-text audit** — verify Lexical media nodes carry `alt` from Bloggz.
+2. **Fill image alt in Bloggz (content).** Audited 2026-06-03: the render path
+   carries `alt` correctly (DB → `mapMedia` → `expandUploads` → `<Image>`), but
+   all 3 media rows have empty/null `alt`, so they render `alt=""`. Add
+   descriptive alt to media #3/#4/#5 in the Bloggz admin — no code change.
 
 ### 2c. Distribution ← TOP PRIORITY (the bottleneck)
 1. **Bio backlinks (do first).** Put `vergnyx.dev` in the GitHub profile bio +
