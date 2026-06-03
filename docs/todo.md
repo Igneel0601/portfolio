@@ -27,12 +27,10 @@ visual-test baselines (§5) once they exist.
 ## 2. SEO
 
 ### 2a. On-page (mostly done — remaining)
-1. **Per-route OG images** — default exists (`app/opengraph-image.tsx`); add
-   work/writing variants via `next/og` if worth it.
-2. **Visible, full-equity mobile home link.** The nav links are crawlable but
+1. **Visible, full-equity mobile home link.** The nav links are crawlable but
    hidden (discounted). A *visible* in-content link (e.g. wrap the
    `$ ls ~/projects` eyebrow in `<Link href="/work">`) would carry full equity.
-3. **Canonical for `/experiments`, `/terminal`** — low priority (sandbox/utility).
+2. **Canonical for `/experiments`, `/terminal`** — low priority (sandbox/utility).
 
 ### 2b. Writing posts
 1. **`article:published_time` + `article:author`** in `openGraph` — not set.
