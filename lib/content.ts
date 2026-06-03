@@ -167,10 +167,11 @@ export const NAV_LINKS: NavLink[] = [
   { label: "work", href: "/work", kind: "route" },
   { label: "writing", href: "/writing", kind: "route" },
   { label: "experiments", href: "/experiments", kind: "route" },
-  { label: "/terminal", href: "/terminal", kind: "route" },
-  { label: "about", href: "#about", kind: "scroll" },
-  // { label: "/now", href: "/now", kind: "route" },   // route not built yet
-  // { label: "/uses", href: "/uses", kind: "route" }, // route not built yet
+  { label: "terminal", href: "/terminal", kind: "route" },
+  { label: "/about", href: "/about", kind: "route" },
+  { label: "/now", href: "/now", kind: "route" },
+  { label: "/uses", href: "/uses", kind: "route" },
+  { label: "/contact", href: "/contact", kind: "route" },
   { label: "hi@vergnyx.dev", href: "mailto:hi@vergnyx.dev", kind: "mailto" },
 ];
 
@@ -273,6 +274,158 @@ export const CONTACT = {
   linkedin: "https://www.linkedin.com/in/",
   x: "https://x.com/",
 };
+
+// ── /about ── narrative bio page. Edit the copy here; the page renders it.
+export const ABOUT = {
+  eyebrow: "Profile · /about",
+  lede: "The long version of a one-line bio nobody reads.",
+  // the `$ whoami` command-line facts (joined by · separators)
+  whoami: ["vaibhav", "noida, IN", "uptime: 22y, mostly stable"],
+  // narrative paragraphs — plain prose, edit freely
+  bio: [
+    "I'm Vaibhav — a final-year CS student in Noida who got into this because I wanted to automate the boring half of my own life and then accidentally never stopped. What started as a script to rename my downloads folder is, several questionable decisions later, a habit.",
+    "These days I build software that teaches itself to write more software — agent tooling, developer utilities, and the occasional thing that probably shouldn't exist. The big one right now is CodeFlow, an AI builder where the agents actually run their own code. Mostly.",
+    "I ship at 4am and regret it at 9. I read the docs after, not before. I think a tool you built yourself is worth three you didn't — even when it's measurably worse — because you understand exactly how it breaks. Most of my best work is just me refusing to use someone else's reasonable solution.",
+    "Off the keyboard: long walks, longer playlists, and an Arch install I keep breaking on purpose so there's always something to fix. I write things down so I stop re-learning them — some of it ends up on the writing log, most of it doesn't.",
+  ],
+  sign: "Currently open to full-time & freelance.",
+  // mono fact rail (key → value)
+  rail: [
+    { k: "whoami", v: "Vaibhav Verma" },
+    { k: "role", v: "SWE · CS undergrad" },
+    { k: "based", v: "Noida, IN · UTC+5:30" },
+    { k: "study", v: "B.Tech CSE '26 · GBU" },
+    { k: "stack", v: "TypeScript, Go, React, Python" },
+    { k: "editor", v: "Neovim btw" },
+    { k: "now", v: "building CodeFlow" },
+    { k: "status", v: "open — full-time + freelance" },
+  ],
+  quote: "writing the README first this time.",
+} as const;
+
+// ── /now ── snapshot of current focus. Bump `updated` when you edit.
+export const NOW = {
+  eyebrow: "Snapshot · /now",
+  lede: "What I'm actually doing — not what I wish I were.",
+  updated: "2026-06-03",
+  staleInDays: 27,
+  // status board cards (the live local-time card is rendered separately)
+  board: [
+    { k: "focus", v: "CodeFlow v0.3", sub: "shipping the agent runner" },
+    { k: "mode", v: "heads-down", sub: "fewer tabs, more commits" },
+    { k: "status", v: "open to work", sub: "full-time + freelance", accent: true },
+  ],
+  log: [
+    {
+      cat: "building",
+      entries: [
+        { line: "Rewriting CodeFlow's agent runner so it stops eating its own context window. The fix is embarrassingly small.", meta: "active · pushed 4h ago" },
+        { line: "wall-engine — a wallpaper switcher I built because I kept breaking the last one. Now it breaks differently.", meta: "active" },
+        { line: "A next thing. Writing the README first this time.", meta: "wip · README only" },
+      ],
+    },
+    {
+      cat: "learning",
+      entries: [
+        { line: "Rust — slowly, and somewhat against my will.", meta: "ch. 9 of the book" },
+        { line: "Distributed systems. Reading the TigerBeetle write-ups and feeling things.", meta: "" },
+      ],
+    },
+    {
+      cat: "reading",
+      entries: [
+        { line: "Designing Data-Intensive Applications — third attempt, this time I mean it.", meta: "" },
+        { line: "Roughly 40 open tabs I am choosing to call a reading list.", meta: "" },
+      ],
+    },
+    {
+      cat: "life",
+      entries: [
+        { line: "Trying to hit 8k steps before the first commit of the day. Mixed results.", meta: "" },
+        { line: "Learning to cook exactly four meals, very well.", meta: "" },
+        { line: "Re-breaking my Arch install for sport. It's a feature.", meta: "" },
+      ],
+    },
+  ],
+  note: "This page is a snapshot on purpose. It is already a little bit wrong.",
+} as const;
+
+// ── /uses ── categorized gear. Edit/correct here; the page renders it.
+export const USES = {
+  eyebrow: "Setup · /uses",
+  lede: "The desk, the keys, the dotfiles. Updated when something breaks.",
+  cats: [
+    {
+      key: "editor",
+      label: "editor & terminal",
+      rows: [
+        { name: "VS Code", note: "My whole personality, one extension at a time.", meta: "daily" },
+        { name: "Kitty", note: "GPU terminal. With great frame rate comes great responsibility.", meta: "daily" },
+        { name: "zsh", note: "The shell that does the thinking so I don't have to.", meta: "" },
+        { name: "Oh My Zsh", note: "Plugins I'll never read, aliases I can't live without.", meta: "" },
+      ],
+    },
+    {
+      key: "machine",
+      label: "machine",
+      rows: [
+        { name: "Vivobook Pro 14X OLED", note: "ASUS. The OLED is for the blacks and the bragging.", meta: "primary" },
+        { name: "Arch Linux", note: "btw. It was non-negotiable.", meta: "since '23" },
+        { name: "Hyprland", note: "Tiling WM. Animated, fast, occasionally on fire.", meta: "" },
+        { name: "16 GB RAM", note: "Rationed across the 200 Chrome tabs I refuse to close.", meta: "" },
+        { name: "RTX 3050", note: "Modest power. Still, you know the rest.", meta: "" },
+      ],
+    },
+    {
+      key: "desk",
+      label: "desk & peripherals",
+      rows: [
+        { name: "BlackWidow V4", note: "Razer. Loud enough that the neighbours know I'm shipping.", meta: "daily" },
+        { name: "Basilisk V3 Pro", note: "Razer. Spidey-sense for the cursor, basically.", meta: "daily" },
+        { name: '24" 1080p', note: "One screen. Two virtual desktops too many.", meta: "" },
+        { name: "WH-1000XM5", note: "Sony. Tunes out the city that never sleeps.", meta: "daily" },
+        { name: "iPad Pro M2", note: "For sketching, reading, and pretending it's not a toy.", meta: "" },
+      ],
+    },
+    {
+      key: "software",
+      label: "software",
+      rows: [
+        { name: "Claude Design", note: "Design partner. Talks me out of bad ideas, mostly.", meta: "daily" },
+        { name: "Figma", note: "Where the design dies peacefully before the code does.", meta: "" },
+        { name: "Spotify", note: "Instrumental only, so the words don't compete with mine.", meta: "daily" },
+        { name: "Claude Code", note: "Pair programmer that never asks whose turn it is.", meta: "daily" },
+        { name: "Notion", note: "Second brain. Also the first place I lose things.", meta: "" },
+        { name: "Procreate", note: "iPad sketches nobody asked for.", meta: "" },
+        { name: "SVGator", note: "Animating the vectors so they earn their keep.", meta: "" },
+      ],
+    },
+    {
+      key: "web",
+      label: "this site runs on",
+      rows: [
+        { name: "Next.js", note: "Static wherever it can get away with it.", meta: "" },
+        { name: "Tailwind", note: "Utility classes and zero regrets.", meta: "" },
+        { name: "TypeScript", note: "Strict mode. No exceptions — literally none.", meta: "" },
+        { name: "Vercel", note: "git push, hope, refresh.", meta: "" },
+        { name: "Postgres", note: "Where the words live when they're not on screen.", meta: "" },
+      ],
+    },
+  ],
+} as const;
+
+// ── /contact ── direct-links page (no form; links come from CONTACT above).
+export const CONTACT_PAGE = {
+  eyebrow: "Say hi · /contact",
+  lede: "The fastest ways to reach me.",
+  availability: { title: "open to work", sub: "full-time + freelance · from Jul 2026" },
+  meta: [
+    { k: "based", v: "Noida, IN · UTC+5:30" },
+    { k: "hours", v: "10:00–02:00, loosely" },
+    { k: "reply", v: "~1 business day" },
+  ],
+  ps: "Not sure what to say? Skim /now first — it's a decent conversation starter.",
+} as const;
 
 export const BOOT_LINES: { prompt: string; text: string }[] = [
   { prompt: "$", text: "./hello.sh" },

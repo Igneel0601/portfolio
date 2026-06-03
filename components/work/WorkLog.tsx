@@ -274,15 +274,21 @@ export function WorkLog({
             </div>
           ))}
         </div>
-        <a
-          href="https://github.com/Igneel0601"
-          target="_blank"
-          rel="noopener"
-          className="l-meta mute mt-4 inline-flex items-center gap-1.5 no-pop"
-        >
-          FULL LOG ON GITHUB.COM/IGNEEL0601
-          <ExternalLink className="i-xs" aria-hidden />
-        </a>
+        <p className="l-meta mute mt-4">
+          FULL LOG ON{" "}
+          <a
+            href="https://github.com/Igneel0601"
+            target="_blank"
+            rel="noopener"
+            className="whitespace-nowrap"
+          >
+            GITHUB.COM/IGNEEL0601
+            <ExternalLink
+              className="i-xs ml-1 inline-block align-[-0.15em]"
+              aria-hidden
+            />
+          </a>
+        </p>
       </section>
     </div>
   );

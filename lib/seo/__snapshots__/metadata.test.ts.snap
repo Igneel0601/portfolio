@@ -25,6 +25,56 @@ exports[`caseStudyMetadata > composes title + canonical from slug 1`] = `
 }
 `;
 
+exports[`pageMetadata > builds metadata for "about" 1`] = `
+{
+  "alternates": {
+    "canonical": "/about",
+  },
+  "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+  "openGraph": {
+    "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+    "images": [
+      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+and+CS+undergrad+in+Noida.+The+long+version+of+the+one-line+bio.",
+    ],
+    "title": "about — Vaibhav Verma",
+  },
+  "title": "about — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+    "images": [
+      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+and+CS+undergrad+in+Noida.+The+long+version+of+the+one-line+bio.",
+    ],
+    "title": "about — Vaibhav Verma",
+  },
+}
+`;
+
+exports[`pageMetadata > builds metadata for "contact" 1`] = `
+{
+  "alternates": {
+    "canonical": "/contact",
+  },
+  "description": "The fastest ways to reach Vaibhav Verma — email and socials.",
+  "openGraph": {
+    "description": "The fastest ways to reach Vaibhav Verma — email and socials.",
+    "images": [
+      "/api/og?title=contact&subtitle=The+fastest+ways+to+reach+Vaibhav+Verma+%E2%80%94+email+and+socials.",
+    ],
+    "title": "contact — Vaibhav Verma",
+  },
+  "title": "contact — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "The fastest ways to reach Vaibhav Verma — email and socials.",
+    "images": [
+      "/api/og?title=contact&subtitle=The+fastest+ways+to+reach+Vaibhav+Verma+%E2%80%94+email+and+socials.",
+    ],
+    "title": "contact — Vaibhav Verma",
+  },
+}
+`;
+
 exports[`pageMetadata > builds metadata for "experiments" 1`] = `
 {
   "alternates": {
@@ -61,6 +111,31 @@ exports[`pageMetadata > builds metadata for "home" 1`] = `
 }
 `;
 
+exports[`pageMetadata > builds metadata for "now" 1`] = `
+{
+  "alternates": {
+    "canonical": "/now",
+  },
+  "description": "What I'm working on, learning, and reading right now.",
+  "openGraph": {
+    "description": "What I'm working on, learning, and reading right now.",
+    "images": [
+      "/api/og?title=now&subtitle=What+I%27m+working+on%2C+learning%2C+and+reading+right+now.",
+    ],
+    "title": "now — Vaibhav Verma",
+  },
+  "title": "now — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "What I'm working on, learning, and reading right now.",
+    "images": [
+      "/api/og?title=now&subtitle=What+I%27m+working+on%2C+learning%2C+and+reading+right+now.",
+    ],
+    "title": "now — Vaibhav Verma",
+  },
+}
+`;
+
 exports[`pageMetadata > builds metadata for "terminal" 1`] = `
 {
   "alternates": {
@@ -82,6 +157,31 @@ exports[`pageMetadata > builds metadata for "terminal" 1`] = `
       "/api/og?title=terminal&subtitle=A+real+shell+in+your+browser.+Try+%60help%60.",
     ],
     "title": "terminal — Vaibhav Verma",
+  },
+}
+`;
+
+exports[`pageMetadata > builds metadata for "uses" 1`] = `
+{
+  "alternates": {
+    "canonical": "/uses",
+  },
+  "description": "The hardware, editor, and software I actually reach for.",
+  "openGraph": {
+    "description": "The hardware, editor, and software I actually reach for.",
+    "images": [
+      "/api/og?title=uses&subtitle=The+hardware%2C+editor%2C+and+software+I+actually+reach+for.",
+    ],
+    "title": "uses — Vaibhav Verma",
+  },
+  "title": "uses — Vaibhav Verma",
+  "twitter": {
+    "card": "summary_large_image",
+    "description": "The hardware, editor, and software I actually reach for.",
+    "images": [
+      "/api/og?title=uses&subtitle=The+hardware%2C+editor%2C+and+software+I+actually+reach+for.",
+    ],
+    "title": "uses — Vaibhav Verma",
   },
 }
 `;
