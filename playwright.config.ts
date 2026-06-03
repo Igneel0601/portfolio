@@ -5,6 +5,18 @@ import { defineConfig, devices } from "@playwright/test";
 // and mobile "projects" exercise both shells off the same specs.
 const baseURL = process.env.E2E_BASE_URL ?? "http://localhost:3001";
 
+// Vercel preview deploys are gated by Deployment Protection (every request 401s
+// otherwise). "Protection Bypass for Automation" issues a secret we send as a
+// header on all requests; x-vercel-set-bypass-cookie persists it for the session
+// so client-side fetches (e.g. /api/posts) pass too. Local runs (no secret) skip it.
+const bypass = process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+const extraHTTPHeaders: Record<string, string> = bypass
+  ? {
+      "x-vercel-protection-bypass": bypass,
+      "x-vercel-set-bypass-cookie": "true",
+    }
+  : {};
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: true,
@@ -14,6 +26,7 @@ export default defineConfig({
   use: {
     baseURL,
     trace: "on-first-retry",
+    extraHTTPHeaders,
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] } },
