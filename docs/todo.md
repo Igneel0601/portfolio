@@ -11,7 +11,7 @@ indexed; the bottleneck is **authority — backlinks (§2c) are the #1 lever.**
 
 ## 1. Content (highest on-site impact)
 
-1. **Keep publishing posts.** ~9 live via Bloggz; SEO rewards cadence. The gap is
+1. **Keep publishing posts.** ~10 live via Bloggz; SEO rewards cadence. The gap is
    reviewing drafts and shipping regularly, not the pipeline.
 2. **More case studies.** Only 3 live (codeflow, taskforge, traveloop). Even
    single-page studies round out `/work`.
@@ -64,7 +64,9 @@ visual-test baselines (§5) once they exist.
 ## 5. Testing
 
 The suite (Vitest + `pnpm check` + husky; Playwright smoke/visual; CI
-`ci.yml`/`e2e.yml`) is live. Open follow-ups:
+`ci.yml`/`e2e.yml`) is live and **green** — e2e reaches the protected
+Vercel previews via the automation-bypass header, and visual is now
+**blocking** (no more `continue-on-error`). Open follow-ups:
 
 1. **(optional) Add `GH_READ_TOKEN` repo secret** — `DATABASE_URI` is set (CI
    `build` now static-gens `/writing/[slug]`); the token only enriches the
