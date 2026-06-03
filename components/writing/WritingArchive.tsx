@@ -56,45 +56,32 @@ export function WritingArchive({ posts }: Props) {
             <span>last commit {formatDate(lastCommit).replace(/·/g, '-')}</span>
           </>
         )}
-        <details className="wa-filter no-pop">
-          <summary className="wa-filter-summary no-pop">
-            <span className="wa-filter-label">filter</span>
-            <span className="wa-filter-current">
-              {active
-                ? `${tags.find((t) => t.slug === active)?.title.toLowerCase() ?? active} (${tagCounts.get(active) ?? 0})`
-                : `all (${posts.length})`}
-            </span>
-          </summary>
-          <div className="wa-filter-menu" role="listbox" aria-label="filter by category">
-            <button
-              type="button"
-              role="option"
-              aria-selected={active === null}
-              className={`wa-filter-opt no-pop${active === null ? ' on' : ''}`}
-              onClick={(e) => {
-                setActive(null)
-                ;(e.currentTarget.closest('details') as HTMLDetailsElement | null)?.removeAttribute('open')
-              }}
-            >
-              all <span className="wa-ct">({posts.length})</span>
-            </button>
-            {tags.map((t) => (
-              <button
-                key={t.slug}
-                type="button"
-                role="option"
-                aria-selected={active === t.slug}
-                className={`wa-filter-opt no-pop${active === t.slug ? ' on' : ''}`}
-                onClick={(e) => {
-                  setActive(t.slug)
-                  ;(e.currentTarget.closest('details') as HTMLDetailsElement | null)?.removeAttribute('open')
-                }}
-              >
-                {t.title.toLowerCase()} <span className="wa-ct">({tagCounts.get(t.slug) ?? 0})</span>
-              </button>
-            ))}
-          </div>
-        </details>
+      </div>
+
+      <div
+        className="wa-filter-row tag-filter"
+        role="group"
+        aria-label="filter by category"
+      >
+        <button
+          type="button"
+          className="tag-chip l-meta no-pop"
+          data-active={active === null ? 'true' : undefined}
+          onClick={() => setActive(null)}
+        >
+          all <span>{posts.length}</span>
+        </button>
+        {tags.map((t) => (
+          <button
+            key={t.slug}
+            type="button"
+            className="tag-chip l-meta no-pop"
+            data-active={active === t.slug ? 'true' : undefined}
+            onClick={() => setActive(t.slug)}
+          >
+            {t.title} <span>{tagCounts.get(t.slug) ?? 0}</span>
+          </button>
+        ))}
       </div>
 
       <div className="wa-table">

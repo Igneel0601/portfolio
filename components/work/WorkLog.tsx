@@ -162,11 +162,11 @@ export function WorkLog({
           survivorship bias.
         </p>
 
-        <div className="wk-filter mt-6" role="group" aria-label="Filter projects by tag">
+        <div className="tag-filter mt-6" role="group" aria-label="Filter projects by tag">
           <button
             type="button"
             data-filter
-            className="wk-chip l-meta no-pop"
+            className="tag-chip l-meta no-pop"
             data-active={filter === "all" ? "true" : undefined}
             onClick={() => setFilter("all")}
           >
@@ -177,7 +177,7 @@ export function WorkLog({
               key={t.tag}
               type="button"
               data-filter
-              className="wk-chip l-meta no-pop"
+              className="tag-chip l-meta no-pop"
               data-active={filter === t.tag ? "true" : undefined}
               onClick={() => setFilter(t.tag)}
             >
