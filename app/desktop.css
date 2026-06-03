@@ -135,6 +135,37 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
 [data-nav-link][data-nav-kind="route"]:hover  { color: var(--accent-2); }
 [data-nav-link][data-nav-kind="scroll"]:hover { color: var(--accent); }
 
+/* /work — page dek under the title (mirrors mobile .m-work-sub). */
+.wk-sub {
+  margin: 0.85rem 0 0;
+  max-width: 52ch;
+  font-style: italic;
+  color: var(--ink-soft);
+}
+
+/* /work — tag filter chips. The component already drives the Flip
+   transition + data-hidden toggling; these rules just style the pills. */
+.wk-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.wk-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 25%, transparent);
+  border-radius: 999px;
+  color: var(--ink-dim);
+  background: transparent;
+  transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.wk-chip span { color: color-mix(in oklab, var(--ink) 45%, transparent); }
+.wk-chip:hover { border-color: var(--accent); color: var(--ink); }
+.wk-chip[data-active="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 12%, transparent);
+}
+.wk-chip[data-active="true"] span { color: var(--accent); }
+
 /* /work — build log table */
 .work-row { position: relative; transition: background-color .15s ease; }
 .work-row[data-link="true"] { cursor: pointer; }

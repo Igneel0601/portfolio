@@ -3,13 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ExternalLink, ChevronRight } from "lucide-react";
-import type { WorkRow } from "@/lib/work-rows";
-
-const WORK_TAGS = ["all", "product", "event", "tool", "next"] as const;
-type WorkFilter = (typeof WORK_TAGS)[number];
-import { gsap, Flip, ScrollTrigger, SplitText } from "@/lib/gsap";
+import type { WorkRow, WorkTag } from "@/lib/work-rows";
+import { gsap, ScrollTrigger, SplitText } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
-import { D, E } from "@/lib/motion-tokens";
+import { E } from "@/lib/motion-tokens";
+
+type WorkFilter = WorkTag | "all";
 
 function matchesFilter(row: WorkRow, filter: WorkFilter) {
   if (filter === "all") return true;
@@ -24,21 +23,30 @@ export function WorkLog({
   commits: string[];
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const boxRef = useRef<HTMLDivElement | null>(null);
   const [filter, setFilter] = useState<WorkFilter>("all");
+  const [minH, setMinH] = useState<number>();
 
-  const filterCounts = useMemo(() => {
-    const counts: Record<WorkFilter, number> = {
-      all: rows.length,
-      product: 0,
-      event: 0,
-      tool: 0,
-      next: 0,
-    };
-    for (const r of rows) counts[r.tag] = (counts[r.tag] ?? 0) + 1;
-    return counts;
+  // Tags present in the data, most-used first (mirrors the mobile work view).
+  const tags = useMemo(() => {
+    const m = new Map<WorkTag, number>();
+    for (const r of rows) m.set(r.tag, (m.get(r.tag) ?? 0) + 1);
+    return [...m.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag, count]) => ({ tag, count }));
   }, [rows]);
 
-  const showFilters = rows.length > 5;
+  // Keep the table a constant height across filters: lock min-height to the
+  // full ("all") row set, so filtering empties rows without resizing the box.
+  useEffect(() => {
+    const measure = () => {
+      if (filter !== "all" || !boxRef.current) return;
+      setMinH(boxRef.current.offsetHeight);
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [filter]);
 
   useEffect(() => {
     if (!rootRef.current) return;
@@ -143,49 +151,47 @@ export function WorkLog({
     return () => mm.revert();
   }, []);
 
-  const handleFilter = (next: WorkFilter) => {
-    if (next === filter || !rootRef.current) {
-      setFilter(next);
-      return;
-    }
-    const rowEls = Array.from(
-      rootRef.current.querySelectorAll<HTMLElement>("[data-row]"),
-    );
-    const state = Flip.getState(rowEls);
-    setFilter(next);
-    requestAnimationFrame(() => {
-      Flip.from(state, {
-        duration: 0.55,
-        ease: E.weighty,
-        absolute: true,
-        onEnter: (els) =>
-          gsap.fromTo(
-            els,
-            { autoAlpha: 0, y: 8 },
-            { autoAlpha: 1, y: 0, duration: 0.35 },
-          ),
-        onLeave: (els) =>
-          gsap.to(els, { autoAlpha: 0, y: -8, duration: 0.25 }),
-      });
-    });
-  };
-
   return (
     <div ref={rootRef}>
       <section className="pt-6">
-        <h1
-          data-page-title
-          className="t-display mt-3 mb-2"
-        >
-          All projects.
+        <h1 data-page-title className="t-display">
+          projects<span style={{ color: "var(--accent)" }}>.</span>
         </h1>
+        <p className="wk-sub t-lead">
+          Everything I&apos;ve built — shipped, shelved, or quietly killed. no
+          survivorship bias.
+        </p>
 
+        <div className="wk-filter mt-6" role="group" aria-label="Filter projects by tag">
+          <button
+            type="button"
+            data-filter
+            className="wk-chip l-meta no-pop"
+            data-active={filter === "all" ? "true" : undefined}
+            onClick={() => setFilter("all")}
+          >
+            all <span>{rows.length}</span>
+          </button>
+          {tags.map((t) => (
+            <button
+              key={t.tag}
+              type="button"
+              data-filter
+              className="wk-chip l-meta no-pop"
+              data-active={filter === t.tag ? "true" : undefined}
+              onClick={() => setFilter(t.tag)}
+            >
+              {t.tag} <span>{t.count}</span>
+            </button>
+          ))}
+        </div>
       </section>
 
-      <section className="mt-10">
+      <section className="mt-4">
         <div
+          ref={boxRef}
           className="box p-3 md:p-4"
-          style={{ background: "var(--paper-2)" }}
+          style={{ background: "var(--paper-2)", minHeight: minH }}
         >
           <div
             className="l-meta mute hidden md:grid pb-2 mb-2 border-b border-dashed gap-4"
