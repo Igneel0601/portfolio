@@ -29,13 +29,11 @@ export function Nav() {
     const mm = motionMM();
 
     mm.add(MOTION_BREAKPOINTS, (ctx) => {
-      const { isMotion, isMobile, isReduce } = ctx.conditions as {
-        isMotion: boolean;
+      const { isMobile, isReduce } = ctx.conditions as {
         isMobile: boolean;
         isReduce: boolean;
       };
       const nav = navRef.current!;
-      const links = gsap.utils.toArray<HTMLElement>("[data-nav-link]", nav);
 
       // Delay applies regardless of reduced-motion preference.
       // Reduced-motion only skips the slide easing, not the delay.

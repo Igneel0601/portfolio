@@ -1,4 +1,4 @@
-import { FsDir, FsNode, normalizePath, readFile, resolve } from './fs'
+import { FsDir, normalizePath, readFile, resolve } from './fs'
 import { COFFEE, COW, FORTUNES } from './ascii'
 import { PROFILE } from '@/lib/profile'
 

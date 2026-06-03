@@ -144,7 +144,7 @@ async function fetchPostBody(slug: string): Promise<string> {
     const header = `# ${post.title}\n${post.publishedAt ? new Date(post.publishedAt).toISOString().slice(0, 10) : 'draft'} · ${post.readMinutes} min · ${post.wordCount} words\n\n`
     const body = post.content?.root ? lexicalToText(post.content.root).trim() : '(no body)'
     return header + body
-  } catch (e) {
+  } catch {
     return `cat: ${slug}: fetch failed`
   }
 }
