@@ -99,7 +99,7 @@ export function WritingArchive({ posts }: Props) {
 
       <div className="wa-table">
         {filtered.length === 0 ? (
-          <p className="wa-empty c-md">// no entries match this filter</p>
+          <p className="wa-empty c-md">{"// no entries match this filter"}</p>
         ) : (
           filtered.map((p) => (
             <Link
@@ -134,7 +134,7 @@ export function WritingArchive({ posts }: Props) {
       </div>
 
       <div className="wa-foot l-meta">
-        <span>// end of log</span>
+        <span>{"// end of log"}</span>
         <a href="/rss.xml" className="wa-rss" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>

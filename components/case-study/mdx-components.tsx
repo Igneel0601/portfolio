@@ -15,7 +15,6 @@
 import * as React from "react";
 import styles from "./case-study.module.css";
 import { slugify } from "./slug";
-import { Mermaid } from "./Mermaid";
 import { ZoomableImage } from "./ZoomableImage";
 
 function nodeText(node: React.ReactNode): string {
@@ -245,21 +244,34 @@ export function Stat({
 // not invoked from inside .mdx — call this in your page layout
 // with the parsed frontmatter object.
 
-export function Frontmatter({ data }: { data: Record<string, any> }) {
+type FrontmatterData = {
+  title?: string;
+  tagline?: string;
+  role?: string;
+  status?: string;
+  timeline?: React.ReactNode;
+  commits?: React.ReactNode;
+  stack?: string[];
+  infra?: string[];
+  notes?: string[];
+  slug?: string;
+};
+
+export function Frontmatter({ data }: { data: FrontmatterData }) {
   const rows: [string, React.ReactNode][] = [
-    ["project", <span className={styles.fmStr}>"{data.title}"</span>],
-    ["tagline", <span className={styles.fmStr}>"{data.tagline}"</span>],
-    ["role", <span className={styles.fmStr}>"{data.role}"</span>],
-    ["status", <span className={styles.fmStr}>"{data.status}"</span>],
-    ["timeline", <>{data.timeline}</>],
-    ["commits", <span className={styles.fmNum}>{data.commits}</span>],
-    ["stack", <>{(data.stack || []).join(" · ")}</>],
-    ["infra", <>{(data.infra || []).join(" · ")}</>],
+    ["project", <span key="project" className={styles.fmStr}>&quot;{data.title}&quot;</span>],
+    ["tagline", <span key="tagline" className={styles.fmStr}>&quot;{data.tagline}&quot;</span>],
+    ["role", <span key="role" className={styles.fmStr}>&quot;{data.role}&quot;</span>],
+    ["status", <span key="status" className={styles.fmStr}>&quot;{data.status}&quot;</span>],
+    ["timeline", <React.Fragment key="timeline">{data.timeline}</React.Fragment>],
+    ["commits", <span key="commits" className={styles.fmNum}>{data.commits}</span>],
+    ["stack", <React.Fragment key="stack">{(data.stack || []).join(" · ")}</React.Fragment>],
+    ["infra", <React.Fragment key="infra">{(data.infra || []).join(" · ")}</React.Fragment>],
   ];
   if (Array.isArray(data.notes) && data.notes.length > 0) {
     rows.push([
       "notes",
-      <span className={styles.fmNotes}>
+      <span key="notes" className={styles.fmNotes}>
         {(data.notes as string[]).map((n, i) => (
           <span key={i} className={styles.fmNote}>{n}</span>
         ))}
@@ -308,11 +320,11 @@ export function buildMdxComponents() {
   const counter = { n: 0 };
   return {
     h2: makeH2(counter),
-    p:  (props: any) => <p className={`${styles.lede} t-lead`} {...props} />,
-    ul: (props: any) => <ul className={`${styles.mdUl} t-lead`} {...props} />,
-    code: (props: any) => <code className={`${styles.inlineCode} c-md`} {...props} />,
-    pre: (props: any) => <pre className={`${styles.codeBlock} c-md`} {...props} />,
-    a: (props: any) => <a className={styles.link} {...props} />,
+    p:  (props: React.ComponentPropsWithoutRef<"p">) => <p className={`${styles.lede} t-lead`} {...props} />,
+    ul: (props: React.ComponentPropsWithoutRef<"ul">) => <ul className={`${styles.mdUl} t-lead`} {...props} />,
+    code: (props: React.ComponentPropsWithoutRef<"code">) => <code className={`${styles.inlineCode} c-md`} {...props} />,
+    pre: (props: React.ComponentPropsWithoutRef<"pre">) => <pre className={`${styles.codeBlock} c-md`} {...props} />,
+    a: (props: React.ComponentPropsWithoutRef<"a">) => <a className={styles.link} {...props} />,
 
     // custom components used in mdx
     TLDR,
@@ -320,7 +332,6 @@ export function buildMdxComponents() {
     Tag,
     Figure,
     AsciiDiagram,
-    Mermaid,
     ZoomableImage,
     Code,
     Decision,

@@ -120,7 +120,9 @@ function projectMd(field: 'what' | 'why' | 'how', p: typeof PROJECTS[number]): s
   return `# ${p.name} · ${title}\n\n${body}`
 }
 
-function lexicalToText(node: any): string {
+type LexicalNode = { text?: string; type?: string; children?: LexicalNode[] }
+
+function lexicalToText(node: LexicalNode | null | undefined): string {
   if (node == null) return ''
   if (typeof node.text === 'string') return node.text
   if (Array.isArray(node.children)) {

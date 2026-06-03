@@ -46,7 +46,6 @@ export default function Image() {
       >
         {/* top: mark + name */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 28 }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={MARK_SRC} width={132} height={132} alt="" />
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <div style={{ fontSize: 60, fontWeight: 700, letterSpacing: -1 }}>{PROFILE.name}</div>
