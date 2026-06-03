@@ -59,7 +59,6 @@ visual-test baselines (§5) once they exist.
 1. **Persistent rate limit on `/api/aria`** — Upstash free tier; the current
    in-memory map resets per edge instance. *Needs an Upstash Redis DB +
    `UPSTASH_REDIS_REST_URL`/`_TOKEN`.*
-2. **Lighthouse pass on `/d` and `/m`** — `next/image` priority hints, CWV.
 
 ## 5. Testing
 
