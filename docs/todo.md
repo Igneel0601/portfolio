@@ -71,15 +71,14 @@ visual-test baselines (§5) once they exist.
 The suite (Vitest + `pnpm check` + husky; Playwright smoke/visual; CI
 `ci.yml`/`e2e.yml`) is live. Open follow-ups:
 
-1. **Add the `DATABASE_URI` repo secret** (+ optional `GH_READ_TOKEN`) so the CI
-   `build` job runs — static gen of `/writing/[slug]` reads Postgres.
-2. **Make CI visual blocking.** Baselines are committed from a local Linux run;
-   regenerate in the CI runner (`playwright test --grep @visual
-   --update-snapshots`), commit, then drop `continue-on-error` in `e2e.yml`.
-3. **Spacing-contract test.** Visual screenshots are viewport-only and missed the
-   below-the-fold `--scene-gap` change; add a check asserting computed
-   `--scene-gap` + scene paddings so spacing regressions are actually caught.
-4. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
+1. **(optional) Add `GH_READ_TOKEN` repo secret** — `DATABASE_URI` is set (CI
+   `build` now static-gens `/writing/[slug]`); the token only enriches the
+   `/work` git-log footer with live GitHub commits (falls back without it).
+2. **Make CI visual blocking.** Baselines are committed from a local Linux run
+   (refreshed for `/work` + `/writing` after the filter redesign); regenerate
+   in the CI runner (`playwright test --grep @visual --update-snapshots`),
+   commit, then drop `continue-on-error` in `e2e.yml`.
+3. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
    new routes get a smoke check + visual baseline.
 
 ## 6. Nice-to-have
@@ -92,8 +91,6 @@ The suite (Vitest + `pnpm check` + husky; Playwright smoke/visual; CI
 
 ## 7. Later
 
-1. **Breadcrumbs** — shared path-style component across `/work/[slug]` and
-   `/writing/[slug]`.
-2. Letters bot.
-3. **Terminal v2** — tab completion · pipes · ANSI colour · aria session quota.
-4. `.md` URLs for posts — more memorable, distinctive in SERPs.
+1. Letters bot.
+2. **Terminal v2** — tab completion · pipes · ANSI colour · aria session quota.
+3. `.md` URLs for posts — more memorable, distinctive in SERPs.
