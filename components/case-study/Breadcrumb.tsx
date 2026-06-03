@@ -11,7 +11,7 @@ export function Breadcrumb({
 }) {
   return (
     <div className="cs-crumb-line c-sm">
-      <Link href={`/${section}`}>{section}</Link>
+      <Link href={`/${section}`} className="no-pop">{section}</Link>
       <span className="cs-sep">/</span>
       <span>{file}</span>
     </div>
