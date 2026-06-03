@@ -83,6 +83,11 @@ Vercel previews via the automation-bypass header, and visual is now
 
 ## 7. Later
 
-1. Letters bot.
-2. **Terminal v2** — tab completion · pipes · ANSI colour · aria session quota.
-3. `.md` URLs for posts — more memorable, distinctive in SERPs.
+1. **`ProjectImage` — use or delete.** Dead component (no consumers); a 16:9
+   `next/image` wrapper. Projects have `image` assets (`public/projects/*.png`)
+   shown only in the `/experiments` sandbox. Either wire thumbnails into the
+   live `/work`/home (a tonal shift from the text-forward design — needs intent
+   + new visual baselines) or delete the component. Deferred.
+2. Letters bot.
+3. **Terminal v2** — tab completion · pipes · ANSI colour · aria session quota.
+4. `.md` URLs for posts — more memorable, distinctive in SERPs.
