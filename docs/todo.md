@@ -76,17 +76,10 @@ The suite (Vitest + `pnpm check` + husky; Playwright smoke/visual; CI
 2. **Make CI visual blocking.** Baselines are committed from a local Linux run;
    regenerate in the CI runner (`playwright test --grep @visual
    --update-snapshots`), commit, then drop `continue-on-error` in `e2e.yml`.
-3. **ESLint debt → fold lint back into the gate.** `pnpm lint` has ~30
-   pre-existing errors — biggest cluster in `case-study/mdx-components.tsx`
-   (`no-unescaped-entities`/`jsx-key`/`no-explicit-any`), plus `next/no-img-element`,
-   `jsx-no-comment-textnodes`, and 5 React-19 `set-state-in-effect` in animation
-   init (`lib/lenis.tsx`, `Nav`, `MobileNav`, `useTerminal`). Clear them, add
-   `eslint` to `pnpm check`, drop CI's `continue-on-error`. NOTE: the
-   set-state-in-effect fixes touch GSAP/Lenis init — verify scroll behavior after.
-4. **Spacing-contract test.** Visual screenshots are viewport-only and missed the
+3. **Spacing-contract test.** Visual screenshots are viewport-only and missed the
    below-the-fold `--scene-gap` change; add a check asserting computed
    `--scene-gap` + scene paddings so spacing regressions are actually caught.
-5. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
+4. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
    new routes get a smoke check + visual baseline.
 
 ## 6. Nice-to-have

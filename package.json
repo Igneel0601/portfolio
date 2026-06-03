@@ -12,7 +12,7 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test",
     "test:visual": "playwright test --grep @visual",
-    "check": "tsc --noEmit && stylelint \"app/**/*.css\" && vitest run",
+    "check": "tsc --noEmit && stylelint \"app/**/*.css\" && eslint && vitest run",
     "prepare": "husky"
   },
   "dependencies": {
