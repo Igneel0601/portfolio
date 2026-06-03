@@ -74,11 +74,7 @@ The suite (Vitest + `pnpm check` + husky; Playwright smoke/visual; CI
 1. **(optional) Add `GH_READ_TOKEN` repo secret** — `DATABASE_URI` is set (CI
    `build` now static-gens `/writing/[slug]`); the token only enriches the
    `/work` git-log footer with live GitHub commits (falls back without it).
-2. **Make CI visual blocking.** Baselines are committed from a local Linux run
-   (refreshed for `/work` + `/writing` after the filter redesign); regenerate
-   in the CI runner (`playwright test --grep @visual --update-snapshots`),
-   commit, then drop `continue-on-error` in `e2e.yml`.
-3. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
+2. **Broaden coverage as features land** — new `lib/*` logic gets a Vitest test;
    new routes get a smoke check + visual baseline.
 
 ## 6. Nice-to-have

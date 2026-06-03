@@ -29,12 +29,11 @@ jobs:
       - name: smoke
         run: pnpm exec playwright test --grep-invert "@visual"
 
-      # Visual — non-blocking: pixel baselines are committed from a local run
-      # and font rendering differs across environments. Regenerate baselines in
-      # this runner (playwright test --grep @visual --update-snapshots) to make
-      # it strict, then drop continue-on-error.
+      # Visual — blocking. Committed (local Linux) baselines match the CI
+      # Ubuntu rendering within the 2% maxDiffPixelRatio tolerance. If font
+      # rendering ever drifts and flakes, bump the tolerance or regenerate the
+      # baselines in this runner (playwright test --grep @visual --update-snapshots).
       - name: visual
-        continue-on-error: true
         run: pnpm exec playwright test --grep "@visual"
 
       - uses: actions/upload-artifact@v4
