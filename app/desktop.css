@@ -77,37 +77,10 @@ a, button {
   transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease;
 }
 
-/* every link pops + recolors + grows underline on hover.
-   exclude .btn, .logo-link, .no-pop, and anything obviously structural */
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex),
-button:not(.btn):not(.no-pop):not(.grid):not(.flex) {
-  display: inline-block;
-  position: relative;
-}
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex)::after,
-button:not(.btn):not(.no-pop):not(.grid):not(.flex)::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;
-  width: 0;
-  height: 0.09375rem; /* 1.5px hairline underline (scales with root font) */
-  background: currentColor;
-  transition: width 0.3s ease;
-}
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover,
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered,
-button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover,
-button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered {
-  transform: scale(1.08) !important;
-  color: var(--accent) !important;
-}
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex):hover::after,
-a:not(.btn):not(.logo-link):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after,
-button:not(.btn):not(.no-pop):not(.grid):not(.flex):hover::after,
-button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
-  width: 100%;
-}
+/* Link hover-pop is intentionally NOT global. Only nav links pop, and they
+   carry their own affordance (hover:text-accent + an after: underline-grow)
+   inline in Nav.tsx. Every other link is plain unless it styles its own hover
+   (e.g. .uses-link). */
 
 /* identity cursor blink — only CSS animation allowed by motion spec */
 [data-cursor] {

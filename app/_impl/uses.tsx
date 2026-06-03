@@ -95,7 +95,7 @@ export function UsesPage(_props: { shell: "d" | "m" }) {
           </div>
           <p className="uses-dot">
             Everything above is wired together on{" "}
-            <a href={CONTACT.github} target="_blank" rel="noopener" className="uses-link no-pop">
+            <a href={CONTACT.github} target="_blank" rel="noopener" className="uses-link">
               GitHub <ExternalLink className="i-xs" aria-hidden />
             </a>
             . Steal whatever&apos;s useful. It&apos;ll probably break differently for you.

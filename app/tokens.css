@@ -150,6 +150,13 @@ body {
   color: var(--accent-2);
   border-color: var(--accent-2);
 }
+/* Same terminal CTA, accent green (not accent-2 teal) themed. */
+.btn.term-a {
+  --btn-shadow: var(--accent);
+  text-transform: none;
+  color: var(--accent);
+  border-color: var(--accent);
+}
 
 .pill {
   display: inline-flex;
@@ -248,6 +255,22 @@ body {
 .cs-mac-g   { background: #28c840; }
 .cs-prompt  { color: var(--ink-soft); margin-left: 0.375rem; }
 .cs-term-right { margin-left: auto; color: var(--ink-dim); }
+
+/* Site-wide link affordance. Green is overloaded (it's also the command/
+   prompt colour), so links carry a resting underline to disambiguate — a
+   plain text-decoration that wraps correctly across lines and survives
+   flex/icon links (no fragile ::after bar). The navbar is exclusive (its
+   links carry .nav-link and own the animated-grow underline); .btn is
+   excluded too (filled pills — green-on-green text would vanish). .no-pop is
+   the codebase's "this link styles itself, hands off" opt-out — structural
+   links (cards, table rows, chips, TOC, pager) carry it and are left alone.
+   Blog prose styles its own links (see .w-prose a). */
+a:not(.nav-link):not(.btn):not(.no-pop) {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem; /* 1px hairline */
+  text-underline-offset: 0.2em;
+}
 
 .cs-crumb-line {
   color: var(--ink-dim);
@@ -879,19 +902,18 @@ body {
 /* Prose links: accent green from the rest, nav-style underline grows from
    left on hover. Carries .no-pop in JSX so the global a:hover scale rule
    in desktop.css skips them. */
-.w-prose a {
-  color: var(--accent);
-  text-decoration: none;
-  position: relative;
-  display: inline;
-  background-image: linear-gradient(var(--accent), var(--accent));
-  background-repeat: no-repeat;
-  background-position: 0 100%;
-  background-size: 0 1.5px;
-  transition: background-size 0.3s ease;
-  padding-bottom: 0.0625rem;
+/* Prose links stay calm: body ink + the resting underline inherited from the
+   global rule, turning green on hover. Keeps long-form readable and avoids
+   the green-link / green-command confusion mid-paragraph. :not(.btn) lifts
+   specificity above the global a:not()() rule so the ink colour wins. */
+.w-prose a:not(.btn) {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.2em;
+  transition: color 0.18s ease;
 }
-.w-prose a:hover { background-size: 100% 1.5px; }
+.w-prose a:not(.btn):hover { color: var(--accent); }
 
 .w-ornament {
   text-align: center;
@@ -1305,8 +1327,6 @@ body {
   line-height: 1.5;
 }
 .uses-link {
-  color: var(--ink);
-  border-bottom: 1px solid var(--accent);
   font-style: normal;
   font-family: var(--mono);
   font-size: 0.875rem;
@@ -1314,7 +1334,6 @@ body {
   align-items: center;
   gap: 0.25rem;
 }
-.uses-link:hover { color: var(--accent); }
 
 /* ── /contact ── validating form + direct-links rail (2-col) ──────────── */
 .ct-grid {

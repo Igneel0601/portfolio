@@ -258,9 +258,7 @@ export function Nav() {
                         data-active={isActive ? "true" : undefined}
                         href={l.href}
                         aria-current={isActive ? "page" : undefined}
-                        className={`nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full${
-                          isActive ? " after:w-full" : ""
-                        }`}
+                        className="nav-link relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
                       >
                         {l.label}
                       </Link>

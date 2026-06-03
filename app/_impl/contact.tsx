@@ -225,7 +225,7 @@ export function ContactPage(_props: { shell: "d" | "m" }) {
                 </div>
 
                 <div className="ct-actions">
-                  <button className="ct-btn" type="submit">
+                  <button className="btn term-a" type="submit">
                     $ send message →
                   </button>
                   <span className="ct-nospam">no spam. no list. just me.</span>

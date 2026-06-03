@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { ExternalLink, MoveRight } from "lucide-react";
+import { Link as LinkIcon, MoveRight } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
 import { Insight } from "@/components/Insight";
@@ -354,7 +354,7 @@ export function ProjectsShowcaseCinematic() {
                   willChange: "opacity",
                 }}
               >
-                <ExternalLink size="0.9em" strokeWidth={2} />
+                <LinkIcon size="0.9em" strokeWidth={2} />
               </span>
             </h2>
           </div>
