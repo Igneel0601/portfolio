@@ -270,6 +270,19 @@ button:not(.btn):not(.no-pop):not(.grid):not(.flex).cursor-hovered::after {
   padding: 2rem 0;
 }
 
+/* desktop toolbar pager: "showing X–Y of N entries" (left) + the shared
+   .pager-ctl cluster (right). Cluster styles live in tokens.css (both shells). */
+.wa-pager {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2.5rem;
+  color: var(--ink-dim);
+}
+.wa-pager-status b { color: var(--ink-soft); font-weight: 500; }
+
 .wa-foot {
   margin-top: 1.8rem;
   display: flex;

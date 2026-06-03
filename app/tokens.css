@@ -1031,3 +1031,43 @@ body {
   .wp-related-grid { grid-template-columns: 1fr; }
   .wp-meta-strip .wp-file { margin-left: 0; }
 }
+
+/* ── shared pager controls (.pager-*) — the /writing jump + page-of + arrows
+   cluster, used by both shells: desktop pairs it with a "showing N" status,
+   mobile uses it alone, right-aligned. ──────────────────────────────────── */
+.pager-ctl { display: flex; align-items: center; gap: 0.75rem; color: var(--ink-dim); }
+.pager-jump-label, .pager-of { color: var(--ink-dim); }
+.pager-of b { color: var(--accent); font-weight: 500; }
+
+.pager-jump {
+  width: 3.25rem;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+  text-align: center;
+  transition: border-color .15s ease, color .15s ease;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+.pager-jump:hover { border-color: var(--accent); }
+.pager-jump:focus { outline: none; border-color: var(--accent); color: var(--accent); }
+.pager-jump::-webkit-outer-spin-button,
+.pager-jump::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+.pager-arrows { display: flex; gap: 0.25rem; }
+.pager-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.9rem;
+  padding: 0.3rem;
+  border: 1px solid color-mix(in oklab, var(--ink) 22%, transparent);
+  border-radius: 6px;
+  color: var(--ink-soft);
+  transition: border-color .15s ease, color .15s ease;
+}
+.pager-nav:hover { border-color: var(--accent); color: var(--accent); }
+.pager-nav[data-disabled] { opacity: 0.3; pointer-events: none; }

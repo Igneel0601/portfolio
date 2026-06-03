@@ -206,13 +206,10 @@ async function fetchMediaByIds(ids: number[]): Promise<Map<number, Media>> {
   return map
 }
 
-export async function getAllPosts(): Promise<PostListItem[]> {
-  const { rows } = await pool.query<PostRow>(
-    `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id
-     FROM posts
-     WHERE ${PUBLISHED}
-     ORDER BY published_at DESC NULLS LAST, updated_at DESC`,
-  )
+const LIST_COLS = `id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id`
+const LIST_ORDER = `published_at DESC NULLS LAST, updated_at DESC`
+
+async function toListItems(rows: PostRow[]): Promise<PostListItem[]> {
   if (rows.length === 0) return []
   const cats = await fetchCategoriesForPosts(rows.map((r) => r.id))
   return rows.map((r) => {
@@ -229,6 +226,71 @@ export async function getAllPosts(): Promise<PostListItem[]> {
       readMinutes: Math.max(1, Math.round(wordCount / 220)),
     }
   })
+}
+
+export async function getAllPosts(): Promise<PostListItem[]> {
+  const { rows } = await pool.query<PostRow>(
+    `SELECT ${LIST_COLS} FROM posts WHERE ${PUBLISHED} ORDER BY ${LIST_ORDER}`,
+  )
+  return toListItems(rows)
+}
+
+export type CategoryCount = { slug: string; title: string; count: number }
+
+/** Per-category counts across all published posts (for the filter pills) +
+ *  the total. Independent of the current page/filter. */
+export async function getCategoryCounts(): Promise<{ all: number; latest: string | null; tags: CategoryCount[] }> {
+  const [totalRes, tagRes] = await Promise.all([
+    pool.query<{ all: number; latest: string | null }>(
+      `SELECT count(*)::int AS all, max(published_at) AS latest FROM posts WHERE ${PUBLISHED}`,
+    ),
+    pool.query<CategoryCount>(
+      `SELECT c.slug, c.title, count(*)::int AS count
+       FROM posts_rels pr
+       JOIN categories c ON c.id = pr.categories_id
+       JOIN posts p ON p.id = pr.parent_id
+       WHERE pr.path = 'categories' AND p.${PUBLISHED}
+       GROUP BY c.slug, c.title
+       ORDER BY count DESC, c.title`,
+    ),
+  ])
+  return {
+    all: totalRes.rows[0]?.all ?? 0,
+    latest: totalRes.rows[0]?.latest ?? null,
+    tags: tagRes.rows,
+  }
+}
+
+/** A page of published posts, optionally filtered by category slug. Filtering
+ *  and paging both happen in SQL so it scales past a full in-memory fetch. */
+export async function getPosts(opts: {
+  page: number
+  perPage: number
+  tag?: string | null
+}): Promise<{ posts: PostListItem[]; total: number; page: number; totalPages: number }> {
+  const perPage = Math.max(1, opts.perPage)
+  const tag = opts.tag || null
+  // $1 = tag (null → no category filter)
+  const filter = `${PUBLISHED} AND ($1::text IS NULL OR id IN (
+     SELECT pr.parent_id FROM posts_rels pr
+     JOIN categories c ON c.id = pr.categories_id
+     WHERE pr.path = 'categories' AND c.slug = $1))`
+
+  const { rows: countRows } = await pool.query<{ total: number }>(
+    `SELECT count(*)::int AS total FROM posts WHERE ${filter}`,
+    [tag],
+  )
+  const total = countRows[0]?.total ?? 0
+  const totalPages = Math.max(1, Math.ceil(total / perPage))
+  const page = Math.min(Math.max(1, opts.page), totalPages)
+  const offset = (page - 1) * perPage
+
+  const { rows } = await pool.query<PostRow>(
+    `SELECT ${LIST_COLS} FROM posts WHERE ${filter}
+     ORDER BY ${LIST_ORDER} LIMIT $2 OFFSET $3`,
+    [tag, perPage, offset],
+  )
+  return { posts: await toListItems(rows), total, page, totalPages }
 }
 
 export async function getPostSlugs(): Promise<string[]> {

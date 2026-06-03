@@ -1,100 +1,72 @@
-'use client'
-
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
 import { CornerDownRight } from 'lucide-react'
-import type { PostListItem } from '@/lib/posts'
+import type { PostListItem, CategoryCount } from '@/lib/posts'
+import { writingHref } from '@/lib/writing'
+import { PagerControls } from './PagerControls'
 
 function formatDate(iso: string | null) {
   if (!iso) return '—'
   return new Date(iso).toISOString().slice(0, 10).replace(/-/g, '·')
 }
 
-type Props = { posts: PostListItem[] }
+type Props = {
+  posts: PostListItem[]
+  counts: { all: number; latest: string | null; tags: CategoryCount[] }
+  total: number
+  tag: string | null
+  page: number
+  totalPages: number
+  perPage: number
+}
 
-export function WritingArchive({ posts }: Props) {
-  const [active, setActive] = useState<string | null>(null)
-
-  const tagCounts = useMemo(() => {
-    const map = new Map<string, number>()
-    for (const p of posts) {
-      for (const c of p.categories) {
-        map.set(c.slug, (map.get(c.slug) ?? 0) + 1)
-      }
-    }
-    return map
-  }, [posts])
-
-  const tags = useMemo(() => {
-    const seen = new Map<string, { slug: string; title: string }>()
-    for (const p of posts) for (const c of p.categories) if (!seen.has(c.slug)) seen.set(c.slug, c)
-    return [...seen.values()]
-  }, [posts])
-
-  const filtered = useMemo(() => {
-    if (!active) return posts
-    return posts.filter((p) => p.categories.some((c) => c.slug === active))
-  }, [posts, active])
-
-  const lastCommit = useMemo(() => {
-    const stamps = posts.map((p) => p.publishedAt || p.updatedAt).filter(Boolean) as string[]
-    if (stamps.length === 0) return null
-    return stamps.sort().slice(-1)[0]
-  }, [posts])
-
+export function WritingArchive({ posts, counts, total, tag, page, totalPages, perPage }: Props) {
+  const above = (page - 1) * perPage
+  const start = total === 0 ? 0 : above + 1
+  const end = above + posts.length
   return (
     <>
       <div className="wa-prompt c-md">
         <span className="wa-cmd">$ ls /writing</span>
         <span className="wa-sep">·</span>
         <span>
-          {posts.length} {posts.length === 1 ? 'entry' : 'entries'}
+          {total} {total === 1 ? 'entry' : 'entries'}
         </span>
-        {lastCommit && (
+        {counts.latest && (
           <>
             <span className="wa-sep">·</span>
-            <span>last commit {formatDate(lastCommit).replace(/·/g, '-')}</span>
+            <span>last commit {formatDate(counts.latest).replace(/·/g, '-')}</span>
           </>
         )}
       </div>
 
-      <div
-        className="wa-filter-row tag-filter"
-        role="group"
-        aria-label="filter by category"
-      >
-        <button
-          type="button"
+      {/* Filter is URL-driven (server-side) so it composes with pagination —
+          each pill is a link to /writing?tag=…, resetting to page 1. */}
+      <div className="wa-filter-row tag-filter" role="group" aria-label="filter by category">
+        <Link
+          href={writingHref(null, 1)}
           className="tag-chip l-meta no-pop"
-          data-active={active === null ? 'true' : undefined}
-          onClick={() => setActive(null)}
+          data-active={tag === null ? 'true' : undefined}
         >
-          all <span>{posts.length}</span>
-        </button>
-        {tags.map((t) => (
-          <button
+          all <span>{counts.all}</span>
+        </Link>
+        {counts.tags.map((t) => (
+          <Link
             key={t.slug}
-            type="button"
+            href={writingHref(t.slug, 1)}
             className="tag-chip l-meta no-pop"
-            data-active={active === t.slug ? 'true' : undefined}
-            onClick={() => setActive(t.slug)}
+            data-active={tag === t.slug ? 'true' : undefined}
           >
-            {t.title} <span>{tagCounts.get(t.slug) ?? 0}</span>
-          </button>
+            {t.title} <span>{t.count}</span>
+          </Link>
         ))}
       </div>
 
       <div className="wa-table">
-        {filtered.length === 0 ? (
-          <p className="wa-empty c-md">{"// no entries match this filter"}</p>
+        {posts.length === 0 ? (
+          <p className="wa-empty c-md">{'// no entries match this filter'}</p>
         ) : (
-          filtered.map((p) => (
-            <Link
-              key={p.id}
-              href={`/writing/${p.slug}`}
-              className="wa-row no-pop"
-              prefetch={false}
-            >
+          posts.map((p) => (
+            <Link key={p.id} href={`/writing/${p.slug}`} className="wa-row no-pop" prefetch={false}>
               <div>
                 {p.categories.length > 0 && (
                   <div className="wa-row-top l-eyebrow">
@@ -120,9 +92,19 @@ export function WritingArchive({ posts }: Props) {
         )}
       </div>
 
+      {totalPages > 1 && (
+        <nav className="wa-pager c-xs" aria-label="pages">
+          <span className="wa-pager-status">
+            showing <b>{start}–{end}</b> of <b>{total}</b> entries
+          </span>
+
+          <PagerControls page={page} totalPages={totalPages} tag={tag} />
+        </nav>
+      )}
+
       <div className="wa-foot l-meta">
-        <span>{"// end of log"}</span>
-        <a href="/rss.xml" className="wa-rss" style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+        <span>{'// end of log'}</span>
+        <a href="/rss.xml" className="wa-rss" style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>
