@@ -39,13 +39,6 @@ visual-test baselines (§5) once they exist.
 2. **Internal linking** — every post should link to ≥2 posts and ≥1 case study
    (only "Similar reads" does this today).
 3. **Image alt-text audit** — verify Lexical media nodes carry `alt` from Bloggz.
-4. **Heading hierarchy — case studies skip a level.** Verified (2026-06-03):
-   home, both indexes, and *writing posts* are clean (one `<h1>`, descending
-   `<h2>`/`<h3>`). The one violation is **case studies** — they go `h2 → h4`
-   with no `h3`. Source: the `Decision` block heading at
-   `components/case-study/mdx-components.tsx:173` (`<h4 …>`). Fix: change it to
-   `<h3>` — it keeps its `t-h5` sizing class, so **zero visual change**, just the
-   correct semantic level. (Writing posts need no change.)
 
 ### 2c. Distribution ← TOP PRIORITY (the bottleneck)
 1. **Bio backlinks (do first).** Put `vergnyx.dev` in the GitHub profile bio +

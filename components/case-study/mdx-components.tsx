@@ -170,7 +170,7 @@ export function Decision({
     <div className={`${styles.decision} t-body`}>
       <span className={`${styles.decisionNum} c-sm`}>{n}</span>
       <div className={styles.decisionBody}>
-        <h4 className={`${styles.decisionH} t-h5`}>
+        <h3 className={`${styles.decisionH} t-h5`}>
           <span className={styles.picked}>{picked}</span>
           {rejected && (
             <>
@@ -178,7 +178,7 @@ export function Decision({
               <span className={styles.rejected}>{rejected}</span>
             </>
           )}
-        </h4>
+        </h3>
         <div className={styles.decisionP}>{children}</div>
       </div>
     </div>
