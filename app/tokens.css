@@ -1154,13 +1154,21 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   color: var(--ink-soft);
   border-top: 1px solid var(--hair);
   padding-top: 1.25em;
-  margin-top: 1.6em !important;
+  /* !important to beat .ab-prose p (higher specificity). Bottom margin 0: it's
+     the last line, so the prose column bottom = the sign's bottom — which makes
+     the sticky rail's quote (clamped to the column bottom) land level with the
+     sign at the end of the sticky run. */
+  margin: 1.6em 0 0 !important;
 }
 .ab-link { color: var(--accent-2); border-bottom: 1px solid var(--accent); }
 .ab-link:hover { color: var(--accent); }
 
 .ab-rail-wrap { position: sticky; top: 6rem; }
-.ab-rail { border: 1px solid var(--hair); border-radius: 0.375rem; overflow: hidden; }
+.ab-rail {
+  border: 1px solid var(--hair);
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
 .ab-row {
   display: grid;
   grid-template-columns: 5.5rem 1fr;
