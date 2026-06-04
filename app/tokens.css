@@ -1375,6 +1375,9 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   border-radius: 0.375rem;
   padding: 2rem;
   background: var(--paper-2);
+  /* Stretch the form box to the taller column (the info rail) so their bottoms
+     line up. Rail stays align-items:start, so its sticky behavior is intact. */
+  align-self: stretch;
 }
 .ct-field { margin-bottom: 1.5rem; }
 .ct-label {
