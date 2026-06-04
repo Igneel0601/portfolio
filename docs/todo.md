@@ -15,14 +15,11 @@ indexed; the bottleneck is **authority — backlinks (§2c) are the #1 lever.**
    reviewing drafts and shipping regularly, not the pipeline.
 2. **More case studies.** Only 3 live (codeflow, taskforge, traveloop). Even
    single-page studies round out `/work`.
-3. **`/about`** — bio page. Identity is currently scattered (terminal fastfetch +
-   CTA copy). Pull from `lib/profile.ts`.
-4. **`/now`** — what you're working on this month. Already in nav (hidden).
-5. **`/uses`** — tools / setup. Fits the terminal vibe.
-6. **`/contact`** or a richer footer card — current CTA is link buttons; no form.
 
-New content routes also need metadata (`lib/seo/pages.ts` + both shells) and
-visual-test baselines (§5) once they exist.
+The identity/personal pages (`/about`, `/now`, `/uses`, `/contact`) are now
+built — both shells, metadata in `lib/seo/pages.ts`, and committed visual
+baselines — all sourced from `lib/profile.ts`. Any *future* content route still
+needs the same: metadata (both shells) + visual baselines (§5).
 
 ## 2. SEO
 
