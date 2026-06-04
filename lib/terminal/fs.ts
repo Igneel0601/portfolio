@@ -1,4 +1,8 @@
-import { PROJECTS, TIMELINE, CONTACT, GIT_LOG_PREVIEW } from '@/lib/content'
+import { PROJECTS, TIMELINE, CONTACT, GIT_LOG_PREVIEW, USES, NOW } from '@/lib/content'
+import { FACTS, DEGREE_GRAD } from '@/lib/profile'
+
+// "open to work" → "Open to work" for sentence-start use
+const AVAIL_CAP = `${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}`
 
 export type FsFile = {
   kind: 'file'
@@ -29,57 +33,50 @@ const ABOUT_MD = `# vaibhav verma
 
 I'm Vaibhav. I build software that teaches itself to write more software.
 
-CSE grad (GBU '26). Live in Noida. Open to full-time + freelance.
+${DEGREE_GRAD}, based in ${FACTS.location}. ${AVAIL_CAP}.
 
 ## stack right now
-next 16 · react 19 · typescript · postgres · arch + hyprland
+${FACTS.stack.join(' · ').toLowerCase()}
 
 ## currently
-shipping CodeFlow (AI app builder, E2B sandboxes).
+${FACTS.focus}.
 writing build logs at /writing.
 
 ## off-keyboard
 arch ricing · sci-fi · filter coffee.
 `
 
-const NOW_MD = `# /now · ${new Date().toISOString().slice(0, 7)}
+// Generated from the canonical /now data (NOW) so the terminal mirrors the page.
+const NOW_MD = `# /now · ${NOW.updated.slice(0, 7)}
 
-What I'm doing this month.
+${NOW.lede}
 
-- shipping CodeFlow v2 (multi-agent loops, deploy hooks)
-- writing build logs publicly at /writing
-- learning rust + tauri (slow burn)
-- reading: "Designing Data-Intensive Applications", Reza Negarestani
-- looking: full-time SWE or interesting freelance
+${NOW.log
+  .map(
+    (c) =>
+      `## ${c.cat}\n${c.entries
+        .map((e) => `- ${e.line}${e.meta ? ` (${e.meta})` : ''}`)
+        .join('\n')}`,
+  )
+  .join('\n\n')}
 
-last updated: ${new Date().toISOString().slice(0, 10)}
+last updated: ${NOW.updated}
 `
 
+// Generated from the canonical /uses data (USES) so the terminal can't drift
+// from the page. Name · meta per row, grouped by category.
 const USES_MD = `# /uses
 
-What I actually reach for.
+${USES.lede}
 
-## machine
-ThinkPad · Ryzen 5 · 16gb · 512gb nvme
-
-## os & shell
-arch linux (btw) · hyprland · waybar · kitty · zsh + starship · fzf · ripgrep
-
-## editor
-neovim + lazyvim
-fallback: vscode (for live-share)
-
-## fonts
-ibm plex mono (code) · fraunces (everything else)
-
-## browser
-zen / firefox dev · librewolf for receipts
-
-## languages
-typescript (daily) · python (data) · go (curious) · rust (slowly)
-
-## services
-neon (postgres) · vercel (hosting) · upstash (redis) · resend (email)
+${USES.cats
+  .map(
+    (c) =>
+      `## ${c.label}\n${c.rows
+        .map((r) => (r.meta ? `${r.name} · ${r.meta}` : r.name))
+        .join('\n')}`,
+  )
+  .join('\n\n')}
 `
 
 const CONTACT_VCARD = `BEGIN:VCARD

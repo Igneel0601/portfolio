@@ -1333,13 +1333,12 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   font-family: var(--mono);
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
-  color: var(--ink-dim);
-  border: 1px solid var(--hair);
+  color: var(--accent);
+  border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
   border-radius: 999px;
   padding: 0.2rem 0.6rem;
   white-space: nowrap;
 }
-.uses-chip.on { color: var(--accent); border-color: color-mix(in oklab, var(--accent) 45%, transparent); }
 .uses-foot { margin-top: 4rem; }
 .uses-dot {
   font-family: var(--font-serif), ui-serif, Georgia, serif;

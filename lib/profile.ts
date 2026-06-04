@@ -30,6 +30,32 @@ type Profile = {
 
 const NAME = "Vaibhav Verma";
 
+// ── SINGLE SOURCE OF TRUTH for atomic personal facts ────────────────────────
+// Every surface that states these (hero subhead, /about rail, /contact, SEO,
+// terminal) derives from here — edit once, everything updates. Voice/prose
+// (bio paragraphs, timeline blurbs, terminal flavor jokes) stays hand-written;
+// this only holds the facts those surfaces must agree on.
+export const FACTS = {
+  age: "22",
+  gradYear: "2026",
+  gradYearShort: "26", // for "'26"
+  degree: "B.Tech CSE",
+  uni: "GBU",
+  uniLong: "Gautam Buddha University",
+  location: "Noida",
+  tz: "UTC+5:30",
+  editor: "VS Code",
+  // primary languages/tools (the /about rail). Per-surface "stack" lists that
+  // mean something different (e.g. "this site runs on") stay local.
+  stack: ["Next.js", "Python", "Postgres", "Express"],
+  focus: "DSA", // the current "now"
+  availability: "open to work",
+} as const;
+
+// Composed display strings built from FACTS (so formats stay in sync too).
+export const DEGREE_GRAD = `${FACTS.gradYear} ${FACTS.degree} grad`; // "2026 B.Tech CSE grad"
+export const STUDY_LINE = `${FACTS.degree} '${FACTS.gradYearShort} · ${FACTS.uni}`; // "B.Tech CSE '26 · GBU"
+
 export const PROFILE: Profile = {
   name: NAME,
   role: "software engineer",
@@ -44,8 +70,7 @@ export const PROFILE: Profile = {
     post: "to write more software.",
   },
 
-  metaDescription:
-    "I build software that teaches itself to write more software. CSE grad, Noida. Open to full-time + freelance.",
+  metaDescription: `I build software that teaches itself to write more software. ${DEGREE_GRAD}, ${FACTS.location}. ${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
 
   headlineDesktop: [
     ["I'm", { hilite: "Vaibhav." }],
@@ -61,9 +86,8 @@ export const PROFILE: Profile = {
     ["software."],
   ],
 
-  subheadDesktop:
-    "B.Tech CSE · Gautam Buddha University · Noida · open to full-time + freelance.",
-  subheadMobile: ["B.Tech CSE · GBU · Noida", "open to full-time + freelance."],
+  subheadDesktop: `${FACTS.degree} · ${FACTS.uniLong} · ${FACTS.location} · ${FACTS.availability}.`,
+  subheadMobile: [`${FACTS.degree} · ${FACTS.uni} · ${FACTS.location}`, `${FACTS.availability}.`],
 
   resumePath: "/vaibhav_resume.pdf",
 

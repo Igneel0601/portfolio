@@ -1,3 +1,5 @@
+import { FACTS, STUDY_LINE } from "./profile";
+
 export type ProjectStats = {
   commits: number;
   branches: number;
@@ -280,25 +282,25 @@ export const ABOUT = {
   eyebrow: "Profile · /about",
   lede: "The long version of a one-line bio nobody reads.",
   // the `$ whoami` command-line facts (joined by · separators)
-  whoami: ["vaibhav", "noida, IN", "uptime: 22y, mostly stable"],
+  whoami: ["vaibhav", STUDY_LINE.toLowerCase(), `uptime: ${FACTS.age}y, mostly stable`],
   // narrative paragraphs — plain prose, edit freely
   bio: [
-    "I'm Vaibhav — a final-year CS student in Noida who got into this because I wanted to automate the boring half of my own life and then accidentally never stopped. What started as a script to rename my downloads folder is, several questionable decisions later, a habit.",
-    "These days I build software that teaches itself to write more software — agent tooling, developer utilities, and the occasional thing that probably shouldn't exist. The big one right now is CodeFlow, an AI builder where the agents actually run their own code. Mostly.",
+    "I'm Vaibhav — a 2026 CS grad who got into this because I wanted to automate the boring half of my own life and then accidentally never stopped. What started as a script to rename my downloads folder is, several questionable decisions later, a habit.",
+    "These days I build software that teaches itself to write more software — agent tooling, developer utilities, and the occasional thing that probably shouldn't exist. CodeFlow — an AI builder where the agents actually run their own code — was the big one.",
     "I ship at 4am and regret it at 9. I read the docs after, not before. I think a tool you built yourself is worth three you didn't — even when it's measurably worse — because you understand exactly how it breaks. Most of my best work is just me refusing to use someone else's reasonable solution.",
     "Off the keyboard: long walks, longer playlists, and an Arch install I keep breaking on purpose so there's always something to fix. I write things down so I stop re-learning them — some of it ends up on the writing log, most of it doesn't.",
   ],
-  sign: "Currently open to full-time & freelance.",
-  // mono fact rail (key → value)
+  sign: `${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
+  // mono fact rail (key → value) — atomic facts come from FACTS (lib/profile.ts)
   rail: [
     { k: "whoami", v: "Vaibhav Verma" },
-    { k: "role", v: "SWE · CS undergrad" },
-    { k: "based", v: "Noida, IN · UTC+5:30" },
-    { k: "study", v: "B.Tech CSE '26 · GBU" },
-    { k: "stack", v: "TypeScript, Go, React, Python" },
-    { k: "editor", v: "Neovim btw" },
-    { k: "now", v: "building CodeFlow" },
-    { k: "status", v: "open — full-time + freelance" },
+    { k: "role", v: `SWE · ${FACTS.gradYear} grad` },
+    { k: "tz", v: FACTS.tz },
+    { k: "study", v: STUDY_LINE },
+    { k: "stack", v: FACTS.stack.join(", ") },
+    { k: "editor", v: FACTS.editor },
+    { k: "now", v: FACTS.focus },
+    { k: "status", v: FACTS.availability },
   ],
   quote: "writing the README first this time.",
 } as const;
@@ -307,43 +309,37 @@ export const ABOUT = {
 export const NOW = {
   eyebrow: "Snapshot · /now",
   lede: "What I'm actually doing — not what I wish I were.",
-  updated: "2026-06-03",
+  updated: "2026-06-04",
   staleInDays: 27,
   // status board cards (the live local-time card is rendered separately)
   board: [
-    { k: "focus", v: "CodeFlow v0.3", sub: "shipping the agent runner" },
+    { k: "focus", v: "DSA", sub: "heads-down on fundamentals" },
     { k: "mode", v: "heads-down", sub: "fewer tabs, more commits" },
-    { k: "status", v: "open to work", sub: "full-time + freelance", accent: true },
+    { k: "status", v: FACTS.availability, sub: "full-time + freelance", accent: true },
   ],
   log: [
     {
       cat: "building",
       entries: [
-        { line: "Rewriting CodeFlow's agent runner so it stops eating its own context window. The fix is embarrassingly small.", meta: "active · pushed 4h ago" },
-        { line: "wall-engine — a wallpaper switcher I built because I kept breaking the last one. Now it breaks differently.", meta: "active" },
-        { line: "A next thing. Writing the README first this time.", meta: "wip · README only" },
+        { line: "This portfolio. Always one more gap to close.", meta: "wip" },
       ],
     },
     {
       cat: "learning",
       entries: [
-        { line: "Rust — slowly, and somewhat against my will.", meta: "ch. 9 of the book" },
-        { line: "Distributed systems. Reading the TigerBeetle write-ups and feeling things.", meta: "" },
+        { line: "DSA — grinding the classics, arrays to graphs. Same problems, fewer excuses.", meta: "daily" },
       ],
     },
     {
       cat: "reading",
       entries: [
-        { line: "Designing Data-Intensive Applications — third attempt, this time I mean it.", meta: "" },
-        { line: "Roughly 40 open tabs I am choosing to call a reading list.", meta: "" },
+        { line: "KonoSuba — the light novels. Comedy isekai; the palate cleanser between problem sets.", meta: "" },
       ],
     },
     {
       cat: "life",
       entries: [
-        { line: "Trying to hit 8k steps before the first commit of the day. Mixed results.", meta: "" },
-        { line: "Learning to cook exactly four meals, very well.", meta: "" },
-        { line: "Re-breaking my Arch install for sport. It's a feature.", meta: "" },
+        { line: "Earning peanuts. Trying for almonds.", meta: "" },
       ],
     },
   ],
@@ -418,9 +414,9 @@ export const USES = {
 export const CONTACT_PAGE = {
   eyebrow: "Say hi · /contact",
   lede: "The fastest ways to reach me.",
-  availability: { title: "open to work", sub: "full-time + freelance · from Jul 2026" },
+  availability: { title: FACTS.availability, sub: "full-time + freelance" },
   meta: [
-    { k: "based", v: "Noida, IN · UTC+5:30" },
+    { k: "based", v: `${FACTS.location} · ${FACTS.tz}` },
     { k: "hours", v: "10:00–02:00, loosely" },
     { k: "reply", v: "~1 business day" },
   ],

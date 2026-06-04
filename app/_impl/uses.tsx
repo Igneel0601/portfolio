@@ -72,14 +72,7 @@ export function UsesPage(_props: { shell: "d" | "m" }) {
                     <span className="uses-note">{r.note}</span>
                     <span className="uses-metawrap">
                       {r.meta && (
-                        <span
-                          className={
-                            "uses-chip" +
-                            (r.meta === "daily" || r.meta === "primary" ? " on" : "")
-                          }
-                        >
-                          {r.meta}
-                        </span>
+                        <span className="uses-chip">{r.meta}</span>
                       )}
                     </span>
                   </div>
