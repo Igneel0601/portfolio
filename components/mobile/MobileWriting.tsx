@@ -1,6 +1,5 @@
 /* Server component — the category filter and pagination are URL-driven
-   (/writing?tag=&page=), so this just renders the page the server fetched.
-   RevealGroup (client) re-staggers on tag/page change via replayKey. */
+   (/writing?tag=&page=), so this just renders the page the server fetched. */
 
 import Link from "next/link";
 import { CornerDownRight } from "lucide-react";
@@ -8,7 +7,6 @@ import type { PostListItem, CategoryCount } from "@/lib/posts";
 import { writingHref } from "@/lib/writing";
 import { PagerControls } from "@/components/writing/PagerControls";
 import { DashedRule } from "./parts";
-import { RevealGroup } from "./Reveal";
 
 const SUBTITLE =
   "Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.";
@@ -53,7 +51,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
       <div className="m-wfilter">
         <Link
           href={writingHref(null, 1)}
-          className="c-xs m-chip"
+          className="c-xs m-chip no-pop"
           data-active={tag === null ? "true" : undefined}
         >
           all <span>{counts.all}</span>
@@ -62,7 +60,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
           <Link
             key={c.slug}
             href={writingHref(c.slug, 1)}
-            className="c-xs m-chip"
+            className="c-xs m-chip no-pop"
             data-active={tag === c.slug ? "true" : undefined}
           >
             {c.title} <span>{c.count}</span>
@@ -72,10 +70,9 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
 
       <DashedRule />
 
-      <RevealGroup replayKey={`${tag ?? "all"}-${page}`}>
         <div className="m-writing-list">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow m-reveal">
+            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow no-pop">
               <div className="m-wrow-top">
                 <span className="l-meta m-wrow-cat">{p.categories[0]?.title ?? "post"}</span>
                 <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
@@ -90,7 +87,6 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
             </Link>
           ))}
         </div>
-      </RevealGroup>
 
       {totalPages > 1 && (
         <nav className="m-pager" aria-label="pages">
@@ -100,7 +96,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
 
       <div className="l-meta m-wfoot">
         <span>{"// end of log"}</span>
-        <a href="/rss.xml" className="m-wfoot-rss">
+        <a href="/rss.xml" className="m-wfoot-rss no-pop">
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>

@@ -99,7 +99,7 @@ export function ContactPage(_props: { shell: "d" | "m" }) {
         <h1 className="t-display ab-title">
           contact<span className="ab-dot">.</span>
         </h1>
-        <p className="t-lead ab-lede">A working inbox and a few faster ways to reach me.</p>
+        <p className="t-lead ab-lede">A working inbox and a few faster ways to reach me — for full-time roles or freelance.</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> mail -s &quot;hello&quot;

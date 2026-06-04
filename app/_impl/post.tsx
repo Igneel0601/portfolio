@@ -39,7 +39,6 @@ export async function generateMetadata({
 
 export async function PostPage({
   params,
-  shell,
 }: {
   params: Promise<{ slug: string }>
   shell: 'd' | 'm'
@@ -56,10 +55,10 @@ export async function PostPage({
   return (
     <>
       <JsonLd data={articleJsonLd(post, slug)} />
-      {shell === 'd' && <ReadingProgress />}
+      <ReadingProgress />
       <main className="flex-1">
         <section
-          className="page-shell"
+          className="page-shell pre-footer-pad"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
           <Breadcrumb section="writing" file={filename} />

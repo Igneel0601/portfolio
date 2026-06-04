@@ -91,6 +91,10 @@ export function MobileHome() {
     };
     window.addEventListener("keydown", onKey);
 
+    // Hero "scroll the story" button advances the pager one stop (to projects).
+    const onGo = (e: Event) => go((e as CustomEvent<number>).detail ?? 1);
+    window.addEventListener("m-pager-go", onGo as EventListener);
+
     // Recompute stops when the viewport changes (rotation / address bar) and
     // keep the current stop aligned.
     const onResize = () => {
@@ -102,6 +106,7 @@ export function MobileHome() {
     return () => {
       observer.kill();
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("m-pager-go", onGo as EventListener);
       window.removeEventListener("resize", onResize);
     };
   }, []);

@@ -19,7 +19,7 @@ export function MobileProjects() {
         {i === 0 && (
           <SectionHeader
             eyebrow={
-              <Link href="/work" style={{ color: "inherit" }}>
+              <Link href="/work" className="no-pop" style={{ color: "inherit" }}>
                 $ ls /projects
               </Link>
             }
@@ -56,7 +56,7 @@ export function MobileProjects() {
               ))}
             </div>
 
-            <Link href={`/work/${p.id}`} className="c-md m-panel-cta">
+            <Link href={`/work/${p.id}`} className="c-md m-panel-cta no-pop">
               cat {p.id}.mdx
               <MoveRight className="i-sm m-panel-cta-icon" aria-hidden />
             </Link>

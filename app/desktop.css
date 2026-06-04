@@ -82,18 +82,6 @@ a, button {
    inline in Nav.tsx. Every other link is plain unless it styles its own hover
    (e.g. .uses-link). */
 
-/* identity cursor blink — only CSS animation allowed by motion spec */
-[data-cursor] {
-  display: inline-block;
-  width: 0.5625rem;
-  height: 1.125rem;
-  background: var(--accent);
-  vertical-align: -0.18em;
-  margin-left: 0.125rem;
-  animation: blink 1.06s steps(2) infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-
 /* FOUC guard: nav ships hidden until useGSAP flips data-nav-revealed via
    setAttribute (not via JSX, so React rerenders from hidden/open state
    don't reset it). GSAP's gsap.set(nav, {autoAlpha: ...}) then takes over
@@ -257,7 +245,7 @@ a, button {
 .wa-pager-status b { color: var(--ink-soft); font-weight: 500; }
 
 .wa-foot {
-  margin-top: 1.8rem;
+  margin-top: 2rem; /* lifts the pager→footer span to ~108px, matching other pages */
   display: flex;
   justify-content: space-between;
   color: var(--ink-dim);

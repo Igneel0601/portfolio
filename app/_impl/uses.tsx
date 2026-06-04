@@ -14,7 +14,7 @@ export function UsesPage(_props: { shell: "d" | "m" }) {
   return (
     <main className="flex-1">
       <section
-        className="page-shell uses"
+        className="page-shell uses pre-footer-pad"
         style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
       >
         <div className="l-eyebrow ab-eyebrow">{USES.eyebrow}</div>
@@ -72,14 +72,7 @@ export function UsesPage(_props: { shell: "d" | "m" }) {
                     <span className="uses-note">{r.note}</span>
                     <span className="uses-metawrap">
                       {r.meta && (
-                        <span
-                          className={
-                            "uses-chip" +
-                            (r.meta === "daily" || r.meta === "primary" ? " on" : "")
-                          }
-                        >
-                          {r.meta}
-                        </span>
+                        <span className="uses-chip">{r.meta}</span>
                       )}
                     </span>
                   </div>

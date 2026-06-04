@@ -85,7 +85,11 @@ export function MobileNav() {
         }}
       >
         <div className="flex items-center justify-between py-3 c-md">
-          <Link href="/" className="font-semibold">
+          <Link
+            href="/"
+            className="font-semibold no-pop"
+            style={{ color: "var(--accent)" }}
+          >
             {PROFILE.brand}
           </Link>
           <button
@@ -163,7 +167,7 @@ export function MobileNav() {
                   key={l.href}
                   href={l.href}
                   onClick={(e) => handleScrollLink(e, l.href)}
-                  className="t-h2"
+                  className="t-h2 no-pop"
                 >
                   {l.label}
                 </a>
@@ -179,7 +183,7 @@ export function MobileNav() {
                 href={l.href}
                 onClick={() => setOpen(false)}
                 aria-current={isActive ? "page" : undefined}
-                className="t-h2"
+                className="t-h2 no-pop"
                 style={isActive ? { color: "var(--accent)" } : undefined}
               >
                 {l.label}

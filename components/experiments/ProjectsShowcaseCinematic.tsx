@@ -229,7 +229,7 @@ export function ProjectsShowcaseCinematic() {
   }, []);
 
   return (
-    <div className="psc-root">
+    <div className="psc-root" id="work">
       <div id="psc-outer" ref={outerRef}>
         <div id="psc-stage" ref={stageRef}>
           <div id="psc-top-bar" className="c-md" ref={topBarRef} data-tint="a">

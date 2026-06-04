@@ -5,6 +5,7 @@ import { MoveDown } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
 import { PROFILE, type HeadlineToken } from "@/lib/profile";
 import { gsap } from "@/lib/gsap";
+import { useLenis } from "@/lib/lenis";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 import { Btn } from "@/components/Btn";
@@ -44,6 +45,7 @@ function HeadlineLine({ tokens }: { tokens: readonly HeadlineToken[] }) {
 }
 
 export function SceneBoot() {
+  const lenis = useLenis();
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -58,11 +60,10 @@ export function SceneBoot() {
       const words = gsap.utils.toArray<HTMLElement>("[data-headline-word]", root);
       const sub = root.querySelector<HTMLElement>("[data-subhead]");
       const ctas = gsap.utils.toArray<HTMLElement>("[data-cta]", root);
-      const cursor = root.querySelector<HTMLElement>("[data-cursor]");
 
       if (isReduce || isMobile) {
         if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
-        gsap.set([...lines, sub, ...ctas, cursor], { autoAlpha: 1, x: 0, y: 0 });
+        gsap.set([...lines, sub, ...ctas], { autoAlpha: 1, x: 0, y: 0 });
         gsap.set(words, { yPercent: 0, autoAlpha: 1 });
         return;
       }
@@ -71,7 +72,6 @@ export function SceneBoot() {
       gsap.set(words, { yPercent: 100, autoAlpha: 0 });
       gsap.set(sub, { autoAlpha: 0, y: 12 });
       gsap.set(ctas, { autoAlpha: 0, y: 14 });
-      gsap.set(cursor, { autoAlpha: 0 });
       if (prompt) prompt.textContent = "";
 
       const tl = gsap.timeline();
@@ -111,12 +111,7 @@ export function SceneBoot() {
           // Clear inline transform after intro so .btn:active can take over —
           // otherwise GSAP's `translate(0,0)` wins via inline > class.
           clearProps: "transform",
-        }, "-=0.15")
-        .to(cursor, {
-          autoAlpha: 1,
-          duration: 0.25,
-          ease: E.precise,
-        }, "+=0.05");
+        }, "-=0.15");
 
       const stickyEl = root.querySelector<HTMLElement>("[data-boot-sticky]");
       if (stickyEl) {
@@ -161,6 +156,10 @@ export function SceneBoot() {
       <h1
         data-headline
         className="t-display mt-6 mb-2"
+        /* 4-line hero: lower the vw term vs t-display's 8vw so it scales down on
+           laptops instead of locking at the 4.5rem (81px) cap above ~1012px;
+           big monitors still cap at 4.5rem. */
+        style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 1.15 }}
       >
         {PROFILE.headlineDesktop.map((line, i) => (
           <HeadlineLine key={i} tokens={line} />
@@ -172,14 +171,25 @@ export function SceneBoot() {
       </p>
 
       <div className="flex flex-wrap gap-3 mt-7">
-        <Btn data-cta href="#work" variant="solid">
+        <Btn
+          data-cta
+          href="#work"
+          variant="solid"
+          onClick={(e) => {
+            // Lenis owns the scroll; a native hash jump bypasses it (instant,
+            // and desyncs Lenis's virtual position). Smooth-scroll the story to
+            // the projects scene instead. No Lenis (reduced-motion) → native jump.
+            if (!lenis) return;
+            e.preventDefault();
+            lenis.scrollTo("#work", { duration: 1.4 });
+          }}
+        >
           <MoveDown className="i-md" aria-hidden /> scroll the story
         </Btn>
         <Btn data-cta href={PROFILE.resumePath} download>$ download résumé.pdf</Btn>
         <Btn data-cta href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
       </div>
 
-      <span data-cursor aria-hidden className="mt-3" />
       </div>
     </section>
   );

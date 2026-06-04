@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { NOW } from "@/lib/content";
 import { NowClock } from "@/components/NowClock";
 
@@ -7,7 +8,7 @@ export function NowPage(_props: { shell: "d" | "m" }) {
   return (
     <main className="flex-1">
       <section
-        className="page-shell now"
+        className="page-shell now pre-footer-pad"
         style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
       >
         <div className="l-eyebrow ab-eyebrow">{NOW.eyebrow}</div>
@@ -65,7 +66,19 @@ export function NowPage(_props: { shell: "d" | "m" }) {
           {NOW.note}
           <span className="now-inspo">
             {" "}
-            — inspired by <span className="now-ac">nownownow.com</span>
+            — inspired by{" "}
+            <a
+              href="https://nownownow.com"
+              target="_blank"
+              rel="noopener"
+              className="now-ac whitespace-nowrap"
+            >
+              nownownow.com
+              <ExternalLink
+                className="i-xs ml-1 inline-block align-[-0.15em]"
+                aria-hidden
+              />
+            </a>
           </span>
         </p>
       </section>

@@ -6,7 +6,7 @@ export const NEOFETCH_LOGO = String.raw`
    / /____\ \      kernel  6.13.4-arch1-1
   /          \     wm      hyprland
  /   ../      \    shell   zsh + starship
-/______________\   editor  neovim (lazyvim)
+/______________\   editor  vs code
                    term    kitty
                    font    ibm plex mono
                    uptime  ~3 years coding
