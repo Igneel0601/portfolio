@@ -18,9 +18,11 @@ function matchesFilter(row: WorkRow, filter: WorkFilter) {
 export function WorkLog({
   rows,
   commits,
+  lastCommit,
 }: {
   rows: WorkRow[];
   commits: string[];
+  lastCommit?: string;
 }) {
   const rootRef = useRef<HTMLDivElement | null>(null);
   const boxRef = useRef<HTMLDivElement | null>(null);
@@ -154,13 +156,30 @@ export function WorkLog({
   return (
     <div ref={rootRef}>
       <section className="pt-6">
-        <h1 data-page-title className="t-display">
+        <div className="l-eyebrow" style={{ color: "var(--ink-dim)" }}>
+          build log · {new Date().getFullYear()}
+        </div>
+        <h1 data-page-title className="t-display" style={{ marginTop: "0.75rem" }}>
           projects<span style={{ color: "var(--accent)" }}>.</span>
         </h1>
         <p className="wk-sub t-lead">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no
           survivorship bias.
         </p>
+
+        <div className="wa-prompt c-md">
+          <span className="wa-cmd">$ ls /work</span>
+          <span className="wa-sep">·</span>
+          <span>
+            {rows.length} {rows.length === 1 ? "entry" : "entries"}
+          </span>
+          {lastCommit && (
+            <>
+              <span className="wa-sep">·</span>
+              <span>last commit {lastCommit}</span>
+            </>
+          )}
+        </div>
 
         <div className="tag-filter mt-6" role="group" aria-label="Filter projects by tag">
           <button
