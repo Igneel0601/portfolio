@@ -416,7 +416,10 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
 
 /* ── CTA section ──────────────────────────────────────── */
 .m-cta {
-  margin: 3rem 1.375rem;
+  /* Bottom 3.5rem (not 3rem): the deck-tail footer's 0.5rem top margin
+     collapses into this, so 3.5rem lands the pre-footer gap at ~63px to match
+     every other mobile page (which get 3rem padding + 0.5rem, no collapse). */
+  margin: 3rem 1.375rem 3.5rem;
   padding: 1.25rem;
   display: grid;
   gap: 1rem;
