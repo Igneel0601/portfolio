@@ -62,27 +62,27 @@ export const PROFILE: Profile = {
   jobTitle: "Software Engineer",
   brand: "vergnyx.dev",
 
-  tagline: "I build things, and write about what I learn.",
+  tagline: "Still early. Still figuring it out. Shipping anyway.",
   // Split for the OG card's 3-span accented line (the OG JSX adds the spacing).
   taglineParts: {
-    pre: "I build things, and",
-    accent: "write about",
-    post: "what I learn.",
+    pre: "Still early. Still figuring it out.",
+    accent: "Shipping anyway.",
+    post: "",
   },
 
   metaDescription: `I build things and write about what I learn. ${DEGREE_GRAD}, ${FACTS.location}. ${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
 
   headlineDesktop: [
     ["I'm", { hilite: "Vaibhav." }],
-    ["I", "build", "things,"],
-    ["and", { em: "write" }, "about"],
-    ["what", "I", { em: "learn." }],
+    ["Still", "early."],
+    ["Still", "figuring", "it", "out."],
+    [{ em: "Shipping" }, { em: "anyway." }],
   ],
   headlineMobile: [
     ["I'm", { hilite: "Vaibhav." }],
-    ["I", "build", "things,"],
-    ["and", { em: "write about" }],
-    ["what", "I", "learn."],
+    ["Still", "early."],
+    ["Still", "figuring", "it", "out."],
+    [{ em: "Shipping" }, { em: "anyway." }],
   ],
 
   subheadDesktop: `${FACTS.degree} · ${FACTS.uniLong} · ${FACTS.location} · ${FACTS.availability}.`,
