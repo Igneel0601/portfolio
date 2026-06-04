@@ -62,28 +62,27 @@ export const PROFILE: Profile = {
   jobTitle: "Software Engineer",
   brand: "vergnyx.dev",
 
-  tagline: "I build software that teaches itself to write more software.",
+  tagline: "I build things, and write about what I learn.",
   // Split for the OG card's 3-span accented line (the OG JSX adds the spacing).
   taglineParts: {
-    pre: "I build software that",
-    accent: "teaches itself",
-    post: "to write more software.",
+    pre: "I build things, and",
+    accent: "write about",
+    post: "what I learn.",
   },
 
-  metaDescription: `I build software that teaches itself to write more software. ${DEGREE_GRAD}, ${FACTS.location}. ${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
+  metaDescription: `I build things and write about what I learn. ${DEGREE_GRAD}, ${FACTS.location}. ${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
 
   headlineDesktop: [
     ["I'm", { hilite: "Vaibhav." }],
-    ["I", "build", "software"],
-    ["that", { em: "teaches" }, { em: "itself" }],
-    ["to", "write", "more", "software."],
+    ["I", "build", "things,"],
+    ["and", { em: "write" }, "about"],
+    ["what", "I", { em: "learn." }],
   ],
   headlineMobile: [
     ["I'm", { hilite: "Vaibhav." }],
-    ["I", "build", "software"],
-    ["that", { em: "teaches itself" }],
-    ["to", "write", "more"],
-    ["software."],
+    ["I", "build", "things,"],
+    ["and", { em: "write about" }],
+    ["what", "I", "learn."],
   ],
 
   subheadDesktop: `${FACTS.degree} · ${FACTS.uniLong} · ${FACTS.location} · ${FACTS.availability}.`,

@@ -285,10 +285,10 @@ export const ABOUT = {
   whoami: ["vaibhav", STUDY_LINE.toLowerCase(), `uptime: ${FACTS.age}y, mostly stable`],
   // narrative paragraphs — plain prose, edit freely
   bio: [
-    "I'm Vaibhav — a 2026 CS grad who got into this because I wanted to automate the boring half of my own life and then accidentally never stopped. What started as a script to rename my downloads folder is, several questionable decisions later, a habit.",
-    "These days I build software that teaches itself to write more software — agent tooling, developer utilities, and the occasional thing that probably shouldn't exist. CodeFlow — an AI builder where the agents actually run their own code — was the big one.",
-    "I ship at 4am and regret it at 9. I read the docs after, not before. I think a tool you built yourself is worth three you didn't — even when it's measurably worse — because you understand exactly how it breaks. Most of my best work is just me refusing to use someone else's reasonable solution.",
-    "Off the keyboard: long walks, longer playlists, and an Arch install I keep breaking on purpose so there's always something to fix. I write things down so I stop re-learning them — some of it ends up on the writing log, most of it doesn't.",
+    "I'm Vaibhav — a 2026 CS grad, still early in all this and not pretending otherwise.",
+    "I learn by building things and then writing about them — usually the parts I got wrong. Most of it is full-stack apps and developer tools, with the odd AI experiment thrown in.",
+    "Right now I'm heads-down on DSA, hoping it lands me a first role where I get to build for real.",
+    "Off the screen I'm on Linux, somewhere in an anime, or pretending my reading list is under control. I keep notes so I stop re-learning the same things — some end up on the writing log.",
   ],
   sign: `${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}.`,
   // mono fact rail (key → value) — atomic facts come from FACTS (lib/profile.ts)

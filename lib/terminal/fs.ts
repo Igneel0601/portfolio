@@ -1,5 +1,5 @@
 import { PROJECTS, TIMELINE, CONTACT, GIT_LOG_PREVIEW, USES, NOW } from '@/lib/content'
-import { FACTS, DEGREE_GRAD } from '@/lib/profile'
+import { FACTS, DEGREE_GRAD, PROFILE } from '@/lib/profile'
 
 // "open to work" → "Open to work" for sentence-start use
 const AVAIL_CAP = `${FACTS.availability[0].toUpperCase()}${FACTS.availability.slice(1)}`
@@ -31,7 +31,7 @@ function dir(name: string, entries: Record<string, FsNode>): FsDir {
 
 const ABOUT_MD = `# vaibhav verma
 
-I'm Vaibhav. I build software that teaches itself to write more software.
+I'm Vaibhav. ${PROFILE.tagline}
 
 ${DEGREE_GRAD}, based in ${FACTS.location}. ${AVAIL_CAP}.
 
