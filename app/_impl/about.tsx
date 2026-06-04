@@ -25,7 +25,6 @@ export function AboutPage(_props: { shell: "d" | "m" }) {
               {w}
             </span>
           ))}
-          <span className="ab-caret" aria-hidden />
         </div>
 
         <div className="ab-grid">

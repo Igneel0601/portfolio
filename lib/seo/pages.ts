@@ -4,6 +4,8 @@
 // `titleLabel` is composed as `${titleLabel} — ${PROFILE.name}` in the builder.
 // ISR `revalidate` stays a per-page segment export (Next reads it directly).
 
+import { PROFILE, FACTS, DEGREE_GRAD } from "../profile";
+
 export type PageSeo = {
   path: string;
   titleLabel?: string;
@@ -37,8 +39,7 @@ export const PAGE_SEO = {
   about: {
     path: "/about",
     titleLabel: "about",
-    description:
-      "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+    description: `${PROFILE.name} — SWE · ${DEGREE_GRAD} in ${FACTS.location}. The long version of the one-line bio.`,
   },
   now: {
     path: "/now",

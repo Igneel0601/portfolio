@@ -58,11 +58,10 @@ export function SceneBoot() {
       const words = gsap.utils.toArray<HTMLElement>("[data-headline-word]", root);
       const sub = root.querySelector<HTMLElement>("[data-subhead]");
       const ctas = gsap.utils.toArray<HTMLElement>("[data-cta]", root);
-      const cursor = root.querySelector<HTMLElement>("[data-cursor]");
 
       if (isReduce || isMobile) {
         if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
-        gsap.set([...lines, sub, ...ctas, cursor], { autoAlpha: 1, x: 0, y: 0 });
+        gsap.set([...lines, sub, ...ctas], { autoAlpha: 1, x: 0, y: 0 });
         gsap.set(words, { yPercent: 0, autoAlpha: 1 });
         return;
       }
@@ -71,7 +70,6 @@ export function SceneBoot() {
       gsap.set(words, { yPercent: 100, autoAlpha: 0 });
       gsap.set(sub, { autoAlpha: 0, y: 12 });
       gsap.set(ctas, { autoAlpha: 0, y: 14 });
-      gsap.set(cursor, { autoAlpha: 0 });
       if (prompt) prompt.textContent = "";
 
       const tl = gsap.timeline();
@@ -111,12 +109,7 @@ export function SceneBoot() {
           // Clear inline transform after intro so .btn:active can take over —
           // otherwise GSAP's `translate(0,0)` wins via inline > class.
           clearProps: "transform",
-        }, "-=0.15")
-        .to(cursor, {
-          autoAlpha: 1,
-          duration: 0.25,
-          ease: E.precise,
-        }, "+=0.05");
+        }, "-=0.15");
 
       const stickyEl = root.querySelector<HTMLElement>("[data-boot-sticky]");
       if (stickyEl) {
@@ -161,6 +154,10 @@ export function SceneBoot() {
       <h1
         data-headline
         className="t-display mt-6 mb-2"
+        /* 4-line hero: lower the vw term vs t-display's 8vw so it scales down on
+           laptops instead of locking at the 4.5rem (81px) cap above ~1012px;
+           big monitors still cap at 4.5rem. */
+        style={{ fontSize: "clamp(2.25rem, 5vw, 4.5rem)", lineHeight: 1.15 }}
       >
         {PROFILE.headlineDesktop.map((line, i) => (
           <HeadlineLine key={i} tokens={line} />
@@ -179,7 +176,6 @@ export function SceneBoot() {
         <Btn data-cta href={`mailto:${CONTACT.email}`}>{CONTACT.email}</Btn>
       </div>
 
-      <span data-cursor aria-hidden className="mt-3" />
       </div>
     </section>
   );

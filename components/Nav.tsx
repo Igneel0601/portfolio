@@ -268,14 +268,14 @@ export function Nav() {
               </li>
             ))}
           </ul>
-          <a
+          <Link
             data-nav-link
-            data-nav-kind="mailto"
+            data-nav-kind={NAV_LINKS[NAV_LINKS.length - 1].kind}
             href={NAV_LINKS[NAV_LINKS.length - 1].href}
             className="nav-link ml-auto font-semibold relative inline-block hover:text-accent after:content-[''] after:absolute after:left-0 after:bottom-[-3px] after:w-0 after:h-[1.5px] after:bg-accent after:transition-all after:duration-300 hover:after:w-full"
           >
             {NAV_LINKS[NAV_LINKS.length - 1].label}
-          </a>
+          </Link>
         </div>
 
         <div className="page-shell md:hidden flex items-center justify-between py-3 c-md">

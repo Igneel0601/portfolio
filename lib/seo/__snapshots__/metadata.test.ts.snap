@@ -30,20 +30,20 @@ exports[`pageMetadata > builds metadata for "about" 1`] = `
   "alternates": {
     "canonical": "/about",
   },
-  "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+  "description": "Vaibhav Verma — SWE · 2026 B.Tech CSE grad in Noida. The long version of the one-line bio.",
   "openGraph": {
-    "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+    "description": "Vaibhav Verma — SWE · 2026 B.Tech CSE grad in Noida. The long version of the one-line bio.",
     "images": [
-      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+and+CS+undergrad+in+Noida.+The+long+version+of+the+one-line+bio.",
+      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+%C2%B7+2026+B.Tech+CSE+grad+in+Noida.+The+long+version+of+the+one-line+bio.",
     ],
     "title": "about — Vaibhav Verma",
   },
   "title": "about — Vaibhav Verma",
   "twitter": {
     "card": "summary_large_image",
-    "description": "Vaibhav Verma — SWE and CS undergrad in Noida. The long version of the one-line bio.",
+    "description": "Vaibhav Verma — SWE · 2026 B.Tech CSE grad in Noida. The long version of the one-line bio.",
     "images": [
-      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+and+CS+undergrad+in+Noida.+The+long+version+of+the+one-line+bio.",
+      "/api/og?title=about&subtitle=Vaibhav+Verma+%E2%80%94+SWE+%C2%B7+2026+B.Tech+CSE+grad+in+Noida.+The+long+version+of+the+one-line+bio.",
     ],
     "title": "about — Vaibhav Verma",
   },
