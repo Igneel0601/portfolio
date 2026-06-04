@@ -139,6 +139,11 @@ html.m-snap-root body {
    centred, so it sits clear of the nav. */
 html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0; }
 
+/* Reading-progress bar (shared .wp-progress, z-index 60) would sit behind the
+   fixed top nav (z-110) on mobile — lift it so the 2px accent line stays
+   visible at the very top edge, over the nav. */
+.wp-progress { z-index: 120; }
+
 .m-deck {
   height: 100dvh;
   overflow: hidden;

@@ -67,3 +67,93 @@ test.describe("spacing contract", () => {
     expect(data.ctaMarginBottom).toBe(data.bootPaddingBottom);
   });
 });
+
+// Mobile link affordance contract — the site-wide link rule in tokens.css
+// (a:not(.nav-link):not(.btn):not(.no-pop)) carries specificity (0,3,1) and is
+// NOT wrapped in :where(), so it out-competes every bespoke .m-* link rule
+// (0,1,0) in mobile.css and bleeds a green resting underline onto them. Those
+// links opt out with .no-pop. This asserts the computed result so a future
+// global-link change (or a dropped .no-pop) that re-underlines a mobile-shell
+// link fails here instead of only in a PR-gated screenshot diff. The blind spot
+// is real: pnpm check (tsc/stylelint/eslint/vitest) can't model the cascade.
+//
+// text-decoration-line is the clean signal: every bespoke mobile link declares
+// `none`, the global rule forces `underline`. (color is unreliable — some links
+// are already --accent, identical to the global colour.)
+
+// path → selectors that must resolve to text-decoration-line: none.
+const MOBILE_PLAIN_LINKS: Array<{ path: string; selectors: string[] }> = [
+  { path: "/", selectors: ["a.m-panel-cta"] },
+  { path: "/writing", selectors: ["a.m-wrow", "a.m-chip", "a.m-wfoot-rss"] },
+  { path: "/work", selectors: ["a.m-wkrow", "a.m-wklog-more"] },
+];
+
+test.describe("mobile link affordance contract", () => {
+  test.beforeEach(({}, testInfo) => {
+    test.skip(
+      testInfo.project.name !== "mobile",
+      "bespoke .m-* links are a mobile-shell concern",
+    );
+  });
+
+  for (const { path, selectors } of MOBILE_PLAIN_LINKS) {
+    test(`no stray underline on ${path} @spacing`, async ({ page }) => {
+      await page.goto(path, { waitUntil: "networkidle" });
+
+      const decorations = await page.evaluate((sels) => {
+        return sels.map((sel) => {
+          const el = document.querySelector(sel);
+          return {
+            sel,
+            found: !!el,
+            line: el ? getComputedStyle(el).textDecorationLine : null,
+          };
+        });
+      }, selectors);
+
+      for (const d of decorations) {
+        expect(d.found, `${d.sel} present on ${path}`).toBe(true);
+        expect(d.line, `${d.sel} should not carry the global underline`).toBe("none");
+      }
+    });
+  }
+
+  // Nav menu links live behind the hamburger; assert them once the overlay opens.
+  test("no stray underline on nav overlay links @spacing", async ({ page }) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    await page.getByRole("button", { name: "Open menu" }).click();
+
+    const lines = await page.evaluate(() =>
+      [...document.querySelectorAll("a.t-h2")].map(
+        (el) => getComputedStyle(el).textDecorationLine,
+      ),
+    );
+
+    expect(lines.length).toBeGreaterThan(0);
+    for (const line of lines) expect(line).toBe("none");
+  });
+
+  // ReadingProgress renders on both shells, but on mobile the shared .wp-progress
+  // (z-index 60) is lifted above the fixed top nav (z-110) by a mobile.css
+  // override — without it the bar hides behind the nav. Assert it's present on a
+  // post AND stacks above the nav, so the lift can't silently regress.
+  test("reading-progress bar present + above nav on posts @spacing", async ({ page }) => {
+    await page.goto("/writing", { waitUntil: "networkidle" });
+    const href = await page.locator('a[href^="/writing/"]').first().getAttribute("href");
+    expect(href, "a post link on /writing").toBeTruthy();
+
+    await page.goto(href as string, { waitUntil: "networkidle" });
+
+    const data = await page.evaluate(() => {
+      const bar = document.querySelector(".wp-progress");
+      const nav = document.querySelector("[data-mobile-nav]");
+      const z = (el: Element | null) =>
+        el ? parseInt(getComputedStyle(el).zIndex || "0", 10) : null;
+      return { barFound: !!bar, navFound: !!nav, barZ: z(bar), navZ: z(nav) };
+    });
+
+    expect(data.barFound, ".wp-progress present on mobile post").toBe(true);
+    expect(data.navFound, "[data-mobile-nav] present").toBe(true);
+    expect(data.barZ as number).toBeGreaterThan(data.navZ as number);
+  });
+});

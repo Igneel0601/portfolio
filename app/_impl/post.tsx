@@ -39,7 +39,6 @@ export async function generateMetadata({
 
 export async function PostPage({
   params,
-  shell,
 }: {
   params: Promise<{ slug: string }>
   shell: 'd' | 'm'
@@ -56,7 +55,7 @@ export async function PostPage({
   return (
     <>
       <JsonLd data={articleJsonLd(post, slug)} />
-      {shell === 'd' && <ReadingProgress />}
+      <ReadingProgress />
       <main className="flex-1">
         <section
           className="page-shell"

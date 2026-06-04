@@ -53,7 +53,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
       <div className="m-wfilter">
         <Link
           href={writingHref(null, 1)}
-          className="c-xs m-chip"
+          className="c-xs m-chip no-pop"
           data-active={tag === null ? "true" : undefined}
         >
           all <span>{counts.all}</span>
@@ -62,7 +62,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
           <Link
             key={c.slug}
             href={writingHref(c.slug, 1)}
-            className="c-xs m-chip"
+            className="c-xs m-chip no-pop"
             data-active={tag === c.slug ? "true" : undefined}
           >
             {c.title} <span>{c.count}</span>
@@ -75,7 +75,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
       <RevealGroup replayKey={`${tag ?? "all"}-${page}`}>
         <div className="m-writing-list">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow m-reveal">
+            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow m-reveal no-pop">
               <div className="m-wrow-top">
                 <span className="l-meta m-wrow-cat">{p.categories[0]?.title ?? "post"}</span>
                 <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
@@ -100,7 +100,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
 
       <div className="l-meta m-wfoot">
         <span>{"// end of log"}</span>
-        <a href="/rss.xml" className="m-wfoot-rss">
+        <a href="/rss.xml" className="m-wfoot-rss no-pop">
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>

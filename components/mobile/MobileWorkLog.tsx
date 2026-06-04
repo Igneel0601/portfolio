@@ -112,7 +112,7 @@ export function MobileWorkLog({
             <Link
               key={`${r.name}-${i}`}
               href={`/work/${r.slug}`}
-              className="m-wkrow m-reveal"
+              className="m-wkrow m-reveal no-pop"
               data-status={r.status}
               data-dim={dim ? "true" : undefined}
             >
@@ -145,7 +145,7 @@ export function MobileWorkLog({
           href="https://github.com/Igneel0601"
           target="_blank"
           rel="noreferrer"
-          className="l-meta m-wklog-more"
+          className="l-meta m-wklog-more no-pop"
         >
           full log on github
           <ExternalLink aria-hidden className="i-xs" />
