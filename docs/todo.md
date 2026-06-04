@@ -96,3 +96,15 @@ The broaden-coverage policy lives in AGENTS.md now.
 2. Letters bot.
 3. **Terminal v2** — tab completion · pipes · ANSI colour · aria session quota.
 4. `.md` URLs for posts — more memorable, distinctive in SERPs.
+5. **(maybe) Consolidate the device shells.** Today `proxy.ts` UA-rewrites every
+   path to `/d` or `/m`. Content pages (`/about`, `/now`, `/uses`, `/work`,
+   `/writing`, posts) already share one `_impl` body and could collapse to a
+   single responsive route with little loss. The blocker is **home**: desktop
+   (GSAP scrollytelling + custom cursor + parallax) and mobile (touch swipe-pager
+   + hamburger) are different *interaction* designs, not just layouts — CSS can't
+   toggle a GSAP timeline, and a client-side `matchMedia` branch flashes/ships
+   both trees. Realistic path: unify everything except home, shrinking UA-routing
+   to one page (or zero). Payoff is a simpler mental model + removes the
+   UA-cache caveat (must keep Cloudflare grey-cloud so the proxy always runs;
+   an orange-cloud/URL-keyed front cache would serve desktop HTML to mobile).
+   Only worth it if maintaining two shells starts costing real double-work.
