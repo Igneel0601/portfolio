@@ -173,8 +173,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "/about", href: "/about", kind: "route" },
   { label: "/now", href: "/now", kind: "route" },
   { label: "/uses", href: "/uses", kind: "route" },
-  { label: "/contact", href: "/contact", kind: "route" },
-  { label: "hi@vergnyx.dev", href: "mailto:hi@vergnyx.dev", kind: "mailto" },
+  { label: "contact me", href: "/contact", kind: "route" },
 ];
 
 export type TimelineStop = {
@@ -414,10 +413,10 @@ export const USES = {
 export const CONTACT_PAGE = {
   eyebrow: "Say hi · /contact",
   lede: "The fastest ways to reach me.",
-  availability: { title: FACTS.availability, sub: "full-time + freelance" },
+  availability: { title: FACTS.availability, sub: "freelance too" },
   meta: [
     { k: "based", v: `${FACTS.location} · ${FACTS.tz}` },
-    { k: "hours", v: "10:00–02:00, loosely" },
+    { k: "hours", v: "10:00–17:00, loosely" },
     { k: "reply", v: "~1 business day" },
   ],
   ps: "Not sure what to say? Skim /now first — it's a decent conversation starter.",
