@@ -58,7 +58,7 @@ export async function PostPage({
       <ReadingProgress />
       <main className="flex-1">
         <section
-          className="page-shell"
+          className="page-shell pre-footer-pad"
           style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
         >
           <Breadcrumb section="writing" file={filename} />

@@ -257,7 +257,7 @@ a, button {
 .wa-pager-status b { color: var(--ink-soft); font-weight: 500; }
 
 .wa-foot {
-  margin-top: 1.8rem;
+  margin-top: 2rem; /* lifts the pager→footer span to ~108px, matching other pages */
   display: flex;
   justify-content: space-between;
   color: var(--ink-dim);

@@ -297,7 +297,7 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
    sub-columns via grid-column:1/-1 so they read as wider blocks while
    prose stays at comfortable reading length. */
 .cs-doc {
-  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 4rem;
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 3rem; /* bottom 3rem -> ~108px pre-footer gap (matches site) */
   display: grid;
   grid-template-columns: minmax(0, 1fr) 12.5rem;
   column-gap: clamp(1.5rem, 3vw, 3rem);
@@ -769,6 +769,12 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 .cs-pager-empty { opacity: .5; }
 .cs-pager-empty-txt { color: var(--ink-dim); }
 
+/* Pages whose last content sits right on the bare 3rem footer margin (~54px):
+   add 3rem below so the pre-footer gap is ~108px, matching the rest of the
+   site. Used by posts, /now, /uses. (/about, /contact, case studies reach
+   ~108 via their own section padding; the /writing index via its pager tail.) */
+.pre-footer-pad { padding-bottom: 3rem; }
+
 .cs-footer-wrap {
   width: 100%;
   margin-top: 3rem;
@@ -1105,7 +1111,7 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 .pager-nav[data-disabled] { opacity: 0.3; pointer-events: none; }
 
 /* ── /about — narrative bio page (shared by both shells) ───────────────── */
-.ab { padding-bottom: 4rem; }
+.ab { padding-bottom: 3rem; } /* match the ~108px pre-footer gap (see .contact) */
 .ab-eyebrow { color: var(--ink-dim); margin-top: 0.5rem; }
 .ab-title { margin-top: 0.75rem; }
 .ab-dot { color: var(--accent); }
@@ -1154,13 +1160,21 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   color: var(--ink-soft);
   border-top: 1px solid var(--hair);
   padding-top: 1.25em;
-  margin-top: 1.6em !important;
+  /* !important to beat .ab-prose p (higher specificity). Bottom margin 0: it's
+     the last line, so the prose column bottom = the sign's bottom — which makes
+     the sticky rail's quote (clamped to the column bottom) land level with the
+     sign at the end of the sticky run. */
+  margin: 1.6em 0 0 !important;
 }
 .ab-link { color: var(--accent-2); border-bottom: 1px solid var(--accent); }
 .ab-link:hover { color: var(--accent); }
 
 .ab-rail-wrap { position: sticky; top: 6rem; }
-.ab-rail { border: 1px solid var(--hair); border-radius: 0.375rem; overflow: hidden; }
+.ab-rail {
+  border: 1px solid var(--hair);
+  border-radius: 0.375rem;
+  overflow: hidden;
+}
 .ab-row {
   display: grid;
   grid-template-columns: 5.5rem 1fr;
@@ -1346,6 +1360,7 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 }
 
 /* ── /contact ── validating form + direct-links rail (2-col) ──────────── */
+.contact { padding-bottom: 3rem; } /* match the ~108px pre-footer gap (see .ab) */
 .ct-grid {
   display: grid;
   grid-template-columns: 1fr 21rem;
@@ -1360,6 +1375,9 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   border-radius: 0.375rem;
   padding: 2rem;
   background: var(--paper-2);
+  /* Stretch the form box to the taller column (the info rail) so their bottoms
+     line up. Rail stays align-items:start, so its sticky behavior is intact. */
+  align-self: stretch;
 }
 .ct-field { margin-bottom: 1.5rem; }
 .ct-label {
