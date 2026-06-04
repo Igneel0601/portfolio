@@ -447,6 +447,12 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   border-top: 1px solid var(--hair);
 }
 
+/* Posts & case studies use the shared filesystem footer (cs-footer-wrap), which
+   carries a 3rem top margin for desktop's ~108px pre-footer gap. On mobile the
+   rhythm is tighter — match .m-site-footer's 0.5rem so the gap lands at ~63px
+   like every other mobile page (section padding 3rem + 0.5rem here). */
+.cs-footer-wrap { margin-top: 0.5rem; }
+
 /* ── filter strip (shared by /writing + /work) ────────────
    Horizontal scroll with a right-edge mask so overflow reads as "there's
    more". Chip type comes from c-xs in JSX; these own layout + color/state.
