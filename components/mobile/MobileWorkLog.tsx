@@ -12,7 +12,6 @@ import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
 import { DashedRule } from "./parts";
-import { RevealGroup } from "./Reveal";
 
 export function MobileWorkLog({
   rows,
@@ -92,8 +91,7 @@ export function MobileWorkLog({
 
       <DashedRule />
 
-      <RevealGroup replayKey={active}>
-        <div className="m-worklist">
+      <div className="m-worklist">
         {shown.map((r, i) => {
           const dim = r.status === "archived" || r.status === "dead";
           const body = (
@@ -112,7 +110,7 @@ export function MobileWorkLog({
             <Link
               key={`${r.name}-${i}`}
               href={`/work/${r.slug}`}
-              className="m-wkrow m-reveal no-pop"
+              className="m-wkrow no-pop"
               data-status={r.status}
               data-dim={dim ? "true" : undefined}
             >
@@ -121,7 +119,7 @@ export function MobileWorkLog({
           ) : (
             <div
               key={`${r.name}-${i}`}
-              className="m-wkrow m-reveal"
+              className="m-wkrow"
               data-status={r.status}
               data-dim={dim ? "true" : undefined}
             >
@@ -131,7 +129,7 @@ export function MobileWorkLog({
         })}
         </div>
 
-        <div className="m-wklog m-reveal">
+        <div className="m-wklog">
           <div className="c-xs m-wklog-h">$ git log --oneline | head -3</div>
         {commits.map((l, i) => {
           const [hash, ...rest] = l.split(" · ");
@@ -151,7 +149,6 @@ export function MobileWorkLog({
           <ExternalLink aria-hidden className="i-xs" />
         </a>
         </div>
-      </RevealGroup>
     </>
   );
 }

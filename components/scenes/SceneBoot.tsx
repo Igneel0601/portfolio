@@ -5,6 +5,7 @@ import { MoveDown } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
 import { PROFILE, type HeadlineToken } from "@/lib/profile";
 import { gsap } from "@/lib/gsap";
+import { useLenis } from "@/lib/lenis";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 import { Btn } from "@/components/Btn";
@@ -44,6 +45,7 @@ function HeadlineLine({ tokens }: { tokens: readonly HeadlineToken[] }) {
 }
 
 export function SceneBoot() {
+  const lenis = useLenis();
   const rootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
@@ -169,7 +171,19 @@ export function SceneBoot() {
       </p>
 
       <div className="flex flex-wrap gap-3 mt-7">
-        <Btn data-cta href="#work" variant="solid">
+        <Btn
+          data-cta
+          href="#work"
+          variant="solid"
+          onClick={(e) => {
+            // Lenis owns the scroll; a native hash jump bypasses it (instant,
+            // and desyncs Lenis's virtual position). Smooth-scroll the story to
+            // the projects scene instead. No Lenis (reduced-motion) → native jump.
+            if (!lenis) return;
+            e.preventDefault();
+            lenis.scrollTo("#work", { duration: 1.4 });
+          }}
+        >
           <MoveDown className="i-md" aria-hidden /> scroll the story
         </Btn>
         <Btn data-cta href={PROFILE.resumePath} download>$ download résumé.pdf</Btn>

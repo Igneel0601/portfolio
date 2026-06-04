@@ -1,8 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useRef } from "react";
-import Link from "next/link";
-import { MoveRight } from "lucide-react";
+import { MoveDown } from "lucide-react";
 import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
 import { PROFILE, type HeadlineToken } from "@/lib/profile";
 import { gsap } from "@/lib/gsap";
@@ -160,9 +159,16 @@ export function MobileBoot() {
           ))}
         </p>
         <div className="m-hero-ctas">
-          <Link data-cta href="/work" className="btn solid m-btn">
-            $ cat work <MoveRight className="i-lg" aria-hidden />
-          </Link>
+          <button
+            type="button"
+            data-cta
+            className="btn solid m-btn"
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("m-pager-go", { detail: 1 }))
+            }
+          >
+            scroll the story <MoveDown className="i-lg" aria-hidden />
+          </button>
           <a data-cta href={PROFILE.resumePath} download className="btn m-btn">
             $ download résumé.pdf
           </a>

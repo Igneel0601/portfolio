@@ -320,13 +320,13 @@ export const NOW = {
     {
       cat: "building",
       entries: [
-        { line: "This portfolio. Always one more gap to close.", meta: "wip" },
+        { line: "This portfolio. Always one more gap to close.", meta: "" },
       ],
     },
     {
       cat: "learning",
       entries: [
-        { line: "DSA — grinding the classics, arrays to graphs. Same problems, fewer excuses.", meta: "daily" },
+        { line: "DSA — grinding the classics, arrays to graphs. Same problems, fewer excuses.", meta: "" },
       ],
     },
     {

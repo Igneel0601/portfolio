@@ -85,7 +85,11 @@ export function MobileNav() {
         }}
       >
         <div className="flex items-center justify-between py-3 c-md">
-          <Link href="/" className="font-semibold no-pop">
+          <Link
+            href="/"
+            className="font-semibold no-pop"
+            style={{ color: "var(--accent)" }}
+          >
             {PROFILE.brand}
           </Link>
           <button

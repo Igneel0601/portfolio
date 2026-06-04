@@ -1,6 +1,5 @@
 /* Server component — the category filter and pagination are URL-driven
-   (/writing?tag=&page=), so this just renders the page the server fetched.
-   RevealGroup (client) re-staggers on tag/page change via replayKey. */
+   (/writing?tag=&page=), so this just renders the page the server fetched. */
 
 import Link from "next/link";
 import { CornerDownRight } from "lucide-react";
@@ -8,7 +7,6 @@ import type { PostListItem, CategoryCount } from "@/lib/posts";
 import { writingHref } from "@/lib/writing";
 import { PagerControls } from "@/components/writing/PagerControls";
 import { DashedRule } from "./parts";
-import { RevealGroup } from "./Reveal";
 
 const SUBTITLE =
   "Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.";
@@ -72,10 +70,9 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
 
       <DashedRule />
 
-      <RevealGroup replayKey={`${tag ?? "all"}-${page}`}>
         <div className="m-writing-list">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow m-reveal no-pop">
+            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow no-pop">
               <div className="m-wrow-top">
                 <span className="l-meta m-wrow-cat">{p.categories[0]?.title ?? "post"}</span>
                 <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
@@ -90,7 +87,6 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
             </Link>
           ))}
         </div>
-      </RevealGroup>
 
       {totalPages > 1 && (
         <nav className="m-pager" aria-label="pages">
