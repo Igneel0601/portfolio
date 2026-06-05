@@ -715,7 +715,16 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 .nf-route:hover .nf-meta { color: var(--accent); }
 .nf-route:hover .nf-arr { transform: translateX(3px); }
 
+/* Full-bleed top hairline (matches the global Footer), with the text
+   constrained to the same 80rem column as .nf-content via .nf-footer-inner. */
 .nf-footer {
+  width: 100%;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--hair);
+  color: var(--ink-dim);
+}
+.nf-footer-inner {
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -723,10 +732,6 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   max-width: 80rem;
   margin-inline: auto;
   padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
-  border-top-width: 1px;
-  border-top-style: solid;
-  border-top-color: var(--hair);
-  color: var(--ink-dim);
 }
 .nf-footer-right { margin-left: auto; }
 

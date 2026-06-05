@@ -3,14 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { MoveRight } from "lucide-react";
-import { CONTACT } from "@/lib/content";
 import { PROFILE } from "@/lib/profile";
 
 const ROUTES = [
   { href: "/", path: "/", meta: "home" },
   { href: "/work", path: "/work", meta: "all projects" },
   { href: "/experiments", path: "/experiments", meta: "demos" },
-  { href: `mailto:${CONTACT.email}`, path: "/contact", meta: CONTACT.email },
+  // Link to the /contact page (like the nav's "contact me"), not a mailto.
+  { href: "/contact", path: "/contact", meta: "contact me" },
 ];
 
 export function NotFoundView() {
@@ -46,8 +46,10 @@ export function NotFoundView() {
       </section>
 
       <footer className="nf-footer c-xs">
-        <span>$ exit 1 · page not found</span>
-        <span className="nf-footer-right">© {PROFILE.name} · 2026</span>
+        <div className="nf-footer-inner">
+          <span>$ exit 1 · page not found</span>
+          <span className="nf-footer-right">© {PROFILE.name} · 2026</span>
+        </div>
       </footer>
     </main>
   );
