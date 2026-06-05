@@ -1,4 +1,4 @@
-import { revalidatePath } from 'next/cache'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import { NextResponse, type NextRequest } from 'next/server'
 
 // On-demand cache purge. Called by bloggz's Posts afterChange hook (or a manual
@@ -20,6 +20,9 @@ export async function POST(req: NextRequest) {
   if (slug) paths.push(`/d/writing/${slug}`, `/m/writing/${slug}`)
 
   for (const p of paths) revalidatePath(p)
+  // Busts the unstable_cache entries behind getPosts/getCategoryCounts so the
+  // archive's cached DB reads refresh on the next visit (see lib/posts.ts).
+  revalidateTag('writing', 'max')
 
-  return NextResponse.json({ revalidated: true, paths, now: Date.now() })
+  return NextResponse.json({ revalidated: true, paths, tags: ['writing'], now: Date.now() })
 }

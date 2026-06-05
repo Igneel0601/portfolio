@@ -1,4 +1,5 @@
 import 'server-only'
+import { unstable_cache } from 'next/cache'
 import { Pool } from 'pg'
 
 const globalForPool = globalThis as unknown as { pgPool?: Pool }
@@ -82,6 +83,8 @@ type PostRow = {
   published_at: string | null
   updated_at: string
   content: LexicalContent
+  // Present only on list queries (LIST_COLS); the single-post query omits it.
+  word_count?: number | null
   meta_title: string | null
   meta_description: string | null
   hero_image_id: number | null
@@ -206,14 +209,18 @@ async function fetchMediaByIds(ids: number[]): Promise<Map<number, Media>> {
   return map
 }
 
-const LIST_COLS = `id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id`
+// Note: no `content` here. The archive only needs word_count (denormalized in
+// bloggz at write time), so we read the integer instead of pulling + walking
+// the full Lexical JSONB of every row. ::int because pg returns numeric as a
+// string. The single-post path (getPostBySlug) still selects `content`.
+const LIST_COLS = `id, title, slug, published_at, updated_at, word_count::int, meta_title, meta_description, hero_image_id, meta_image_id`
 const LIST_ORDER = `published_at DESC NULLS LAST, updated_at DESC`
 
 async function toListItems(rows: PostRow[]): Promise<PostListItem[]> {
   if (rows.length === 0) return []
   const cats = await fetchCategoriesForPosts(rows.map((r) => r.id))
   return rows.map((r) => {
-    const wordCount = countWords(r.content)
+    const wordCount = r.word_count ?? 0
     return {
       id: r.id,
       title: r.title,
@@ -239,7 +246,7 @@ export type CategoryCount = { slug: string; title: string; count: number }
 
 /** Per-category counts across all published posts (for the filter pills) +
  *  the total. Independent of the current page/filter. */
-export async function getCategoryCounts(): Promise<{ all: number; latest: string | null; tags: CategoryCount[] }> {
+async function getCategoryCountsImpl(): Promise<{ all: number; latest: string | null; tags: CategoryCount[] }> {
   const [totalRes, tagRes] = await Promise.all([
     pool.query<{ all: number; latest: string | null }>(
       `SELECT count(*)::int AS all, max(published_at) AS latest FROM posts WHERE ${PUBLISHED}`,
@@ -263,7 +270,7 @@ export async function getCategoryCounts(): Promise<{ all: number; latest: string
 
 /** A page of published posts, optionally filtered by category slug. Filtering
  *  and paging both happen in SQL so it scales past a full in-memory fetch. */
-export async function getPosts(opts: {
+async function getPostsImpl(opts: {
   page: number
   perPage: number
   tag?: string | null
@@ -292,6 +299,20 @@ export async function getPosts(opts: {
   )
   return { posts: await toListItems(rows), total, page, totalPages }
 }
+
+// The archive is identical for every visitor and only changes when a post is
+// published/edited/deleted — which pings /api/revalidate. So cache the DB reads
+// in the Next data cache (keyed on page+tag via the serialized args) and bust
+// them with the `writing` tag. On a cache hit /writing renders with zero Neon
+// roundtrips. revalidate is a safety-net TTL in case a webhook is ever missed.
+const CACHE_OPTS = { tags: ['writing'], revalidate: 3600 }
+
+export const getPosts = unstable_cache(getPostsImpl, ['writing:posts'], CACHE_OPTS)
+export const getCategoryCounts = unstable_cache(
+  getCategoryCountsImpl,
+  ['writing:category-counts'],
+  CACHE_OPTS,
+)
 
 export async function getPostSlugs(): Promise<string[]> {
   const { rows } = await pool.query<{ slug: string }>(
