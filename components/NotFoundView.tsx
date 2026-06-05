@@ -46,8 +46,10 @@ export function NotFoundView() {
       </section>
 
       <footer className="nf-footer c-xs">
-        <span>$ exit 1 · page not found</span>
-        <span className="nf-footer-right">© {PROFILE.name} · 2026</span>
+        <div className="nf-footer-inner">
+          <span>$ exit 1 · page not found</span>
+          <span className="nf-footer-right">© {PROFILE.name} · 2026</span>
+        </div>
       </footer>
     </main>
   );
