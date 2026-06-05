@@ -235,7 +235,7 @@ async function toListItems(rows: PostRow[]): Promise<PostListItem[]> {
   })
 }
 
-export async function getAllPosts(): Promise<PostListItem[]> {
+async function getAllPostsImpl(): Promise<PostListItem[]> {
   const { rows } = await pool.query<PostRow>(
     `SELECT ${LIST_COLS} FROM posts WHERE ${PUBLISHED} ORDER BY ${LIST_ORDER}`,
   )
@@ -313,6 +313,10 @@ export const getCategoryCounts = unstable_cache(
   ['writing:category-counts'],
   CACHE_OPTS,
 )
+// Used by getAdjacentPosts (prev/next) and the sitemap. Cached so the post
+// page's adjacent-posts lookup is a data-cache hit instead of a fresh all-posts
+// scan on every (uncacheable) render.
+export const getAllPosts = unstable_cache(getAllPostsImpl, ['writing:all-posts'], CACHE_OPTS)
 
 export async function getPostSlugs(): Promise<string[]> {
   const { rows } = await pool.query<{ slug: string }>(
@@ -321,7 +325,7 @@ export async function getPostSlugs(): Promise<string[]> {
   return rows.map((r) => r.slug)
 }
 
-export async function getPostBySlug(slug: string): Promise<Post | null> {
+async function getPostBySlugImpl(slug: string): Promise<Post | null> {
   const { rows } = await pool.query<PostRow>(
     `SELECT id, title, slug, published_at, updated_at, content, meta_title, meta_description, hero_image_id, meta_image_id, drop_cap
      FROM posts
@@ -362,6 +366,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     readMinutes: Math.max(1, Math.round(wordCount / 220)),
   }
 }
+
+// Cached per slug. Dedupes the generateMetadata + page double-call within one
+// render, and reuses the read across requests — the post route can't be
+// CDN-cached under the d/m UA split, so this is where the win lives. Busted on
+// publish/edit via the `writing` tag (app/api/revalidate).
+export const getPostBySlug = unstable_cache(getPostBySlugImpl, ['writing:post'], CACHE_OPTS)
 
 export async function getAdjacentPosts(
   slug: string,
