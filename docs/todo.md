@@ -108,3 +108,14 @@ The broaden-coverage policy lives in AGENTS.md now.
    UA-cache caveat (must keep Cloudflare grey-cloud so the proxy always runs;
    an orange-cloud/URL-keyed front cache would serve desktop HTML to mobile).
    Only worth it if maintaining two shells starts costing real double-work.
+6. **(maybe) Adopt Cache Components (`'use cache'`) site-wide.** `/writing`'s DB
+   reads are cached today via `unstable_cache` (`lib/posts.ts`, tag `writing`,
+   busted by `app/api/revalidate`) — a scoped fix that needs no config flag. The
+   newer `'use cache'` + `cacheLife`/`cacheTag` API is where Next is heading, but
+   it requires flipping `cacheComponents: true` in `next.config`, which is an
+   app-wide rendering-model switch: every dynamic access must then sit inside
+   `'use cache'` or `<Suspense>` (home scrollytelling, `/work` live GitHub fetch,
+   terminal, etc.) or the build errors. The `/writing` swap itself is mechanical
+   (`'use cache'` + `cacheLife('hours')` + `cacheTag('writing')`; the existing
+   `revalidateTag('writing','max')` already works for both). Only worth it as a
+   deliberate whole-app migration, not a rider on one page.
