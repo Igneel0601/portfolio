@@ -1,4 +1,11 @@
 import { headers } from "next/headers";
+// The shells' stylesheets are normally pulled in by app/d|m's layouts, which
+// the root not-found bypasses — so import both here. Without desktop.css the
+// custom cursor (#custom-cursor), nav hover-pop, and parallax bg are unstyled;
+// without mobile.css the MobileNav (.m-*) is unstyled. 404s are rare, so
+// loading both is a fine trade for getting either shell's chrome right.
+import "@/app/desktop.css";
+import "@/app/mobile.css";
 import { isMobileUA } from "@/lib/device";
 import { MotionProvider } from "@/components/MotionProvider";
 import { Background } from "@/components/Background";
@@ -20,7 +27,8 @@ export default async function NotFound() {
 
   return (
     <MotionProvider>
-      <Background />
+      {/* Background is desktop-only (MobileShell has no parallax bg) */}
+      {!mobile && <Background />}
       {!mobile && <CustomCursor />}
       {mobile ? <MobileNav /> : <Nav />}
       <NotFoundView />
