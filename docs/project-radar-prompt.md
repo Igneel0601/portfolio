@@ -54,7 +54,7 @@ curl -s -X POST https://api.resend.com/emails \
   -H "Content-Type: application/json" \
   -d @- <<JSON
 {
-  "from": "Project Radar <radar@igneel.cloud>",
+  "from": "Project Radar <radar@vergnyx.dev>",
   "to": ["vermavaibhav241@gmail.com"],
   "subject": "Project Radar — ${today} — top pick: <name>",
   "html": "<the shortlist as clean HTML>"
@@ -63,7 +63,7 @@ JSON
 ```
 
 `$RESEND_API_KEY` comes from the routine env. `from` must be on a Resend-verified
-domain (igneel.cloud) — until verified, use `onboarding@resend.dev` for testing.
+domain (vergnyx.dev) — until verified, use `onboarding@resend.dev` for testing.
 Body = the ranked shortlist below, clean and skimmable, sources as links. Confirm the
 API returned an id (success); if it errors, surface the error.
 
@@ -89,7 +89,7 @@ and why. If an idea is trendy but a bad fit for me, say so and drop it.
 ---
 
 ## TODO before this is "real" (tomorrow)
-- [ ] **Resend setup**: verify `igneel.cloud` (or a subdomain) as a sending domain in
+- [ ] **Resend setup**: verify `vergnyx.dev` (or a subdomain) as a sending domain in
       Resend + pick the `from` address; set `RESEND_API_KEY` in the routine's CCR env
       (the remote sandbox can't see local env — must be configured on the trigger)
 - [ ] Confirm RFS URL + whether to scrape the companies directory (may need JS render)
