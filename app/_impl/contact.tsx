@@ -46,9 +46,16 @@ function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
          accepts the email and queues it for delivery (it doesn't confirm inbox
          delivery), so "queued" is the honest status — and it matches the
          "It's in the queue" note shown below. */}
-      <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-        {done ? `[ ok ] sent in ${elapsed ?? "0.00"}s` : "[ .. ] sending…"}
+      {/* sending stays on its own line; the result lands on a NEW line below
+         it once the request resolves (a streaming log, not an in-place swap). */}
+      <div className="ct-sendline" style={{ animationDelay: "0.54s" }}>
+        [ .. ] sending…
       </div>
+      {done && (
+        <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
+          [ ok ] sent in {elapsed ?? "0.00"}s
+        </div>
+      )}
     </div>
   );
 }
