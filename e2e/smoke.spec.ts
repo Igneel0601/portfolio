@@ -31,23 +31,27 @@ test("home exposes crawlable section links in the initial DOM", async ({
 
 test("/work renders the git-log footer (3 lines)", async ({ page }) => {
   await page.goto("/work");
-  // desktop: [data-git-line] · mobile: .m-wklog-l — exactly one shell renders.
-  await expect(page.locator("[data-git-line], .m-wklog-l")).toHaveCount(3);
+  // Single shell renders BOTH variants and toggles with CSS, so both are in the
+  // DOM — assert on the *visible* one (desktop: [data-git-line] · mobile:
+  // .m-wklog-l). Exactly one shell is visible per viewport, so this is 3.
+  await expect(page.locator("[data-git-line]:visible, .m-wklog-l:visible")).toHaveCount(3);
 });
 
 test("/writing paginates and filters via URL", async ({ page }) => {
   // page 1 caps at the page size and shows a pager (works only when there are
   // >10 posts; tolerate fewer by asserting rows never exceed the page size).
+  // Single shell renders both variants toggled by CSS, so scope to the visible
+  // shell's rows (desktop .wa-row · mobile .m-wrow).
   await page.goto("/writing");
-  const rows = page.locator(".wa-row, .m-wrow");
+  const rows = page.locator(".wa-row:visible, .m-wrow:visible");
   expect(await rows.count()).toBeLessThanOrEqual(10);
 
   // a category filter is a real URL and narrows the list (server-side).
   await page.goto("/writing?tag=security");
-  const filtered = page.locator(".wa-row, .m-wrow");
+  const filtered = page.locator(".wa-row:visible, .m-wrow:visible");
   await expect(filtered.first()).toBeAttached();
   // every visible row on a filtered page belongs to that category
-  const cats = await page.locator(".wa-acc, .m-wrow-cat").allTextContents();
+  const cats = await page.locator(".wa-acc:visible, .m-wrow-cat:visible").allTextContents();
   expect(cats.every((c) => c.toLowerCase().includes("security"))).toBe(true);
 });
 
