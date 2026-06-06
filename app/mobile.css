@@ -48,13 +48,7 @@
 
 /* .m-section-* → inline utilities in components/mobile/parts.tsx (SectionHeader). */
 
-/* ── btn (mobile-side wrapper around .btn from tokens) ── */
-.m-btn {
-  width: 100%;
-  justify-content: center;
-  text-decoration: none;
-  -webkit-tap-highlight-color: transparent;
-}
+/* .m-btn → w-full justify-center no-underline utilities (MobileBoot.tsx, parts.tsx). */
 
 /* ── home: boot + hero ────────────────────────────────── */
 .m-boot {
@@ -438,28 +432,9 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
    like every other mobile page (section padding 3rem + 0.5rem here). */
 .cs-footer-wrap { margin-top: 0.5rem; }
 
-/* ── filter strip (shared by /writing + /work) ────────────
-   Horizontal scroll with a right-edge mask so overflow reads as "there's
-   more". Chip type comes from c-xs in JSX; these own layout + color/state.
-   The component scrolls the active chip toward centre on tap. */
-.m-wfilter {
-  display: flex;
-  gap: 0.4rem;
-  padding: 0.9rem 1.375rem 0.1rem;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none; /* Firefox */
-  -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, #000 88%, transparent);
-}
-/* !important to beat the global *::-webkit-scrollbar height rule in tokens.css */
-.m-wfilter::-webkit-scrollbar { height: 0 !important; width: 0 !important; }
-
-/* pager: just the shared .pager-* control cluster (tokens.css), right-aligned
-   to the gutter — no "showing N entries" status on the narrow shell. Vertical
-   rhythm matches desktop's .wa-pager: 2.5rem above, and 1.2rem here + the
-   footer's 0.6rem margin = 1.8rem below. */
-.m-pager { display: flex; justify-content: flex-end; padding: 2.5rem 1.375rem 1.2rem; }
+/* .m-wfilter → flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto
+               scrollbar-none [mask-image:…] utilities (MobileWriting, MobileWorkLog).
+   .m-pager   → flex justify-end pt-10 px-[1.375rem] pb-[1.2rem] (MobileWriting). */
 .m-chip {
   flex-shrink: 0;
   display: inline-flex;

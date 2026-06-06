@@ -48,7 +48,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
         </div>
       </div>
 
-      <div className="m-wfilter">
+      <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]">
         <Link
           href={writingHref(null, 1)}
           className="c-xs m-chip no-pop"
@@ -97,7 +97,7 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
         </div>
 
       {totalPages > 1 && (
-        <nav className="m-pager" aria-label="pages">
+        <nav className="flex justify-end pt-10 px-[1.375rem] pb-[1.2rem]" aria-label="pages">
           <PagerControls page={page} totalPages={totalPages} tag={tag} />
         </nav>
       )}

@@ -162,17 +162,17 @@ export function MobileBoot() {
           <button
             type="button"
             data-cta
-            className="btn solid m-btn"
+            className="btn solid w-full justify-center no-underline"
             onClick={() =>
               window.dispatchEvent(new CustomEvent("m-pager-go", { detail: 1 }))
             }
           >
             scroll the story <MoveDown className="i-lg" aria-hidden />
           </button>
-          <a data-cta href={PROFILE.resumePath} download className="btn m-btn">
+          <a data-cta href={PROFILE.resumePath} download className="btn w-full justify-center no-underline">
             $ download résumé.pdf
           </a>
-          <a data-cta href={`mailto:${CONTACT.email}`} className="btn m-btn">
+          <a data-cta href={`mailto:${CONTACT.email}`} className="btn w-full justify-center no-underline">
             {CONTACT.email}
           </a>
         </div>

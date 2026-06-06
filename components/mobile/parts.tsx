@@ -33,7 +33,7 @@ function Btn({
   variant?: "solid" | "outline";
   href?: string;
 }) {
-  const className = `${variant === "solid" ? "btn solid" : "btn"} m-btn`;
+  const className = `${variant === "solid" ? "btn solid" : "btn"} w-full justify-center no-underline`;
   if (!href) {
     return <span className={className}>{children}</span>;
   }

@@ -73,8 +73,8 @@ export function MobileWorkLog({
         </div>
       </div>
 
-      {/* chips reuse .m-wfilter / .m-chip from the /writing CSS block */}
-      <div className="m-wfilter" ref={stripRef}>
+      {/* chips reuse .m-chip from mobile.css; layout from utilities */}
+      <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]" ref={stripRef}>
         <button
           type="button"
           className="c-xs m-chip"
