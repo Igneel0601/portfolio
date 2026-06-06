@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, ChevronRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { WorkRow, WorkTag } from "@/lib/work-rows";
 
 type WorkFilter = WorkTag | "all";
@@ -117,7 +117,7 @@ export function WorkLog({
           <div
             className="l-meta mute hidden md:grid pb-2 mb-2 border-b border-dashed gap-4"
             style={{
-              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
+              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px",
               columnGap: "clamp(32px, 5vw, 64px)",
               borderColor: "var(--ink)",
             }}
@@ -126,20 +126,16 @@ export function WorkLog({
             <span>TAG</span>
             <span>BLURB</span>
             <span>STATUS</span>
-            <span />
           </div>
           {rows.map((row, i) => {
             const linked = !!row.slug;
             const inner = (
               <>
-                <span className={`font-bold${linked ? " text-accent-2 group-hover:text-accent" : ""}`}>{row.name}</span>
+                <span className={`font-bold${linked ? " text-accent underline underline-offset-2" : ""}`}>{row.name}</span>
                 <span className="mute">{row.tag}</span>
                 <span className="mute min-w-0">{row.blurb}</span>
                 <span className={STATUS_TEXT[row.status]}>
                   [{row.status}]
-                </span>
-                <span className="opacity-0 transition-opacity text-accent justify-self-end group-hover:opacity-100" aria-hidden>
-                  {row.slug && <ChevronRight className="i-sm" />}
                 </span>
               </>
             );
@@ -149,7 +145,7 @@ export function WorkLog({
             } md:grid md:items-center gap-4${row.status === "dead" ? " opacity-50" : ""}`;
             const style = {
               borderColor: "color-mix(in oklab, var(--ink) 25%, transparent)",
-              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
+              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px",
               columnGap: "clamp(32px, 5vw, 64px)",
             } as const;
 

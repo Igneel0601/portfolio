@@ -100,13 +100,12 @@ export function MobileWorkLog({
 
       <div className="max-w-[34rem] mx-auto">
         {shown.map((r, i) => {
-          const dim = r.status === "archived" || r.status === "dead";
-          const rowCls = `block py-[1.05rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop${dim ? " opacity-55" : ""} active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]`;
+          const rowCls = `block py-[1.05rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop${r.status === "dead" ? " opacity-50" : ""} active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]`;
           const body = (
             <>
               <div className="flex items-baseline justify-between gap-3 mb-[0.35rem]">
                 <span
-                  className={`font-[var(--mono)] text-[0.92rem] font-semibold tracking-[-0.01em]${r.slug ? " text-[var(--accent-2)]" : " text-ink"}`}
+                  className={`font-[var(--mono)] text-[0.92rem] font-semibold tracking-[-0.01em]${r.slug ? " text-accent underline underline-offset-2" : " text-ink"}`}
                 >
                   {r.name}
                 </span>
@@ -141,22 +140,22 @@ export function MobileWorkLog({
 
       <div className="max-w-[34rem] mx-auto mt-2 px-[1.375rem] pt-5 pb-6">
         <div className="c-xs mb-[0.55rem] text-ink-dim">$ git log --oneline | head -3</div>
-        {commits.map((l, i) => {
-          const [hash, ...rest] = l.split(" · ");
-          return (
-            <div key={i} className="c-xs pl-3 leading-[1.95] text-ink-soft whitespace-nowrap overflow-hidden text-ellipsis">
-              <span className="text-[var(--accent-2)]">{hash}</span> · {rest.join(" · ")}
-            </div>
-          );
-        })}
+        {commits.map((l, i) => (
+          <div key={i} className="c-xs pl-3 leading-[1.95] text-ink-soft whitespace-nowrap overflow-hidden text-ellipsis">
+            {l}
+          </div>
+        ))}
         <a
           href="https://github.com/Igneel0601"
           target="_blank"
           rel="noreferrer"
-          className="l-meta inline-flex items-center gap-[0.4rem] mt-3 text-[var(--accent-2)] no-underline no-pop"
+          className="l-meta mute inline-flex items-center gap-[0.4rem] mt-4 no-underline no-pop"
         >
-          full log on github
-          <ExternalLink aria-hidden className="i-xs" />
+          FULL LOG ON{" "}
+          <span className="text-accent whitespace-nowrap">
+            GITHUB.COM/IGNEEL0601
+            <ExternalLink className="i-xs ml-1 inline-block align-[-0.15em]" aria-hidden />
+          </span>
         </a>
       </div>
     </>

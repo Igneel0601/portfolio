@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import withBundleAnalyzer from "@next/bundle-analyzer";
 
 const nextConfig: NextConfig = {
   // Hide the floating Next.js dev-route indicator (the "N" badge at
@@ -13,4 +14,4 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.1.2", "localhost"],
 };
 
-export default nextConfig;
+export default withBundleAnalyzer({ enabled: process.env.ANALYZE === "true" })(nextConfig);
