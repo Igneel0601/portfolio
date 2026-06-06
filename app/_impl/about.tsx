@@ -7,15 +7,12 @@ import { ABOUT } from "@/lib/content";
 export function AboutPage() {
   return (
     <main className="flex-1">
-      <section
-        className="page-shell ab"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
-        <div className="l-eyebrow ab-eyebrow">{ABOUT.eyebrow}</div>
-        <h1 className="t-display ab-title">
-          about<span className="ab-dot">.</span>
+      <section className="page-shell ab pt-[clamp(1.25rem,2.5vw,1.75rem)]">
+        <div className="l-eyebrow text-ink-dim mt-2">{ABOUT.eyebrow}</div>
+        <h1 className="t-display mt-3">
+          about<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead ab-lede">{ABOUT.lede}</p>
+        <p className="t-lead mt-4 max-w-[28ch] text-ink-soft italic">{ABOUT.lede}</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> whoami

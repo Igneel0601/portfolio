@@ -1158,10 +1158,7 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 
 /* ── /about — narrative bio page (shared by both shells) ───────────────── */
 .ab { padding-bottom: 3rem; } /* match the ~108px pre-footer gap (see .contact) */
-.ab-eyebrow { color: var(--ink-dim); margin-top: 0.5rem; }
-.ab-title { margin-top: 0.75rem; }
-.ab-dot { color: var(--accent); }
-.ab-lede { margin-top: 1rem; max-width: 28ch; color: var(--ink-soft); font-style: italic; }
+/* ab-eyebrow/title/dot/lede now inline Tailwind utilities in app/_impl/about.tsx */
 
 .ab-cmd {
   margin-top: 2rem;
