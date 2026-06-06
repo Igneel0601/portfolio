@@ -68,6 +68,7 @@ export function WritingArchive({ posts, counts, total, tag, page, totalPages, pe
           posts.map((p) => (
             <Link
               key={p.id}
+              data-wa-row
               href={`/writing/${p.slug}`}
               className="no-pop group grid grid-cols-[minmax(0,1fr)_auto] gap-8 items-center py-5 border-b border-hair [&:first-child]:border-t text-inherit no-underline transition-colors duration-200 hover:bg-[color-mix(in_oklab,var(--accent)_4%,transparent)]"
               prefetch={false}
@@ -77,7 +78,7 @@ export function WritingArchive({ posts, counts, total, tag, page, totalPages, pe
                   <div className="l-eyebrow flex items-baseline gap-1 text-ink-dim mb-[0.45rem]">
                     {p.categories.map((c, i) => (
                       <span key={c.slug}>
-                        <span className={i === 0 ? 'text-accent' : undefined}>{c.title.toLowerCase()}</span>
+                        <span data-wa-cat={i === 0 ? '' : undefined} className={i === 0 ? 'text-accent' : undefined}>{c.title.toLowerCase()}</span>
                         {i < p.categories.length - 1 && <span className="opacity-50"> · </span>}
                       </span>
                     ))}
