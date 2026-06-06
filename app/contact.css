@@ -91,11 +91,11 @@
 .ct-nospam { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-dim); }
 
 /* send sequence + sent state */
-/* Reserve ~the idle form's content height so swapping form -> success doesn't
-   shrink the box and shift the rail below it on mobile (1-col, no align-self
-   stretch). Rem scales with the responsive root, so this tracks the form across
-   widths; on desktop the formwrap is stretched to the rail, so this is a floor. */
-.ct-sent { min-height: 30rem; display: flex; flex-direction: column; }
+/* Desktop (2-col): the formwrap is align-self:stretch to the rail, so a modest
+   floor is enough — a larger one would overshoot the rail and make the success
+   box taller than the idle form (shift). The 1-col mobile reserve that prevents
+   the form->success rail shift lives in the max-width:56.25rem block below. */
+.ct-sent { min-height: 20rem; display: flex; flex-direction: column; }
 .ct-sendlog { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); line-height: 2; }
 .ct-sendline { opacity: 0; animation: ct-linein 0.3s ease both; }
 .ct-sendline:first-child { color: var(--accent); }
@@ -195,4 +195,7 @@
 @media (max-width: 56.25rem) {
   .ct-grid { grid-template-columns: 1fr; }
   .ct-rail { position: static; }
+  /* 1-col: no align-self:stretch, so reserve ~the idle form's height (which
+     wraps the actions row here, ~30rem) so form->success doesn't shift the rail. */
+  .ct-sent { min-height: 30rem; }
 }
