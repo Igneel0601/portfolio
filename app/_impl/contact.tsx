@@ -33,7 +33,6 @@ function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
     `$ ./send.sh --to ${CONTACT.email}`,
     "[ ok ] validating fields",
     "[ ok ] honeypot clear",
-    "[ .. ] delivering message…",
   ];
   return (
     <div className="ct-sendlog">
@@ -42,9 +41,17 @@ function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
           {l}
         </div>
       ))}
-      <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-        {done ? `[ ok ] queued in ${elapsed ?? "0.00"}s` : "delivering…"}
+      {/* While sending, delivering is the active step and stays the last line —
+         nothing renders ahead of it. On success it resolves to [ ok ] and the
+         queued line appears below. */}
+      <div className="ct-sendline" style={{ animationDelay: "0.54s" }}>
+        {done ? "[ ok ] delivered" : "[ .. ] delivering message…"}
       </div>
+      {done && (
+        <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
+          [ ok ] queued in {elapsed ?? "0.00"}s
+        </div>
+      )}
     </div>
   );
 }
