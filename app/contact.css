@@ -55,6 +55,23 @@
 }
 .ct-input.area { resize: vertical; min-height: 7.5rem; line-height: 1.55; }
 .ct-field.err .ct-input { border-color: color-mix(in oklab, var(--status-dead) 60%, transparent); }
+/* Browser autofill forces its own light background + dark text, which broke the
+   dark inputs. Repaint the field with --paper via a large inset shadow (1000px
+   spread so it covers the full-width input) and keep ink-colored text; the
+   9999s background-color transition defers the brief autofill flash. */
+.ct-input:-webkit-autofill,
+.ct-input:-webkit-autofill:hover,
+.ct-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--paper) inset;
+  caret-color: var(--accent);
+  transition: background-color 9999s ease-in-out 0s;
+}
+.ct-input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0 0 0 0.1875rem color-mix(in oklab, var(--accent) 14%, transparent),
+    0 0 0 1000px var(--paper) inset;
+}
 .ct-actions { display: flex; align-items: center; gap: 1.125rem; flex-wrap: wrap; margin-top: 1.75rem; }
 .ct-btn {
   font-family: var(--mono);
@@ -74,7 +91,11 @@
 .ct-nospam { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-dim); }
 
 /* send sequence + sent state */
-.ct-sent { min-height: 20rem; display: flex; flex-direction: column; }
+/* Reserve ~the idle form's content height so swapping form -> success doesn't
+   shrink the box and shift the rail below it on mobile (1-col, no align-self
+   stretch). Rem scales with the responsive root, so this tracks the form across
+   widths; on desktop the formwrap is stretched to the rail, so this is a floor. */
+.ct-sent { min-height: 30rem; display: flex; flex-direction: column; }
 .ct-sendlog { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); line-height: 2; }
 .ct-sendline { opacity: 0; animation: ct-linein 0.3s ease both; }
 .ct-sendline:first-child { color: var(--accent); }
@@ -99,6 +120,19 @@
   max-width: 44ch;
   margin: 0.875rem 0 1.75rem;
   line-height: 1.5;
+}
+
+/* Success state: reveal "message sent.", the note, and the send-another button
+   in sequence AFTER the last log line ("queued in 0.31s", delay 0.85s + 0.3s
+   ≈ 1.15s) so the headline lands as a beat after the terminal log, not on top
+   of it. Scoped to .ct-sent-ok so the error state (no log delays) is untouched. */
+.ct-sent-ok .ct-sentbig { opacity: 0; animation: ct-linein 0.45s ease 1.2s both; }
+.ct-sent-ok .ct-sentnote { opacity: 0; animation: ct-linein 0.45s ease 1.45s both; }
+.ct-sent-ok .ct-btn { opacity: 0; animation: ct-linein 0.45s ease 1.6s both; }
+@media (prefers-reduced-motion: reduce) {
+  .ct-sent-ok .ct-sentbig,
+  .ct-sent-ok .ct-sentnote,
+  .ct-sent-ok .ct-btn { animation: none; opacity: 1; }
 }
 
 /* direct-links rail */

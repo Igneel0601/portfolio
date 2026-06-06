@@ -105,15 +105,13 @@
 /* ─── stage (portrait | column) ─────────────────────────── */
 .stage {
   display: grid;
-  grid-template-columns: 18.75rem minmax(0, 1fr);
+  /* Portrait column is fluid: shrinks with the viewport so the portrait + info
+     stay side-by-side all the way down to the 768px desktop floor (below that,
+     MobileTerminal takes over) instead of collapsing/hiding. */
+  grid-template-columns: clamp(11rem, 22vw, 18.75rem) minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 2.5rem);
   align-items: start;
   flex-shrink: 0;
-}
-@media (max-width: 960px) {
-  .stage {
-    grid-template-columns: 1fr;
-  }
 }
 
 .column {
@@ -125,6 +123,7 @@
 
 /* ─── portrait image (bare, no card) ────────────────────── */
 .portraitImg {
+  /* Fills the fluid portrait column, so it scales down with the viewport. */
   width: 100%;
   height: auto;
   display: block;
@@ -156,7 +155,9 @@
   line-height: 1.6;
   padding: 0.625rem 0.875rem;
   width: fit-content;
-  min-width: 30rem;
+  /* Fluid floor: shrinks with the viewport but caps at 30rem so the bracketed
+     box keeps its width on wide screens. Content still expands it if longer. */
+  min-width: clamp(18rem, 36vw, 30rem);
   border-top: 2px solid var(--ink-soft);
   border-bottom: 2px solid var(--ink-soft);
 }

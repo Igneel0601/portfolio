@@ -28,12 +28,11 @@ function validate(v: Values): Errors {
   return e;
 }
 
-function SendLog({ done }: { done: boolean }) {
+function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
   const lines = [
     `$ ./send.sh --to ${CONTACT.email}`,
     "[ ok ] validating fields",
     "[ ok ] honeypot clear",
-    "[ .. ] delivering message…",
   ];
   return (
     <div className="ct-sendlog">
@@ -42,9 +41,21 @@ function SendLog({ done }: { done: boolean }) {
           {l}
         </div>
       ))}
-      <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-        {done ? "[ ok ] queued in 0.31s" : "delivering…"}
+      {/* Single active step: while sending it shows the hand-off in progress;
+         on success it resolves IN PLACE to the queued confirmation. Resend
+         accepts the email and queues it for delivery (it doesn't confirm inbox
+         delivery), so "queued" is the honest status — and it matches the
+         "It's in the queue" note shown below. */}
+      {/* sending stays on its own line; the result lands on a NEW line below
+         it once the request resolves (a streaming log, not an in-place swap). */}
+      <div className="ct-sendline" style={{ animationDelay: "0.54s" }}>
+        [ .. ] sending…
       </div>
+      {done && (
+        <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
+          [ ok ] sent in {elapsed ?? "0.00"}s
+        </div>
+      )}
     </div>
   );
 }
@@ -53,6 +64,7 @@ export function ContactPage() {
   const [v, setV] = useState<Values>({ name: "", email: "", message: "", company: "" });
   const [touched, setTouched] = useState<Partial<Record<Field, string>>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [elapsed, setElapsed] = useState("0.00");
   const errors = validate(v);
   const hasErr = Object.keys(errors).length > 0;
 
@@ -65,6 +77,7 @@ export function ContactPage() {
     setTouched({ name: "1", email: "1", message: "1" });
     if (hasErr) return;
     setState("sending");
+    const t0 = performance.now();
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -72,6 +85,7 @@ export function ContactPage() {
         body: JSON.stringify(v),
       });
       if (!res.ok) throw new Error("send failed");
+      setElapsed(((performance.now() - t0) / 1000).toFixed(2));
       setState("sent");
     } catch {
       setState("error");
@@ -110,14 +124,15 @@ export function ContactPage() {
           {/* form */}
           <div className="ct-formwrap">
             {state === "sent" ? (
-              <div className="ct-sent">
-                <SendLog done />
+              <div className="ct-sent ct-sent-ok">
+                <SendLog done elapsed={elapsed} />
                 <div className="ct-sentbig">
                   message sent<span className="text-accent">.</span>
                 </div>
                 <p className="ct-sentnote">
-                  It&apos;s in the queue. I usually reply within a day or two — if it&apos;s
-                  urgent, just email me directly.
+                  Got it. I&apos;m juggling roughly six things and a deadline, but
+                  you&apos;ll hear back within a day or two — if it&apos;s urgent, ping me
+                  on LinkedIn or X; I check those faster.
                 </p>
                 <button className="ct-btn ghost" onClick={reset}>
                   $ send another
@@ -150,15 +165,22 @@ export function ContactPage() {
               </div>
             ) : (
               <form onSubmit={submit} noValidate>
+                {/* Honeypot. MUST be hidden with display:none — Chrome's autofill
+                    fills offscreen-but-rendered fields (position:-9999px/opacity:0),
+                    which let a picked contact's org name land here and silently trip
+                    the bot check on real submissions. display:none is not focusable,
+                    so autofill skips it; naive HTML-parsing bots still fill it and the
+                    value flows to state.company for the server-side check. The name is
+                    also non-semantic so no classifier targets it. */}
                 <input
                   type="text"
-                  name="company"
+                  name="ot-note"
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
                   value={v.company}
                   onChange={set("company")}
-                  style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+                  style={{ display: "none" }}
                 />
                 <div className={"ct-field" + (touched.name && errors.name ? " err" : "")}>
                   <label htmlFor="f-name" className="ct-label">
@@ -171,6 +193,7 @@ export function ContactPage() {
                   </label>
                   <input
                     id="f-name"
+                    name="name"
                     className="ct-input"
                     type="text"
                     autoComplete="name"
@@ -192,6 +215,7 @@ export function ContactPage() {
                   </label>
                   <input
                     id="f-email"
+                    name="email"
                     className="ct-input"
                     type="email"
                     autoComplete="email"
@@ -213,6 +237,7 @@ export function ContactPage() {
                   </label>
                   <textarea
                     id="f-msg"
+                    name="message"
                     className="ct-input area"
                     rows={5}
                     placeholder="tell me what you're building…"
@@ -264,11 +289,14 @@ export function ContactPage() {
               ))}
             </div>
 
-            <div className="ab-rail ct-metarail">
+            <div className="ct-metarail border border-[var(--hair)] rounded-[0.375rem] overflow-hidden">
               {CONTACT_PAGE.meta.map((m) => (
-                <div className="ab-row" key={m.k}>
-                  <span className="ab-k">{m.k}</span>
-                  <span className="ab-v">{m.v}</span>
+                <div
+                  className="grid [grid-template-columns:5.5rem_1fr] gap-4 py-[0.65rem] px-4 border-b border-[var(--hair)] mono text-[0.8125rem] last:border-b-0"
+                  key={m.k}
+                >
+                  <span className="text-ink-dim">{m.k}</span>
+                  <span className="text-ink-soft">{m.v}</span>
                 </div>
               ))}
             </div>
