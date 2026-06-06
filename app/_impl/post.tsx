@@ -59,9 +59,9 @@ export async function PostPage({
         <section className="page-shell pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
           <Breadcrumb section="writing" file={filename} />
 
-          <h1 className="wp-title t-h1">{post.title}</h1>
+          <h1 className="t-h1 mt-2 text-balance">{post.title}</h1>
 
-          {post.metaDescription && <p className="wp-lead t-lead">{post.metaDescription}</p>}
+          {post.metaDescription && <p className="t-lead mt-4 text-ink-soft italic">{post.metaDescription}</p>}
 
           <div className="wp-meta-strip c-xs">
             {post.categories.map((c, i) => (
@@ -89,7 +89,7 @@ export async function PostPage({
               height={post.heroImage?.height ?? 900}
               priority
               unoptimized
-              className="wp-hero"
+              className="w-full h-auto rounded-[4px] mt-10"
             />
           )}
 
@@ -100,8 +100,8 @@ export async function PostPage({
           )}
 
           {related.length > 0 && (
-            <section className="wp-related" aria-label="similar reads">
-              <h2 className="wp-related-h t-h4">Similar reads</h2>
+            <section className="mt-14 pt-[1.75rem] border-t border-[var(--hair)]" aria-label="similar reads">
+              <h2 className="t-h4 m-0 mb-5 text-ink">Similar reads</h2>
               <div className="wp-related-grid">
                 {related.map((r) => (
                   <Link
@@ -110,13 +110,13 @@ export async function PostPage({
                     className="wp-rel-card no-pop"
                   >
                     {r.categories[0] && (
-                      <div className="wp-rel-cat l-eyebrow">
+                      <div className="l-eyebrow text-accent">
                         {r.categories[0].title.toLowerCase()}
                       </div>
                     )}
                     <h3 className="wp-rel-title t-h5">{r.title}</h3>
                     {r.metaDescription && (
-                      <p className="wp-rel-dek t-body">{r.metaDescription}</p>
+                      <p className="t-body m-0 text-ink-soft line-clamp-2">{r.metaDescription}</p>
                     )}
                     <div className="wp-rel-meta c-xs">
                       <b>{r.readMinutes}</b> min · {r.wordCount.toLocaleString()} words
