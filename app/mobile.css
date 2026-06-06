@@ -449,6 +449,14 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   color: var(--ink-dim);
   border-top: 1px solid var(--hair);
 }
+/* Mobile-only chrome. Under the single shell the SiteFooter renders on desktop
+   too (md:hidden), but this rule's `display: flex` has equal specificity to
+   Tailwind's .md\:hidden and loses on source order — so hide it explicitly at
+   >=768px. (MobileHome's own in-deck footer is already hidden via its md:hidden
+   page wrapper.) */
+@media (min-width: 768px) {
+  .m-site-footer { display: none; }
+}
 
 /* Posts & case studies use the shared filesystem footer (cs-footer-wrap), which
    carries a 3rem top margin for desktop's ~108px pre-footer gap. On mobile the
