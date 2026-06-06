@@ -415,30 +415,9 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
 }
 
 /* ── CTA section ──────────────────────────────────────── */
-.m-cta {
-  /* Bottom 3.5rem (not 3rem): the deck-tail footer's 0.5rem top margin
-     collapses into this, so 3.5rem lands the pre-footer gap at ~63px to match
-     every other mobile page (which get 3rem padding + 0.5rem, no collapse). */
-  margin: 3rem 1.375rem 3.5rem;
-  padding: 1.25rem;
-  display: grid;
-  gap: 1rem;
-  background: var(--paper-2);
-}
-.m-cta-eyebrow {
-  margin-bottom: 0.375rem;
-  color: var(--accent);
-}
-.m-cta-title {
-  margin: 0 0 0.25rem;
-  color: var(--ink);
-}
-.m-cta-sub { margin: 0; }
-.m-cta-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
+/* .m-cta-* → inline utilities in components/mobile/parts.tsx (CTASection).
+   The mb-14 (3.5rem) deliberately accounts for the deck-tail footer's 0.5rem
+   top-margin collapse so the pre-footer gap lands at ~63px like other pages. */
 
 /* ── site footer ──────────────────────────────────────── */
 .m-site-footer {

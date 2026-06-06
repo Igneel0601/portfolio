@@ -94,13 +94,13 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
 
 export function CTASection() {
   return (
-    <section className="box m-cta">
+    <section className="box mt-12 mb-14 mx-[1.375rem] p-5 grid gap-4 bg-paper-2">
       <div>
-        <div className="l-eyebrow m-cta-eyebrow">END OF STORY · YOUR MOVE</div>
-        <div className="t-h3 m-cta-title">Hiring? Building? Curious?</div>
-        <div className="t-body mute m-cta-sub">Drop a line — I respond fast.</div>
+        <div className="l-eyebrow mb-1.5 text-accent">END OF STORY · YOUR MOVE</div>
+        <div className="t-h3 m-0 mb-1 text-ink">Hiring? Building? Curious?</div>
+        <div className="t-body mute m-0">Drop a line — I respond fast.</div>
       </div>
-      <div className="m-cta-actions">
+      <div className="flex flex-col gap-2.5">
         <Btn variant="solid" href={`mailto:${CONTACT.email}`}>
           {CONTACT.email}
         </Btn>
