@@ -1272,57 +1272,8 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 /* .now-board/.now-cell/.now-logblock kept as class anchors for responsive nth-child/grid overrides below.
    All other .now-* base styles → inline utilities in app/_impl/now.tsx + components/NowClock.tsx. */
 
-/* ── /uses ── spec sheet ──────────────────────────────────────────────── */
-.uses-cathead { display: flex; align-items: center; gap: 1rem; margin: 1.875rem 0 0.5rem; }
-.uses-cathead .l-meta { color: var(--accent); }
-.uses-rule { flex: 1; border-top: 1px solid var(--hair); }
-.uses-row {
-  display: grid;
-  grid-template-columns: 12rem 1fr auto;
-  gap: 1.5rem;
-  align-items: baseline;
-  padding: 0.875rem 0.25rem;
-  border-bottom: 1px solid var(--hair);
-  transition: background-color 0.15s ease;
-}
-.uses-row:hover { background: var(--paper-2); }
-.uses-name { font-family: var(--mono); font-size: 0.9375rem; color: var(--ink); }
-.uses-note {
-  font-family: var(--font-serif), ui-serif, Georgia, serif;
-  font-size: 1.0625rem;
-  font-style: italic;
-  color: var(--ink-soft);
-  line-height: 1.4;
-  text-wrap: pretty;
-}
-.uses-metawrap { min-width: 4.5rem; text-align: right; }
-.uses-chip {
-  font-family: var(--mono);
-  font-size: 0.6875rem;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  border: 1px solid color-mix(in oklab, var(--accent) 45%, transparent);
-  border-radius: 999px;
-  padding: 0.2rem 0.6rem;
-  white-space: nowrap;
-}
-.uses-dot {
-  font-family: var(--font-serif), ui-serif, Georgia, serif;
-  font-size: 1.125rem;
-  font-style: italic;
-  color: var(--ink-soft);
-  max-width: 56ch;
-  margin-top: 1rem;
-  line-height: 1.5;
-}
-.uses-link {
-  font-style: normal;
-  font-family: var(--mono);
-  font-size: 0.875rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.25rem;
-}
+/* .uses-row/.uses-metawrap kept as class anchors for responsive overrides below.
+   All other .uses-* base styles → inline utilities in app/_impl/uses.tsx. */
 
 /* ── /contact ── validating form + direct-links rail (2-col) ──────────── */
 .contact { padding-bottom: 3rem; } /* match the ~108px pre-footer gap (see .ab) */
