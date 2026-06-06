@@ -110,7 +110,7 @@ export function ContactPage() {
           {/* form */}
           <div className="ct-formwrap">
             {state === "sent" ? (
-              <div className="ct-sent">
+              <div className="ct-sent ct-sent-ok">
                 <SendLog done />
                 <div className="ct-sentbig">
                   message sent<span className="text-accent">.</span>
@@ -264,11 +264,14 @@ export function ContactPage() {
               ))}
             </div>
 
-            <div className="ab-rail ct-metarail">
+            <div className="ct-metarail border border-[var(--hair)] rounded-[0.375rem] overflow-hidden">
               {CONTACT_PAGE.meta.map((m) => (
-                <div className="ab-row" key={m.k}>
-                  <span className="ab-k">{m.k}</span>
-                  <span className="ab-v">{m.v}</span>
+                <div
+                  className="grid [grid-template-columns:5.5rem_1fr] gap-4 py-[0.65rem] px-4 border-b border-[var(--hair)] mono text-[0.8125rem] last:border-b-0"
+                  key={m.k}
+                >
+                  <span className="text-ink-dim">{m.k}</span>
+                  <span className="text-ink-soft">{m.v}</span>
                 </div>
               ))}
             </div>

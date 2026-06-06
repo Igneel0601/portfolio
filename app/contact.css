@@ -101,6 +101,19 @@
   line-height: 1.5;
 }
 
+/* Success state: reveal "message sent.", the note, and the send-another button
+   in sequence AFTER the last log line ("queued in 0.31s", delay 0.85s + 0.3s
+   ≈ 1.15s) so the headline lands as a beat after the terminal log, not on top
+   of it. Scoped to .ct-sent-ok so the error state (no log delays) is untouched. */
+.ct-sent-ok .ct-sentbig { opacity: 0; animation: ct-linein 0.45s ease 1.2s both; }
+.ct-sent-ok .ct-sentnote { opacity: 0; animation: ct-linein 0.45s ease 1.45s both; }
+.ct-sent-ok .ct-btn { opacity: 0; animation: ct-linein 0.45s ease 1.6s both; }
+@media (prefers-reduced-motion: reduce) {
+  .ct-sent-ok .ct-sentbig,
+  .ct-sent-ok .ct-sentnote,
+  .ct-sent-ok .ct-btn { animation: none; opacity: 1; }
+}
+
 /* direct-links rail */
 .ct-rail { display: flex; flex-direction: column; gap: 1.4rem; position: sticky; top: 6rem; }
 .ct-avail {
