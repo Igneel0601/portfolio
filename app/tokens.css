@@ -307,6 +307,25 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
    ~108 via their own section padding; the /writing index via its pager tail.) */
 .pre-footer-pad { padding-bottom: 3rem; }
 
+/* Shared breadcrumb chrome — Breadcrumb component on /work/[slug] AND
+   /writing/[slug] (posts import prose.css, not case-study.css, so this must be
+   global). Nav-like: accent link, no resting underline, underline on hover. */
+.cs-crumb-line {
+  color: var(--ink-dim);
+  margin-bottom: 1.5rem;
+}
+.cs-crumb-line a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.cs-crumb-line a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.2em;
+}
+.cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
+
 /* Shared page footer chrome — used by WritingFooter (posts) and StudyFooter (case studies). */
 .cs-footer-wrap {
   width: 100%;
