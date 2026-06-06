@@ -157,9 +157,15 @@ export function ContactPage() {
               </div>
             ) : (
               <form onSubmit={submit} noValidate>
+                {/* Honeypot. DOM name is deliberately NOT "company"/"organization":
+                    Chrome's autofill classifier fills any field it reads as an org
+                    with a contact's company name (e.g. picking a "Swift Tech"
+                    contact), which would trip the honeypot and silently drop a real
+                    submission. A non-semantic name dodges autofill; the value still
+                    flows to state.company for the server-side bot check. */}
                 <input
                   type="text"
-                  name="company"
+                  name="ot-note"
                   tabIndex={-1}
                   autoComplete="off"
                   aria-hidden="true"
@@ -178,6 +184,7 @@ export function ContactPage() {
                   </label>
                   <input
                     id="f-name"
+                    name="name"
                     className="ct-input"
                     type="text"
                     autoComplete="name"
@@ -199,6 +206,7 @@ export function ContactPage() {
                   </label>
                   <input
                     id="f-email"
+                    name="email"
                     className="ct-input"
                     type="email"
                     autoComplete="email"
@@ -220,6 +228,7 @@ export function ContactPage() {
                   </label>
                   <textarea
                     id="f-msg"
+                    name="message"
                     className="ct-input area"
                     rows={5}
                     placeholder="tell me what you're building…"
