@@ -105,18 +105,13 @@
 /* ─── stage (portrait | column) ─────────────────────────── */
 .stage {
   display: grid;
-  grid-template-columns: 18.75rem minmax(0, 1fr);
+  /* Portrait column is fluid: shrinks with the viewport so the portrait + info
+     stay side-by-side all the way down to the 768px desktop floor (below that,
+     MobileTerminal takes over) instead of collapsing/hiding. */
+  grid-template-columns: clamp(11rem, 22vw, 18.75rem) minmax(0, 1fr);
   gap: clamp(1.25rem, 3vw, 2.5rem);
   align-items: start;
   flex-shrink: 0;
-}
-/* Keep the portrait+info side-by-side as far down as it fits (~830px). Below
-   that it stacks — but cap the portrait at its 2-col size so it doesn't stretch
-   to full width and balloon. */
-@media (max-width: 860px) {
-  .stage {
-    grid-template-columns: 1fr;
-  }
 }
 
 .column {
@@ -128,21 +123,11 @@
 
 /* ─── portrait image (bare, no card) ────────────────────── */
 .portraitImg {
-  /* Fixed to the portrait column width so it never stretches to full width when
-     the stage stacks to 1-col on narrow screens (which ballooned the portrait).
-     max-width keeps it from overflowing if the column is ever narrower. */
-  width: 18.75rem;
-  max-width: 100%;
+  /* Fills the fluid portrait column, so it scales down with the viewport. */
+  width: 100%;
   height: auto;
   display: block;
   margin-top: 2.45rem;
-}
-/* Once the stage stacks to 1-col there's no room for the portrait — drop it and
-   show the fastfetch info only. Placed after the base rule so it wins on order. */
-@media (max-width: 860px) {
-  .portraitImg {
-    display: none;
-  }
 }
 
 /* ─── fastfetch rows (no per-block border) ──────────────── */
@@ -170,7 +155,9 @@
   line-height: 1.6;
   padding: 0.625rem 0.875rem;
   width: fit-content;
-  min-width: 30rem;
+  /* Fluid floor: shrinks with the viewport but caps at 30rem so the bracketed
+     box keeps its width on wide screens. Content still expands it if longer. */
+  min-width: clamp(18rem, 36vw, 30rem);
   border-top: 2px solid var(--ink-soft);
   border-bottom: 2px solid var(--ink-soft);
 }
