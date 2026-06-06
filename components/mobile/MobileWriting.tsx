@@ -33,10 +33,10 @@ type Props = {
 export function MobileWriting({ posts, counts, total, tag, page, totalPages }: Props) {
   return (
     <>
-      <div className="m-page-header">
-        <div className="l-tag m-page-eyebrow">archive · {new Date().getFullYear()}</div>
-        <h1 className="t-display m-page-title" data-eyebrow="true">
-          writing<span className="m-page-title-dot">.</span>
+      <div className="px-[1.375rem] py-[1.125rem]">
+        <div className="l-tag mt-6 mb-1 text-ink-dim">archive · {new Date().getFullYear()}</div>
+        <h1 className="t-display m-0 text-ink">
+          writing<span className="text-accent">.</span>
         </h1>
         <p className="t-lead m-writing-sub">{SUBTITLE}</p>
         <div className="c-xs m-writing-status">

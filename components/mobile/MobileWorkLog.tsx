@@ -48,10 +48,10 @@ export function MobileWorkLog({
 
   return (
     <>
-      <div className="m-page-header">
-        <div className="l-tag m-page-eyebrow">build log · {new Date().getFullYear()}</div>
-        <h1 className="t-display m-page-title" data-eyebrow="true">
-          projects<span className="m-page-title-dot">.</span>
+      <div className="px-[1.375rem] py-[1.125rem]">
+        <div className="l-tag mt-6 mb-1 text-ink-dim">build log · {new Date().getFullYear()}</div>
+        <h1 className="t-display m-0 text-ink">
+          projects<span className="text-accent">.</span>
         </h1>
         <p className="t-lead m-work-sub">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no

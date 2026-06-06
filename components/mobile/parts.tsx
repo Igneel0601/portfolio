@@ -17,9 +17,9 @@ export function DashedRule() {
 
 export function SectionHeader({ eyebrow, title }: { eyebrow: ReactNode; title: ReactNode }) {
   return (
-    <div className="m-section-header">
-      <div className="l-tag m-section-eyebrow">{eyebrow}</div>
-      <h2 className="t-h1 m-section-title">{title}</h2>
+    <div className="pt-7 px-[1.375rem] pb-5">
+      <div className="l-tag mb-3 text-[color-mix(in_oklab,var(--accent)_55%,transparent)]">{eyebrow}</div>
+      <h2 className="t-h1 m-0 text-ink">{title}</h2>
     </div>
   );
 }
@@ -142,14 +142,11 @@ export function PageHeader({
   title: ReactNode;
 }) {
   return (
-    <div className="m-page-header">
-      {eyebrow && <div className="l-tag m-page-eyebrow">{eyebrow}</div>}
-      <h1
-        className="t-display m-page-title"
-        data-eyebrow={eyebrow ? "true" : "false"}
-      >
+    <div className="px-[1.375rem] py-[1.125rem]">
+      {eyebrow && <div className="l-tag mt-6 mb-1 text-ink-dim">{eyebrow}</div>}
+      <h1 className={`t-display m-0 text-ink${eyebrow ? "" : " mt-6"}`}>
         {title}
-        <span className="m-page-title-dot">.</span>
+        <span className="text-accent">.</span>
       </h1>
     </div>
   );
