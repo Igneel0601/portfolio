@@ -277,9 +277,9 @@ body {
 }
 
 /* ───────── case-study chrome -> app/case-study.css ───────── */
-/* All .cs-term-bar/.cs-mac-*/.cs-prompt/.cs-crumb-line/.cs-doc/.cs-toc/.cs-hero-*
-   .cs-pill/.cs-arch-*/.cs-mermaid/.exp-* rules extracted to app/case-study.css.
-   Imported by app/_impl/case-study.tsx and app/(site)/experiments/case-study-v2/page.tsx. */
+/* cs-term-bar, cs-mac, cs-prompt, cs-crumb-line, cs-doc, cs-toc, cs-hero,
+   cs-pill, cs-arch, cs-mermaid, cs-pager, cs-footer, exp-doc, exp-content
+   extracted to app/case-study.css. */
 
 /* Site-wide link affordance. Green is overloaded (it's also the command/
    prompt colour), so links carry a resting underline to disambiguate — a
@@ -297,10 +297,9 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   text-underline-offset: 0.2em;
 }
 
-/* .nf-* -> app/not-found.css (imported by app/not-found.tsx) */
-/* .cs-crumb-line/.cs-doc/.cs-toc*/.cs-hero*/.cs-pill/.cs-arch*/.cs-mermaid ->
-   app/case-study.css (imported by app/_impl/case-study.tsx + experiments/case-study-v2) */
-/* .cs-pager*/.cs-back-link/.cs-footer*/.exp-* -> app/case-study.css */
+/* nf-* -> app/not-found.css */
+/* w-prose, w-ornament, wp-* -> app/prose.css */
+/* contact, ct-* -> app/contact.css */
 
 /* Pages whose last content sits right on the bare 3rem footer margin (~54px):
    add 3rem below so the pre-footer gap is ~108px, matching the rest of the
@@ -308,9 +307,9 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
    ~108 via their own section padding; the /writing index via its pager tail.) */
 .pre-footer-pad { padding-bottom: 3rem; }
 
-/* .w-prose/.w-ornament/.wp-* -> app/prose.css (imported by app/_impl/post.tsx) */
+/* w-prose, w-ornament, wp-* -> app/prose.css */
 
-/* ── shared pager controls (.pager-*) — the /writing jump + page-of + arrows
+/* ── shared pager controls (pager-*) — the /writing jump + page-of + arrows
    cluster, used by both shells: desktop pairs it with a "showing N" status,
    mobile uses it alone, right-aligned. ──────────────────────────────────── */
 .pager-ctl { display: flex; align-items: center; gap: 0.75rem; color: var(--ink-dim); }
@@ -396,10 +395,10 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 .ab-link { color: var(--accent); border-bottom: 1px solid var(--accent); }
 .ab-link:hover { color: var(--accent); }
 
-/* .ab-rail-wrap -> inline utilities in about.tsx + responsive override below. */
+/* ab-rail-wrap: base -> inline utility in about.tsx; sticky override kept below. */
 .ab-rail-wrap { position: sticky; top: 6rem; }
-/* .ab-rail/.ab-row/.ab-k/.ab-v/.ab-quote/.ab-q/.ab-next -> inline utilities in about.tsx. */
-/* .ab-links kept as class anchor for responsive override below. */
+/* ab-rail, ab-row, ab-k, ab-v, ab-quote, ab-q, ab-next -> inline utilities in about.tsx. */
+/* ab-links: kept as class anchor for responsive override below. */
 .ab-links { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.4rem; }
 .ab-biglink {
   display: grid;
@@ -425,13 +424,13 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   .ab-links { grid-template-columns: 1fr; }
 }
 
-/* .now-board/.now-cell/.now-logblock kept as class anchors for responsive nth-child/grid overrides below.
-   All other .now-* base styles -> inline utilities in app/_impl/now.tsx + components/NowClock.tsx. */
+/* now-board, now-cell, now-logblock: kept as class anchors for responsive nth-child/grid overrides below.
+   All other now-* base styles -> inline utilities in app/_impl/now.tsx + components/NowClock.tsx. */
 
-/* .uses-row/.uses-metawrap kept as class anchors for responsive overrides below.
-   All other .uses-* base styles -> inline utilities in app/_impl/uses.tsx. */
+/* uses-row, uses-metawrap: kept as class anchors for responsive overrides below.
+   All other uses-* base styles -> inline utilities in app/_impl/uses.tsx. */
 
-/* .contact/.ct-* -> app/contact.css (imported by app/_impl/contact.tsx) */
+/* contact, ct-* -> app/contact.css */
 
 @media (max-width: 56.25rem) {
   .now-board { grid-template-columns: 1fr 1fr; }
