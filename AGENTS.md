@@ -119,7 +119,7 @@ Grow coverage *with* the code, but only where it pays off — don't test-everyth
   UI is high-effort, low-value. Inline component logic stays uncovered unless
   extracted to `lib/`.
 - **Spacing/computed-style contracts** the viewport-only visual snapshots can't
-  see → assert computed values in `e2e/spacing.spec.ts` (`@spacing`).
+  see → assert computed values in `tests/e2e/spacing.spec.ts` (`@spacing`).
 
 # Before editing files
 
