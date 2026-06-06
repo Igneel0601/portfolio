@@ -55,6 +55,23 @@
 }
 .ct-input.area { resize: vertical; min-height: 7.5rem; line-height: 1.55; }
 .ct-field.err .ct-input { border-color: color-mix(in oklab, var(--status-dead) 60%, transparent); }
+/* Browser autofill forces its own light background + dark text, which broke the
+   dark inputs. Repaint the field with --paper via a large inset shadow (1000px
+   spread so it covers the full-width input) and keep ink-colored text; the
+   9999s background-color transition defers the brief autofill flash. */
+.ct-input:-webkit-autofill,
+.ct-input:-webkit-autofill:hover,
+.ct-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--ink);
+  -webkit-box-shadow: 0 0 0 1000px var(--paper) inset;
+  caret-color: var(--accent);
+  transition: background-color 9999s ease-in-out 0s;
+}
+.ct-input:-webkit-autofill:focus {
+  -webkit-box-shadow:
+    0 0 0 0.1875rem color-mix(in oklab, var(--accent) 14%, transparent),
+    0 0 0 1000px var(--paper) inset;
+}
 .ct-actions { display: flex; align-items: center; gap: 1.125rem; flex-wrap: wrap; margin-top: 1.75rem; }
 .ct-btn {
   font-family: var(--mono);
