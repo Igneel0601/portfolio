@@ -38,10 +38,10 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
         <h1 className="t-display m-0 text-ink">
           writing<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead m-writing-sub">{SUBTITLE}</p>
-        <div className="c-xs m-writing-status">
+        <p className="t-lead m-0 mt-[0.85rem] max-w-[42ch] italic text-ink-soft">{SUBTITLE}</p>
+        <div className="c-xs flex items-center justify-between gap-3 mt-[1.1rem] text-accent">
           <span>$ ls /writing</span>
-          <span className="m-writing-status-meta">
+          <span className="text-ink-dim">
             {total} entries
             {counts.latest ? ` · last commit ${fmtDate(counts.latest)}` : ""}
           </span>
@@ -70,18 +70,26 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
 
       <DashedRule />
 
-        <div className="m-writing-list">
+        <div className="max-w-[34rem] mx-auto">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow no-pop">
-              <div className="m-wrow-top">
-                <span className="l-meta m-wrow-cat">{p.categories[0]?.title ?? "post"}</span>
-                <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
+            <Link
+              key={p.slug}
+              href={`/writing/${p.slug}`}
+              className="block py-[1.15rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]"
+            >
+              <div className="flex items-baseline justify-between gap-3 mb-2">
+                <span className="l-meta text-accent">{p.categories[0]?.title ?? "post"}</span>
+                <span className="l-meta text-ink-dim whitespace-nowrap">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
               </div>
-              <h2 className="t-h4 m-wrow-title">{p.title}</h2>
-              {p.metaDescription && <p className="t-body m-wrow-dek">{p.metaDescription}</p>}
-              <div className="c-xs m-wrow-meta">
+              <h2 className="t-h4 m-0 mb-[0.45rem] text-ink text-balance">{p.title}</h2>
+              {p.metaDescription && (
+                <p className="t-body m-0 mb-[0.6rem] max-w-[46ch] italic text-ink-soft line-clamp-2">
+                  {p.metaDescription}
+                </p>
+              )}
+              <div className="c-xs flex items-center gap-2 text-ink-dim">
                 {p.readMinutes} min read
-                <span className="m-wrow-sep">·</span>
+                <span className="opacity-40">·</span>
                 {p.wordCount.toLocaleString()} words
               </div>
             </Link>
@@ -94,9 +102,9 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
         </nav>
       )}
 
-      <div className="l-meta m-wfoot">
+      <div className="l-meta max-w-[34rem] mx-auto mt-[0.6rem] mb-12 px-[1.375rem] flex items-center justify-between gap-3 text-ink-dim">
         <span>{"// end of log"}</span>
-        <a href="/rss.xml" className="m-wfoot-rss no-pop">
+        <a href="/rss.xml" className="inline-flex items-center gap-[0.4rem] text-accent no-underline no-pop">
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>
