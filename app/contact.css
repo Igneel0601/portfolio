@@ -1,0 +1,164 @@
+/* Contact page layout — form, send sequence, direct-links rail.
+   Imported in app/_impl/contact.tsx.
+   All .ct-* classes live here; design tokens come from tokens.css. */
+
+.contact { padding-bottom: 3rem; } /* match the ~108px pre-footer gap */
+.ct-grid {
+  display: grid;
+  grid-template-columns: 1fr 21rem;
+  gap: 3.5rem;
+  margin-top: 2.5rem;
+  align-items: start;
+}
+
+/* form */
+.ct-formwrap {
+  border: 1px solid var(--hair);
+  border-radius: 0.375rem;
+  padding: 2rem;
+  background: var(--paper-2);
+  /* Stretch the form box to the taller column (the info rail) so their bottoms
+     line up. Rail stays align-items:start, so its sticky behavior is intact. */
+  align-self: stretch;
+}
+.ct-field { margin-bottom: 1.5rem; }
+.ct-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin-bottom: 0.6rem;
+}
+.ct-hint { text-transform: none; letter-spacing: 0; color: var(--ink-dim); font-size: 0.7rem; }
+.ct-err { text-transform: none; letter-spacing: 0; color: var(--status-dead); font-size: 0.72rem; }
+.ct-input {
+  width: 100%;
+  background: var(--paper);
+  border: 1px solid var(--hair);
+  border-radius: 0.1875rem;
+  padding: 0.8rem 0.95rem;
+  color: var(--ink);
+  caret-color: var(--accent);
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.ct-input::placeholder { color: var(--ink-dim); }
+.ct-input:focus {
+  outline: 0;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 0.1875rem color-mix(in oklab, var(--accent) 14%, transparent);
+}
+.ct-input.area { resize: vertical; min-height: 7.5rem; line-height: 1.55; }
+.ct-field.err .ct-input { border-color: color-mix(in oklab, var(--status-dead) 60%, transparent); }
+.ct-actions { display: flex; align-items: center; gap: 1.125rem; flex-wrap: wrap; margin-top: 1.75rem; }
+.ct-btn {
+  font-family: var(--mono);
+  font-size: 0.875rem;
+  color: var(--paper);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 0.1875rem;
+  padding: 0.8rem 1.4rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.16s ease, border-color 0.16s ease;
+}
+.ct-btn:hover { background: color-mix(in oklab, var(--accent) 85%, #fff); }
+.ct-btn.ghost { background: none; color: var(--accent); border-color: var(--hair-2); }
+.ct-btn.ghost:hover { background: color-mix(in oklab, var(--accent) 10%, transparent); border-color: var(--accent); }
+.ct-nospam { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-dim); }
+
+/* send sequence + sent state */
+.ct-sent { min-height: 20rem; display: flex; flex-direction: column; }
+.ct-sendlog { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); line-height: 2; }
+.ct-sendline { opacity: 0; animation: ct-linein 0.3s ease both; }
+.ct-sendline:first-child { color: var(--accent); }
+@keyframes ct-linein {
+  from { opacity: 0; transform: translateY(0.25rem); }
+  to { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: reduce) { .ct-sendline { animation: none; opacity: 1; } }
+.ct-sentbig {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-top: 1.75rem;
+  color: var(--ink);
+}
+.ct-sentnote {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-size: 1.125rem;
+  color: var(--ink-soft);
+  max-width: 44ch;
+  margin: 0.875rem 0 1.75rem;
+  line-height: 1.5;
+}
+
+/* direct-links rail */
+.ct-rail { display: flex; flex-direction: column; gap: 1.4rem; position: sticky; top: 6rem; }
+.ct-avail {
+  display: flex;
+  gap: 0.875rem;
+  align-items: center;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid color-mix(in oklab, var(--accent) 35%, transparent);
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+  border-radius: 0.25rem;
+}
+.ct-availdot {
+  width: 0.5625rem;
+  height: 0.5625rem;
+  border-radius: 50%;
+  background: var(--accent);
+  flex: none;
+  box-shadow: 0 0 0 0.25rem color-mix(in oklab, var(--accent) 14%, transparent);
+  animation: ct-pulse 2.4s ease-in-out infinite;
+}
+@keyframes ct-pulse { 50% { box-shadow: 0 0 0 0.45rem transparent; } }
+@media (prefers-reduced-motion: reduce) { .ct-availdot { animation: none; } }
+.ct-availt { font-family: var(--mono); font-size: 0.875rem; color: var(--accent); font-weight: 600; }
+.ct-avails { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-soft); margin-top: 0.25rem; }
+.ct-links {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--hair);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+.ct-link {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.125rem;
+  border-bottom: 1px solid var(--hair);
+  font-family: var(--mono);
+  transition: background-color 0.15s ease;
+}
+.ct-link:last-child { border-bottom: 0; }
+.ct-link:hover { background: var(--paper-2); }
+.ct-k { font-size: 0.6875rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-dim); }
+.ct-v { font-size: 0.875rem; color: var(--ink); }
+.ct-link:hover .ct-v { color: var(--accent); }
+.ct-ar { color: var(--ink-dim); font-size: 0.8rem; }
+.ct-metarail { margin: 0; }
+.ct-ps {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-dim);
+  margin-top: 0.5rem;
+  line-height: 1.5;
+}
+
+@media (max-width: 56.25rem) {
+  .ct-grid { grid-template-columns: 1fr; }
+  .ct-rail { position: static; }
+}

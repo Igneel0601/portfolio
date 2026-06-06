@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/contact.css";
 import { useState } from "react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";

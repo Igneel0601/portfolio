@@ -1,0 +1,107 @@
+/* 404 page layout.
+   Imported in app/not-found.tsx.
+   All .nf-* classes live here; design tokens come from tokens.css. */
+
+.nf-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.nf-content {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  column-gap: clamp(2.5rem, 6vw, 6rem);
+  max-width: 80rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: clamp(1.25rem, 3vw, 2.5rem) clamp(1.5rem, 5vw, 3.5rem);
+}
+.nf-content > .nf-left { min-width: 0; }
+.nf-content > .nf-right { min-width: 0; }
+@media (max-width: 55rem) {
+  .nf-content { grid-template-columns: 1fr; row-gap: 2rem; }
+}
+.nf-eyebrow {
+  color: var(--ink-dim);
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  margin-bottom: 1.5rem;
+}
+.nf-eyebrow::before {
+  content: "";
+  width: 1.125rem;
+  height: 0.0625rem; /* 1px hairline */
+  background: var(--accent);
+  display: inline-block;
+}
+/* bespoke 404 hero — larger than t-display, kept as one-off intentional override */
+.nf-big {
+  color: var(--ink);
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  font-size: clamp(8.75rem, 22vw, 20rem);
+  line-height: 0.88;
+  letter-spacing: -0.05em;
+  font-weight: 500;
+}
+.nf-big .nf-slash { color: var(--ink-dim); margin: 0 -.02em; }
+
+.nf-h1 {
+  color: var(--ink);
+  margin: 2.25rem 0 0;
+  max-width: 28ch;
+}
+.nf-h1 .nf-acc { color: var(--accent); }
+
+.nf-sub {
+  margin: 1.125rem 0 0;
+  max-width: 50ch;
+  color: var(--ink-soft);
+}
+
+.nf-routes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+.nf-routes-lbl {
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.nf-route {
+  display: flex;
+  align-items: baseline;
+  gap: 0.875rem;
+  color: var(--ink-soft);
+  transition: color .18s ease;
+}
+.nf-route .nf-arr { color: var(--ink-dim); transition: color .18s ease, transform .18s ease; }
+.nf-route .nf-path { color: var(--ink); }
+.nf-route .nf-meta { color: var(--ink-dim); margin-left: auto; padding-left: 1rem; }
+.nf-route:hover { color: var(--accent); }
+.nf-route:hover .nf-path,
+.nf-route:hover .nf-arr,
+.nf-route:hover .nf-meta { color: var(--accent); }
+.nf-route:hover .nf-arr { transform: translateX(3px); }
+
+/* Full-bleed top hairline (matches the global Footer), with the text
+   constrained to the same 80rem column as .nf-content via .nf-footer-inner. */
+.nf-footer {
+  width: 100%;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--hair);
+  color: var(--ink-dim);
+}
+.nf-footer-inner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
+}
+.nf-footer-right { margin-left: auto; }

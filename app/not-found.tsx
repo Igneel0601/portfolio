@@ -2,6 +2,7 @@
 // not-found bypasses — import it directly so the custom cursor, nav chrome,
 // and mobile .m-* classes are styled on 404 pages.
 import "@/app/shell.css";
+import "@/app/not-found.css";
 import { MotionProvider } from "@/components/MotionProvider";
 import { Background } from "@/components/Background";
 import CustomCursor from "@/components/CustomCursor";
