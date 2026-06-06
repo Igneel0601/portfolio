@@ -307,6 +307,32 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
    ~108 via their own section padding; the /writing index via its pager tail.) */
 .pre-footer-pad { padding-bottom: 3rem; }
 
+/* Shared page footer chrome — used by WritingFooter (posts) and StudyFooter (case studies). */
+.cs-footer-wrap {
+  width: 100%;
+  margin-top: 3rem;
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: var(--hair);
+}
+.cs-footer {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 1.25rem clamp(1.25rem, 4vw, 3.5rem);
+  color: var(--ink-dim);
+}
+.cs-footer-middle { text-align: center; }
+.cs-footer-right { text-align: right; }
+@media (max-width: 45rem) {
+  .cs-footer { grid-template-columns: 1fr auto; gap: 1rem; }
+  .cs-footer-middle { display: none; }
+}
+
 /* w-prose, w-ornament, wp-* -> app/prose.css */
 
 /* ── shared pager controls (pager-*) — the /writing jump + page-of + arrows
