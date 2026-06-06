@@ -72,7 +72,10 @@ export function SceneBoot() {
       gsap.set(words, { yPercent: 100, autoAlpha: 0 });
       gsap.set(sub, { autoAlpha: 0, y: 12 });
       gsap.set(ctas, { autoAlpha: 0, y: 14 });
-      if (prompt) prompt.textContent = "";
+      if (prompt) {
+        prompt.textContent = "";
+        gsap.set(prompt, { autoAlpha: 1 });
+      }
 
       const tl = gsap.timeline();
       if (prompt) {

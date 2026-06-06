@@ -318,6 +318,18 @@ a, button {
 /* .m-btn → w-full justify-center no-underline utilities (MobileBoot.tsx, parts.tsx). */
 
 /* ── home: boot + hero ────────────────────────────────── */
+/* FOUC guard: hide animated boot elements before GSAP's useEffect runs.
+   Scoped to desktop + no-preference so reduced-motion and mobile are unaffected.
+   GSAP's inline visibility overrides this once the animation starts. */
+@media (prefers-reduced-motion: no-preference) and (min-width: 48rem) {
+  [data-scene="boot"] [data-boot-line],
+  [data-scene="boot"] [data-boot-prompt],
+  [data-scene="boot"] [data-headline-word],
+  [data-scene="boot"] [data-subhead],
+  [data-scene="boot"] [data-cta] {
+    visibility: hidden;
+  }
+}
 /* .m-boot/.m-boot-prompt/.m-boot-text/.m-boot-line → utilities in MobileBoot.tsx.
    .m-hero/.m-hero-em/.m-hero-meta/.m-hero-ctas → utilities in MobileBoot.tsx. */
 .m-hero-title {
