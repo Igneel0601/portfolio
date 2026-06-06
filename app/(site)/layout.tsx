@@ -1,5 +1,4 @@
-import "@/app/desktop.css";
-import "@/app/mobile.css";
+import "@/app/shell.css";
 import { SiteShell } from "@/components/shells/SiteShell";
 
 // Single shell for every device — no UA routing. Both desktop-only and

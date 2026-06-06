@@ -44,10 +44,9 @@ escape hatch. Use this map before touching files.
 - Shared button / pill / link / box → `app/tokens.css`.
 
 ## Shell-only styles
-- Desktop-only: `app/desktop.css` (custom cursor, hover-pop links,
-  parallax bg, work table chrome, writing archive).
-- Mobile-only: `app/mobile.css` (`.m-*` classes for components in
-  `components/mobile/`).
+- Combined shell file: `app/shell.css`. Desktop section: custom cursor,
+  hover-pop links, parallax bg, cinematic showcase chrome. Mobile section:
+  `.m-*` classes for components in `components/mobile/`.
 
 ## Components
 - Mobile shell components — `components/mobile/*`. Rule: prefer `.m-*`
@@ -132,4 +131,4 @@ Skipping this and going straight to edits wastes the user's time when the diagno
 
 # Mobile shell
 
-Files under `components/mobile/*` prefer classes from `app/mobile.css` (`.m-*` prefix), token classes from `app/tokens.css` (`t-*`, `c-*`, `l-*`, `i-*`), or Tailwind utilities over inline `style={{}}`. Extract to a class when the same style appears 2+ times, when it needs state (hover, `[data-*]`, media query), or when it would otherwise be dead/redundant. Single-use one-offs may stay inline. Dynamic state flows through `data-*` attributes that CSS selectors target.
+Files under `components/mobile/*` prefer classes from `app/shell.css` (`.m-*` prefix), token classes from `app/tokens.css` (`t-*`, `c-*`, `l-*`, `i-*`), or Tailwind utilities over inline `style={{}}`. Extract to a class when the same style appears 2+ times, when it needs state (hover, `[data-*]`, media query), or when it would otherwise be dead/redundant. Single-use one-offs may stay inline. Dynamic state flows through `data-*` attributes that CSS selectors target.

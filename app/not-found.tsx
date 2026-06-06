@@ -1,10 +1,7 @@
-// The shells' stylesheets are normally pulled in by app/(site)'s layout, which
-// the root not-found bypasses — so import both here. Without desktop.css the
-// custom cursor (#custom-cursor), nav hover-pop, and parallax bg are unstyled;
-// without mobile.css the MobileNav (.m-*) is unstyled. 404s are rare, so
-// loading both is a fine trade for getting either shell's chrome right.
-import "@/app/desktop.css";
-import "@/app/mobile.css";
+// shell.css is normally pulled in by app/(site)'s layout, which the root
+// not-found bypasses — import it directly so the custom cursor, nav chrome,
+// and mobile .m-* classes are styled on 404 pages.
+import "@/app/shell.css";
 import { MotionProvider } from "@/components/MotionProvider";
 import { Background } from "@/components/Background";
 import CustomCursor from "@/components/CustomCursor";
