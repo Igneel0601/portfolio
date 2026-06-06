@@ -157,12 +157,13 @@ export function ContactPage() {
               </div>
             ) : (
               <form onSubmit={submit} noValidate>
-                {/* Honeypot. DOM name is deliberately NOT "company"/"organization":
-                    Chrome's autofill classifier fills any field it reads as an org
-                    with a contact's company name (e.g. picking a "Swift Tech"
-                    contact), which would trip the honeypot and silently drop a real
-                    submission. A non-semantic name dodges autofill; the value still
-                    flows to state.company for the server-side bot check. */}
+                {/* Honeypot. MUST be hidden with display:none — Chrome's autofill
+                    fills offscreen-but-rendered fields (position:-9999px/opacity:0),
+                    which let a picked contact's org name land here and silently trip
+                    the bot check on real submissions. display:none is not focusable,
+                    so autofill skips it; naive HTML-parsing bots still fill it and the
+                    value flows to state.company for the server-side check. The name is
+                    also non-semantic so no classifier targets it. */}
                 <input
                   type="text"
                   name="ot-note"
@@ -171,7 +172,7 @@ export function ContactPage() {
                   aria-hidden="true"
                   value={v.company}
                   onChange={set("company")}
-                  style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+                  style={{ display: "none" }}
                 />
                 <div className={"ct-field" + (touched.name && errors.name ? " err" : "")}>
                   <label htmlFor="f-name" className="ct-label">
