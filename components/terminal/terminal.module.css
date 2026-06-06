@@ -137,6 +137,13 @@
   display: block;
   margin-top: 2.45rem;
 }
+/* Once the stage stacks to 1-col there's no room for the portrait — drop it and
+   show the fastfetch info only. Placed after the base rule so it wins on order. */
+@media (max-width: 860px) {
+  .portraitImg {
+    display: none;
+  }
+}
 
 /* ─── fastfetch rows (no per-block border) ──────────────── */
 .quote {
