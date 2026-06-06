@@ -51,20 +51,8 @@
 /* .m-btn → w-full justify-center no-underline utilities (MobileBoot.tsx, parts.tsx). */
 
 /* ── home: boot + hero ────────────────────────────────── */
-.m-boot {
-  padding: 0 1.375rem 0.5625rem;
-  line-height: 1.75;
-}
-.m-boot-prompt { color: var(--accent); }
-.m-boot-text { color: var(--ink); }
-.m-boot-line {
-  padding-left: 0.625rem;
-  /* --ink-soft (not --ink-dim) so the 9.6px boot text clears WCAG AA 4.5:1
-     on the dark bg; --ink-dim (#5b6573) was only 3.2:1. */
-  color: var(--ink-soft);
-}
-
-.m-hero { padding: 1.125rem 1.375rem 1.375rem; }
+/* .m-boot/.m-boot-prompt/.m-boot-text/.m-boot-line → utilities in MobileBoot.tsx.
+   .m-hero/.m-hero-em/.m-hero-meta/.m-hero-ctas → utilities in MobileBoot.tsx. */
 .m-hero-title {
   margin: 0 0 0.625rem;
   line-height: 1.1;
@@ -79,10 +67,7 @@
   padding: 0 0.05em;
   background: linear-gradient(transparent 62%, var(--highlight) 62%);
 }
-.m-hero-em {
-  font-style: italic;
-  color: var(--accent);
-}
+/* .m-hero-em → italic text-accent utilities in MobileBoot.tsx (HeadlineLine). */
 /* During the GSAP rise each word sits on an iOS compositing layer (transform),
    and WebKit clips overflowing glyph ink to that layer's box — slicing the
    italic f's ascender/terminal mid-animation. Pad the word box so the layer
@@ -102,16 +87,8 @@
   padding-block: 0.7em;
   margin-block: -0.7em;
 }
-.m-hero-meta {
-  margin: 0 0 1rem;
-  line-height: 1.65;
-  color: var(--ink-dim);
-}
-.m-hero-ctas {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4375rem;
-}
+/* .m-hero-meta → c-xs m-0 mb-4 leading-[1.65] text-ink-dim in MobileBoot.tsx.
+   .m-hero-ctas → flex flex-col gap-[0.4375rem] in MobileBoot.tsx. */
 
 /* ── home deck: GSAP transform pager (one swipe = one full-screen page) ──
    The body is locked and the deck owns the viewport; a track inside is

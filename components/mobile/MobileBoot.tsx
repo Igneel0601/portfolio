@@ -34,7 +34,7 @@ function HeadlineLine({ tokens }: { tokens: readonly HeadlineToken[] }) {
           ) : "hilite" in t ? (
             <span className="m-hero-highlight">{t.hilite}</span>
           ) : (
-            <em className="m-hero-em">{t.em}</em>
+            <em className="italic text-accent">{t.em}</em>
           );
         return (
           // The space sits BETWEEN word spans as its own text node — a trailing
@@ -131,26 +131,26 @@ export function MobileBoot() {
 
   return (
     <div ref={rootRef} className="m-boot-scene">
-      <div className="c-xs m-boot">
+      <div className="c-xs px-[1.375rem] pb-[0.5625rem] leading-[1.75]">
         <div>
-          <span className="m-boot-prompt" data-boot-prompt>
+          <span className="text-accent" data-boot-prompt>
             {BOOT_PROMPT_FULL}
           </span>
         </div>
         {BOOT_LINES.slice(1).map((l, i) => (
-          <div key={i} data-boot-line className="m-boot-line">
+          <div key={i} data-boot-line className="pl-[0.625rem] text-ink-soft">
             {l.text}
           </div>
         ))}
       </div>
 
-      <div className="m-hero">
+      <div className="pt-[1.125rem] px-[1.375rem] pb-[1.375rem]">
         <h1 className="t-display m-hero-title">
           {PROFILE.headlineMobile.map((line, i) => (
             <HeadlineLine key={i} tokens={line} />
           ))}
         </h1>
-        <p data-subhead className="c-xs m-hero-meta">
+        <p data-subhead className="c-xs m-0 mb-4 leading-[1.65] text-ink-dim">
           {PROFILE.subheadMobile.map((line, i) => (
             <Fragment key={i}>
               {i > 0 && <br />}
@@ -158,7 +158,7 @@ export function MobileBoot() {
             </Fragment>
           ))}
         </p>
-        <div className="m-hero-ctas">
+        <div className="flex flex-col gap-[0.4375rem]">
           <button
             type="button"
             data-cta
