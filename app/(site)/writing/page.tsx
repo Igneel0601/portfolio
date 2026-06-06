@@ -27,28 +27,17 @@ export default async function WritingPage({
     <>
       {/* Desktop archive */}
       <main className="flex-1 hidden md:block">
-        <section
-          className="page-shell"
-          style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
-        >
-          <div className="l-eyebrow" style={{ color: 'var(--ink-dim)' }}>
+        <section className="page-shell pt-[clamp(1.25rem,2.5vw,1.75rem)]">
+          <div className="l-eyebrow text-ink-dim">
             archive · {new Date().getFullYear()}
           </div>
 
-          <h1 className="t-display" style={{ marginTop: '0.75rem' }}>
+          <h1 className="t-display mt-3">
             writing
-            <span style={{ color: 'var(--accent)' }}>.</span>
+            <span className="text-accent">.</span>
           </h1>
 
-          <p
-            className="t-lead"
-            style={{
-              marginTop: '1rem',
-              color: 'var(--ink-soft)',
-              fontStyle: 'italic',
-              maxWidth: '42ch',
-            }}
-          >
+          <p className="t-lead mt-4 text-ink-soft italic max-w-[42ch]">
             Notes, essays, build logs — work-in-progress thoughts, written in plain text and read in any font.
           </p>
 
