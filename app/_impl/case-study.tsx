@@ -8,7 +8,7 @@ import {
   buildMdxComponents,
   Frontmatter,
 } from "@/components/case-study/mdx-components";
-import { MoveUpRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import { Breadcrumb } from "@/components/case-study/Breadcrumb";
 import { Toc } from "@/components/case-study/Toc";
 import { Pager } from "@/components/case-study/Pager";
@@ -93,7 +93,7 @@ export async function CaseStudyPage({
                   >
                     <span className="live">●</span> live ·{" "}
                     {data.links.live.replace(/^https?:\/\//, "").replace(/\/$/, "")}{" "}
-                    <MoveUpRight className="i-xs ext" aria-hidden />
+                    <ExternalLink className="i-xs ext" aria-hidden />
                   </a>
                 )}
                 {data.links.repo && (
@@ -103,7 +103,7 @@ export async function CaseStudyPage({
                     target="_blank"
                     rel="noopener"
                   >
-                    $ git source <MoveUpRight className="i-xs ext" aria-hidden />
+                    $ git source <ExternalLink className="i-xs ext" aria-hidden />
                   </a>
                 )}
               </div>
