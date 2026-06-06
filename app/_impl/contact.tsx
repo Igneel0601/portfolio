@@ -131,8 +131,8 @@ export function ContactPage() {
                 </div>
                 <p className="ct-sentnote">
                   Got it. I&apos;m juggling roughly six things and a deadline, but
-                  you&apos;ll hear back within a day or two — if it&apos;s urgent, just
-                  email me directly.
+                  you&apos;ll hear back within a day or two — if it&apos;s urgent, ping me
+                  on LinkedIn or X; I check those faster.
                 </p>
                 <button className="ct-btn ghost" onClick={reset}>
                   $ send another
