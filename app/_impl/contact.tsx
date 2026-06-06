@@ -28,7 +28,7 @@ function validate(v: Values): Errors {
   return e;
 }
 
-function SendLog({ done }: { done: boolean }) {
+function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
   const lines = [
     `$ ./send.sh --to ${CONTACT.email}`,
     "[ ok ] validating fields",
@@ -43,7 +43,7 @@ function SendLog({ done }: { done: boolean }) {
         </div>
       ))}
       <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-        {done ? "[ ok ] queued in 0.31s" : "delivering…"}
+        {done ? `[ ok ] queued in ${elapsed ?? "0.00"}s` : "delivering…"}
       </div>
     </div>
   );
@@ -53,6 +53,7 @@ export function ContactPage() {
   const [v, setV] = useState<Values>({ name: "", email: "", message: "", company: "" });
   const [touched, setTouched] = useState<Partial<Record<Field, string>>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [elapsed, setElapsed] = useState("0.00");
   const errors = validate(v);
   const hasErr = Object.keys(errors).length > 0;
 
@@ -65,6 +66,7 @@ export function ContactPage() {
     setTouched({ name: "1", email: "1", message: "1" });
     if (hasErr) return;
     setState("sending");
+    const t0 = performance.now();
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -72,6 +74,7 @@ export function ContactPage() {
         body: JSON.stringify(v),
       });
       if (!res.ok) throw new Error("send failed");
+      setElapsed(((performance.now() - t0) / 1000).toFixed(2));
       setState("sent");
     } catch {
       setState("error");
@@ -111,7 +114,7 @@ export function ContactPage() {
           <div className="ct-formwrap">
             {state === "sent" ? (
               <div className="ct-sent ct-sent-ok">
-                <SendLog done />
+                <SendLog done elapsed={elapsed} />
                 <div className="ct-sentbig">
                   message sent<span className="text-accent">.</span>
                 </div>
