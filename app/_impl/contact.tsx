@@ -130,8 +130,9 @@ export function ContactPage() {
                   message sent<span className="text-accent">.</span>
                 </div>
                 <p className="ct-sentnote">
-                  It&apos;s on its way. I usually reply within a day or two — if it&apos;s
-                  urgent, just email me directly.
+                  Got it. I&apos;m juggling roughly six things and a deadline, but
+                  you&apos;ll hear back within a day or two — if it&apos;s urgent, just
+                  email me directly.
                 </p>
                 <button className="ct-btn ghost" onClick={reset}>
                   $ send another
