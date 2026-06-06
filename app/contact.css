@@ -91,7 +91,11 @@
 .ct-nospam { font-family: var(--mono); font-size: 0.7rem; color: var(--ink-dim); }
 
 /* send sequence + sent state */
-.ct-sent { min-height: 20rem; display: flex; flex-direction: column; }
+/* Reserve ~the idle form's content height so swapping form -> success doesn't
+   shrink the box and shift the rail below it on mobile (1-col, no align-self
+   stretch). Rem scales with the responsive root, so this tracks the form across
+   widths; on desktop the formwrap is stretched to the rail, so this is a floor. */
+.ct-sent { min-height: 30rem; display: flex; flex-direction: column; }
 .ct-sendlog { font-family: var(--mono); font-size: 0.85rem; color: var(--ink-soft); line-height: 2; }
 .ct-sendline { opacity: 0; animation: ct-linein 0.3s ease both; }
 .ct-sendline:first-child { color: var(--accent); }
