@@ -6,13 +6,14 @@ const FORMAT_BOLD = 1
 const FORMAT_ITALIC = 1 << 1
 const FORMAT_STRIKETHROUGH = 1 << 2
 const FORMAT_UNDERLINE = 1 << 3
-const FORMAT_CODE = 1 << 4
 
 function renderText(node: LexicalNode, key: string) {
   const text = node.text ?? ''
   const fmt = typeof node.format === 'number' ? node.format : 0
   let el: React.ReactNode = text
-  if (fmt & FORMAT_CODE) el = <code>{el}</code>
+  // Inline code intentionally NOT rendered as <code> — the green inline spans
+  // broke reading flow mid-sentence. Backtick text renders as plain prose; only
+  // fenced code BLOCKS (the 'code' node below) keep code styling.
   if (fmt & FORMAT_BOLD) el = <strong>{el}</strong>
   if (fmt & FORMAT_ITALIC) el = <em>{el}</em>
   if (fmt & FORMAT_UNDERLINE) el = <u>{el}</u>

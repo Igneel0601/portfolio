@@ -17,24 +17,6 @@
 .cs-prompt  { color: var(--ink-soft); margin-left: 0.375rem; }
 .cs-term-right { margin-left: auto; color: var(--ink-dim); }
 
-.cs-crumb-line {
-  color: var(--ink-dim);
-  margin-bottom: 1.5rem;
-}
-/* Breadcrumb is nav-like chrome (carries .no-pop, opts out of the global
-   link rule): accent, no resting underline, underline on hover. */
-.cs-crumb-line a {
-  color: var(--accent);
-  text-decoration: none;
-  transition: color 0.18s ease;
-}
-.cs-crumb-line a:hover {
-  text-decoration: underline;
-  text-decoration-thickness: 0.0625rem;
-  text-underline-offset: 0.2em;
-}
-.cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
-
 /* Outer max-width + horizontal gutter come from .page-shell. The doc is a
    2-col grid: prose+breakout column on the left, sticky TOC on the right.
    Inside .cs-content, a 2-col sub-grid pins prose to the left at ~65ch
