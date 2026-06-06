@@ -96,13 +96,7 @@ a, button {
 [data-nav-link][data-nav-kind="route"]:hover  { color: var(--accent-2); }
 [data-nav-link][data-nav-kind="scroll"]:hover { color: var(--accent); }
 
-/* /work — page dek under the title (mirrors mobile .m-work-sub). */
-.wk-sub {
-  margin: 0.85rem 0 0;
-  max-width: 52ch;
-  font-style: italic;
-  color: var(--ink-soft);
-}
+/* /work dek (.wk-sub) → inline utilities in components/work/WorkLog.tsx. */
 
 /* Shared tag-filter pill strip — used by both /work (tags) and /writing
    (categories). The count sits in a nested <span>; active = data-active. */
@@ -127,42 +121,10 @@ a, button {
 }
 .tag-chip[data-active="true"] span { color: var(--accent); }
 
-/* /work — build log table */
-.work-row { position: relative; transition: background-color .15s ease; }
-.work-row[data-link="true"] { cursor: pointer; }
-
-/* Default state for linked rows: name in accent-2 (teal) to signal tappable,
-   mirroring the mobile WorkPageRow treatment. Non-linked rows inherit ink. */
-.work-row[data-link="true"] .work-name,
-.work-row[data-link="true"] .font-bold {
-  color: var(--accent-2);
-}
-
-.work-row[data-link="true"]:hover .work-name,
-.work-row[data-link="true"]:hover .font-bold {
-  color: var(--accent);
-}
-.work-row[data-link="true"] .work-chev { opacity: 0; transition: opacity .15s ease; color: var(--accent); justify-self: end; }
-.work-row[data-link="true"]:hover .work-chev { opacity: 1; }
-.work-row[data-hidden="true"] { display: none; }
-
-/* .work-status — color comes from --status-* tokens in tokens.css. */
-.work-row[data-status-row="active"]   .work-status { color: var(--status-active); }
-.work-row[data-status-row="wip"]      .work-status { color: var(--status-wip); }
-.work-row[data-status-row="archived"] .work-status { color: var(--status-archived); }
-.work-row[data-status-row="dead"]     .work-status {
-  color: var(--status-dead);
-  text-decoration: line-through;
-}
-
-/* Whole-row treatment: dead rows fade out; wip no longer dims (the amber
-   pill is signal enough). */
-.work-row[data-status-row="dead"] { opacity: .5; }
-
-.work-blurb { min-width: 0; }
-
-.work-back-link { color: var(--accent-2); transition: color .15s ease; }
-.work-back-link:hover { color: var(--accent); }
+/* /work build-log table (.work-*) → inline utilities in WorkLog.tsx:
+   group/group-hover for the linked-name + chevron reveal, a module-scope
+   status→color map for .work-status, data-[hidden=true]:hidden for the filter,
+   conditional opacity-50 for dead rows. (.work-name/.work-back-link were dead.) */
 
 /* /writing archive + /work status line — now inline Tailwind utilities in
    components/writing/WritingArchive.tsx and components/work/WorkLog.tsx. */

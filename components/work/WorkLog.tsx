@@ -12,6 +12,15 @@ function matchesFilter(row: WorkRow, filter: WorkFilter) {
   return row.tag === filter;
 }
 
+// Status → status-bar color (was .work-row[data-status-row=…] .work-status in
+// desktop.css). dead also strikes through. Tokens live in @theme.
+const STATUS_TEXT: Record<string, string> = {
+  active: "text-status-active",
+  wip: "text-status-wip",
+  archived: "text-status-archived",
+  dead: "text-status-dead line-through",
+};
+
 export function WorkLog({
   rows,
   commits,
@@ -55,7 +64,7 @@ export function WorkLog({
         <h1 data-page-title className="t-display mt-3">
           projects<span className="text-accent">.</span>
         </h1>
-        <p className="wk-sub t-lead">
+        <p className="t-lead mt-[0.85rem] max-w-[52ch] italic text-ink-soft">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no
           survivorship bias.
         </p>
@@ -120,23 +129,24 @@ export function WorkLog({
             <span />
           </div>
           {rows.map((row, i) => {
+            const linked = !!row.slug;
             const inner = (
               <>
-                <span className="font-bold">{row.name}</span>
+                <span className={`font-bold${linked ? " text-accent-2 group-hover:text-accent" : ""}`}>{row.name}</span>
                 <span className="mute">{row.tag}</span>
-                <span className="work-blurb mute">{row.blurb}</span>
-                <span data-status={row.status} className="work-status">
+                <span className="mute min-w-0">{row.blurb}</span>
+                <span className={STATUS_TEXT[row.status]}>
                   [{row.status}]
                 </span>
-                <span className="work-chev" aria-hidden>
+                <span className="opacity-0 transition-opacity text-accent justify-self-end group-hover:opacity-100" aria-hidden>
                   {row.slug && <ChevronRight className="i-sm" />}
                 </span>
               </>
             );
 
-            const className = `work-row c-md py-2.5 ${
+            const className = `c-md py-2.5 relative transition-colors group data-[hidden=true]:hidden ${
               i < rows.length - 1 ? "border-b border-dashed" : ""
-            } md:grid md:items-center gap-4`;
+            } md:grid md:items-center gap-4${row.status === "dead" ? " opacity-50" : ""}`;
             const style = {
               borderColor: "color-mix(in oklab, var(--ink) 25%, transparent)",
               gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
@@ -151,7 +161,7 @@ export function WorkLog({
                 data-link="true"
                 data-hidden={!matchesFilter(row, filter) ? "true" : undefined}
                 data-status-row={row.status}
-                className={className + " no-pop block"}
+                className={className + " no-pop block cursor-pointer"}
                 style={style}
               >
                 {inner}
