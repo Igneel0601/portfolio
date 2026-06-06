@@ -19,7 +19,8 @@ export default defineConfig({
       SITE_URL: "https://vergnyx.dev",
       BLOGGZ_URL: "http://localhost:3001",
     },
-    // Unit/contract tests only — Playwright specs under e2e/ are excluded.
-    include: ["{lib,components,app}/**/*.test.{ts,tsx}"],
+    // Unit/contract tests only — Playwright specs under tests/e2e/ are excluded
+    // (they're *.spec.ts, not *.test.ts).
+    include: ["tests/unit/**/*.test.{ts,tsx}"],
   },
 });

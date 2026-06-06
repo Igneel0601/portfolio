@@ -10,7 +10,7 @@ import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { motionMM, MOTION_BREAKPOINTS } from "@/lib/match-media";
 import { D, E } from "@/lib/motion-tokens";
 
-export function Nav() {
+export function Nav({ className }: { className?: string }) {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const navRef = useRef<HTMLElement | null>(null);
@@ -222,7 +222,7 @@ export function Nav() {
           backdropFilter: 'blur(24px) saturate(140%)',
           WebkitBackdropFilter: 'blur(24px) saturate(140%)',
         }}
-        className="sticky top-0 z-50"
+        className={`sticky top-0 z-[110]${className ? ` ${className}` : ""}`}
       >
         <div className="page-shell hidden md:flex items-center gap-5 py-3 c-md">
           <Link

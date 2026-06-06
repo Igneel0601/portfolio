@@ -20,7 +20,7 @@ export function NowClock() {
     return () => clearInterval(id);
   }, []);
   return (
-    <span className="now-clock" suppressHydrationWarning>
+    <span className="text-[1.625rem] tracking-[0.04em] [font-variant-numeric:tabular-nums]" suppressHydrationWarning>
       {time || "··:··:··"}
     </span>
   );

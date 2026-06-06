@@ -33,55 +33,63 @@ type Props = {
 export function MobileWriting({ posts, counts, total, tag, page, totalPages }: Props) {
   return (
     <>
-      <div className="m-page-header">
-        <div className="l-tag m-page-eyebrow">archive · {new Date().getFullYear()}</div>
-        <h1 className="t-display m-page-title" data-eyebrow="true">
-          writing<span className="m-page-title-dot">.</span>
+      <div className="px-[1.375rem] py-[1.125rem]">
+        <div className="l-tag mt-6 mb-1 text-ink-dim">archive · {new Date().getFullYear()}</div>
+        <h1 className="t-display m-0 text-ink">
+          writing<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead m-writing-sub">{SUBTITLE}</p>
-        <div className="c-xs m-writing-status">
+        <p className="t-lead m-0 mt-[0.85rem] max-w-[42ch] italic text-ink-soft">{SUBTITLE}</p>
+        <div className="c-xs flex items-center justify-between gap-3 mt-[1.1rem] text-accent">
           <span>$ ls /writing</span>
-          <span className="m-writing-status-meta">
+          <span className="text-ink-dim">
             {total} entries
             {counts.latest ? ` · last commit ${fmtDate(counts.latest)}` : ""}
           </span>
         </div>
       </div>
 
-      <div className="m-wfilter">
+      <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]">
         <Link
           href={writingHref(null, 1)}
-          className="c-xs m-chip no-pop"
+          className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
           data-active={tag === null ? "true" : undefined}
         >
-          all <span>{counts.all}</span>
+          all <span className={tag === null ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{counts.all}</span>
         </Link>
         {counts.tags.map((c) => (
           <Link
             key={c.slug}
             href={writingHref(c.slug, 1)}
-            className="c-xs m-chip no-pop"
+            className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
             data-active={tag === c.slug ? "true" : undefined}
           >
-            {c.title} <span>{c.count}</span>
+            {c.title} <span className={tag === c.slug ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{c.count}</span>
           </Link>
         ))}
       </div>
 
       <DashedRule />
 
-        <div className="m-writing-list">
+        <div className="max-w-[34rem] mx-auto">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/writing/${p.slug}`} className="m-wrow no-pop">
-              <div className="m-wrow-top">
-                <span className="l-meta m-wrow-cat">{p.categories[0]?.title ?? "post"}</span>
-                <span className="l-meta m-wrow-date">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
+            <Link
+              key={p.slug}
+              href={`/writing/${p.slug}`}
+              className="block py-[1.15rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]"
+            >
+              <div className="flex items-baseline justify-between gap-3 mb-2">
+                <span className="l-meta text-accent">{p.categories[0]?.title ?? "post"}</span>
+                <span className="l-meta text-ink-dim whitespace-nowrap">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
               </div>
-              <h2 className="t-h4 m-wrow-title">{p.title}</h2>
-              {p.metaDescription && <p className="t-body m-wrow-dek">{p.metaDescription}</p>}
-              <div className="c-xs m-wrow-meta">
+              <h2 className="t-h4 m-0 mb-[0.45rem] text-ink text-balance">{p.title}</h2>
+              {p.metaDescription && (
+                <p className="t-body m-0 mb-[0.6rem] max-w-[46ch] italic text-ink-soft line-clamp-2">
+                  {p.metaDescription}
+                </p>
+              )}
+              <div className="c-xs flex items-center gap-2 text-ink-dim">
                 {p.readMinutes} min read
-                <span className="m-wrow-sep">·</span>
+                <span className="opacity-40">·</span>
                 {p.wordCount.toLocaleString()} words
               </div>
             </Link>
@@ -89,14 +97,14 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
         </div>
 
       {totalPages > 1 && (
-        <nav className="m-pager" aria-label="pages">
+        <nav className="flex justify-end pt-10 px-[1.375rem] pb-[1.2rem]" aria-label="pages">
           <PagerControls page={page} totalPages={totalPages} tag={tag} />
         </nav>
       )}
 
-      <div className="l-meta m-wfoot">
+      <div className="l-meta max-w-[34rem] mx-auto mt-[0.6rem] mb-12 px-[1.375rem] flex items-center justify-between gap-3 text-ink-dim">
         <span>{"// end of log"}</span>
-        <a href="/rss.xml" className="m-wfoot-rss no-pop">
+        <a href="/rss.xml" className="inline-flex items-center gap-[0.4rem] text-accent no-underline no-pop">
           <CornerDownRight className="i-sm" aria-hidden /> rss
         </a>
       </div>

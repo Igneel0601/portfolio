@@ -6,11 +6,10 @@ import "./tokens.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
-// Root layout intentionally has NO shell. Proxy (proxy.ts) rewrites
-// every UA-routable URL into /d/* or /m/* per User-Agent; the matching subtree
-// layout (app/d/layout.tsx or app/m/layout.tsx) provides chrome + per-tree CSS.
-// Routes outside the subtrees (api, rss, sitemap, robots, not-found) render
-// here without chrome — they're either machine-readable or full-bleed.
+// Root layout intentionally has NO shell. The app/(site) route group layout
+// provides the single responsive shell (chrome + CSS) for every page route.
+// Routes outside the group (api, rss, sitemap, robots, not-found) render here
+// without chrome — they're either machine-readable or compose their own.
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",

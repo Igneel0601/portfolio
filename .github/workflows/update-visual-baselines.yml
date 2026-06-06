@@ -1,0 +1,50 @@
+name: Update Visual Baselines
+
+# On-demand refresh of the Playwright visual snapshots, run on the SAME
+# ubuntu-latest runner + bundled chromium as the E2E "visual" job, against the
+# SAME deployed Vercel preview (so DB-backed pages like /work and /writing
+# render real data). This is the canonical way to regenerate baselines so they
+# match CI exactly — see the note in e2e.yml.
+#
+# Gated by a repo variable so it does NOT run on every deploy:
+#   gh variable set REGEN_VISUAL_BASELINES --body true     # arm
+#   ... push the branch / let it deploy; this job uploads a `visual-baselines`
+#       artifact with the regenerated -linux.png snapshots ...
+#   gh variable set REGEN_VISUAL_BASELINES --body false    # disarm
+# Then download the artifact, drop it into e2e/visual.spec.ts-snapshots/, and
+# commit. (Artifact, not push-from-CI, so there's no deploy/regen loop.)
+on:
+  deployment_status:
+
+jobs:
+  update:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      vars.REGEN_VISUAL_BASELINES == 'true'
+    runs-on: ubuntu-latest
+    env:
+      E2E_BASE_URL: ${{ github.event.deployment_status.target_url }}
+      VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+
+      # --update-snapshots rewrites the -linux.png baselines from this runner's
+      # rendering, so they match what the E2E "visual" job captures.
+      - name: regenerate visual baselines
+        run: pnpm exec playwright test --grep "@visual" --update-snapshots
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: visual-baselines
+          path: tests/e2e/visual.spec.ts-snapshots/
+          retention-days: 7

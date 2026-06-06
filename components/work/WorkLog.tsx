@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { ExternalLink, ChevronRight } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 import type { WorkRow, WorkTag } from "@/lib/work-rows";
 
 type WorkFilter = WorkTag | "all";
@@ -11,6 +11,15 @@ function matchesFilter(row: WorkRow, filter: WorkFilter) {
   if (filter === "all") return true;
   return row.tag === filter;
 }
+
+// Status → status-bar color (was .work-row[data-status-row=…] .work-status in
+// desktop.css). dead also strikes through. Tokens live in @theme.
+const STATUS_TEXT: Record<string, string> = {
+  active: "text-status-active",
+  wip: "text-status-wip",
+  archived: "text-status-archived",
+  dead: "text-status-dead line-through",
+};
 
 export function WorkLog({
   rows,
@@ -49,26 +58,26 @@ export function WorkLog({
   return (
     <div>
       <section className="pt-6">
-        <div className="l-eyebrow" style={{ color: "var(--ink-dim)" }}>
+        <div className="l-eyebrow text-ink-dim">
           build log · {new Date().getFullYear()}
         </div>
-        <h1 data-page-title className="t-display" style={{ marginTop: "0.75rem" }}>
-          projects<span style={{ color: "var(--accent)" }}>.</span>
+        <h1 data-page-title className="t-display mt-3">
+          projects<span className="text-accent">.</span>
         </h1>
-        <p className="wk-sub t-lead">
+        <p className="t-lead mt-[0.85rem] max-w-[52ch] italic text-ink-soft">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no
           survivorship bias.
         </p>
 
-        <div className="wa-prompt c-md">
-          <span className="wa-cmd">$ ls /work</span>
-          <span className="wa-sep">·</span>
+        <div className="c-md mt-12 text-ink-soft flex items-baseline gap-2.5 flex-wrap">
+          <span className="text-accent">$ ls /work</span>
+          <span className="opacity-50">·</span>
           <span>
             {rows.length} {rows.length === 1 ? "entry" : "entries"}
           </span>
           {lastCommit && (
             <>
-              <span className="wa-sep">·</span>
+              <span className="opacity-50">·</span>
               <span>last commit {lastCommit}</span>
             </>
           )}
@@ -108,7 +117,7 @@ export function WorkLog({
           <div
             className="l-meta mute hidden md:grid pb-2 mb-2 border-b border-dashed gap-4"
             style={{
-              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
+              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px",
               columnGap: "clamp(32px, 5vw, 64px)",
               borderColor: "var(--ink)",
             }}
@@ -117,29 +126,26 @@ export function WorkLog({
             <span>TAG</span>
             <span>BLURB</span>
             <span>STATUS</span>
-            <span />
           </div>
           {rows.map((row, i) => {
+            const linked = !!row.slug;
             const inner = (
               <>
-                <span className="font-bold">{row.name}</span>
+                <span className={`font-bold${linked ? " text-accent underline underline-offset-2" : ""}`}>{row.name}</span>
                 <span className="mute">{row.tag}</span>
-                <span className="work-blurb mute">{row.blurb}</span>
-                <span data-status={row.status} className="work-status">
+                <span className="mute min-w-0">{row.blurb}</span>
+                <span className={STATUS_TEXT[row.status]}>
                   [{row.status}]
-                </span>
-                <span className="work-chev" aria-hidden>
-                  {row.slug && <ChevronRight className="i-sm" />}
                 </span>
               </>
             );
 
-            const className = `work-row c-md py-2.5 ${
+            const className = `c-md py-2.5 relative transition-colors group data-[hidden=true]:hidden ${
               i < rows.length - 1 ? "border-b border-dashed" : ""
-            } md:grid md:items-center gap-4`;
+            } md:grid md:items-center gap-4${row.status === "dead" ? " opacity-50" : ""}`;
             const style = {
               borderColor: "color-mix(in oklab, var(--ink) 25%, transparent)",
-              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px 28px",
+              gridTemplateColumns: "180px 120px minmax(0, 1fr) 120px",
               columnGap: "clamp(32px, 5vw, 64px)",
             } as const;
 
@@ -151,7 +157,7 @@ export function WorkLog({
                 data-link="true"
                 data-hidden={!matchesFilter(row, filter) ? "true" : undefined}
                 data-status-row={row.status}
-                className={className + " no-pop block"}
+                className={className + " no-pop block cursor-pointer"}
                 style={style}
               >
                 {inner}

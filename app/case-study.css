@@ -1,0 +1,431 @@
+/* Case-study chrome + experiments layout.
+   Imported in app/_impl/case-study.tsx and app/(site)/experiments/case-study-v2/page.tsx.
+   All .cs-* and .exp-* classes live here; design tokens come from tokens.css. */
+
+.cs-term-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem clamp(1.25rem, 4vw, 3.5rem);
+  border-bottom: 1px solid var(--hair);
+  background: color-mix(in oklab, var(--paper) 70%, transparent);
+}
+.cs-mac-dot { width: 0.6875rem; height: 0.6875rem; border-radius: 50%; background: #3a4250; }
+.cs-mac-r   { background: #ff5f57; }
+.cs-mac-y   { background: #febc2e; }
+.cs-mac-g   { background: #28c840; }
+.cs-prompt  { color: var(--ink-soft); margin-left: 0.375rem; }
+.cs-term-right { margin-left: auto; color: var(--ink-dim); }
+
+.cs-crumb-line {
+  color: var(--ink-dim);
+  margin-bottom: 1.5rem;
+}
+/* Breadcrumb is nav-like chrome (carries .no-pop, opts out of the global
+   link rule): accent, no resting underline, underline on hover. */
+.cs-crumb-line a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: color 0.18s ease;
+}
+.cs-crumb-line a:hover {
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.2em;
+}
+.cs-crumb-line .cs-sep { margin: 0 0.5rem; color: var(--ink-dim); }
+
+/* Outer max-width + horizontal gutter come from .page-shell. The doc is a
+   2-col grid: prose+breakout column on the left, sticky TOC on the right.
+   Inside .cs-content, a 2-col sub-grid pins prose to the left at ~65ch
+   (--w-reading) with slack on the right; figures/code/steps span both
+   sub-columns via grid-column:1/-1 so they read as wider blocks while
+   prose stays at comfortable reading length. */
+.cs-doc {
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 3rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12.5rem;
+  column-gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+.cs-doc > .cs-toc {
+  grid-column: 2;
+  width: 12.5rem;
+  justify-self: start;
+  position: sticky;
+  top: 5rem;
+}
+.cs-doc > .cs-content {
+  grid-column: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: min(var(--w-reading), 100%) minmax(0, 1fr);
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.5rem;
+}
+.cs-doc > .cs-content > * {
+  grid-column: 1;
+  min-width: 0;
+}
+.cs-doc > .cs-content > figure,
+.cs-doc > .cs-content > pre,
+.cs-doc > .cs-content > [class*="steps"],
+.cs-doc > .cs-content > [class*="frontmatter"],
+.cs-doc > .cs-content > .cs-pager {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-inline: 0;
+}
+@media (max-width: 60rem) {
+  .cs-doc { grid-template-columns: minmax(0, 1fr); }
+  .cs-doc > .cs-toc { display: none; }
+  .cs-doc > .cs-content {
+    grid-template-columns: minmax(0, 1fr);
+    column-gap: 0;
+  }
+}
+
+/* TOC — both variants render in the single shell; CSS toggles them at 60rem.
+   .cs-toc-sidebar: sticky right column, hidden < 60rem by the .cs-doc grid.
+   .cs-toc-inline: collapsible bar inside article, hidden >= 60rem below. */
+@media (min-width: 60rem) {
+  .cs-toc-inline { display: none; }
+}
+.cs-toc {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  color: var(--ink-soft);
+}
+.cs-toc-lbl {
+  color: var(--ink-dim);
+  margin-bottom: 0.875rem;
+}
+.cs-toc a {
+  position: relative;
+  display: flex;
+  gap: 1rem;
+  align-items: baseline;
+  padding: 0.4375rem 0 0.4375rem 0;
+  color: var(--ink-soft);
+  transition: color .15s ease, border-color .15s ease;
+  border-left: 1px solid transparent;
+}
+.cs-toc-n {
+  color: var(--ink-dim);
+  width: 1.5rem;
+  flex-shrink: 0;
+}
+.cs-toc a:hover { color: var(--ink); }
+.cs-toc a:hover .cs-toc-n { color: var(--ink-soft); }
+.cs-toc a[data-active] {
+  color: var(--accent);
+  border-left-color: var(--accent);
+}
+.cs-toc a[data-active] .cs-toc-n { color: var(--accent); }
+
+.cs-toc-sidebar {
+  position: sticky;
+  top: 5rem;
+  align-self: start;
+  max-height: calc(100dvh - 7.5rem);
+  overflow-y: auto;
+  border-left: 1px solid var(--hair);
+  padding-left: 1.125rem;
+}
+.cs-toc-sidebar a {
+  margin-left: -1.125rem;
+  padding-left: 1.125rem;
+}
+
+.cs-toc-inline { margin: 1.25rem 0; }
+.cs-toc-inline .cs-toc-details {
+  border: 1px solid var(--hair);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-toc-inline .cs-toc-details[open] { padding-bottom: 0.5rem; }
+.cs-toc-inline .cs-toc-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 0.875rem;
+  cursor: pointer;
+  color: var(--ink-soft);
+  user-select: none;
+  list-style: none;
+}
+.cs-toc-inline .cs-toc-summary::-webkit-details-marker { display: none; }
+.cs-toc-inline .cs-toc-summary::before {
+  content: "";
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  background-color: var(--accent);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'><path d='m9 18 6-6-6-6'/></svg>") no-repeat center / contain;
+  mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'><path d='m9 18 6-6-6-6'/></svg>") no-repeat center / contain;
+  transition: transform 0.15s ease;
+}
+.cs-toc-inline .cs-toc-details[open] .cs-toc-summary::before { transform: rotate(90deg); }
+.cs-toc-inline .cs-toc-lbl { display: none; }
+.cs-toc-inline a {
+  padding-left: 1.5rem;
+  padding-right: 0.875rem;
+  border-left: none;
+}
+.cs-toc-inline a[data-active] {
+  border-left: none;
+  background: color-mix(in oklab, var(--accent) 8%, transparent);
+}
+
+@media (max-width: 1024px) {
+  .cs-doc { grid-template-columns: 1fr; }
+  .cs-doc > .cs-content { grid-column: 1; }
+  .cs-toc-sidebar { display: none; }
+}
+
+.cs-hero-title { color: var(--ink); margin: 0; }
+.cs-hero-title .acc { color: var(--accent); }
+.cs-hero-tag {
+  margin-top: 0.75rem;
+  color: var(--ink-soft);
+  max-width: var(--w-reading);
+}
+.cs-hero-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 1.375rem;
+}
+.cs-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border: 1px solid var(--hair-2);
+  border-radius: 999px;
+  color: var(--ink);
+  transition: border-color .18s ease, color .18s ease;
+}
+.cs-pill:hover { border-color: var(--accent); color: var(--accent); }
+.cs-pill .live { color: var(--accent); }
+.cs-pill .ext  { color: var(--ink-dim); }
+
+.cs-arch-figure { margin: 1rem 0 0; }
+.cs-arch-box {
+  padding: 1.5rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.625rem;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-arch-box img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+}
+.cs-arch-trigger {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: zoom-in;
+}
+.cs-arch-trigger img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 70vh;
+  margin: 0 auto;
+}
+.cs-arch-expand-hint {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid var(--hair-2);
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--paper) 80%, transparent);
+  color: var(--ink-soft);
+  opacity: 0;
+  transition: opacity .15s ease;
+  pointer-events: none;
+}
+.cs-arch-trigger:hover .cs-arch-expand-hint { opacity: 1; }
+
+.cs-arch-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: color-mix(in oklab, var(--paper) 92%, transparent);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.cs-arch-modal-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 87.5rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.75rem;
+  background: var(--paper-2);
+  overflow: hidden;
+}
+.cs-arch-toolbar {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  display: flex;
+  gap: 0.375rem;
+  padding: 0.25rem;
+  border: 1px solid var(--hair-2);
+  border-radius: 0.5rem;
+  background: color-mix(in oklab, var(--paper) 80%, transparent);
+}
+.cs-arch-toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: transparent;
+  color: var(--ink-soft);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: background .15s ease, color .15s ease;
+}
+.cs-arch-toolbar button:hover { background: var(--paper-3); color: var(--ink); }
+.cs-arch-close { margin-left: 0.5rem; border-left: 1px solid var(--hair); padding-left: 0.5rem; }
+.cs-arch-canvas {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  touch-action: none;
+}
+.cs-arch-canvas:active { cursor: grabbing; }
+.cs-arch-canvas img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.cs-arch-figure figcaption { margin-top: 0.875rem; color: var(--ink-dim); text-align: center; }
+.cs-arch-figure figcaption .acc { color: var(--accent-2); }
+
+.cs-mermaid {
+  margin: 1rem 0 0;
+  padding: 1.5rem;
+  border: 1px solid var(--hair);
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--paper-2) 50%, transparent);
+}
+.cs-mermaid-render { display: flex; justify-content: center; }
+.cs-mermaid-render svg { max-width: 100%; height: auto; }
+.cs-mermaid-caption { margin-top: 0.875rem; color: var(--ink-dim); text-align: center; }
+.cs-mermaid-n { color: var(--accent-2); }
+
+.cs-pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hair);
+}
+.cs-pager-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 1.125rem 1.25rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.625rem;
+  background: var(--paper-2);
+  text-decoration: none;
+  color: inherit;
+  transition: border-color .18s ease, color .18s ease;
+}
+.cs-pager-link:hover { border-color: var(--accent); }
+.cs-pager-card:nth-child(2) { align-items: flex-end; text-align: right; }
+.cs-pager-lbl {
+  color: var(--ink-dim);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+.cs-back-link { display: inline-flex; align-items: center; gap: 0.375rem; }
+.cs-pager-title { color: var(--ink); }
+.cs-pager-link:hover .cs-pager-title { color: var(--accent); }
+.cs-pager-empty { opacity: .5; }
+.cs-pager-empty-txt { color: var(--ink-dim); }
+
+@media (max-width: 45rem) {
+  .cs-pager { grid-template-columns: 1fr; }
+  .cs-pager-card:nth-child(2) { align-items: flex-start; text-align: left; }
+}
+
+/* ── /experiments — case-study v2 trial layout ──────────────────── */
+.exp-doc {
+  padding: clamp(1.25rem, 2.5vw, 1.75rem) 0 4rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 12.5rem;
+  column-gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: start;
+}
+.exp-doc > .cs-toc {
+  grid-column: 2;
+  width: 12.5rem;
+  justify-self: start;
+  position: sticky;
+  top: 5rem;
+}
+@media (max-width: 60rem) {
+  .exp-doc { grid-template-columns: minmax(0, 1fr); }
+  .exp-doc > .cs-toc { display: none; }
+}
+.exp-content {
+  display: grid;
+  grid-template-columns: min(var(--w-reading), 100%) minmax(0, 1fr);
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.5rem;
+}
+.exp-content > * { grid-column: 1; min-width: 0; }
+.exp-content > figure,
+.exp-content > pre,
+.exp-content > .exp-breakout,
+.exp-content > [class*="steps"],
+.exp-content > [class*="frontmatter"] {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-inline: 0;
+}
+.exp-content [class*="_steps"] { grid-template-columns: 1fr !important; }
+.exp-content > pre {
+  padding: 1rem 1.25rem;
+  background: var(--paper-2);
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.875rem;
+  line-height: 1.55;
+}
+.exp-content > p { color: var(--ink); line-height: 1.7; }

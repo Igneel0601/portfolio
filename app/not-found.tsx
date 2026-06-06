@@ -1,12 +1,8 @@
-import { headers } from "next/headers";
-// The shells' stylesheets are normally pulled in by app/d|m's layouts, which
-// the root not-found bypasses — so import both here. Without desktop.css the
-// custom cursor (#custom-cursor), nav hover-pop, and parallax bg are unstyled;
-// without mobile.css the MobileNav (.m-*) is unstyled. 404s are rare, so
-// loading both is a fine trade for getting either shell's chrome right.
-import "@/app/desktop.css";
-import "@/app/mobile.css";
-import { isMobileUA } from "@/lib/device";
+// shell.css is normally pulled in by app/(site)'s layout, which the root
+// not-found bypasses — import it directly so the custom cursor, nav chrome,
+// and mobile .m-* classes are styled on 404 pages.
+import "@/app/shell.css";
+import "@/app/not-found.css";
 import { MotionProvider } from "@/components/MotionProvider";
 import { Background } from "@/components/Background";
 import CustomCursor from "@/components/CustomCursor";
@@ -15,22 +11,22 @@ import { MobileNav } from "@/components/mobile/MobileNav";
 import { NotFoundView } from "@/components/NotFoundView";
 
 // Unmatched routes always render the ROOT not-found (segment not-found.tsx only
-// catches explicit notFound() calls), so this never goes through app/d|m's
-// DesktopShell/MobileShell — that's why a bare 404 had no nav, cursor, or
-// parallax bg. Compose the shell chrome here, UA-sniffed with the same
-// isMobileUA the proxy uses. We deliberately omit the shells' global <Footer>:
-// NotFoundView ships its own matching status-bar footer ($ exit 1 · page not
-// found), so pulling in <Footer> too would double it.
-export default async function NotFound() {
-  const ua = (await headers()).get("user-agent") ?? "";
-  const mobile = isMobileUA(ua);
-
+// catches explicit notFound() calls), so this never goes through app/(site)'s
+// SiteShell — that's why a bare 404 had no nav, cursor, or parallax bg. Compose
+// the shell chrome here, mirroring SiteShell: render both desktop and mobile
+// chrome and let Tailwind's `md` breakpoint pick which is visible. We
+// deliberately omit the global <Footer>: NotFoundView ships its own matching
+// status-bar footer ($ exit 1 · page not found), so pulling in <Footer> too
+// would double it.
+export default function NotFound() {
   return (
     <MotionProvider>
-      {/* Background is desktop-only (MobileShell has no parallax bg) */}
-      {!mobile && <Background />}
-      {!mobile && <CustomCursor />}
-      {mobile ? <MobileNav /> : <Nav />}
+      {/* Background is desktop-only (no mobile parallax); CustomCursor
+          self-gates on any-pointer:coarse so it needs no toggle. */}
+      <Background className="hidden md:block" />
+      <CustomCursor />
+      <Nav className="hidden md:block" />
+      <MobileNav className="md:hidden" />
       <NotFoundView />
     </MotionProvider>
   );

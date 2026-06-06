@@ -1,0 +1,156 @@
+/* Writing layout — prose column, post page chrome, related cards, pager.
+   Imported in app/_impl/post.tsx.
+   All .w-prose, .w-ornament, .wp-*, and global .wp-related-grid rules live here;
+   design tokens come from tokens.css. */
+
+/* Drop cap on first paragraph — opt-in per post via `.dropcap` on the
+   article. Exception to token-only rule: ::first-letter pseudo cannot take a class. */
+.w-prose.dropcap > p:first-of-type::first-letter {
+  font-family: var(--font-serif), Georgia, serif;
+  font-weight: 800;
+  font-size: 6em;
+  line-height: 0.7;
+  float: left;
+  margin: 0.05em 0.05em 0em 0em;
+  color: var(--ink);
+}
+
+.w-prose :is(h2, h3, h4) {
+  margin: 3rem 0 1.1rem;
+  scroll-margin-top: 5rem;
+}
+.w-prose h2 + p,
+.w-prose h3 + p,
+.w-prose h4 + p { margin-top: 0; }
+
+.w-prose p {
+  margin: 0 0 1.25em;
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+.w-prose p + p { margin-top: 1.25em; }
+.w-prose em { color: var(--ink); font-style: italic; }
+.w-prose strong { color: var(--ink); font-weight: 600; }
+.w-prose code {
+  background: color-mix(in oklab, var(--ink) 6%, transparent);
+  color: var(--accent);
+  padding: 0.1em 0.4em;
+  border-radius: 3px;
+}
+/* Prose links stay calm: body ink + the resting underline inherited from the
+   global rule, turning green on hover. Carries .no-pop in JSX so the global
+   a:hover scale rule in shell.css skips them. :not(.btn) lifts specificity
+   above the global a:not()() rule so the ink colour wins. */
+.w-prose a:not(.btn) {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 0.0625rem;
+  text-underline-offset: 0.2em;
+  transition: color 0.18s ease;
+}
+.w-prose a:not(.btn):hover { color: var(--accent); }
+
+.w-ornament {
+  text-align: center;
+  margin: 3rem 0;
+  color: var(--ink-dim);
+  letter-spacing: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+/* /writing/[slug] post (post-A) */
+.wp-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 0.125rem; /* 2px progress bar */
+  background: var(--accent);
+  width: 0;
+  z-index: 60;
+  transition: width 0.12s linear;
+  pointer-events: none;
+}
+
+/* Header chrome (title, lead, meta, hero) inherits the page-shell gutter
+   (80rem max); the prose column falls back to --w-reading (≈65ch).
+   Editorial pattern: wide masthead → narrow column → wide related strip. */
+.page-shell > .wp-prose-wrap {
+  width: min(100%, var(--w-reading));
+  margin-top: 2.5rem;
+  margin-inline: auto;
+  color: var(--ink);
+}
+
+/* .wp-title/.wp-lead → inline utilities in app/_impl/post.tsx. */
+
+.wp-meta-strip {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1.75rem;
+  padding: 0.85rem 0;
+  border-top: 1px solid var(--hair);
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink-dim);
+}
+.wp-meta-strip b { color: var(--ink-soft); font-weight: 500; }
+.wp-meta-strip .wp-sep { opacity: 0.45; }
+.wp-meta-strip .wp-tag {
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.wp-meta-strip .wp-file { margin-left: auto; color: var(--accent); }
+
+/* .wp-hero/.wp-related/.wp-related-h → inline utilities in app/_impl/post.tsx. */
+/* Related posts — Medium-style 2-up cards. wp-related-grid kept for responsive override. */
+.wp-related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.wp-rel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.25rem;
+  border: 1px solid var(--hair);
+  border-radius: 0.25rem;
+  background: transparent;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.wp-rel-card:hover {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 4%, transparent);
+}
+/* .wp-rel-cat/.wp-rel-dek → inline utilities in app/_impl/post.tsx. */
+.wp-rel-title {
+  margin: 0;
+  color: var(--ink);
+  transition: color 0.15s ease;
+}
+.wp-rel-card:hover .wp-rel-title { color: var(--accent); }
+.wp-rel-meta {
+  margin-top: 0.25rem;
+  color: var(--ink-dim);
+}
+.wp-rel-meta b { color: var(--ink-soft); font-weight: 500; }
+
+.wp-foot {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--hair);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  color: var(--ink-dim);
+}
+.wp-foot a { color: var(--ink-soft); text-decoration: none; transition: color 0.18s ease; }
+.wp-foot a:hover { color: var(--accent); }
+
+@media (max-width: 56.25rem) {
+  .wp-related-grid { grid-template-columns: 1fr; }
+  .wp-meta-strip .wp-file { margin-left: 0; }
+}

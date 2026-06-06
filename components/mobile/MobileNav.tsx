@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/content";
 import { PROFILE } from "@/lib/profile";
 
-export function MobileNav() {
+export function MobileNav({ className }: { className?: string }) {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [hidden, setHidden] = useState(false);
@@ -74,7 +74,7 @@ export function MobileNav() {
       <nav
         data-mobile-nav
         data-hidden={hidden ? "true" : undefined}
-        className="sticky top-0 z-[110] px-6"
+        className={`sticky top-0 z-[110] px-6${className ? ` ${className}` : ""}`}
         style={{
           background: "color-mix(in oklab, var(--paper) 15%, transparent)",
           backdropFilter: "blur(24px) saturate(140%)",

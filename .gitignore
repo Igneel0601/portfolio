@@ -47,3 +47,6 @@ next-env.d.ts
 
 # design scratch / wireframes (not part of the app)
 /wireframes
+
+# Local Claude Code config/skills (not part of the repo)
+.claude/

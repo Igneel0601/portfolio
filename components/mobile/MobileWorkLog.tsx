@@ -8,6 +8,13 @@
    status line, leave it off and the line is just "$ ls /work · N entries". */
 
 import { useMemo, useRef, useState } from "react";
+
+const STATUS_COLOR: Record<string, string> = {
+  active: "text-[var(--status-active)]",
+  wip: "text-[var(--status-wip)]",
+  archived: "text-[var(--status-archived)]",
+  dead: "text-[var(--status-dead)] line-through",
+};
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import type { WorkRow } from "@/lib/work-rows";
@@ -48,107 +55,109 @@ export function MobileWorkLog({
 
   return (
     <>
-      <div className="m-page-header">
-        <div className="l-tag m-page-eyebrow">build log · {new Date().getFullYear()}</div>
-        <h1 className="t-display m-page-title" data-eyebrow="true">
-          projects<span className="m-page-title-dot">.</span>
+      <div className="px-[1.375rem] py-[1.125rem]">
+        <div className="l-tag mt-6 mb-1 text-ink-dim">build log · {new Date().getFullYear()}</div>
+        <h1 className="t-display m-0 text-ink">
+          projects<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead m-work-sub">
+        <p className="t-lead m-0 mt-[0.85rem] max-w-[44ch] italic text-ink-soft">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no
           survivorship bias.
         </p>
-        <div className="c-xs m-work-status">
+        <div className="c-xs flex items-center justify-between gap-3 mt-[1.1rem] text-accent">
           <span>$ ls /work</span>
-          <span className="m-work-status-meta">
+          <span className="text-ink-dim">
             {rows.length} entries
             {lastCommit ? ` · last commit ${lastCommit}` : ""}
           </span>
         </div>
       </div>
 
-      {/* chips reuse .m-wfilter / .m-chip from the /writing CSS block */}
-      <div className="m-wfilter" ref={stripRef}>
+      {/* chips reuse .m-chip from mobile.css; layout from utilities */}
+      <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]" ref={stripRef}>
         <button
           type="button"
-          className="c-xs m-chip"
+          className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
           data-active={active === "all" ? "true" : undefined}
           onClick={(e) => pick("all", e.currentTarget)}
         >
-          all <span>{rows.length}</span>
+          all <span className={active === "all" ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{rows.length}</span>
         </button>
         {tags.map((t) => (
           <button
             key={t.tag}
             type="button"
-            className="c-xs m-chip"
+            className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
             data-active={active === t.tag ? "true" : undefined}
             onClick={(e) => pick(t.tag, e.currentTarget)}
           >
-            {t.tag} <span>{t.count}</span>
+            {t.tag} <span className={active === t.tag ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{t.count}</span>
           </button>
         ))}
       </div>
 
       <DashedRule />
 
-      <div className="m-worklist">
+      <div className="max-w-[34rem] mx-auto">
         {shown.map((r, i) => {
-          const dim = r.status === "archived" || r.status === "dead";
+          const rowCls = `block py-[1.05rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop${r.status === "dead" ? " opacity-50" : ""} active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]`;
           const body = (
             <>
-              <div className="m-wkrow-top">
-                <span className="m-wkrow-name" data-linked={r.slug ? "true" : undefined}>
+              <div className="flex items-baseline justify-between gap-3 mb-[0.35rem]">
+                <span
+                  className={`font-[var(--mono)] text-[0.92rem] font-semibold tracking-[-0.01em]${r.slug ? " text-accent underline underline-offset-2" : " text-ink"}`}
+                >
                   {r.name}
                 </span>
-                <span className="c-xs m-wkrow-status">{r.status}</span>
+                <span className={`c-xs whitespace-nowrap ${STATUS_COLOR[r.status] ?? ""}`}>
+                  [{r.status}]
+                </span>
               </div>
-              <p className="t-body m-wkrow-blurb">{r.blurb}</p>
-              <span className="l-meta m-wkrow-tag">{r.tag}</span>
+              <p className="t-body m-0 mb-2 max-w-[48ch] italic text-ink-soft">{r.blurb}</p>
+              <span className="l-meta text-ink-dim">{r.tag}</span>
             </>
           );
           return r.slug ? (
             <Link
               key={`${r.name}-${i}`}
               href={`/work/${r.slug}`}
-              className="m-wkrow no-pop"
+              className={rowCls}
               data-status={r.status}
-              data-dim={dim ? "true" : undefined}
             >
               {body}
             </Link>
           ) : (
             <div
               key={`${r.name}-${i}`}
-              className="m-wkrow"
+              className={rowCls}
               data-status={r.status}
-              data-dim={dim ? "true" : undefined}
             >
               {body}
             </div>
           );
         })}
-        </div>
+      </div>
 
-        <div className="m-wklog">
-          <div className="c-xs m-wklog-h">$ git log --oneline | head -3</div>
-        {commits.map((l, i) => {
-          const [hash, ...rest] = l.split(" · ");
-          return (
-            <div key={i} className="c-xs m-wklog-l">
-              <span className="m-wklog-hash">{hash}</span> · {rest.join(" · ")}
-            </div>
-          );
-        })}
+      <div className="max-w-[34rem] mx-auto mt-2 px-[1.375rem] pt-5 pb-6">
+        <div className="c-xs mb-[0.55rem] text-ink-dim">$ git log --oneline | head -3</div>
+        {commits.map((l, i) => (
+          <div key={i} className="c-xs pl-3 leading-[1.95] text-ink-soft whitespace-nowrap overflow-hidden text-ellipsis">
+            {l}
+          </div>
+        ))}
         <a
           href="https://github.com/Igneel0601"
           target="_blank"
           rel="noreferrer"
-          className="l-meta m-wklog-more no-pop"
+          className="l-meta mute inline-flex items-center gap-[0.4rem] mt-4 no-underline no-pop"
         >
-          full log on github
-          <ExternalLink aria-hidden className="i-xs" />
+          FULL LOG ON{" "}
+          <span className="text-accent whitespace-nowrap">
+            GITHUB.COM/IGNEEL0601
+            <ExternalLink className="i-xs ml-1 inline-block align-[-0.15em]" aria-hidden />
+          </span>
         </a>
-        </div>
+      </div>
     </>
   );
 }

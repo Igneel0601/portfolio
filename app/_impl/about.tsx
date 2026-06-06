@@ -4,18 +4,15 @@ import { ABOUT } from "@/lib/content";
 
 // Shared /about body (both shells). Narrative serif bio + mono fact rail —
 // the one deliberately expressive personal page. Copy lives in lib/content.ts.
-export function AboutPage(_props: { shell: "d" | "m" }) {
+export function AboutPage() {
   return (
     <main className="flex-1">
-      <section
-        className="page-shell ab"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
-        <div className="l-eyebrow ab-eyebrow">{ABOUT.eyebrow}</div>
-        <h1 className="t-display ab-title">
-          about<span className="ab-dot">.</span>
+      <section className="page-shell ab pt-[clamp(1.25rem,2.5vw,1.75rem)]">
+        <div className="l-eyebrow text-ink-dim mt-2">{ABOUT.eyebrow}</div>
+        <h1 className="t-display mt-3">
+          about<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead ab-lede">{ABOUT.lede}</p>
+        <p className="t-lead mt-4 max-w-[28ch] text-ink-soft italic">{ABOUT.lede}</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> whoami
@@ -42,16 +39,16 @@ export function AboutPage(_props: { shell: "d" | "m" }) {
           </div>
 
           <aside className="ab-rail-wrap">
-            <div className="ab-rail">
+            <div className="border border-[var(--hair)] rounded-[0.375rem] overflow-hidden">
               {ABOUT.rail.map((r) => (
-                <div className="ab-row" key={r.k}>
-                  <span className="ab-k">{r.k}</span>
-                  <span className="ab-v">{r.v}</span>
+                <div className="grid [grid-template-columns:5.5rem_1fr] gap-4 py-[0.65rem] px-4 border-b border-[var(--hair)] mono text-[0.8125rem] last:border-b-0" key={r.k}>
+                  <span className="text-ink-dim">{r.k}</span>
+                  <span className="text-ink-soft">{r.v}</span>
                 </div>
               ))}
             </div>
-            <div className="ab-quote">
-              <span className="ab-q" aria-hidden>
+            <div className="relative mt-6 pt-5 pr-[1.4rem] pb-5 pl-[2.4rem] border border-[var(--hair)] border-l-2 border-l-accent bg-paper-2 rounded-[0.1875rem] serif italic text-ink-soft leading-[1.4]">
+              <span className="absolute top-[0.1rem] left-[0.6rem] text-[2.75rem] text-accent opacity-30 serif" aria-hidden>
                 &ldquo;
               </span>
               {ABOUT.quote}
@@ -59,7 +56,7 @@ export function AboutPage(_props: { shell: "d" | "m" }) {
           </aside>
         </div>
 
-        <div className="ab-next">
+        <div className="mt-20">
           <div className="ab-cmd c-sm">
             <span className="ab-prompt">$</span> cat next_steps.txt
           </div>

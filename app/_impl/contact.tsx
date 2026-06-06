@@ -1,5 +1,6 @@
 "use client";
 
+import "@/app/contact.css";
 import { useState } from "react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
@@ -48,7 +49,7 @@ function SendLog({ done }: { done: boolean }) {
   );
 }
 
-export function ContactPage(_props: { shell: "d" | "m" }) {
+export function ContactPage() {
   const [v, setV] = useState<Values>({ name: "", email: "", message: "", company: "" });
   const [touched, setTouched] = useState<Partial<Record<Field, string>>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
@@ -91,15 +92,12 @@ export function ContactPage(_props: { shell: "d" | "m" }) {
 
   return (
     <main className="flex-1">
-      <section
-        className="page-shell contact"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
-        <div className="l-eyebrow ab-eyebrow">{CONTACT_PAGE.eyebrow}</div>
-        <h1 className="t-display ab-title">
-          contact<span className="ab-dot">.</span>
+      <section className="page-shell contact pt-[clamp(1.25rem,2.5vw,1.75rem)]">
+        <div className="l-eyebrow text-ink-dim mt-2">{CONTACT_PAGE.eyebrow}</div>
+        <h1 className="t-display mt-3">
+          contact<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead ab-lede">A working inbox and a few faster ways to reach me — for full-time roles or freelance.</p>
+        <p className="t-lead mt-4 max-w-[28ch] text-ink-soft italic">A working inbox and a few faster ways to reach me — for full-time roles or freelance.</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> mail -s &quot;hello&quot;
@@ -115,7 +113,7 @@ export function ContactPage(_props: { shell: "d" | "m" }) {
               <div className="ct-sent">
                 <SendLog done />
                 <div className="ct-sentbig">
-                  message sent<span className="ab-dot">.</span>
+                  message sent<span className="text-accent">.</span>
                 </div>
                 <p className="ct-sentnote">
                   It&apos;s in the queue. I usually reply within a day or two — if it&apos;s
@@ -137,7 +135,7 @@ export function ContactPage(_props: { shell: "d" | "m" }) {
                   </div>
                 </div>
                 <div className="ct-sentbig">
-                  that didn&apos;t go through<span className="ab-dot">.</span>
+                  that didn&apos;t go through<span className="text-accent">.</span>
                 </div>
                 <p className="ct-sentnote">
                   Something broke on the way out. Email me directly at{" "}

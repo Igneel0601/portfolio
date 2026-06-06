@@ -8,7 +8,7 @@ import { useLenis } from "@/lib/lenis";
  * That speed differential is the parallax: content races, bg drifts slowly behind.
  * Implemented by translating background-position on Lenis scroll events.
  */
-export function Background() {
+export function Background({ className }: { className?: string }) {
   const lenis = useLenis();
 
   useEffect(() => {
@@ -41,5 +41,5 @@ export function Background() {
     };
   }, [lenis]);
 
-  return <div className="parallax-bg" aria-hidden />;
+  return <div className={`parallax-bg${className ? ` ${className}` : ""}`} aria-hidden />;
 }
