@@ -8,11 +8,11 @@ export function NowPage() {
   return (
     <main className="flex-1">
       <section className="page-shell now pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
-        <div className="l-eyebrow ab-eyebrow">{NOW.eyebrow}</div>
-        <h1 className="t-display ab-title">
-          now<span className="ab-dot">.</span>
+        <div className="l-eyebrow text-ink-dim mt-2">{NOW.eyebrow}</div>
+        <h1 className="t-display mt-3">
+          now<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead ab-lede">{NOW.lede}</p>
+        <p className="t-lead mt-4 max-w-[28ch] text-ink-soft italic">{NOW.lede}</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> date

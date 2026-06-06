@@ -14,11 +14,11 @@ export function UsesPage() {
   return (
     <main className="flex-1">
       <section className="page-shell uses pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
-        <div className="l-eyebrow ab-eyebrow">{USES.eyebrow}</div>
-        <h1 className="t-display ab-title">
-          uses<span className="ab-dot">.</span>
+        <div className="l-eyebrow text-ink-dim mt-2">{USES.eyebrow}</div>
+        <h1 className="t-display mt-3">
+          uses<span className="text-accent">.</span>
         </h1>
-        <p className="t-lead ab-lede">{USES.lede}</p>
+        <p className="t-lead mt-4 max-w-[28ch] text-ink-soft italic">{USES.lede}</p>
 
         <div className="ab-cmd c-sm">
           <span className="ab-prompt">$</span> ls /uses
