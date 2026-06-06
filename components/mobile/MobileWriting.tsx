@@ -51,19 +51,19 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
       <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]">
         <Link
           href={writingHref(null, 1)}
-          className="c-xs m-chip no-pop"
+          className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
           data-active={tag === null ? "true" : undefined}
         >
-          all <span>{counts.all}</span>
+          all <span className={tag === null ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{counts.all}</span>
         </Link>
         {counts.tags.map((c) => (
           <Link
             key={c.slug}
             href={writingHref(c.slug, 1)}
-            className="c-xs m-chip no-pop"
+            className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
             data-active={tag === c.slug ? "true" : undefined}
           >
-            {c.title} <span>{c.count}</span>
+            {c.title} <span className={tag === c.slug ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{c.count}</span>
           </Link>
         ))}
       </div>

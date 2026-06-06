@@ -77,21 +77,21 @@ export function MobileWorkLog({
       <div className="flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto scrollbar-none [mask-image:linear-gradient(90deg,#000_88%,transparent)] [-webkit-mask-image:linear-gradient(90deg,#000_88%,transparent)]" ref={stripRef}>
         <button
           type="button"
-          className="c-xs m-chip"
+          className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
           data-active={active === "all" ? "true" : undefined}
           onClick={(e) => pick("all", e.currentTarget)}
         >
-          all <span>{rows.length}</span>
+          all <span className={active === "all" ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{rows.length}</span>
         </button>
         {tags.map((t) => (
           <button
             key={t.tag}
             type="button"
-            className="c-xs m-chip"
+            className="c-xs shrink-0 inline-flex items-center gap-[0.35rem] py-[0.3rem] px-[0.7rem] rounded-full border border-[var(--hair-2)] bg-transparent tracking-[0.08em] text-ink-soft cursor-pointer no-pop data-[active=true]:bg-accent data-[active=true]:border-accent data-[active=true]:text-paper"
             data-active={active === t.tag ? "true" : undefined}
             onClick={(e) => pick(t.tag, e.currentTarget)}
           >
-            {t.tag} <span>{t.count}</span>
+            {t.tag} <span className={active === t.tag ? "text-[color-mix(in_oklab,var(--paper)_65%,var(--accent))]" : "text-ink-dim"}>{t.count}</span>
           </button>
         ))}
       </div>

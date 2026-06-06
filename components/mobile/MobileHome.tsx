@@ -123,14 +123,14 @@ export function MobileHome() {
   }, []);
 
   return (
-    <div ref={deckRef} className="m-deck" data-stop={0}>
+    <div ref={deckRef} className="h-[100dvh] overflow-hidden relative" data-stop={0}>
       <div ref={trackRef} className="m-deck-track">
         <MobileBoot />
         <MobileProjects />
         {/* Tall tail: timeline centred in the first viewport, then CTA +
             footer below. Two stops — timeline alone, then the contact close. */}
-        <section className="m-deck-tail">
-          <div className="m-deck-tail-timeline">
+        <section className="!h-auto !overflow-visible">
+          <div className="min-h-[100dvh] flex flex-col justify-center pt-14 pb-5">
             <MobileTimeline />
           </div>
           <CTASection />

@@ -66,23 +66,33 @@ export function TimelineSection({ stops }: { stops: TimelineStop[] }) {
   return (
     <>
       <SectionHeader eyebrow="$ git log --all" title="the long way around." />
-      <div className="m-timeline">
+      <div className="w-full max-w-[34rem] mx-auto px-[1.375rem] max-h-[100dvh] flex flex-col justify-center">
         {stops.map((s, i) => {
           const now = s.isNow ? "true" : "false";
           return (
-            <div key={i} className="m-timeline-row">
-              {i < stops.length - 1 && <div className="m-timeline-rail" />}
-              <div className="c-xs m-timeline-when" data-now={now}>
+            <div key={i} className="relative grid items-start [grid-template-columns:3.25rem_1.5rem_1fr]">
+              <div
+                className="c-xs mt-0.5 pr-[0.625rem] font-normal text-ink-dim text-right whitespace-nowrap data-[now=true]:text-accent data-[now=true]:font-semibold"
+                data-now={now}
+              >
                 {s.when}
               </div>
-              <div className="m-timeline-dot-wrap">
-                <div className="m-timeline-dot" data-now={now} />
+              <div className="flex justify-center">
+                <div
+                  className="w-[0.6875rem] h-[0.6875rem] mt-[0.4375rem] rounded-full border-[1.5px] border-accent bg-accent shrink-0 relative z-[1] data-[now=true]:w-[0.8125rem] data-[now=true]:h-[0.8125rem] data-[now=true]:shadow-[0_0_0_0.25rem_color-mix(in_oklab,var(--accent)_26%,transparent),0_0_0.875rem_color-mix(in_oklab,var(--accent)_55%,transparent)]"
+                  data-now={now}
+                />
               </div>
-              <div className="m-timeline-body">
-                <div className="t-sm m-timeline-title" data-now={now}>
+              <div className="pl-3">
+                <div
+                  className="font-[var(--font-serif)] text-[var(--text-sm)] leading-[1.2] font-bold text-ink data-[now=true]:text-accent"
+                  data-now={now}
+                >
                   {s.title}
                 </div>
-                <div className="c-xs m-timeline-blurb">{s.blurb}</div>
+                <div className="font-[var(--mono)] mt-0.5 text-[clamp(0.62rem,2.9vw,0.8125rem)] leading-[1.4] text-ink-dim">
+                  {s.blurb}
+                </div>
               </div>
             </div>
           );

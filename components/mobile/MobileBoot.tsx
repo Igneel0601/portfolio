@@ -130,7 +130,7 @@ export function MobileBoot() {
   }, []);
 
   return (
-    <div ref={rootRef} className="m-boot-scene">
+    <div ref={rootRef} className="min-h-[100dvh] flex flex-col justify-center">
       <div className="c-xs px-[1.375rem] pb-[0.5625rem] leading-[1.75]">
         <div>
           <span className="text-accent" data-boot-prompt>

@@ -110,52 +110,20 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
    visible at the very top edge, over the nav. */
 .wp-progress { z-index: 120; }
 
-.m-deck {
-  height: 100dvh;
-  overflow: hidden;
-  position: relative;
-}
-.m-deck-track {
-  will-change: transform;
-}
+/* .m-deck → h-[100dvh] overflow-hidden relative (MobileHome.tsx)
+   .m-deck-tail → !h-auto !overflow-visible (MobileHome.tsx)
+   .m-deck-tail-timeline → min-h-[100dvh] flex flex-col justify-center pt-14 pb-5 (MobileHome.tsx)
+   .m-boot-scene → min-h-[100dvh] flex flex-col justify-center (MobileBoot.tsx) */
+.m-deck-track { will-change: transform; }
 /* each direct child of the track is one full-screen page … */
-.m-deck-track > * {
-  height: 100dvh;
-  overflow: hidden;
-}
-/* boot + project panels centre their content within a page */
-.m-boot-scene,
+.m-deck-track > * { height: 100dvh; overflow: hidden; }
+
+/* project panels centre their content within a page */
 .m-panel-screen {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-
-/* … except the tail, which is taller than one screen: the timeline centres in
-   the first viewport, then the CTA + footer follow. The pager gives it two
-   stops (timeline alone → timeline tail + contact + footer in full view). */
-.m-deck-tail {
-  height: auto;
-  overflow: visible;
-}
-/* Fill the first screen with a fixed row gap (NOT flex-grow — that breaks the
-   iOS rail). The gap is tuned so 9 rows + heading roughly fill one viewport, so
-   NOW lands near the bottom and the CTA follows with a small gap. The block
-   centres any small leftover. */
-.m-deck-tail-timeline {
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding-top: 3.5rem;
-  padding-bottom: 1.25rem;
-}
-.m-deck-tail-timeline > .m-timeline {
-  max-block-size: none;
-}
-.m-deck-tail-timeline .m-timeline-list {
-  gap: 2rem;
 }
 /* cap + centre the slide content (the panel name's cqw sizing reads from
    .m-panel as its own inline-size container). */
@@ -288,29 +256,14 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
 .m-panel-cta:active { transform: translate(3px, 3px); box-shadow: 0 0 0 var(--ca); }
 
 /* ── timeline ─────────────────────────────────────────────
-   Centred, capped at one viewport so all stops fit one snap slide. Spacing lives
-   here (the .m-snap-section parent already vertically centres this block).
-   Row gap = the rail's negative bottom, so the dashed line stays continuous. */
-.m-timeline {
-  width: 100%;
-  max-width: 34rem;
-  margin-inline: auto;
-  padding-inline: 1.375rem;
-  max-block-size: 100dvh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.m-timeline-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  margin-block-end: 1.25rem;
-}
+   .m-timeline, .m-timeline-head, .m-timeline-row, .m-timeline-when,
+   .m-timeline-dot-wrap, .m-timeline-dot, .m-timeline-body,
+   .m-timeline-title, .m-timeline-blurb → utilities in MobileTimeline.tsx + parts.tsx.
+   .m-timeline-list kept for the dashed background-image rail. */
 .m-timeline-list {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem; /* always 2rem — MobileTimeline is only used in the deck tail */
   /* Connecting rail drawn as a background dashed line at the dot column (x=4rem)
      rather than a positioned element — iOS WebKit wouldn't paint the absolute
      0-width bordered div. Trimmed top/bottom so it spans first dot → last dot;
@@ -323,61 +276,6 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
   background-repeat: no-repeat;
   background-position: calc(4rem - 0.75px) 0.85rem;
   background-size: 1.5px calc(100% - 2.5rem);
-}
-.m-timeline-row {
-  position: relative;
-  display: grid;
-  grid-template-columns: 3.25rem 1.5rem 1fr;
-  align-items: start;
-}
-.m-timeline-when {
-  margin-top: 0.125rem;
-  padding-right: 0.625rem;
-  font-weight: 400;
-  color: var(--ink-dim);
-  text-align: right;
-  white-space: nowrap;
-}
-.m-timeline-when[data-now="true"] {
-  color: var(--accent);
-  font-weight: 600;
-}
-.m-timeline-dot-wrap {
-  display: flex;
-  justify-content: center;
-}
-.m-timeline-dot {
-  width: 0.6875rem;
-  height: 0.6875rem;
-  margin-top: 0.4375rem;
-  border-radius: 50%;
-  border: 1.5px solid var(--accent);
-  background: var(--accent);
-  flex-shrink: 0;
-  position: relative;
-  z-index: 1;
-}
-.m-timeline-dot[data-now="true"] {
-  width: 0.8125rem;
-  height: 0.8125rem;
-  box-shadow:
-    0 0 0 0.25rem color-mix(in oklab, var(--accent) 26%, transparent),
-    0 0 0.875rem color-mix(in oklab, var(--accent) 55%, transparent);
-}
-.m-timeline-body { padding-left: 0.75rem; }
-.m-timeline-title {
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--ink);
-}
-.m-timeline-blurb {
-  margin-top: 0.125rem;
-  line-height: 1.4;
-  color: var(--ink-dim);
-  /* Stay one line on narrow phones: cap at the normal t-sm size (0.8125rem) on
-     wider screens, shrink toward ~10px as width drops to ~360px where the blurb
-     would otherwise wrap. Only narrows below the iPhone width — iPhone unchanged. */
-  font-size: clamp(0.62rem, 2.9vw, 0.8125rem);
 }
 
 /* ── CTA section ──────────────────────────────────────── */
@@ -412,27 +310,8 @@ html.m-snap-root [data-mobile-nav] { position: fixed; left: 0; right: 0; top: 0;
 /* .m-wfilter → flex gap-[0.4rem] pt-[0.9rem] px-[1.375rem] pb-[0.1rem] overflow-x-auto
                scrollbar-none [mask-image:…] utilities (MobileWriting, MobileWorkLog).
    .m-pager   → flex justify-end pt-10 px-[1.375rem] pb-[1.2rem] (MobileWriting). */
-.m-chip {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--hair-2);
-  background: transparent;
-  letter-spacing: 0.08em;
-  color: var(--ink-soft);
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.m-chip span { color: var(--ink-dim); }
-.m-chip[data-active="true"] {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--paper);
-}
-.m-chip[data-active="true"] span { color: color-mix(in oklab, var(--paper) 65%, var(--accent)); }
+/* .m-chip → inline utilities in MobileWriting.tsx + MobileWorkLog.tsx.
+   Span color computed from active state in JSX. */
 
 /* ── writing index ────────────────────────────────────────
    .m-writing-sub/.m-writing-status/.m-writing-status-meta/.m-writing-list,
