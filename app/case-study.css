@@ -85,12 +85,10 @@
   }
 }
 
-/* TOC — both variants render in the single shell; CSS toggles them at 60rem.
-   .cs-toc-sidebar: sticky right column, hidden < 60rem by the .cs-doc grid.
-   .cs-toc-inline: collapsible bar inside article, hidden >= 60rem below. */
-@media (min-width: 60rem) {
-  .cs-toc-inline { display: none; }
-}
+/* TOC — both variants render in the single shell; CSS shows exactly one at the
+   1024px cutoff (the @media blocks are below, AFTER the .cs-toc base rules so
+   their display:none wins on source order). .cs-toc-sidebar = sticky right
+   column (>=1024px); .cs-toc-inline = collapsible bar in the article (<1024px). */
 .cs-toc {
   display: flex;
   flex-direction: column;
@@ -178,10 +176,15 @@
   background: color-mix(in oklab, var(--accent) 8%, transparent);
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1023.98px) {
   .cs-doc { grid-template-columns: 1fr; }
   .cs-doc > .cs-content { grid-column: 1; }
   .cs-toc-sidebar { display: none; }
+}
+/* >=1024px shows the sidebar, so hide the inline collapsible. Placed here (after
+   all .cs-toc rules) so display:none wins over the .cs-toc base display:flex. */
+@media (min-width: 1024px) {
+  .cs-toc-inline { display: none; }
 }
 
 .cs-hero-title { color: var(--ink); margin: 0; }
@@ -202,14 +205,19 @@
   align-items: center;
   gap: 0.375rem;
   padding: 0.375rem 0.75rem;
-  border: 1px solid var(--hair-2);
+  /* Accent-tinted by default so it reads as a clickable link, not static text. */
+  border: 1px solid color-mix(in oklab, var(--accent) 40%, var(--hair-2));
   border-radius: 999px;
-  color: var(--ink);
-  transition: border-color .18s ease, color .18s ease;
+  color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 7%, transparent);
+  transition: border-color .18s ease, color .18s ease, background .18s ease;
 }
-.cs-pill:hover { border-color: var(--accent); color: var(--accent); }
+.cs-pill:hover {
+  border-color: var(--accent);
+  background: color-mix(in oklab, var(--accent) 14%, transparent);
+}
 .cs-pill .live { color: var(--accent); }
-.cs-pill .ext  { color: var(--ink-dim); }
+.cs-pill .ext  { color: var(--accent); }
 
 .cs-arch-figure { margin: 1rem 0 0; }
 .cs-arch-box {
