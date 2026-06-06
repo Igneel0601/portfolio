@@ -36,7 +36,13 @@ for (const path of PAGES) {
     });
     await expect(page).toHaveScreenshot({
       animations: "disabled",
-      maxDiffPixelRatio: 0.02,
+      // CI chromium sub-pixel/AA rendering varies run-to-run on text-heavy
+      // pages, so the same page+baseline can land anywhere up to ~0.05 diff
+      // (seen flaking /uses, /contact, /about between identical runs). 0.06
+      // absorbs that noise while still catching real changes (a content/layout
+      // shift is >>0.06 — the stale-headline diff was 0.13). Pixel-exact
+      // verification of refactors is done via computed styles, not this gate.
+      maxDiffPixelRatio: 0.06,
     });
   });
 }
