@@ -110,7 +110,10 @@
   align-items: start;
   flex-shrink: 0;
 }
-@media (max-width: 960px) {
+/* Keep the portrait+info side-by-side as far down as it fits (~830px). Below
+   that it stacks — but cap the portrait at its 2-col size so it doesn't stretch
+   to full width and balloon. */
+@media (max-width: 860px) {
   .stage {
     grid-template-columns: 1fr;
   }
@@ -125,7 +128,11 @@
 
 /* ─── portrait image (bare, no card) ────────────────────── */
 .portraitImg {
-  width: 100%;
+  /* Fixed to the portrait column width so it never stretches to full width when
+     the stage stacks to 1-col on narrow screens (which ballooned the portrait).
+     max-width keeps it from overflowing if the column is ever narrower. */
+  width: 18.75rem;
+  max-width: 100%;
   height: auto;
   display: block;
   margin-top: 2.45rem;
