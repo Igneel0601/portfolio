@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Link from "next/link";
 import { Link as LinkIcon, MoveRight } from "lucide-react";
 import { ScrollTrigger } from "@/lib/gsap";
 import { Btn } from "@/components/Btn";
@@ -236,7 +237,7 @@ export function ProjectsShowcaseCinematic() {
             <span id="psc-top-bar-cmd" ref={topBarCmdRef}>
               $ cat ~/projects/codeflow/README.md &nbsp; # ai
             </span>
-            <a
+            <Link
               href="/work"
               data-bar-projects
               className="c-md no-pop"
@@ -247,7 +248,7 @@ export function ProjectsShowcaseCinematic() {
               }}
             >
               <span data-projects-target>projects</span>
-            </a>
+            </Link>
           </div>
 
           <div ref={panelsContainerRef} style={{ position: "absolute", inset: 0 }}>

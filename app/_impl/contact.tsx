@@ -48,7 +48,7 @@ function SendLog({ done }: { done: boolean }) {
   );
 }
 
-export function ContactPage(_props: { shell: "d" | "m" }) {
+export function ContactPage() {
   const [v, setV] = useState<Values>({ name: "", email: "", message: "", company: "" });
   const [touched, setTouched] = useState<Partial<Record<Field, string>>>({});
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");

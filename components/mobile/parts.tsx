@@ -110,7 +110,7 @@ export function CTASection() {
   );
 }
 
-export function SiteFooter() {
+export function SiteFooter({ className }: { className?: string }) {
   const rawPathname = usePathname();
   // Strip /d or /m prefix so suppression works on deep-links/share URLs that
   // bypass proxy.ts rewrites. Mirrors components/Footer.tsx.
@@ -127,7 +127,7 @@ export function SiteFooter() {
   if (hasOwnFooter) return null;
 
   return (
-    <div className="c-xs m-site-footer">
+    <div className={`c-xs m-site-footer${className ? ` ${className}` : ""}`}>
       <span>$ exit 0 · too much coffee</span>
       <span>© {new Date().getFullYear()}</span>
     </div>

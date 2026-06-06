@@ -4,7 +4,7 @@ import { ABOUT } from "@/lib/content";
 
 // Shared /about body (both shells). Narrative serif bio + mono fact rail —
 // the one deliberately expressive personal page. Copy lives in lib/content.ts.
-export function AboutPage(_props: { shell: "d" | "m" }) {
+export function AboutPage() {
   return (
     <main className="flex-1">
       <section

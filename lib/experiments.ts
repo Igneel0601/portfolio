@@ -10,9 +10,9 @@ export type Experiment = {
 };
 
 // Personal lab notebook — fuckups and discoveries.
-// Add a new entry here, then drop a page at app/d/experiments/<slug>/page.tsx
-// (and mirror it under app/m/experiments/<slug>/). Skip the page files if
-// `href` points elsewhere.
+// Add a new entry here, then drop a page at
+// app/(site)/experiments/<slug>/page.tsx. Skip the page file if `href` points
+// elsewhere.
 export const EXPERIMENTS: Experiment[] = [
   {
     slug: "projects-showcase",

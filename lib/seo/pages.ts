@@ -1,5 +1,5 @@
 // Per-page SEO config — single source of truth for static route metadata.
-// Both the /d and /m shells read the same entry, so the two can't drift.
+// One entry per route, keyed by unprefixed path — the single shell reads it.
 // `home` intentionally omits a title so it keeps inheriting the root layout's.
 // `titleLabel` is composed as `${titleLabel} — ${PROFILE.name}` in the builder.
 // ISR `revalidate` stays a per-page segment export (Next reads it directly).

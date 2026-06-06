@@ -49,10 +49,8 @@ export async function generateMetadata({
 
 export async function CaseStudyPage({
   params,
-  shell,
 }: {
   params: Promise<{ slug: string }>;
-  shell: "d" | "m";
 }) {
   const { slug } = await params;
   const loaded = await loadCase(slug);
@@ -112,14 +110,18 @@ export async function CaseStudyPage({
 
             <Frontmatter data={data} />
 
-            {shell === "m" && <Toc items={tocItems} variant="inline" />}
+            {/* Both TOC variants render; CSS shows the inline copy below 60rem
+                and the sidebar copy at/above 60rem — the same single cutoff,
+                so exactly one is ever visible. TocHighlight (mounted by the
+                sidebar) updates both copies via querySelectorAll. */}
+            <Toc items={tocItems} variant="inline" />
 
             <MDXRemote source={content} components={buildMdxComponents()} />
 
             <Pager prev={prev} next={next} />
           </article>
 
-          {shell === "d" && <Toc items={tocItems} variant="sidebar" />}
+          <Toc items={tocItems} variant="sidebar" />
         </div>
       </main>
       <StudyFooter slug={slug} />

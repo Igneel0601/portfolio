@@ -41,7 +41,6 @@ export async function PostPage({
   params,
 }: {
   params: Promise<{ slug: string }>
-  shell: 'd' | 'm'
 }) {
   const { slug } = await params
   const post = await getPostBySlug(slug)

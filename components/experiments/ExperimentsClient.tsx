@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type ReactNode } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/content";
 import { ScrollTrigger } from "@/lib/gsap";
@@ -567,7 +568,7 @@ function ExperimentsDesktop() {
           }}
         >
           <span data-seam-left>$ cat ~/projects/{PROJECTS[0].id}/README.md  # {PROJECTS[0].kind}</span>
-          <a
+          <Link
             href="/work"
             data-bar-projects
             className="c-md"
@@ -582,7 +583,7 @@ function ExperimentsDesktop() {
           >
             <span data-projects-target>projects</span>
             <ExternalLink size="0.9em" strokeWidth={2} aria-hidden />
-          </a>
+          </Link>
         </div>
 
         {/* project panels — all overlap, clip-path wipes between them */}

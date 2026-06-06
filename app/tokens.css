@@ -344,12 +344,17 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 }
 
 /* TOC sidebar */
-/* TOC variants are picked by the shell at render time (see
-   app/_impl/case-study.tsx CaseStudyPage):
-   - .cs-toc-sidebar: rendered only on /d, sticky right column
-   - .cs-toc-inline:  rendered only on /m, collapsible bar inside article
+/* Both TOC variants render in the single shell; CSS toggles them on one
+   cutoff (60rem) so exactly one shows:
+   - .cs-toc-sidebar: sticky right column, hidden < 60rem by the .cs-doc grid
+     rule above.
+   - .cs-toc-inline:  collapsible bar inside article, hidden >= 60rem by the
+     rule below — the same line where the sidebar appears.
    Each variant gets its own layout; .cs-toc carries only the truly
    shared bits (typography, link styling, active state). */
+@media (min-width: 60rem) {
+  .cs-toc-inline { display: none; }
+}
 .cs-toc {
   display: flex;
   flex-direction: column;

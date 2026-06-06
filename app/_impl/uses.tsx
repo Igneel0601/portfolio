@@ -6,7 +6,7 @@ import { USES, CONTACT } from "@/lib/content";
 
 // Shared /uses body — categorized gear with a small in-page category filter
 // (client state; fixed list, so no URL/pagination). Reuses the .tag-* pills.
-export function UsesPage(_props: { shell: "d" | "m" }) {
+export function UsesPage() {
   const [filter, setFilter] = useState<string>("all");
   const total = USES.cats.reduce((n, c) => n + c.rows.length, 0);
   const visible = filter === "all" ? USES.cats : USES.cats.filter((c) => c.key === filter);

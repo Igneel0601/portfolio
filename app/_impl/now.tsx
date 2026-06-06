@@ -4,7 +4,7 @@ import { NowClock } from "@/components/NowClock";
 
 // Shared /now body — status board (live IST clock + cards) + dated log.
 // Copy lives in lib/content.ts:NOW; reuses the .ab-* page-head atoms.
-export function NowPage(_props: { shell: "d" | "m" }) {
+export function NowPage() {
   return (
     <main className="flex-1">
       <section

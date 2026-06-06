@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import { PROFILE } from "@/lib/profile";
 
-export function Footer() {
+export function Footer({ className }: { className?: string }) {
   const rawPathname = usePathname();
 
   // Direct visits to /d/* or /m/* (deep-links, share URLs, previews) bypass
@@ -23,7 +23,7 @@ export function Footer() {
 
   return (
     <footer
-      className="w-full"
+      className={`w-full${className ? ` ${className}` : ""}`}
       style={{ borderTop: "1px solid var(--hair)", marginTop: "3rem" }}
     >
       <div className="page-shell py-5 c-xs flex justify-between mute">
