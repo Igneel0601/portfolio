@@ -29,7 +29,6 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
         // Leave touch scrolling native (syncTouch off): hijacking it breaks the
         // browser's pull-to-refresh and URL-bar collapse.
       });
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setLenis(instance);
 
       instance.on("scroll", ScrollTrigger.update);
