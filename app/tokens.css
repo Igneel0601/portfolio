@@ -49,15 +49,29 @@ body::-webkit-scrollbar-thumb,
   border-radius: 999px;
 }
 
+/* Tailwind theme — every design token is registered here so utilities
+   (bg-paper, text-ink-dim, border-hair, text-accent, …) resolve to the same
+   :root custom properties that bespoke CSS uses. `inline` keeps the utility
+   value as the runtime var() so light/dark or future theming flows through.
+   tokens.css stays the single source of truth: the raw values live in :root,
+   @theme only re-exports them to Tailwind. Never hardcode hex/rem in JSX. */
 @theme inline {
   --color-paper: var(--paper);
   --color-paper-2: var(--paper-2);
+  --color-paper-3: var(--paper-3);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
+  --color-ink-dim: var(--ink-dim);
+  --color-hair: var(--hair);
+  --color-hair-2: var(--hair-2);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-accent-3: var(--accent-3);
   --color-highlight: var(--highlight);
+  --color-status-active: var(--status-active);
+  --color-status-wip: var(--status-wip);
+  --color-status-archived: var(--status-archived);
+  --color-status-dead: var(--status-dead);
   --font-serif: var(--font-fraunces);
   --font-mono: var(--font-plex-mono);
 }
@@ -100,26 +114,48 @@ body {
    - t-lead..t-xs    : serif (Fraunces) — prose
    - l-*             : mono — eyebrow/meta/tag chrome (uppercase)
    - c-*             : mono — code/terminal text (no transform)
-*/
-.t-display { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: clamp(2.25rem, 8vw, 4.5rem); line-height: 0.95; font-weight: 800; letter-spacing: -0.02em; }
-.t-h1      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: clamp(2rem, 6.5vw, 3.5rem); line-height: 1.00; font-weight: 800; letter-spacing: -0.015em; }
-.t-h2      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: clamp(1.5rem, 5vw, 2.25rem); line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
-.t-h3      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: clamp(1.25rem, 4vw, 1.75rem); line-height: 1.15; font-weight: 700; letter-spacing: -0.005em; }
-.t-h4      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.25rem; line-height: 1.20; font-weight: 700; }
-.t-h5      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.0625rem; line-height: 1.25; font-weight: 600; }
 
-.t-lead    { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 1.125rem;  line-height: 1.55; font-weight: 400; }
-.t-body    { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 0.9375rem; line-height: 1.55; font-weight: 400; }
-.t-sm      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 0.8125rem; line-height: 1.45; font-weight: 400; }
-.t-xs      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: 0.75rem;   line-height: 1.40; font-weight: 400; }
+   Font sizes (incl. the fluid clamps) live in @theme below, so each also
+   exists as a Tailwind utility (text-display, text-h1, …, text-eyebrow,
+   text-code-md). The .t-/.l-/.c- classes consume the same vars and add
+   family/line-height/weight — identical computed values, no drift. */
+@theme {
+  --text-display: clamp(2.25rem, 8vw, 4.5rem);
+  --text-h1: clamp(2rem, 6.5vw, 3.5rem);
+  --text-h2: clamp(1.5rem, 5vw, 2.25rem);
+  --text-h3: clamp(1.25rem, 4vw, 1.75rem);
+  --text-h4: 1.25rem;
+  --text-h5: 1.0625rem;
+  --text-lead: 1.125rem;
+  --text-body: 0.9375rem;
+  --text-sm: 0.8125rem;
+  --text-xs: 0.75rem;
+  --text-eyebrow: 0.6875rem;
+  --text-meta: 0.625rem;
+  --text-tag: 0.6875rem;
+  --text-code-md: 0.8125rem;
+  --text-code-sm: 0.75rem;
+  --text-code-xs: 0.6875rem;
+}
+.t-display { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-display); line-height: 0.95; font-weight: 800; letter-spacing: -0.02em; }
+.t-h1      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-h1); line-height: 1.00; font-weight: 800; letter-spacing: -0.015em; }
+.t-h2      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-h2); line-height: 1.05; font-weight: 700; letter-spacing: -0.01em; }
+.t-h3      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-h3); line-height: 1.15; font-weight: 700; letter-spacing: -0.005em; }
+.t-h4      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-h4); line-height: 1.20; font-weight: 700; }
+.t-h5      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-h5); line-height: 1.25; font-weight: 600; }
 
-.l-eyebrow { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.18em; font-weight: 500; text-transform: uppercase; }
-.l-meta    { font-family: var(--mono); font-size: 0.625rem; letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; }
-.l-tag     { font-family: var(--mono); font-size: 0.6875rem; letter-spacing: 0.10em; font-weight: 500; }
+.t-lead    { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-lead);  line-height: 1.55; font-weight: 400; }
+.t-body    { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-body); line-height: 1.55; font-weight: 400; }
+.t-sm      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-sm); line-height: 1.45; font-weight: 400; }
+.t-xs      { font-family: var(--font-serif), ui-serif, Georgia, serif; font-size: var(--text-xs);   line-height: 1.40; font-weight: 400; }
 
-.c-md      { font-family: var(--mono); font-size: 0.8125rem; line-height: 1.60; }
-.c-sm      { font-family: var(--mono); font-size: 0.75rem; line-height: 1.50; }
-.c-xs      { font-family: var(--mono); font-size: 0.6875rem; line-height: 1.40; }
+.l-eyebrow { font-family: var(--mono); font-size: var(--text-eyebrow); letter-spacing: 0.18em; font-weight: 500; text-transform: uppercase; }
+.l-meta    { font-family: var(--mono); font-size: var(--text-meta); letter-spacing: 0.14em; font-weight: 500; text-transform: uppercase; }
+.l-tag     { font-family: var(--mono); font-size: var(--text-tag); letter-spacing: 0.10em; font-weight: 500; }
+
+.c-md      { font-family: var(--mono); font-size: var(--text-code-md); line-height: 1.60; }
+.c-sm      { font-family: var(--mono); font-size: var(--text-code-sm); line-height: 1.50; }
+.c-xs      { font-family: var(--mono); font-size: var(--text-code-xs); line-height: 1.40; }
 
 .btn {
   --btn-shadow: var(--ink);
