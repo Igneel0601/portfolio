@@ -47,7 +47,7 @@ function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
          delivery), so "queued" is the honest status — and it matches the
          "It's in the queue" note shown below. */}
       <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-        {done ? `[ ok ] queued in ${elapsed ?? "0.00"}s` : "[ .. ] handing to mail relay…"}
+        {done ? `[ ok ] sent in ${elapsed ?? "0.00"}s` : "[ .. ] sending…"}
       </div>
     </div>
   );
@@ -123,7 +123,7 @@ export function ContactPage() {
                   message sent<span className="text-accent">.</span>
                 </div>
                 <p className="ct-sentnote">
-                  It&apos;s in the queue. I usually reply within a day or two — if it&apos;s
+                  It&apos;s on its way. I usually reply within a day or two — if it&apos;s
                   urgent, just email me directly.
                 </p>
                 <button className="ct-btn ghost" onClick={reset}>
