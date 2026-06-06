@@ -1337,8 +1337,6 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
 .now-ac { color: var(--accent); }
 
 /* ── /uses ── spec sheet ──────────────────────────────────────────────── */
-.uses-filter { margin-top: 1.5rem; }
-.uses-sheet { margin-top: 2.5rem; }
 .uses-cathead { display: flex; align-items: center; gap: 1rem; margin: 1.875rem 0 0.5rem; }
 .uses-cathead .l-meta { color: var(--accent); }
 .uses-rule { flex: 1; border-top: 1px solid var(--hair); }
@@ -1372,7 +1370,6 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   padding: 0.2rem 0.6rem;
   white-space: nowrap;
 }
-.uses-foot { margin-top: 4rem; }
 .uses-dot {
   font-family: var(--font-serif), ui-serif, Georgia, serif;
   font-size: 1.125rem;

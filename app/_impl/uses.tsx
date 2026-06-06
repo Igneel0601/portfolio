@@ -32,7 +32,7 @@ export function UsesPage() {
           </span>
         </div>
 
-        <div className="tag-filter uses-filter" role="group" aria-label="filter by category">
+        <div className="tag-filter mt-6" role="group" aria-label="filter by category">
           <button
             type="button"
             className="tag-chip l-meta no-pop"
@@ -54,7 +54,7 @@ export function UsesPage() {
           ))}
         </div>
 
-        <div className="uses-sheet">
+        <div className="mt-10">
           {visible.map((cat) => (
             <section className="uses-cat" key={cat.key}>
               <div className="uses-cathead">
@@ -79,7 +79,7 @@ export function UsesPage() {
           ))}
         </div>
 
-        <div className="uses-foot">
+        <div className="mt-16">
           <div className="ab-cmd c-sm">
             <span className="ab-prompt">$</span> cat ~/.dotfiles/README
           </div>
