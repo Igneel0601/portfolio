@@ -41,17 +41,14 @@ function SendLog({ done, elapsed }: { done: boolean; elapsed?: string }) {
           {l}
         </div>
       ))}
-      {/* While sending, delivering is the active step and stays the last line —
-         nothing renders ahead of it. On success it resolves to [ ok ] and the
-         queued line appears below. */}
-      <div className="ct-sendline" style={{ animationDelay: "0.54s" }}>
-        {done ? "[ ok ] delivered" : "[ .. ] delivering message…"}
+      {/* Single active step: while sending it shows the hand-off in progress;
+         on success it resolves IN PLACE to the queued confirmation. Resend
+         accepts the email and queues it for delivery (it doesn't confirm inbox
+         delivery), so "queued" is the honest status — and it matches the
+         "It's in the queue" note shown below. */}
+      <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
+        {done ? `[ ok ] queued in ${elapsed ?? "0.00"}s` : "[ .. ] handing to mail relay…"}
       </div>
-      {done && (
-        <div className="ct-sendline" style={{ animationDelay: "0.85s" }}>
-          [ ok ] queued in {elapsed ?? "0.00"}s
-        </div>
-      )}
     </div>
   );
 }
