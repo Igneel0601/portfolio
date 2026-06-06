@@ -49,11 +49,11 @@ export function WorkLog({
   return (
     <div>
       <section className="pt-6">
-        <div className="l-eyebrow" style={{ color: "var(--ink-dim)" }}>
+        <div className="l-eyebrow text-ink-dim">
           build log · {new Date().getFullYear()}
         </div>
-        <h1 data-page-title className="t-display" style={{ marginTop: "0.75rem" }}>
-          projects<span style={{ color: "var(--accent)" }}>.</span>
+        <h1 data-page-title className="t-display mt-3">
+          projects<span className="text-accent">.</span>
         </h1>
         <p className="wk-sub t-lead">
           Everything I&apos;ve built — shipped, shelved, or quietly killed. no

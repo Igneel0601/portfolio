@@ -13,10 +13,7 @@ export function UsesPage() {
 
   return (
     <main className="flex-1">
-      <section
-        className="page-shell uses pre-footer-pad"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
+      <section className="page-shell uses pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
         <div className="l-eyebrow ab-eyebrow">{USES.eyebrow}</div>
         <h1 className="t-display ab-title">
           uses<span className="ab-dot">.</span>

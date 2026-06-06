@@ -91,10 +91,7 @@ export function ContactPage() {
 
   return (
     <main className="flex-1">
-      <section
-        className="page-shell contact"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
+      <section className="page-shell contact pt-[clamp(1.25rem,2.5vw,1.75rem)]">
         <div className="l-eyebrow ab-eyebrow">{CONTACT_PAGE.eyebrow}</div>
         <h1 className="t-display ab-title">
           contact<span className="ab-dot">.</span>

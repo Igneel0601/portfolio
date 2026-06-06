@@ -56,10 +56,7 @@ export async function PostPage({
       <JsonLd data={articleJsonLd(post, slug)} />
       <ReadingProgress />
       <main className="flex-1">
-        <section
-          className="page-shell pre-footer-pad"
-          style={{ paddingTop: 'clamp(1.25rem, 2.5vw, 1.75rem)' }}
-        >
+        <section className="page-shell pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
           <Breadcrumb section="writing" file={filename} />
 
           <h1 className="wp-title t-h1">{post.title}</h1>
@@ -68,7 +65,7 @@ export async function PostPage({
 
           <div className="wp-meta-strip c-xs">
             {post.categories.map((c, i) => (
-              <span key={c.slug} style={{ display: 'contents' }}>
+              <span key={c.slug} className="contents">
                 {i > 0 && <span className="wp-sep">·</span>}
                 <span className="wp-tag">{c.title.toLowerCase()}</span>
               </span>

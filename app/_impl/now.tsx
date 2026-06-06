@@ -7,10 +7,7 @@ import { NowClock } from "@/components/NowClock";
 export function NowPage() {
   return (
     <main className="flex-1">
-      <section
-        className="page-shell now pre-footer-pad"
-        style={{ paddingTop: "clamp(1.25rem, 2.5vw, 1.75rem)" }}
-      >
+      <section className="page-shell now pre-footer-pad pt-[clamp(1.25rem,2.5vw,1.75rem)]">
         <div className="l-eyebrow ab-eyebrow">{NOW.eyebrow}</div>
         <h1 className="t-display ab-title">
           now<span className="ab-dot">.</span>
