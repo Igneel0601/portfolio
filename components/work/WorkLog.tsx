@@ -60,15 +60,15 @@ export function WorkLog({
           survivorship bias.
         </p>
 
-        <div className="wa-prompt c-md">
-          <span className="wa-cmd">$ ls /work</span>
-          <span className="wa-sep">·</span>
+        <div className="c-md mt-12 text-ink-soft flex items-baseline gap-2.5 flex-wrap">
+          <span className="text-accent">$ ls /work</span>
+          <span className="opacity-50">·</span>
           <span>
             {rows.length} {rows.length === 1 ? "entry" : "entries"}
           </span>
           {lastCommit && (
             <>
-              <span className="wa-sep">·</span>
+              <span className="opacity-50">·</span>
               <span>last commit {lastCommit}</span>
             </>
           )}
