@@ -352,10 +352,12 @@ export function SceneTimeline() {
           <div className="h-full flex flex-col min-h-0">
             <div
               className="box p-4 mono flex flex-col"
-              /* Fit content so logs never spill outside the box when the window
-                 is short; cap at 40% and clip inside the border in the extreme
-                 case (was a rigid height:40% that overflowed on short viewports). */
-              style={{ background: "var(--paper-2)", height: "auto", maxHeight: "40%", overflow: "hidden", minHeight: 0 }}
+              /* Fixed rem height (not %): reserves space up front so the typewriter
+                 log lines don't shift layout as they type in, and is viewport-
+                 independent so short windows don't overflow (the old height:40%
+                 spilled on short viewports). Content is ~12rem; overflow:hidden
+                 contains a wrapped line in the extreme narrow case. */
+              style={{ background: "var(--paper-2)", height: "14rem", overflow: "hidden", minHeight: 0 }}
             >
               <div className="flex items-baseline justify-between mb-3">
                 <div className="l-eyebrow" style={{ color: "var(--accent)" }}>
