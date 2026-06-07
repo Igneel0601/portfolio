@@ -76,35 +76,44 @@ export function MobileBoot() {
       gsap.set(words, { yPercent: 100, autoAlpha: 0 });
       gsap.set(sub, { autoAlpha: 0, y: 12 });
       gsap.set(ctas, { autoAlpha: 0, y: 14 });
-      if (prompt) prompt.textContent = "";
+      if (prompt) {
+        prompt.textContent = "";
+        // Reveal it: the mobile FOUC guard hides it (visibility:hidden) and the
+        // typewriter below only fills text, not visibility — without this the
+        // prompt ($ ./hello.sh) stays hidden.
+        gsap.set(prompt, { autoAlpha: 1 });
+      }
 
       const tl = gsap.timeline();
       if (prompt) {
         tl.to(prompt, {
-          duration: 0.4,
+          duration: 0.25,
           text: { value: BOOT_PROMPT_FULL, delimiter: "" },
           ease: "steps(14)",
         });
       }
+      // Intro tightened (~35%, matching SceneBoot) so the hero headline — the LCP
+      // element, revealed via this timeline — paints sooner under mobile CPU
+      // throttle, where the old pacing pushed LCP to ~4.5s.
       tl.to(
         lines,
-        { autoAlpha: 1, x: 0, duration: D.sm, ease: E.precise, stagger: 0.18 },
-        "+=0.10",
+        { autoAlpha: 1, x: 0, duration: D.sm, ease: E.precise, stagger: 0.10 },
+        "+=0.05",
       )
         .to(
           words,
           {
             yPercent: 0,
             autoAlpha: 1,
-            duration: 0.65,
+            duration: 0.45,
             ease: E.weighty,
-            stagger: { each: 0.06, from: "start" },
+            stagger: { each: 0.04, from: "start" },
             // Drop the inline transform once risen: on iOS a leftover transform
             // keeps the word on a compositing layer that clips the italic f's
             // ink (the "swipe down+up fixes it" repaint). clearProps removes it.
             clearProps: "transform",
           },
-          "-=0.20",
+          "-=0.15",
         )
         .to(
           sub,
@@ -130,7 +139,7 @@ export function MobileBoot() {
   }, []);
 
   return (
-    <div ref={rootRef} className="min-h-[100dvh] flex flex-col justify-center">
+    <div ref={rootRef} data-m-boot className="min-h-[100dvh] flex flex-col justify-center">
       <div className="c-xs px-[1.375rem] pb-[0.5625rem] leading-[1.75]">
         <div>
           <span className="text-accent" data-boot-prompt>

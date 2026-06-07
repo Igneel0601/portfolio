@@ -330,6 +330,18 @@ a, button {
     visibility: hidden;
   }
 }
+/* Same guard for the mobile boot (MobileBoot has no min-width guard, so it
+   flashed: hero painted -> hidden by JS -> revealed). Hide until GSAP's
+   autoAlpha reveals. Scoped to the mobile shell + no-preference. */
+@media (prefers-reduced-motion: no-preference) and (max-width: 47.9375rem) {
+  [data-m-boot] [data-boot-line],
+  [data-m-boot] [data-boot-prompt],
+  [data-m-boot] [data-headline-word],
+  [data-m-boot] [data-subhead],
+  [data-m-boot] [data-cta] {
+    visibility: hidden;
+  }
+}
 /* .m-boot/.m-boot-prompt/.m-boot-text/.m-boot-line → utilities in MobileBoot.tsx.
    .m-hero/.m-hero-em/.m-hero-meta/.m-hero-ctas → utilities in MobileBoot.tsx. */
 .m-hero-title {
