@@ -81,30 +81,33 @@ export function MobileBoot() {
       const tl = gsap.timeline();
       if (prompt) {
         tl.to(prompt, {
-          duration: 0.4,
+          duration: 0.25,
           text: { value: BOOT_PROMPT_FULL, delimiter: "" },
           ease: "steps(14)",
         });
       }
+      // Intro tightened (~35%, matching SceneBoot) so the hero headline — the LCP
+      // element, revealed via this timeline — paints sooner under mobile CPU
+      // throttle, where the old pacing pushed LCP to ~4.5s.
       tl.to(
         lines,
-        { autoAlpha: 1, x: 0, duration: D.sm, ease: E.precise, stagger: 0.18 },
-        "+=0.10",
+        { autoAlpha: 1, x: 0, duration: D.sm, ease: E.precise, stagger: 0.10 },
+        "+=0.05",
       )
         .to(
           words,
           {
             yPercent: 0,
             autoAlpha: 1,
-            duration: 0.65,
+            duration: 0.45,
             ease: E.weighty,
-            stagger: { each: 0.06, from: "start" },
+            stagger: { each: 0.04, from: "start" },
             // Drop the inline transform once risen: on iOS a leftover transform
             // keeps the word on a compositing layer that clips the italic f's
             // ink (the "swipe down+up fixes it" repaint). clearProps removes it.
             clearProps: "transform",
           },
-          "-=0.20",
+          "-=0.15",
         )
         .to(
           sub,
