@@ -60,7 +60,7 @@ export function Nav({ className }: { className?: string }) {
         nav.setAttribute("data-nav-revealed", "");
 
         tl = gsap.timeline({
-          delay: isHome ? 2.8 : 0.1,
+          delay: isHome ? 1.8 : 0.1,
           defaults: { ease: E.precise },
           onComplete: () => {
             enteredRef.current = true;

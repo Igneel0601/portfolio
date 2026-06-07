@@ -85,8 +85,8 @@ export const PROFILE: Profile = {
     [{ em: "Shipping" }, { em: "anyway." }],
   ],
 
-  subheadDesktop: `${FACTS.degree} · ${FACTS.uniLong} · ${FACTS.location} · ${FACTS.availability}.`,
-  subheadMobile: [`${FACTS.degree} · ${FACTS.uni} · ${FACTS.location}`, `${FACTS.availability}.`],
+  subheadDesktop: `${FACTS.degree} · ${FACTS.uniLong} · ${FACTS.location} · ${FACTS.availability}`,
+  subheadMobile: [`${FACTS.degree} · ${FACTS.uni} · ${FACTS.location}`, `${FACTS.availability}`],
 
   resumePath: "/vaibhav_resume.pdf",
 

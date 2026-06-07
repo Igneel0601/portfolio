@@ -2,7 +2,8 @@
 
 import { Fragment, useEffect, useRef } from "react";
 import { MoveDown } from "lucide-react";
-import { BOOT_LINES, BOOT_PROMPT_FULL, CONTACT } from "@/lib/content";
+import Link from "next/link";
+import { BOOT_LINES, BOOT_PROMPT_FULL } from "@/lib/content";
 import { PROFILE, type HeadlineToken } from "@/lib/profile";
 import { gsap } from "@/lib/gsap";
 import { D, E } from "@/lib/motion-tokens";
@@ -62,6 +63,17 @@ export function MobileBoot() {
     const words = gsap.utils.toArray<HTMLElement>("[data-headline-word]", root);
     const sub = root.querySelector<HTMLElement>("[data-subhead]");
     const ctas = gsap.utils.toArray<HTMLElement>("[data-cta]", root);
+
+    // Real boot time: swap the placeholder for the actual page-ready time
+    // (DOMContentLoaded, falling back to hydration time).
+    const readyLine = root.querySelector<HTMLElement>("[data-boot-ready]");
+    if (readyLine) {
+      const nav = performance.getEntriesByType("navigation")[0] as
+        | PerformanceNavigationTiming
+        | undefined;
+      const ms = nav?.domContentLoadedEventEnd || performance.now();
+      readyLine.textContent = `[ ok ] ready in ${(ms / 1000).toFixed(2)}s`;
+    }
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       if (prompt) prompt.textContent = BOOT_PROMPT_FULL;
@@ -147,7 +159,12 @@ export function MobileBoot() {
           </span>
         </div>
         {BOOT_LINES.slice(1).map((l, i) => (
-          <div key={i} data-boot-line className="pl-[0.625rem] text-ink-soft">
+          <div
+            key={i}
+            data-boot-line
+            data-boot-ready={l.text.includes("ready in") || undefined}
+            className="pl-[0.625rem] text-ink-soft"
+          >
             {l.text}
           </div>
         ))}
@@ -181,9 +198,9 @@ export function MobileBoot() {
           <a data-cta href={PROFILE.resumePath} download className="btn w-full justify-center no-underline">
             $ download résumé.pdf
           </a>
-          <a data-cta href={`mailto:${CONTACT.email}`} className="btn w-full justify-center no-underline">
-            {CONTACT.email}
-          </a>
+          <Link data-cta href="/contact" className="btn w-full justify-center no-underline">
+            say hi
+          </Link>
         </div>
       </div>
     </div>
