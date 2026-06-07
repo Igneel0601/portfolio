@@ -80,25 +80,27 @@ export function SceneBoot() {
       const tl = gsap.timeline();
       if (prompt) {
         tl.to(prompt, {
-          duration: 0.4,
+          duration: 0.25,
           text: { value: BOOT_PROMPT_FULL, delimiter: "" },
           ease: "steps(14)",
         });
       }
+      // Intro tightened (~35%) so the subhead — the LCP element, revealed last —
+      // paints well under the 2.5s LCP budget, while keeping the in-order reveal.
       tl.to(lines, {
         autoAlpha: 1,
         x: 0,
         duration: D.sm,
         ease: E.precise,
-        stagger: 0.18,
-      }, "+=0.10")
+        stagger: 0.10,
+      }, "+=0.05")
         .to(words, {
           yPercent: 0,
           autoAlpha: 1,
-          duration: 0.65,
+          duration: 0.45,
           ease: E.weighty,
-          stagger: { each: 0.06, from: "start" },
-        }, "-=0.20")
+          stagger: { each: 0.04, from: "start" },
+        }, "-=0.15")
         .to(sub, {
           autoAlpha: 1,
           y: 0,
