@@ -37,18 +37,11 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
       gsap.ticker.lagSmoothing(0);
 
       // Lenis caches max-scroll at init. Resize on body height change to keep
-      // it accurate on pages with lazy-loaded images. rAF-debounced so the burst
-      // of body-height changes during initial load (fonts/content settling)
-      // coalesces into one resize per frame instead of thrashing layout (TBT).
-      let resizeRaf = 0;
-      const ro = new ResizeObserver(() => {
-        cancelAnimationFrame(resizeRaf);
-        resizeRaf = requestAnimationFrame(() => instance.resize());
-      });
+      // it accurate on pages with lazy-loaded images.
+      const ro = new ResizeObserver(() => instance.resize());
       ro.observe(document.body);
 
       cleanupFn = () => {
-        cancelAnimationFrame(resizeRaf);
         ro.disconnect();
         gsap.ticker.remove(tick);
         instance.destroy();
