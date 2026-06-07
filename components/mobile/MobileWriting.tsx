@@ -75,10 +75,11 @@ export function MobileWriting({ posts, counts, total, tag, page, totalPages }: P
             <Link
               key={p.slug}
               href={`/writing/${p.slug}`}
+              data-wa-row
               className="block py-[1.15rem] px-[1.375rem] border-b border-[var(--hair)] text-inherit no-underline no-pop active:bg-[color-mix(in_oklab,var(--accent)_5%,transparent)]"
             >
               <div className="flex items-baseline justify-between gap-3 mb-2">
-                <span className="l-meta text-accent">{p.categories[0]?.title ?? "post"}</span>
+                <span data-wa-cat className="l-meta text-accent">{p.categories[0]?.title ?? "post"}</span>
                 <span className="l-meta text-ink-dim whitespace-nowrap">{fmtDate(p.publishedAt ?? p.updatedAt)}</span>
               </div>
               <h2 className="t-h4 m-0 mb-[0.45rem] text-ink text-balance">{p.title}</h2>

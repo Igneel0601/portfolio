@@ -41,19 +41,18 @@ test("/writing paginates and filters via URL", async ({ page }) => {
   // page 1 caps at the page size and shows a pager (works only when there are
   // >10 posts; tolerate fewer by asserting rows never exceed the page size).
   // Single shell renders both variants toggled by CSS, so scope to the visible
-  // shell's rows. Select by stable data hooks (desktop [data-wa-row]) / mobile
-  // class (.m-wrow), NOT styling classes — those move during the Tailwind
-  // migration and shouldn't break this test.
+  // shell's rows. Both shells mark rows with [data-wa-row] / categories with
+  // [data-wa-cat] (stable data hooks, not styling classes that move in refactors).
   await page.goto("/writing");
-  const rows = page.locator("[data-wa-row]:visible, .m-wrow:visible");
+  const rows = page.locator("[data-wa-row]:visible");
   expect(await rows.count()).toBeLessThanOrEqual(10);
 
   // a category filter is a real URL and narrows the list (server-side).
   await page.goto("/writing?tag=security");
-  const filtered = page.locator("[data-wa-row]:visible, .m-wrow:visible");
+  const filtered = page.locator("[data-wa-row]:visible");
   await expect(filtered.first()).toBeAttached();
   // every visible row on a filtered page belongs to that category
-  const cats = await page.locator("[data-wa-cat]:visible, .m-wrow-cat:visible").allTextContents();
+  const cats = await page.locator("[data-wa-cat]:visible").allTextContents();
   expect(cats.every((c) => c.toLowerCase().includes("security"))).toBe(true);
 });
 

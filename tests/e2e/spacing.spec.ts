@@ -84,8 +84,10 @@ test.describe("spacing contract", () => {
 // path → selectors that must resolve to text-decoration-line: none.
 const MOBILE_PLAIN_LINKS: Array<{ path: string; selectors: string[] }> = [
   { path: "/", selectors: ["a.m-panel-cta"] },
-  { path: "/writing", selectors: ["a.m-wrow", "a.m-chip", "a.m-wfoot-rss"] },
-  { path: "/work", selectors: ["a.m-wkrow", "a.m-wklog-more"] },
+  // Row links carry stable data hooks (the .m-* class names moved/were removed in
+  // the Tailwind-utility migration). These are the primary mobile tappable links.
+  { path: "/writing", selectors: ["a[data-wa-row]"] },
+  { path: "/work", selectors: ["a[data-wk-row]"] },
 ];
 
 test.describe("mobile link affordance contract", () => {

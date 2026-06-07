@@ -121,6 +121,7 @@ export function MobileWorkLog({
             <Link
               key={`${r.name}-${i}`}
               href={`/work/${r.slug}`}
+              data-wk-row
               className={rowCls}
               data-status={r.status}
             >

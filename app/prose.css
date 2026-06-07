@@ -104,7 +104,10 @@
   height: 0.125rem; /* 2px progress bar */
   background: var(--accent);
   width: 0;
-  z-index: 60;
+  /* Above every nav (desktop + mobile [data-mobile-nav] z-110) so the 2px accent
+     line stays visible at the top edge. Set here (the post-page stylesheet) so it
+     wins the cascade — a duplicate in shell.css lost to this rule's load order. */
+  z-index: 120;
   transition: width 0.12s linear;
   pointer-events: none;
 }
