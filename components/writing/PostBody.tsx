@@ -9,13 +9,24 @@ const FORMAT_STRIKETHROUGH = 1 << 2
 const FORMAT_UNDERLINE = 1 << 3
 const FORMAT_CODE = 1 << 4
 
+// Fraunces sets arrow glyphs (\u2192 \u2190 \u2194) below the optical center. Nudge each up;
+// spaces stay normal so the line wraps naturally. Prose only; inline code is mono.
+function withArrows(text: string): React.ReactNode {
+  if (!/[\u2192\u2190\u2194]/.test(text)) return text
+  return text.split(/([\u2192\u2190\u2194])/).map((part, i) =>
+    /[\u2192\u2190\u2194]/.test(part)
+      ? <span key={i} style={{ verticalAlign: "0.1em" }}>{part}</span>
+      : part,
+  )
+}
+
 function renderText(node: LexicalNode, key: string) {
   const text = node.text ?? ''
   const fmt = typeof node.format === 'number' ? node.format : 0
   // Inline code renders mono + faint bg via .w-inline-code (no green color —
   // the old accent spans broke reading flow). Wrapped innermost so bold/italic
   // can still nest around it. Fenced BLOCKS (the 'code' node below) are separate.
-  let el: React.ReactNode = text
+  let el: React.ReactNode = (fmt & FORMAT_CODE) ? text : withArrows(text)
   if (fmt & FORMAT_CODE) el = <code className="w-inline-code">{el}</code>
   if (fmt & FORMAT_BOLD) el = <strong>{el}</strong>
   if (fmt & FORMAT_ITALIC) el = <em>{el}</em>
