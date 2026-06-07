@@ -272,7 +272,7 @@ export const GIT_LOG_PREVIEW: string[] = [
 export const CONTACT = {
   email: "hi@vergnyx.dev",
   github: "https://github.com/Igneel0601",
-  linkedin: "https://www.linkedin.com/in/vaibhav-verma-b5b1613bb",
+  linkedin: "https://www.linkedin.com/in/vergnyx",
   x: "https://x.com/vergnyx",
 };
 

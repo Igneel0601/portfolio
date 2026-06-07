@@ -97,11 +97,14 @@ export function ContactPage() {
     setState("idle");
   };
 
+  // Display = the URL minus protocol/www/trailing slash, so the visible text
+  // always tracks CONTACT (no stale hardcoded handles).
+  const display = (u: string) => u.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
   const links = [
     { k: "email", v: CONTACT.email, href: `mailto:${CONTACT.email}`, ext: false },
-    { k: "github", v: "github.com/Igneel0601", href: CONTACT.github, ext: true },
-    { k: "linkedin", v: "linkedin.com/in/…", href: CONTACT.linkedin, ext: true },
-    { k: "x", v: "x.com/…", href: CONTACT.x, ext: true },
+    { k: "github", v: display(CONTACT.github), href: CONTACT.github, ext: true },
+    { k: "linkedin", v: display(CONTACT.linkedin), href: CONTACT.linkedin, ext: true },
+    { k: "x", v: display(CONTACT.x), href: CONTACT.x, ext: true },
   ];
 
   return (
