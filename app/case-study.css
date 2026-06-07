@@ -419,3 +419,16 @@
   line-height: 1.55;
 }
 .exp-content > p { color: var(--ink); line-height: 1.7; }
+
+/* Case-study code blocks: Shiki output (<pre class="shiki">) inside the .code
+   shell. The shell supplies border/radius/bg; Shiki paints bg --paper-2 + inline
+   token colors. We add only mono sizing + scroll here. */
+.cs-codeblock .shiki {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  overflow-x: auto;
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+}
+.cs-codeblock .shiki code { background: none; font: inherit; }

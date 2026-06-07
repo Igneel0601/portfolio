@@ -1,19 +1,22 @@
 import type { LexicalContent, LexicalNode } from '@/lib/posts'
 import { resolveMediaUrl } from '@/lib/media'
+import { codeKey, lexicalCodeText } from '@/lib/code-utils'
 import Image from 'next/image'
 
 const FORMAT_BOLD = 1
 const FORMAT_ITALIC = 1 << 1
 const FORMAT_STRIKETHROUGH = 1 << 2
 const FORMAT_UNDERLINE = 1 << 3
+const FORMAT_CODE = 1 << 4
 
 function renderText(node: LexicalNode, key: string) {
   const text = node.text ?? ''
   const fmt = typeof node.format === 'number' ? node.format : 0
   let el: React.ReactNode = text
-  // Inline code intentionally NOT rendered as <code> — the green inline spans
-  // broke reading flow mid-sentence. Backtick text renders as plain prose; only
-  // fenced code BLOCKS (the 'code' node below) keep code styling.
+  // Inline code renders mono + faint bg via .w-inline-code (no green color —
+  // the old accent spans broke reading flow). Wrapped innermost so bold/italic
+  // can still nest around it. Fenced BLOCKS (the 'code' node below) are separate.
+  if (fmt & FORMAT_CODE) el = <code className="w-inline-code">{el}</code>
   if (fmt & FORMAT_BOLD) el = <strong>{el}</strong>
   if (fmt & FORMAT_ITALIC) el = <em>{el}</em>
   if (fmt & FORMAT_UNDERLINE) el = <u>{el}</u>
@@ -40,7 +43,7 @@ function hasBlockDescendant(children: LexicalNode[] | undefined): boolean {
   return false
 }
 
-type RenderCtx = { mediaCount: number }
+type RenderCtx = { mediaCount: number; codeHtml: Map<string, string> }
 
 function renderChildren(
   children: LexicalNode[] | undefined,
@@ -214,7 +217,19 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
       )
     }
 
-    case 'code':
+    case 'code': {
+      const codeStr = lexicalCodeText(node)
+      const lang = (node.language as string | undefined) ?? 'text'
+      const html = ctx.codeHtml.get(codeKey(lang, codeStr))
+      if (html) {
+        return (
+          <div
+            key={key}
+            className="w-codeblock"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        )
+      }
       return (
         <pre
           key={key}
@@ -227,9 +242,10 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
             margin: '1.5rem 0',
           }}
         >
-          <code>{renderChildren(node.children, key, ctx)}</code>
+          <code>{codeStr}</code>
         </pre>
       )
+    }
 
     case 'link':
     case 'autolink': {
@@ -309,6 +325,19 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
       }
 
       if (blockType === 'code') {
+        const codeStr = String(fields.code ?? '')
+        const lang = String(fields.language ?? 'text')
+        const html = ctx.codeHtml.get(codeKey(lang, codeStr))
+        if (html) {
+          return (
+            <div key={key} className="w-codeblock">
+              {fields.language ? (
+                <div className="w-codehead l-meta">{String(fields.language)}</div>
+              ) : null}
+              <div dangerouslySetInnerHTML={{ __html: html }} />
+            </div>
+          )
+        }
         return (
           <pre
             key={key}
@@ -324,12 +353,12 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
             {fields.language ? (
               <div
                 className="l-meta"
-                style={{ color: 'var(--ink-dim)', marginBottom: '0.5rem' }}
+                style={{ color: 'var(--ink-soft)', marginBottom: '0.5rem' }}
               >
                 {String(fields.language)}
               </div>
             ) : null}
-            <code>{String(fields.code ?? '')}</code>
+            <code>{codeStr}</code>
           </pre>
         )
       }
@@ -346,7 +375,13 @@ function renderNode(node: LexicalNode, key: string, ctx: RenderCtx): React.React
   }
 }
 
-export function PostBody({ value }: { value: LexicalContent }) {
-  const ctx: RenderCtx = { mediaCount: 0 }
+export function PostBody({
+  value,
+  codeHtml,
+}: {
+  value: LexicalContent
+  codeHtml?: Map<string, string>
+}) {
+  const ctx: RenderCtx = { mediaCount: 0, codeHtml: codeHtml ?? new Map() }
   return <>{renderNode(value.root, 'root', ctx)}</>
 }

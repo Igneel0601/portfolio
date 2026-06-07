@@ -16,6 +16,7 @@ import * as React from "react";
 import styles from "./case-study.module.css";
 import { slugify } from "./slug";
 import { ZoomableImage } from "./ZoomableImage";
+import { highlightCode } from "@/lib/shiki";
 
 function nodeText(node: React.ReactNode): string {
   if (node == null || typeof node === "boolean") return "";
@@ -121,7 +122,7 @@ export function AsciiDiagram({
 
 /* ─── code block ───────────────────────────────────────── */
 
-export function Code({
+export async function Code({
   children,
   file,
   lang = "typescript",
@@ -134,6 +135,7 @@ export function Code({
   caption?: string;
   n?: string;
 }) {
+  const html = await highlightCode(nodeText(children).replace(/\n$/, ""), lang);
   return (
     <figure className={styles.figure}>
       <div className={styles.code}>
@@ -141,7 +143,7 @@ export function Code({
           <span>{file || "snippet"}</span>
           <span className={`${styles.codeLang} l-meta`}>{lang}</span>
         </div>
-        <pre className={`${styles.codePre} c-md`}>{children}</pre>
+        <div className="cs-codeblock" dangerouslySetInnerHTML={{ __html: html }} />
       </div>
       {caption && (
         <figcaption className={`${styles.caption} c-sm`}>

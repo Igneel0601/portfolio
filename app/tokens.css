@@ -205,7 +205,7 @@ body {
 }
 .pill.sm {
   font-family: var(--mono);
-  font-size: 0.6rem;
+  font-size: var(--text-meta);
   padding: 0.2rem 0.55rem;
   border: 1px solid var(--hair-2);
   background: color-mix(in oklab, var(--paper-2) 70%, transparent);
@@ -415,11 +415,17 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   grid-template-columns: 1fr 22rem;
   gap: 4.5rem;
   margin-top: 3.5rem;
-  align-items: start;
+  align-items: stretch; /* both columns share the taller's height so bottoms align */
 }
-.ab-prose { font-family: var(--font-serif), ui-serif, Georgia, serif; }
+/* Flex column so .ab-sign can be pushed to the bottom (margin-top:auto), landing
+   level with the rail's quote regardless of which column's content is taller. */
+.ab-prose {
+  font-family: var(--font-serif), ui-serif, Georgia, serif;
+  display: flex;
+  flex-direction: column;
+}
 .ab-prose p {
-  font-size: clamp(1.0625rem, 1.6vw, 1.25rem);
+  font-size: var(--text-lead);
   line-height: 1.6;
   color: var(--ink);
   margin: 0 0 1.4em;
@@ -431,11 +437,11 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   color: var(--ink-soft);
   border-top: 1px solid var(--hair);
   padding-top: 1.25em;
-  /* !important to beat .ab-prose p (higher specificity). Bottom margin 0: it's
-     the last line, so the prose column bottom = the sign's bottom — which makes
-     the sticky rail's quote (clamped to the column bottom) land level with the
-     sign at the end of the sticky run. */
-  margin: 1.6em 0 0 !important;
+  /* margin-top:auto pushes the sign to the bottom of the (stretched) prose column
+     so its bottom == the rail quote's bottom — the two columns end level. The
+     border-top + padding-top keep visual separation when the auto gap is small.
+     !important beats the .ab-prose p margin (higher specificity). */
+  margin: auto 0 0 !important;
 }
 .ab-link { color: var(--accent); border-bottom: 1px solid var(--accent); }
 .ab-link:hover { color: var(--accent); }
@@ -458,8 +464,8 @@ a:not(.nav-link):not(.btn):not(.no-pop) {
   transition: border-color 0.18s ease, background-color 0.18s ease;
 }
 .ab-biglink:hover { border-color: var(--accent); }
-.ab-bl-k { color: var(--accent); font-size: 0.8125rem; font-weight: 600; }
-.ab-bl-v { color: var(--ink-soft); font-size: 0.8125rem; }
+.ab-bl-k { color: var(--accent); font-size: var(--text-sm); font-weight: 600; }
+.ab-bl-v { color: var(--ink-soft); font-size: var(--text-sm); }
 .ab-bl-ar { color: var(--ink-dim); transition: transform 0.18s ease, color 0.18s ease; }
 .ab-biglink:hover .ab-bl-ar { transform: translateX(0.25rem); color: var(--accent); }
 
