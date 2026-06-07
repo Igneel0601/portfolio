@@ -210,7 +210,7 @@ export function SceneBoot() {
           <MoveDown className="i-md" aria-hidden /> scroll the story
         </Btn>
         <Btn data-cta href={PROFILE.resumePath} download>$ download résumé.pdf</Btn>
-        <Link data-cta href="/contact" className="btn">say hi</Link>
+        <Link data-cta href="/contact" className="btn" style={{ paddingInline: "2.5rem" }}>say hi to me</Link>
       </div>
 
       </div>

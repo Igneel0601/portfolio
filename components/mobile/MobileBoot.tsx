@@ -199,7 +199,7 @@ export function MobileBoot() {
             $ download résumé.pdf
           </a>
           <Link data-cta href="/contact" className="btn w-full justify-center no-underline">
-            say hi
+            say hi to me
           </Link>
         </div>
       </div>

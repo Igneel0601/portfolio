@@ -272,8 +272,8 @@ export const GIT_LOG_PREVIEW: string[] = [
 export const CONTACT = {
   email: "hi@vergnyx.dev",
   github: "https://github.com/Igneel0601",
-  linkedin: "https://www.linkedin.com/in/",
-  x: "https://x.com/",
+  linkedin: "https://www.linkedin.com/in/vaibhav-verma-b5b1613bb",
+  x: "https://x.com/vergnyx",
 };
 
 // ── /about ── narrative bio page. Edit the copy here; the page renders it.
