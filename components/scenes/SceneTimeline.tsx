@@ -352,7 +352,10 @@ export function SceneTimeline() {
           <div className="h-full flex flex-col min-h-0">
             <div
               className="box p-4 mono flex flex-col"
-              style={{ background: "var(--paper-2)", height: "40%", minHeight: 0 }}
+              /* Fit content so logs never spill outside the box when the window
+                 is short; cap at 40% and clip inside the border in the extreme
+                 case (was a rigid height:40% that overflowed on short viewports). */
+              style={{ background: "var(--paper-2)", height: "auto", maxHeight: "40%", overflow: "hidden", minHeight: 0 }}
             >
               <div className="flex items-baseline justify-between mb-3">
                 <div className="l-eyebrow" style={{ color: "var(--accent)" }}>
