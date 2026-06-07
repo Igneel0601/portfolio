@@ -202,7 +202,7 @@
   gap: 0.625rem;
   padding: 0.625rem 0.875rem;
   border-bottom: 1px solid var(--hair);
-  color: var(--ink-dim);
+  color: var(--ink-soft); /* was ink-dim (2.93:1, fails WCAG AA); ink-soft = 5.62:1 */
 }
 .codeLang {
   margin-left: auto;

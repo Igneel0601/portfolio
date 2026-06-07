@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import { getAdjacentPosts, getPostBySlug, getPostSlugs } from '@/lib/posts'
 import { resolveMediaUrl } from '@/lib/media'
+import { buildCodeHighlights } from '@/lib/shiki'
 import { Breadcrumb } from '@/components/case-study/Breadcrumb'
 import { PostBody } from '@/components/writing/PostBody'
 import { ReadingProgress } from '@/components/writing/ReadingProgress'
@@ -51,6 +52,7 @@ export async function PostPage({
   const related = [prev, next].filter(Boolean) as NonNullable<typeof prev>[]
   const heroUrl = resolveMediaUrl(post.heroImage?.url)
   const filename = `${slug}.md`
+  const codeHtml = post.content ? await buildCodeHighlights(post.content.root) : undefined
 
   return (
     <>
@@ -96,7 +98,7 @@ export async function PostPage({
 
           {post.content && (
             <article className={`w-prose wp-prose-wrap${post.dropCap ? ' dropcap' : ''}`}>
-              <PostBody value={post.content} />
+              <PostBody value={post.content} codeHtml={codeHtml} />
             </article>
           )}
 

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MoveRight } from "lucide-react";
+import { MoveRight, Quote } from "lucide-react";
 import { ABOUT } from "@/lib/content";
 
 // Shared /about body (both shells). Narrative serif bio + mono fact rail —
@@ -48,9 +48,11 @@ export function AboutPage() {
               ))}
             </div>
             <div className="relative mt-6 pt-5 pr-[1.4rem] pb-5 pl-[2.4rem] border border-[var(--hair)] border-l-2 border-l-accent bg-paper-2 rounded-[0.1875rem] serif italic text-ink-soft leading-[1.4]">
-              <span className="absolute top-[0.1rem] left-[0.6rem] text-[2.75rem] text-accent opacity-30 serif" aria-hidden>
-                &ldquo;
-              </span>
+              <Quote
+                className="absolute text-accent w-6 h-6"
+                style={{ top: '0.85rem', left: '0.55rem', opacity: 0.3, transform: 'scaleX(-1)' }}
+                aria-hidden
+              />
               {ABOUT.quote}
             </div>
           </aside>

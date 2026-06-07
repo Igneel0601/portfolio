@@ -3,6 +3,11 @@
    All .w-prose, .w-ornament, .wp-*, and global .wp-related-grid rules live here;
    design tokens come from tokens.css. */
 
+/* Body reading size: the single site-wide reading token (--text-lead, also used
+   by case-study/about/now/uses/contact bodies). Headings carry their own t-h*
+   classes, so this only sizes paragraphs/lists/quotes. */
+.w-prose { font-size: var(--text-lead); }
+
 /* Drop cap on first paragraph — opt-in per post via `.dropcap` on the
    article. Exception to token-only rule: ::first-letter pseudo cannot take a class. */
 .w-prose.dropcap > p:first-of-type::first-letter {
@@ -31,12 +36,45 @@
 .w-prose p + p { margin-top: 1.25em; }
 .w-prose em { color: var(--ink); font-style: italic; }
 .w-prose strong { color: var(--ink); font-weight: 600; }
-.w-prose code {
+/* Inline code: mono + faint bg, ink-colored (NOT green) so it reads as code
+   without shouting mid-sentence. Mirrors case-study .inlineCode. ONLY backtick
+   spans are styled — fenced `pre > code` is left alone, so it inherits --ink on
+   the <pre>'s own paper-2 background (set in PostBody): one bg, no green. */
+.w-prose code.w-inline-code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  color: var(--ink);
   background: color-mix(in oklab, var(--ink) 6%, transparent);
-  color: var(--accent);
-  padding: 0.1em 0.4em;
+  padding: 0.1em 0.3em;
+  margin: 0 0.1em; /* detach the chip box from adjacent punctuation/words */
   border-radius: 3px;
+  white-space: nowrap; /* keep the chip whole — never split a token across lines */
 }
+
+/* Fenced code blocks: .w-codeblock is the panel (bg/radius); the language label
+   sits on a header strip inside it; Shiki's <pre> goes transparent so the panel
+   bg shows through uniformly (mirrors case-study .code / .codeHead). */
+.w-codeblock {
+  margin: 1.5rem 0;
+  background: var(--paper-2);
+  border-radius: 4px;
+  overflow: hidden; /* clip Shiki's square corners to the panel radius */
+}
+.w-codehead {
+  padding: 0.625rem 1.125rem;
+  border-bottom: 1px solid var(--hair);
+  color: var(--ink-soft); /* ink-dim fails WCAG AA here; ink-soft = 5.62:1 */
+}
+.w-codeblock .shiki {
+  margin: 0;
+  padding: 1rem 1.125rem;
+  overflow-x: auto;
+  font-family: var(--mono);
+  font-size: 0.85em;
+  line-height: 1.6;
+  background: transparent !important; /* panel supplies the bg */
+}
+.w-codeblock .shiki code { background: none; font: inherit; }
 /* Prose links stay calm: body ink + the resting underline inherited from the
    global rule, turning green on hover. Carries .no-pop in JSX so the global
    a:hover scale rule in shell.css skips them. :not(.btn) lifts specificity
