@@ -9,13 +9,32 @@ const FORMAT_STRIKETHROUGH = 1 << 2
 const FORMAT_UNDERLINE = 1 << 3
 const FORMAT_CODE = 1 << 4
 
+// Fraunces renders arrow glyphs (→ ← ↔) below the text's optical center; nudge
+// them up. Also glue the arrow to the value it points at with a non-breaking
+// space so it never dangles at a line end ("0.06s →" / "0.04s"). Prose only —
+// inline code is mono and aligns fine.
+function withArrows(text: string): React.ReactNode {
+  if (!/[→←↔]/.test(text)) return text
+  return text.split(/([→←↔]\s?)/).map((part, i) => {
+    const m = part.match(/^([→←↔])(\s?)$/)
+    return m
+      ? (
+        <span key={i} style={{ verticalAlign: '0.1em', whiteSpace: 'nowrap' }}>
+          {m[1]}
+          {m[2] ? ' ' : ''}
+        </span>
+      )
+      : part
+  })
+}
+
 function renderText(node: LexicalNode, key: string) {
   const text = node.text ?? ''
   const fmt = typeof node.format === 'number' ? node.format : 0
-  let el: React.ReactNode = text
   // Inline code renders mono + faint bg via .w-inline-code (no green color —
   // the old accent spans broke reading flow). Wrapped innermost so bold/italic
   // can still nest around it. Fenced BLOCKS (the 'code' node below) are separate.
+  let el: React.ReactNode = (fmt & FORMAT_CODE) ? text : withArrows(text)
   if (fmt & FORMAT_CODE) el = <code className="w-inline-code">{el}</code>
   if (fmt & FORMAT_BOLD) el = <strong>{el}</strong>
   if (fmt & FORMAT_ITALIC) el = <em>{el}</em>
