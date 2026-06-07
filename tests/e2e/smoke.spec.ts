@@ -32,9 +32,9 @@ test("home exposes crawlable section links in the initial DOM", async ({
 test("/work renders the git-log footer (3 lines)", async ({ page }) => {
   await page.goto("/work");
   // Single shell renders BOTH variants and toggles with CSS, so both are in the
-  // DOM — assert on the *visible* one (desktop: [data-git-line] · mobile:
-  // .m-wklog-l). Exactly one shell is visible per viewport, so this is 3.
-  await expect(page.locator("[data-git-line]:visible, .m-wklog-l:visible")).toHaveCount(3);
+  // DOM — assert on the *visible* one. Both shells now mark git-log lines with
+  // [data-git-line]; exactly one shell is visible per viewport, so this is 3.
+  await expect(page.locator("[data-git-line]:visible")).toHaveCount(3);
 });
 
 test("/writing paginates and filters via URL", async ({ page }) => {

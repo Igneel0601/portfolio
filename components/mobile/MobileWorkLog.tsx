@@ -141,7 +141,7 @@ export function MobileWorkLog({
       <div className="max-w-[34rem] mx-auto mt-2 px-[1.375rem] pt-5 pb-6">
         <div className="c-xs mb-[0.55rem] text-ink-dim">$ git log --oneline | head -3</div>
         {commits.map((l, i) => (
-          <div key={i} className="c-xs pl-3 leading-[1.95] text-ink-soft whitespace-nowrap overflow-hidden text-ellipsis">
+          <div key={i} data-git-line className="c-xs pl-3 leading-[1.95] text-ink-soft whitespace-nowrap overflow-hidden text-ellipsis">
             {l}
           </div>
         ))}
