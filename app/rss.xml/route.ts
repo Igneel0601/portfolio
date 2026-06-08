@@ -1,5 +1,6 @@
 import { headers } from 'next/headers'
-import { getAllPosts } from '@/lib/posts'
+import { getAllPosts, getPostBySlug } from '@/lib/posts'
+import { lexicalToHtml } from '@/lib/feed-html'
 import { PROFILE } from '@/lib/profile'
 
 export const revalidate = 3600
@@ -25,29 +26,37 @@ function escapeXml(s: string): string {
 }
 
 export async function GET() {
-  const [posts, siteUrl] = await Promise.all([getAllPosts(), resolveSiteUrl()])
-  const lastBuild = posts[0]?.publishedAt ?? posts[0]?.updatedAt ?? new Date().toISOString()
+  const [list, siteUrl] = await Promise.all([getAllPosts(), resolveSiteUrl()])
+  const lastBuild = list[0]?.publishedAt ?? list[0]?.updatedAt ?? new Date().toISOString()
+
+  // Full post bodies for <content:encoded> (getPostBySlug expands media uploads
+  // + is per-slug cached). getAllPosts only carries metadata, so we hydrate here.
+  const posts = await Promise.all(list.map((p) => getPostBySlug(p.slug)))
 
   const items = posts
+    .filter((p): p is NonNullable<typeof p> => p != null)
     .map((p) => {
       const url = `${siteUrl}/writing/${p.slug}`
       const date = new Date(p.publishedAt ?? p.updatedAt).toUTCString()
       const categories = p.categories
         .map((c) => `<category>${escapeXml(c.title)}</category>`)
         .join('')
+      // Split any literal ]]> so it can't terminate the CDATA section early.
+      const body = lexicalToHtml(p.content, siteUrl).replace(/]]>/g, ']]]]><![CDATA[>')
       return `    <item>
       <title>${escapeXml(p.title)}</title>
       <link>${url}</link>
       <guid isPermaLink="true">${url}</guid>
       <pubDate>${date}</pubDate>
       <description>${escapeXml(p.metaDescription ?? '')}</description>
+      <content:encoded><![CDATA[${body}]]></content:encoded>
       ${categories}
     </item>`
     })
     .join('\n')
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>${escapeXml(SITE_TITLE)}</title>
     <link>${siteUrl}/writing</link>
